@@ -1,4 +1,4 @@
-import { Matrix } from '../document.store';
+import { Matrix } from '../document-reducer';
 
 export const findNodeColumn = (matrix: Matrix, parentId: string) => {
     for (let i = 0; i < matrix.length; i++) {

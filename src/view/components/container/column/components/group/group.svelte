@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { documentStore, NodeGroup } from 'src/view/store/document.store';
+	import { NodeGroup } from 'src/view/store/document-reducer';
 	import Node from './components/card/card.svelte';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
+	import { getStore } from 'src/view/components/container/ref';
 
+	const store = getStore();
 	export let group: NodeGroup;
 </script>
 
@@ -10,16 +12,16 @@
     {#each group.nodes as node (node.id)}
         <Node
             {node}
-            active={node.id === $documentStore.state.activeBranch.node
+            active={node.id === $store.state.activeBranch.node
                 ? ActiveStatus.node
-                : $documentStore.state.activeBranch.parentNodes.has(node.id)
+                : $store.state.activeBranch.parentNodes.has(node.id)
                 ? ActiveStatus.parent
-                : $documentStore.state.activeBranch.childNodes.has(node.id)
+                : $store.state.activeBranch.childNodes.has(node.id)
                 ? ActiveStatus.child
-                : $documentStore.state.activeBranch.siblingNodes.has(node.id)
+                : $store.state.activeBranch.siblingNodes.has(node.id)
                 ? ActiveStatus.sibling
                 : null}
-			editing={$documentStore.state.editing.node === node.id}
+			editing={$store.state.editing.node === node.id}
         />
     {/each}
 </div>

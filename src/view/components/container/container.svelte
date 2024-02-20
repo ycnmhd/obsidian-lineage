@@ -1,12 +1,17 @@
 <script lang="ts">
 	import Column from './column/column.svelte';
-	import { documentStore } from '../../store/document.store';
 	import { container } from 'src/view/components/container/ref';
+	import { DocumentStore } from 'src/view/view';
+	import { setContext } from 'svelte';
+
+	export let store: DocumentStore
+
+	setContext('store', store);
 </script>
 
 <div bind:this={container.current} class="container" id="columns-container">
     <div class="columns">
-        {#each $documentStore.matrix as column (column.id)}
+        {#each $store.matrix as column (column.id)}
             <Column {column} />
         {/each}
     </div>

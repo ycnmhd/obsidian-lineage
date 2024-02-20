@@ -1,7 +1,7 @@
 import { findNodeColumn } from './find-node-column';
 import { createNode } from './create-node';
 import { sortGroups } from './sort-groups';
-import { Matrix } from '../document.store';
+import { Matrix } from '../document-reducer';
 import { id } from 'src/helpers/id';
 
 export const insertChild = (

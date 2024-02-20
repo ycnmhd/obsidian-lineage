@@ -1,9 +1,10 @@
 <script lang="ts">
 	import CreateCardButton from './components/create-card-button.svelte';
 	import EditNodeButton from './components/edit-node-button.svelte';
-	import { documentStore, MatrixNode } from 'src/view/store/document.store';
+	import { MatrixNode } from 'src/view/store/document-reducer';
 	import clx from 'classnames';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
+	import { getStore } from 'src/view/components/container/ref';
 
 	export let node: MatrixNode;
     export let active: ActiveStatus | null;
@@ -16,8 +17,10 @@
         [ActiveStatus.sibling]: 'active-sibling',
     };
 
+	const store = getStore()
+
     const setActive = () => {
-        documentStore.dispatch({
+        store.dispatch({
             type: 'SET_ACTIVE',
             payload: { id: node.id },
         });
@@ -30,7 +33,7 @@
             wasEditing = true;
         } else {
             if (wasEditing)
-                documentStore.dispatch({
+                store.dispatch({
                     type: 'SET_NODE_CONTENT',
                     payload: {
                         nodeId: node.id,
@@ -129,4 +132,7 @@
         font-size: 16px;
         font-family: monospace;
     }
+	.active-node .content{
+		border-left: 5px #5acf5a solid;
+	}
 </style>

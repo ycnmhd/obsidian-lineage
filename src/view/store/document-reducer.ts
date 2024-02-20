@@ -1,4 +1,3 @@
-import { Store } from 'src/helpers/store';
 import { createNode } from './helpers/create-node';
 import { id } from 'src/helpers/id';
 import { insertSiblingNode } from 'src/view/store/helpers/insert-sibling-node';
@@ -20,7 +19,7 @@ export type Column = {
     groups: NodeGroup[];
 };
 export type Matrix = Column[];
-export type State = {
+export type DocumentState = {
     matrix: Column[];
     state: {
         activeBranch: {
@@ -48,7 +47,19 @@ export type CreateNodeAction = {
         __newNodeID__?: string;
     };
 };
-type Action =
+export type SavedDocument = {
+    columns: Column[];
+    state: {
+        activeNodeId: string;
+    };
+};
+export type DocumentAction =
+    | {
+          type: 'LOAD_DATA';
+          payload: {
+              data: SavedDocument;
+          };
+      }
     | CreateNodeAction
     | {
           type: 'SET_ACTIVE';
@@ -74,8 +85,11 @@ type Action =
           };
       };
 
-const updateState = (store: State, action: Action) => {
-    if (action.type === 'CREATE_FIRST_NODE') {
+const updateState = (store: DocumentState, action: DocumentAction) => {
+    if (action.type === 'LOAD_DATA') {
+        store.matrix = action.payload.data.columns;
+        updateActiveNode(store, action.payload.data.state.activeNodeId);
+    } else if (action.type === 'CREATE_FIRST_NODE') {
         if (store.matrix.length === 0) {
             const rootId = id.rootNode();
             const createdNode = createNode(rootId);
@@ -96,7 +110,7 @@ const updateState = (store: State, action: Action) => {
     } else if (action.type === 'SET_ACTIVE') {
         updateActiveNode(store, action.payload.id);
     } else if (action.type === 'RESET_STORE') {
-        const newState = initialState();
+        const newState = initialDocumentState();
         store.state = newState.state;
         store.matrix = newState.matrix;
     } else if (action.type === 'SET_NODE_CONTENT') {
@@ -110,12 +124,15 @@ const updateState = (store: State, action: Action) => {
         else store.state.editing.node = action.payload.nodeId;
     }
 };
-export const reducer = (store: State, action: Action): State => {
+export const documentReducer = (
+    store: DocumentState,
+    action: DocumentAction,
+): DocumentState => {
     updateState(store, action);
     return store;
 };
 
-const initialState = (): State => ({
+export const initialDocumentState = (): DocumentState => ({
     matrix: [],
     state: {
         activeBranch: {
@@ -130,4 +147,3 @@ const initialState = (): State => ({
         },
     },
 });
-export const documentStore = new Store<State, Action>(initialState(), reducer);

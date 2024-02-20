@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Column } from '../../../store/document.store';
+	import { Column } from '../../../store/document-reducer';
 	import Group from './components/group/group.svelte';
 
 	export let column: Column;

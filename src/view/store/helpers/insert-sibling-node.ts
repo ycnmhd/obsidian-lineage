@@ -1,10 +1,16 @@
 import { insertChild } from 'src/view/store/helpers/insert-child';
 import { findNodeColumn } from 'src/view/store/helpers/find-node-column';
 import { createNode } from 'src/view/store/helpers/create-node';
-import { CreateNodeAction, State } from 'src/view/store/document.store';
+import {
+    CreateNodeAction,
+    DocumentState,
+} from 'src/view/store/document-reducer';
 import { updateActiveNode } from 'src/view/store/helpers/update-active-node';
 
-export const insertSiblingNode = (store: State, action: CreateNodeAction) => {
+export const insertSiblingNode = (
+    store: DocumentState,
+    action: CreateNodeAction,
+) => {
     const payload = action.payload;
     if (payload.position === 'right') {
         const createdNodeId = insertChild(

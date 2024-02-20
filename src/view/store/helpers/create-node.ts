@@ -1,4 +1,4 @@
-import { MatrixNode } from '../document.store';
+import { MatrixNode } from '../document-reducer';
 import { id } from 'src/helpers/id';
 
 export const createNode = (

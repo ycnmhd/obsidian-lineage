@@ -1,4 +1,4 @@
-import { Matrix, MatrixNode } from 'src/view/store/document.store';
+import { Matrix, MatrixNode } from 'src/view/store/document-reducer';
 import { findNode } from 'src/view/store/helpers/find-node';
 
 export type StringSet = Set<string>;

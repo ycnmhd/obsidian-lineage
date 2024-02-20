@@ -1,5 +1,5 @@
 import { Plugin } from 'obsidian';
-import { TREE_VIEW_TYPE, TreeView } from './view';
+import { TREE_VIEW_TYPE, TreeView } from './view/view';
 
 interface Settings {
     mySetting: string;

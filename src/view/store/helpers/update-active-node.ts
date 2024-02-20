@@ -4,10 +4,10 @@ import {
     traverseDown,
     traverseUp,
 } from 'src/view/store/helpers/find-branch';
-import { State } from 'src/view/store/document.store';
+import { DocumentState } from 'src/view/store/document-reducer';
 
 export const updateActiveNode = (
-    store: State,
+    store: DocumentState,
     nodeId: string,
     newNode = false,
 ) => {
