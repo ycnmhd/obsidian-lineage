@@ -1,11 +1,13 @@
 <script lang="ts">
 	import CreateCardButton from './components/create-card-button.svelte';
+	import EditNodeButton from './components/edit-node-button.svelte';
 	import { documentStore, MatrixNode } from 'src/view/store/document.store';
 	import clx from 'classnames';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
 
 	export let node: MatrixNode;
     export let active: ActiveStatus | null;
+    export let editing: boolean;
 
     const activeStatusClasses = {
         [ActiveStatus.node]: 'active-node',
@@ -20,6 +22,24 @@
             payload: { id: node.id },
         });
     };
+    let textAreaRef: HTMLTextAreaElement | null;
+    let wasEditing = false;
+    $: {
+        if (editing) {
+            if (textAreaRef) textAreaRef.value = node.content;
+            wasEditing = true;
+        } else {
+            if (wasEditing)
+                documentStore.dispatch({
+                    type: 'SET_NODE_CONTENT',
+                    payload: {
+                        nodeId: node.id,
+                        content: textAreaRef?.value || '',
+                    },
+                });
+            wasEditing = false;
+        }
+    }
 </script>
 
 <div
@@ -43,8 +63,16 @@
             parentId={node.parentId}
             position="bottom"
         ></CreateCardButton>
+        <EditNodeButton
+            nodeId={node.id}
+            {editing}
+        />
     {/if}
-    <textarea> </textarea>
+    {#if editing}
+        <textarea bind:this={textAreaRef}> </textarea>
+    {:else}
+        <span class="content">{node.content}</span>
+    {/if}
 </div>
 
 <style>
@@ -60,7 +88,8 @@
     .active-node {
         background-color: var(--parent-bg);
     }
-    .active-node textarea {
+    .active-node textarea,
+    .active-node .content {
         background-color: var(--node-bg-active);
     }
     .active-child {
@@ -75,19 +104,29 @@
         width: 100%;
         height: 100%;
         color: black;
-        border: none ;
-        outline: none ;
+        border: none;
+        outline: none;
         border-radius: 5px;
-		background-color: transparent;
-		display: block;
-		resize: none;
-		min-height: 60px;
-		overflow: hidden;
-		font-size: 16px;
-		font-family: monospace;
+        background-color: transparent;
+        display: block;
+        resize: none;
+        overflow: hidden;
+        font-size: 16px;
+        font-family: monospace;
     }
-	textarea:focus{
-		border: none;
-		outline: none !important;
-	}
+    textarea:focus {
+        border: none;
+        outline: none !important;
+    }
+    .content {
+        width: 100%;
+        height: 100%;
+        color: black;
+        border-radius: 5px;
+        background-color: transparent;
+        display: block;
+        overflow: hidden;
+        font-size: 16px;
+        font-family: monospace;
+    }
 </style>

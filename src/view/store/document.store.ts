@@ -1,13 +1,8 @@
 import { Store } from 'src/helpers/store';
-import { insertChild } from './helpers/insert-child';
-import { findNodeColumn } from './helpers/find-node-column';
 import { createNode } from './helpers/create-node';
-import {
-    findSiblings,
-    traverseDown,
-    traverseUp,
-} from 'src/view/store/helpers/find-branch';
 import { id } from 'src/helpers/id';
+import { insertSiblingNode } from 'src/view/store/helpers/insert-sibling-node';
+import { updateActiveNode } from 'src/view/store/helpers/update-active-node';
 import { findNode } from 'src/view/store/helpers/find-node';
 
 export type MatrixNode = {
@@ -35,22 +30,26 @@ export type State = {
             siblingNodes: Set<string>;
             node: string;
         };
+        editing: {
+            node: string;
+        };
     };
 };
 
 export type SiblingPosition = 'top' | 'bottom';
 export type NodePosition = SiblingPosition | 'right';
 
+export type CreateNodeAction = {
+    type: 'CREATE_NODE';
+    payload: {
+        parentId: string;
+        nodeId: string;
+        position: NodePosition;
+        __newNodeID__?: string;
+    };
+};
 type Action =
-    | {
-          type: 'CREATE_NODE';
-          payload: {
-              parentId: string;
-              nodeId: string;
-              position: NodePosition;
-              __newNodeID__?: string;
-          };
-      }
+    | CreateNodeAction
     | {
           type: 'SET_ACTIVE';
           payload: {
@@ -60,25 +59,20 @@ type Action =
     | {
           type: 'CREATE_FIRST_NODE';
       }
-    | { type: 'RESET_STORE' };
-
-const updateActiveNode = (store: State, nodeId: string) => {
-    store.state.activeBranch.node = nodeId;
-    const node = findNode(store.matrix, nodeId);
-    if (node) {
-        const parentIDs = new Set<string>();
-        traverseUp(parentIDs, store.matrix, node);
-        const childGroups = new Set<string>();
-        const childNodes = new Set<string>();
-        traverseDown(childGroups, childNodes, store.matrix, node);
-        const siblingNodes = new Set<string>();
-        findSiblings(siblingNodes, store.matrix, node);
-        store.state.activeBranch.parentNodes = parentIDs;
-        store.state.activeBranch.childGroups = childGroups;
-        store.state.activeBranch.childNodes = childNodes;
-        store.state.activeBranch.siblingNodes = siblingNodes;
-    }
-};
+    | { type: 'RESET_STORE' }
+    | {
+          type: 'TOGGLE_EDIT_NODE';
+          payload: {
+              nodeId: string;
+          };
+      }
+    | {
+          type: 'SET_NODE_CONTENT';
+          payload: {
+              nodeId: string;
+              content: string;
+          };
+      };
 
 const updateState = (store: State, action: Action) => {
     if (action.type === 'CREATE_FIRST_NODE') {
@@ -95,49 +89,25 @@ const updateState = (store: State, action: Action) => {
                     },
                 ],
             });
-            updateActiveNode(store, createdNode.id);
+            updateActiveNode(store, createdNode.id, true);
         }
     } else if (action.type === 'CREATE_NODE') {
-        const payload = action.payload;
-        if (payload.position === 'right') {
-            const createdNodeId = insertChild(
-                store.matrix,
-                action.payload.nodeId,
-                action.payload.parentId,
-                action.payload.__newNodeID__,
-            );
-            if (createdNodeId) updateActiveNode(store, createdNodeId);
-        } else {
-            const columnIndex = findNodeColumn(
-                store.matrix,
-                action.payload.parentId,
-            );
-            const column = store.matrix[columnIndex];
-            const group = column.groups.find(
-                (g) => g.parentId === action.payload.parentId,
-            );
-            if (group) {
-                const index = group.nodes.findIndex(
-                    (c) => c.id === action.payload.nodeId,
-                );
-                if (columnIndex !== -1 && index !== -1) {
-                    const insertionIndex =
-                        action.payload.position === 'top' ? index : index + 1;
-                    const createdNode = createNode(
-                        action.payload.parentId,
-                        action.payload.__newNodeID__,
-                    );
-                    group.nodes.splice(insertionIndex, 0, createdNode);
-                    updateActiveNode(store, createdNode.id);
-                }
-            }
-        }
+        insertSiblingNode(store, action);
     } else if (action.type === 'SET_ACTIVE') {
         updateActiveNode(store, action.payload.id);
     } else if (action.type === 'RESET_STORE') {
         const newState = initialState();
         store.state = newState.state;
         store.matrix = newState.matrix;
+    } else if (action.type === 'SET_NODE_CONTENT') {
+        const node = findNode(store.matrix, action.payload.nodeId);
+        if (node) {
+            node.content = action.payload.content;
+        }
+    } else if (action.type === 'TOGGLE_EDIT_NODE') {
+        if (store.state.editing.node === action.payload.nodeId)
+            store.state.editing.node = '';
+        else store.state.editing.node = action.payload.nodeId;
     }
 };
 export const reducer = (store: State, action: Action): State => {
@@ -154,6 +124,9 @@ const initialState = (): State => ({
             childGroups: new Set<string>(),
             parentNodes: new Set<string>(),
             siblingNodes: new Set<string>(),
+        },
+        editing: {
+            node: '',
         },
     },
 });

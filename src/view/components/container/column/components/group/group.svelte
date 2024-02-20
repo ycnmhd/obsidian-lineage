@@ -19,6 +19,7 @@
                 : $documentStore.state.activeBranch.siblingNodes.has(node.id)
                 ? ActiveStatus.sibling
                 : null}
+			editing={$documentStore.state.editing.node === node.id}
         />
     {/each}
 </div>
