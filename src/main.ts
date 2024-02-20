@@ -34,17 +34,4 @@ export default class TreeEdit extends Plugin {
     async saveSettings() {
         await this.saveData(this.settings);
     }
-
-    async activateView() {
-        this.app.workspace.detachLeavesOfType(TREE_VIEW_TYPE);
-
-        await this.app.workspace.getRightLeaf(false).setViewState({
-            type: TREE_VIEW_TYPE,
-            active: true,
-        });
-
-        this.app.workspace.revealLeaf(
-            this.app.workspace.getLeavesOfType(TREE_VIEW_TYPE)[0],
-        );
-    }
 }
