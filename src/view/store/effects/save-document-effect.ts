@@ -9,7 +9,8 @@ export const saveDocumentEffect = (
             if (
                 action.type === 'SET_NODE_CONTENT' ||
                 action.type === 'CREATE_FIRST_NODE' ||
-                action.type === 'CREATE_NODE'
+                action.type === 'CREATE_NODE' ||
+                action.type === 'DROP_NODE'
             ) {
                 await save();
             }

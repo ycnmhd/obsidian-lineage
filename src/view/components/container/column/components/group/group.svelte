@@ -5,7 +5,7 @@
 	import { getStore } from 'src/view/components/container/ref';
 
 	const store = getStore();
-	export let group: NodeGroup;
+    export let group: NodeGroup;
 </script>
 
 <div class="group" id={group.id}>
@@ -21,7 +21,7 @@
                 : $store.state.activeBranch.siblingNodes.has(node.id)
                 ? ActiveStatus.sibling
                 : null}
-			editing={$store.state.editing.node === node.id}
+            editing={$store.state.editing.node === node.id}
         />
     {/each}
 </div>
@@ -31,6 +31,6 @@
         display: flex;
         flex-direction: column;
         width: var(--node-width);
-		background-color: transparent;
+        background-color: transparent;
     }
 </style>

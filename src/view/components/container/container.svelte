@@ -4,9 +4,9 @@
 	import { DocumentStore } from 'src/view/view';
 	import { setContext } from 'svelte';
 
-	export let store: DocumentStore
+	export let store: DocumentStore;
 
-	setContext('store', store);
+    setContext('store', store);
 </script>
 
 <div bind:this={container.current} class="container" id="columns-container">
@@ -18,12 +18,12 @@
 </div>
 
 <style>
-	:root{
-		--node-bg: #318bbf;
-		--node-bg-active: #fff;
-		--parent-bg:#68a6ca;
-		--container-bg:#1d7db4;
-	}
+    :root {
+        --node-bg: #318bbf;
+        --node-bg-active: #fff;
+        --parent-bg: #68a6ca;
+        --container-bg: #1d7db4;
+    }
     .container {
         background-color: var(--container-bg);
         max-width: 100%;

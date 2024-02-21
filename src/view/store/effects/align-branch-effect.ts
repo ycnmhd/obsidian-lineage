@@ -30,7 +30,8 @@ export const alignBranchEffect = (store: DocumentStore) => {
             action.type === 'SET_ACTIVE' ||
             action.type === 'CREATE_NODE' ||
             action.type === 'CREATE_FIRST_NODE' ||
-            action.type === 'LOAD_DATA'
+            action.type === 'LOAD_DATA' ||
+            action.type === 'DROP_NODE'
         ) {
             if (timeoutRef.align) clearTimeout(timeoutRef.align);
             timeoutRef.align = setTimeout(() => {

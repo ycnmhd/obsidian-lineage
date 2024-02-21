@@ -48,3 +48,22 @@ export const findSiblings = (
         }
     }
 };
+export const findGroup = (matrix: Matrix, node: MatrixNode) => {
+    for (const column of matrix) {
+        for (const group of column.groups) {
+            if (group.parentId === node.parentId) {
+                return group;
+            }
+        }
+    }
+};
+
+export const findChildGroup = (matrix: Matrix, node: MatrixNode) => {
+    for (const column of matrix) {
+        for (const group of column.groups) {
+            if (group.parentId === node.id) {
+                return group;
+            }
+        }
+    }
+};
