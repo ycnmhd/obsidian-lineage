@@ -14,7 +14,7 @@ export const insertSiblingNode = (
     const payload = action.payload;
     if (payload.position === 'right') {
         const createdNodeId = insertChild(
-            store.matrix,
+            store.columns,
             action.payload.nodeId,
             action.payload.parentId,
             action.payload.__newNodeID__,
@@ -25,10 +25,10 @@ export const insertSiblingNode = (
         }
     } else {
         const columnIndex = findNodeColumn(
-            store.matrix,
+            store.columns,
             action.payload.parentId,
         );
-        const column = store.matrix[columnIndex];
+        const column = store.columns[columnIndex];
         const group = column.groups.find(
             (g) => g.parentId === action.payload.parentId,
         );

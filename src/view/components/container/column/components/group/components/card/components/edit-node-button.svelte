@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { PencilIcon, SaveIcon } from 'lucide-svelte';
 	import { getStore } from 'src/view/components/container/ref';
+	import FloatingButton from './floating-button.svelte';
 
 	export let nodeId: string;
     export let editing: boolean;
@@ -14,28 +15,13 @@
     };
 </script>
 
-<button on:click={toggleEdit}>
+<FloatingButton on:click={toggleEdit} position={"bottom-right"}>
     {#if editing}
         <SaveIcon class="svg-con" />
     {:else}
         <PencilIcon class="svg-icon" />
     {/if}
-</button>
+</FloatingButton>
 
-<style>
-    :root {
-        --width: 30px;
-        --height: 10px;
-    }
-    button {
-        width: var(--width);
-        height: var(--height);
-        position: absolute;
-        opacity: 0.5;
-        bottom: 0;
-        right: 0;
-    }
-    button:hover {
-        opacity: 1;
-    }
-</style>
+
+

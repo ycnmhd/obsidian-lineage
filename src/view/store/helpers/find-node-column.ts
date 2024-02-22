@@ -1,8 +1,8 @@
-import { Matrix } from '../document-reducer';
+import { Columns } from '../document-reducer';
 
-export const findNodeColumn = (matrix: Matrix, parentId: string) => {
-    for (let i = 0; i < matrix.length; i++) {
-        const column = matrix[i];
+export const findNodeColumn = (columns: Columns, parentId: string) => {
+    for (let i = 0; i < columns.length; i++) {
+        const column = columns[i];
         for (const group of column.groups) {
             if (group.parentId === parentId) return i;
         }

@@ -15,6 +15,7 @@ import { Store } from 'src/helpers/store';
 import { Unsubscriber } from 'svelte/store';
 import { saveDocumentEffect } from 'src/view/store/effects/save-document-effect';
 import { logger } from 'src/helpers/logger';
+import { columnsToJsonTree } from 'src/view/store/helpers/conversion/columns-to-json/columns-to-json-tree';
 
 export const TREE_VIEW_TYPE = 'example-view';
 
@@ -81,12 +82,7 @@ export class TreeView extends TextFileView {
 
     private saveState = async () => {
         const store = this.store.getValue();
-        const data: SavedDocument = {
-            state: {
-                activeNodeId: store.state.activeBranch.node,
-            },
-            columns: store.matrix,
-        };
+        const data: SavedDocument = columnsToJsonTree(store.columns);
         const dataString = JSON.stringify(data, null, 4);
         this.setViewData(dataString, false);
         this.requestSave();

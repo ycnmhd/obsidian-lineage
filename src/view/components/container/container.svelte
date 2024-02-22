@@ -11,7 +11,7 @@
 
 <div bind:this={container.current} class="container" id="columns-container">
     <div class="columns">
-        {#each $store.matrix as column (column.id)}
+        {#each $store.columns as column (column.id)}
             <Column {column} />
         {/each}
     </div>

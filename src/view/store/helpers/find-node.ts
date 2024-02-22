@@ -1,17 +1,17 @@
-import { Matrix, MatrixNode } from 'src/view/store/document-reducer';
+import { ColumnNode, Columns } from 'src/view/store/document-reducer';
 import { logger } from 'src/helpers/logger';
 
-const cache: { [key: string]: MatrixNode } = {};
+const cache: { [key: string]: ColumnNode } = {};
 
 export const findNode = (
-    matrix: Matrix,
+    columns: Columns,
     nodeId: string,
-): MatrixNode | undefined => {
+): ColumnNode | undefined => {
     if (cache[nodeId]) {
         return cache[nodeId];
     }
     if (nodeId.startsWith('r-')) return;
-    for (const column of matrix) {
+    for (const column of columns) {
         for (const group of column.groups) {
             for (const node of group.nodes) {
                 if (node.id === nodeId) {

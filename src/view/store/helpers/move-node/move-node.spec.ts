@@ -1,30 +1,11 @@
 import { moveNode } from 'src/view/store/helpers/move-node/move-node';
 import { describe, expect, it } from 'vitest';
-import {
-    Column,
-    Matrix,
-    MatrixNode,
-    NodeGroup,
-} from 'src/view/store/document-reducer';
-import { id } from 'src/helpers/id';
+import { Columns } from 'src/view/store/document-reducer';
 import { createNode } from 'src/view/store/helpers/create-node';
-
-const createGroup = (parentId: string, __id__?: string): NodeGroup => ({
-    id: __id__ || id.group(),
-    parentId,
-    nodes: [],
-});
-const createColumn = (...parentIds: string[]): Column => ({
-    id: id.column(),
-    groups: parentIds ? parentIds.map((parentId) => createGroup(parentId)) : [],
-});
-const insertNodes = (
-    column: Column,
-    groupIndex: number,
-    ...nodes: MatrixNode[]
-) => {
-    column.groups[groupIndex].nodes.push(...nodes);
-};
+import {
+    __column__,
+    __populateColumn__,
+} from 'src/view/store/helpers/move-node/helpers/test-helpers';
 
 describe('move-node', () => {
     it('case 1', () => {
@@ -40,25 +21,24 @@ describe('move-node', () => {
         // parentOfTargetNode [targetNode] droppedNode        [childNode]  [grandChildNode]
         // --                 --           --
         const rootId = 'root';
-        const column1 = createColumn(rootId);
+        const column1 = __column__(rootId);
         const droppedNode = createNode('root');
         const parentOfTargetNode = createNode('root');
-        insertNodes(column1, 0, droppedNode, parentOfTargetNode);
+        __populateColumn__(column1, droppedNode, parentOfTargetNode);
 
-        const column2 = createColumn(droppedNode.id, parentOfTargetNode.id);
+        const column2 = __column__(droppedNode.id, parentOfTargetNode.id);
         const childNode = createNode(droppedNode.id);
         const targetNode = createNode(parentOfTargetNode.id);
-        insertNodes(column2, 0, childNode);
-        insertNodes(column2, 1, targetNode);
+        __populateColumn__(column2, childNode, targetNode);
 
-        const column3 = createColumn(childNode.id);
+        const column3 = __column__(childNode.id);
         const grandChildNode = createNode(childNode.id);
-        insertNodes(column3, 0, grandChildNode);
+        __populateColumn__(column3, grandChildNode);
 
-        const matrix = JSON.parse(
+        const columns = JSON.parse(
             JSON.stringify([column1, column2, column3]),
-        ) as Matrix;
-        moveNode(matrix, {
+        ) as Columns;
+        moveNode(columns, {
             type: 'DROP_NODE',
             payload: {
                 droppedNodeId: droppedNode.id,
@@ -66,14 +46,14 @@ describe('move-node', () => {
                 position: 'right',
             },
         });
-        expect(matrix.length).toBe(5);
-        for (const column of matrix) {
+        expect(columns.length).toBe(5);
+        for (const column of columns) {
             expect(column.groups.length).toBe(1);
         }
-        expect(matrix[0].groups[0].nodes[0].id === parentOfTargetNode.id);
-        expect(matrix[1].groups[0].nodes[0].id === targetNode.id);
-        expect(matrix[2].groups[0].nodes[0].id === droppedNode.id);
-        expect(matrix[3].groups[0].nodes[0].id === childNode.id);
-        expect(matrix[4].groups[0].nodes[0].id === grandChildNode.id);
+        expect(columns[0].groups[0].nodes[0].id === parentOfTargetNode.id);
+        expect(columns[1].groups[0].nodes[0].id === targetNode.id);
+        expect(columns[2].groups[0].nodes[0].id === droppedNode.id);
+        expect(columns[3].groups[0].nodes[0].id === childNode.id);
+        expect(columns[4].groups[0].nodes[0].id === grandChildNode.id);
     });
 });

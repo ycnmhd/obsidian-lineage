@@ -6,7 +6,7 @@ import { DocumentStore } from 'src/view/view';
 
 const alignBranch = (store: DocumentState) => {
     if (!container.current) return;
-    const node = findNode(store.matrix, store.state.activeBranch.node);
+    const node = findNode(store.columns, store.state.activeBranch.node);
     if (node) {
         alignElement(node.id);
         for (const id of store.state.activeBranch.parentNodes) {

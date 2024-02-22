@@ -1,17 +1,17 @@
 import {
+    ColumnNode,
+    Columns,
     DropAction,
-    Matrix,
-    MatrixNode,
 } from 'src/view/store/document-reducer';
 import { findGroup } from 'src/view/store/helpers/find-branch';
 
 export const moveNodeAsSibling = (
-    matrix: Matrix,
+    columns: Columns,
     action: DropAction,
-    droppedNode: MatrixNode,
-    targetNode: MatrixNode,
+    droppedNode: ColumnNode,
+    targetNode: ColumnNode,
 ) => {
-    const targetGroup = findGroup(matrix, targetNode);
+    const targetGroup = findGroup(columns, targetNode);
     if (targetGroup) {
         const index = targetGroup.nodes.findIndex(
             (n) => n.id === targetNode.id,

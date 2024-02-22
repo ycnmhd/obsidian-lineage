@@ -1,48 +1,43 @@
 import {
     Column,
+    ColumnNode,
+    Columns,
     DropAction,
-    Matrix,
-    MatrixNode,
 } from 'src/view/store/document-reducer';
 import { findChildGroup, findGroup } from 'src/view/store/helpers/find-branch';
 import { findNodeColumn } from 'src/view/store/helpers/find-node-column';
-import { id } from 'src/helpers/id';
 import { sortGroups } from 'src/view/store/helpers/sort-groups';
+import { createColumn, createGroup } from 'src/view/store/helpers/create-node';
 
 export const moveNodeAsChild = (
-    matrix: Matrix,
+    columns: Columns,
     action: DropAction,
-    droppedNode: MatrixNode,
-    targetNode: MatrixNode,
+    droppedNode: ColumnNode,
+    targetNode: ColumnNode,
 ) => {
-    const currentGroup = findGroup(matrix, droppedNode);
+    const currentGroup = findGroup(columns, droppedNode);
     if (!currentGroup) return;
     currentGroup.nodes = currentGroup.nodes.filter(
         (n) => n.id !== droppedNode.id,
     );
-    const targetGroup = findChildGroup(matrix, targetNode);
+    const targetGroup = findChildGroup(columns, targetNode);
     droppedNode.parentId = targetNode.id;
     if (targetGroup) {
         targetGroup.nodes.push(droppedNode);
     } else {
-        const currentColumnIndex = findNodeColumn(matrix, targetNode.parentId);
-        const currentColumn = matrix[currentColumnIndex];
+        const currentColumnIndex = findNodeColumn(columns, targetNode.parentId);
+        const currentColumn = columns[currentColumnIndex];
         let targetColumn: Column | undefined;
-        targetColumn = matrix[currentColumnIndex + 1];
+        targetColumn = columns[currentColumnIndex + 1];
 
         if (!targetColumn) {
-            const newColumn = {
-                id: id.column(),
-                groups: [],
-            };
-            matrix.push(newColumn);
+            const newColumn = createColumn();
+            columns.push(newColumn);
             targetColumn = newColumn;
         }
-        targetColumn.groups.push({
-            nodes: [droppedNode],
-            id: id.group(),
-            parentId: targetNode.id,
-        });
+        const newGroup = createGroup(targetNode.id);
+        newGroup.nodes.push(droppedNode);
+        targetColumn.groups.push(newGroup);
         targetColumn.groups = sortGroups(
             currentColumn.groups,
             targetColumn.groups,

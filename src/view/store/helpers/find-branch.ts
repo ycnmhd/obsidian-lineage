@@ -1,32 +1,32 @@
-import { Matrix, MatrixNode } from 'src/view/store/document-reducer';
+import { ColumnNode, Columns } from 'src/view/store/document-reducer';
 import { findNode } from 'src/view/store/helpers/find-node';
 
 export type StringSet = Set<string>;
 export const traverseUp = (
     branch: StringSet,
-    matrix: Matrix,
-    node: MatrixNode,
+    columns: Columns,
+    node: ColumnNode,
 ) => {
-    const parentNode = findNode(matrix, node.parentId);
+    const parentNode = findNode(columns, node.parentId);
     if (parentNode) {
         branch.add(parentNode.id);
-        traverseUp(branch, matrix, parentNode);
+        traverseUp(branch, columns, parentNode);
     }
 };
 
 export const traverseDown = (
     childGroups: StringSet,
     childNodes: StringSet,
-    matrix: Matrix,
-    node: MatrixNode,
+    columns: Columns,
+    node: ColumnNode,
 ) => {
-    for (const column of matrix) {
+    for (const column of columns) {
         for (const group of column.groups) {
             if (group.parentId === node.id) {
                 childGroups.add(group.id);
                 for (const node of group.nodes) {
                     childNodes.add(node.id);
-                    traverseDown(childGroups, childNodes, matrix, node);
+                    traverseDown(childGroups, childNodes, columns, node);
                 }
             }
         }
@@ -35,10 +35,10 @@ export const traverseDown = (
 
 export const findSiblings = (
     siblingNodes: StringSet,
-    matrix: Matrix,
-    node: MatrixNode,
+    columns: Columns,
+    node: ColumnNode,
 ) => {
-    for (const column of matrix) {
+    for (const column of columns) {
         for (const group of column.groups) {
             if (group.parentId === node.parentId) {
                 for (const node of group.nodes) {
@@ -48,8 +48,11 @@ export const findSiblings = (
         }
     }
 };
-export const findGroup = (matrix: Matrix, node: MatrixNode) => {
-    for (const column of matrix) {
+export const findGroup = (
+    columns: Columns,
+    node: Pick<ColumnNode, 'parentId'>,
+) => {
+    for (const column of columns) {
         for (const group of column.groups) {
             if (group.parentId === node.parentId) {
                 return group;
@@ -58,8 +61,11 @@ export const findGroup = (matrix: Matrix, node: MatrixNode) => {
     }
 };
 
-export const findChildGroup = (matrix: Matrix, node: MatrixNode) => {
-    for (const column of matrix) {
+export const findChildGroup = (
+    columns: Columns,
+    node: Pick<ColumnNode, 'id'>,
+) => {
+    for (const column of columns) {
         for (const group of column.groups) {
             if (group.parentId === node.id) {
                 return group;

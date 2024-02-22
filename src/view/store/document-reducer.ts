@@ -6,8 +6,10 @@ import { findNode } from 'src/view/store/helpers/find-node';
 import { traverseDown } from 'src/view/store/helpers/find-branch';
 import { moveNode } from 'src/view/store/helpers/move-node/move-node';
 import { onDragEnd } from 'src/view/store/helpers/on-drag-end';
+import { TreeNode } from 'src/view/store/helpers/conversion/columns-to-json/columns-to-json-tree';
+import { jsonTreeToColumns } from 'src/view/store/helpers/conversion/json-to-columns/json-tree-to-columns';
 
-export type MatrixNode = {
+export type ColumnNode = {
     id: string;
     content: string;
     parentId: string;
@@ -15,15 +17,15 @@ export type MatrixNode = {
 export type NodeGroup = {
     id: string;
     parentId: string;
-    nodes: MatrixNode[];
+    nodes: ColumnNode[];
 };
 export type Column = {
     id: string;
     groups: NodeGroup[];
 };
-export type Matrix = Column[];
+export type Columns = Column[];
 export type DocumentState = {
-    matrix: Column[];
+    columns: Column[];
     state: {
         activeBranch: {
             parentNodes: Set<string>;
@@ -54,12 +56,7 @@ export type CreateNodeAction = {
         __newNodeID__?: string;
     };
 };
-export type SavedDocument = {
-    columns: Column[];
-    state: {
-        activeNodeId: string;
-    };
-};
+export type SavedDocument = TreeNode[];
 
 export type DropAction = {
     type: 'DROP_NODE';
@@ -113,15 +110,16 @@ export type DocumentAction =
 
 const updateState = (store: DocumentState, action: DocumentAction) => {
     if (action.type === 'LOAD_DATA') {
-        store.matrix = action.payload.data.columns;
-        updateActiveNode(store, action.payload.data.state.activeNodeId);
+        store.columns = jsonTreeToColumns(action.payload.data);
+        const firstNode = store.columns[0]?.groups?.[0]?.nodes?.[0];
+        if (firstNode) updateActiveNode(store, firstNode.id);
     } else {
-        const matrix = store.matrix;
+        const columns = store.columns;
         if (action.type === 'CREATE_FIRST_NODE') {
-            if (matrix.length === 0) {
+            if (columns.length === 0) {
                 const rootId = id.rootNode();
                 const createdNode = createNode(rootId);
-                matrix.push({
+                columns.push({
                     id: id.column(),
                     groups: [
                         {
@@ -140,9 +138,9 @@ const updateState = (store: DocumentState, action: DocumentAction) => {
         } else if (action.type === 'RESET_STORE') {
             const newState = initialDocumentState();
             store.state = newState.state;
-            store.matrix = newState.matrix;
+            store.columns = newState.columns;
         } else if (action.type === 'SET_NODE_CONTENT') {
-            const node = findNode(matrix, action.payload.nodeId);
+            const node = findNode(columns, action.payload.nodeId);
             if (node) {
                 node.content = action.payload.content;
             }
@@ -151,17 +149,17 @@ const updateState = (store: DocumentState, action: DocumentAction) => {
                 store.state.editing.node = '';
             else store.state.editing.node = action.payload.nodeId;
         } else if (action.type === 'SET_DRAG_STARTED') {
-            const node = findNode(matrix, action.payload.nodeId);
+            const node = findNode(columns, action.payload.nodeId);
             if (node) {
                 const childGroups = new Set<string>();
-                traverseDown(childGroups, new Set<string>(), matrix, node);
+                traverseDown(childGroups, new Set<string>(), columns, node);
                 store.state.draggedBranch.node = action.payload.nodeId;
                 store.state.draggedBranch.childGroups = childGroups;
             }
         } else if (action.type === 'SET_DRAG_CANCELED') {
             onDragEnd(store);
         } else if (action.type === 'DROP_NODE') {
-            moveNode(matrix, action);
+            moveNode(columns, action);
             updateActiveNode(store, action.payload.droppedNodeId);
             onDragEnd(store);
         }
@@ -177,7 +175,7 @@ export const documentReducer = (
 };
 
 export const initialDocumentState = (): DocumentState => ({
-    matrix: [],
+    columns: [],
     state: {
         activeBranch: {
             node: '',

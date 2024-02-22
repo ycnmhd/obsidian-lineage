@@ -18,9 +18,9 @@
 </div>
 
 <style>
-    :root {
-        --node-width: 400px;
-    }
+
+
+
     .column {
         width: var(--node-width);
         height: 100vh;

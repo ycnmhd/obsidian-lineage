@@ -14,15 +14,15 @@ export const updateActiveNode = (
     store.state.activeBranch.node = nodeId;
     if (newNode) store.state.editing.node = nodeId;
     else if (store.state.editing.node !== nodeId) store.state.editing.node = '';
-    const node = findNode(store.matrix, nodeId);
+    const node = findNode(store.columns, nodeId);
     if (node) {
         const parentIDs = new Set<string>();
-        traverseUp(parentIDs, store.matrix, node);
+        traverseUp(parentIDs, store.columns, node);
         const childGroups = new Set<string>();
         const childNodes = new Set<string>();
-        traverseDown(childGroups, childNodes, store.matrix, node);
+        traverseDown(childGroups, childNodes, store.columns, node);
         const siblingNodes = new Set<string>();
-        findSiblings(siblingNodes, store.matrix, node);
+        findSiblings(siblingNodes, store.columns, node);
         store.state.activeBranch.parentNodes = parentIDs;
         store.state.activeBranch.childGroups = childGroups;
         store.state.activeBranch.childNodes = childNodes;
