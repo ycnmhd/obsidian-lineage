@@ -14,8 +14,8 @@ import { alignBranchEffect } from 'src/view/store/effects/align-branch-effect';
 import { Store } from 'src/helpers/store';
 import { Unsubscriber } from 'svelte/store';
 import { saveDocumentEffect } from 'src/view/store/effects/save-document-effect';
-import { logger } from 'src/helpers/logger';
 import { columnsToJsonTree } from 'src/view/store/helpers/conversion/columns-to-json/columns-to-json-tree';
+import { jsonToMarkdown } from 'src/view/store/helpers/conversion/json-to-makdown/json-to-markdown';
 
 export const TREE_VIEW_TYPE = 'example-view';
 
@@ -82,26 +82,22 @@ export class TreeView extends TextFileView {
 
     private saveState = async () => {
         const store = this.store.getValue();
-        const data: SavedDocument = columnsToJsonTree(store.columns);
-        const dataString = JSON.stringify(data, null, 4);
-        this.setViewData(dataString, false);
+        const data: SavedDocument = jsonToMarkdown(
+            columnsToJsonTree(store.columns),
+        );
+        this.setViewData(data, false);
         this.requestSave();
     };
-
     private loadInitialData = () => {
         this.subscriptions.add(alignBranchEffect(this.store));
         this.subscriptions.add(saveDocumentEffect(this.store, this.saveState));
         if (!this.data) this.store.dispatch({ type: 'CREATE_FIRST_NODE' });
         else {
-            try {
-                const state = JSON.parse(this.data) as SavedDocument;
-                this.store.dispatch({
-                    payload: { data: state },
-                    type: 'LOAD_DATA',
-                });
-            } catch (e) {
-                logger.error('could not load document', e);
-            }
+            const state = this.data as SavedDocument;
+            this.store.dispatch({
+                payload: { data: state },
+                type: 'LOAD_DATA',
+            });
         }
     };
 }

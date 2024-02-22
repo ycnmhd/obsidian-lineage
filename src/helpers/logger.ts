@@ -1,8 +1,8 @@
 type Logger = {
-    debug: (...message: string[]) => void;
-    info: (...message: string[]) => void;
-    warn: (...message: string[]) => void;
-    error: (...message: string[]) => void;
+    debug: (...message: unknown[]) => void;
+    info: (...message: unknown[]) => void;
+    warn: (...message: unknown[]) => void;
+    error: (...message: unknown[]) => void;
 };
 
 const createLogger = (env?: string): Logger => {

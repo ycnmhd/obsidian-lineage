@@ -6,8 +6,8 @@ import { findNode } from 'src/view/store/helpers/find-node';
 import { traverseDown } from 'src/view/store/helpers/find-branch';
 import { moveNode } from 'src/view/store/helpers/move-node/move-node';
 import { onDragEnd } from 'src/view/store/helpers/on-drag-end';
-import { TreeNode } from 'src/view/store/helpers/conversion/columns-to-json/columns-to-json-tree';
 import { jsonTreeToColumns } from 'src/view/store/helpers/conversion/json-to-columns/json-tree-to-columns';
+import { markdownToJson } from 'src/view/store/helpers/conversion/markdown-to-json/markdown-to-json';
 
 export type ColumnNode = {
     id: string;
@@ -56,7 +56,7 @@ export type CreateNodeAction = {
         __newNodeID__?: string;
     };
 };
-export type SavedDocument = TreeNode[];
+export type SavedDocument = string;
 
 export type DropAction = {
     type: 'DROP_NODE';
@@ -110,7 +110,7 @@ export type DocumentAction =
 
 const updateState = (store: DocumentState, action: DocumentAction) => {
     if (action.type === 'LOAD_DATA') {
-        store.columns = jsonTreeToColumns(action.payload.data);
+        store.columns = jsonTreeToColumns(markdownToJson(action.payload.data));
         const firstNode = store.columns[0]?.groups?.[0]?.nodes?.[0];
         if (firstNode) updateActiveNode(store, firstNode.id);
     } else {

@@ -22,6 +22,7 @@ const { column: column2, nodes: node1_children } = __generateColumn__(
 );
 __generateColumn__(3, node2.id, 'node 2', column2);
 describe('tree-to-columns', () => {
+    // multiple tests in parallel fail
     it.skip('2 columns', () => {
         const input = __clone__([column1, column2]);
 
