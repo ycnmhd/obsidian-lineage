@@ -1,7 +1,6 @@
 import { TextFileView, WorkspaceLeaf } from 'obsidian';
 
 import Component from './components/container/container.svelte';
-import store from '../store';
 import TreeEdit from '../main';
 import {
     DocumentAction,
@@ -11,13 +10,13 @@ import {
     SavedDocument,
 } from 'src/view/store/document-reducer';
 import { alignBranchEffect } from 'src/view/store/effects/align-branch-effect';
-import { Store } from 'src/helpers/store';
 import { Unsubscriber } from 'svelte/store';
 import { saveDocumentEffect } from 'src/view/store/effects/save-document-effect';
 import { columnsToJsonTree } from 'src/view/store/helpers/conversion/columns-to-json/columns-to-json-tree';
 import { jsonToMarkdown } from 'src/view/store/helpers/conversion/json-to-makdown/json-to-markdown';
+import { Store } from 'src/helpers/store';
 
-export const TREE_VIEW_TYPE = 'example-view';
+export const TREE_VIEW_TYPE = 'tree';
 
 export type DocumentStore = Store<DocumentState, DocumentAction>;
 
@@ -48,7 +47,7 @@ export class TreeView extends TextFileView {
     }
 
     clear(): void {
-        this.data = '{}';
+        this.data = '';
     }
 
     getViewType() {
@@ -60,8 +59,6 @@ export class TreeView extends TextFileView {
     }
 
     async onOpen() {
-        store.plugin.set(this.plugin);
-
         this.component = new Component({
             target: this.contentEl,
             props: {
