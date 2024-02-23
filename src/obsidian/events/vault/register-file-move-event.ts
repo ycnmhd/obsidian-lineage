@@ -1,8 +1,8 @@
-import LabeledAnnotations from '../../main';
 import { TFile } from 'obsidian';
-import { fileTypeCache } from 'src/patches/set-view-state';
+import TreeEdit from 'src/main';
+import { fileTypeCache } from 'src/obsidian/patches/set-view-state';
 
-export const registerFileRenameEvent = (plugin: LabeledAnnotations) => {
+export const registerFileRenameEvent = (plugin: TreeEdit) => {
     plugin.registerEvent(
         plugin.app.vault.on('rename', (file, oldPath) => {
             if (file instanceof TFile) {

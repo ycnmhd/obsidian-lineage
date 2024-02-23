@@ -5,27 +5,26 @@ import {
     traverseUp,
 } from 'src/view/store/helpers/find-branch';
 import { DocumentState } from 'src/view/store/document-reducer';
+import { updateEditingNodeOnActiveNodeChange } from 'src/view/store/reducers/editing/update-editing-node-on-active-node-change';
 
 export const updateActiveNode = (
-    store: DocumentState,
+    state: DocumentState,
     nodeId: string,
     newNode = false,
 ) => {
-    store.state.activeBranch.node = nodeId;
-    if (newNode) store.state.editing.node = nodeId;
-    else if (store.state.editing.node !== nodeId) store.state.editing.node = '';
-    const node = findNode(store.columns, nodeId);
+    updateEditingNodeOnActiveNodeChange(state, nodeId, newNode);
+    const node = findNode(state.columns, nodeId);
     if (node) {
         const parentIDs = new Set<string>();
-        traverseUp(parentIDs, store.columns, node);
+        traverseUp(parentIDs, state.columns, node);
         const childGroups = new Set<string>();
         const childNodes = new Set<string>();
-        traverseDown(childGroups, childNodes, store.columns, node);
+        traverseDown(childGroups, childNodes, state.columns, node);
         const siblingNodes = new Set<string>();
-        findSiblings(siblingNodes, store.columns, node);
-        store.state.activeBranch.parentNodes = parentIDs;
-        store.state.activeBranch.childGroups = childGroups;
-        store.state.activeBranch.childNodes = childNodes;
-        store.state.activeBranch.siblingNodes = siblingNodes;
+        findSiblings(siblingNodes, state.columns, node);
+        state.state.activeBranch.parentNodes = parentIDs;
+        state.state.activeBranch.childGroups = childGroups;
+        state.state.activeBranch.childNodes = childNodes;
+        state.state.activeBranch.siblingNodes = siblingNodes;
     }
 };

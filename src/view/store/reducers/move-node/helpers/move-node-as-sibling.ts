@@ -1,8 +1,5 @@
-import {
-    ColumnNode,
-    Columns,
-    DropAction,
-} from 'src/view/store/document-reducer';
+import { DropAction } from 'src/view/store/reducers/move-node/move-node';
+import { ColumnNode, Columns } from 'src/view/store/document-reducer';
 import { findGroup } from 'src/view/store/helpers/find-branch';
 
 export const moveNodeAsSibling = (

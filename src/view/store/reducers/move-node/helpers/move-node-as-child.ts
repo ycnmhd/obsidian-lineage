@@ -1,9 +1,5 @@
-import {
-    Column,
-    ColumnNode,
-    Columns,
-    DropAction,
-} from 'src/view/store/document-reducer';
+import { DropAction } from 'src/view/store/reducers/move-node/move-node';
+import { Column, ColumnNode, Columns } from 'src/view/store/document-reducer';
 import { findChildGroup, findGroup } from 'src/view/store/helpers/find-branch';
 import { findNodeColumn } from 'src/view/store/helpers/find-node-column';
 import { sortGroups } from 'src/view/store/helpers/sort-groups';

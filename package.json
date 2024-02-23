@@ -21,7 +21,7 @@
         "@tsconfig/svelte": "5.0.2",
         "@types/electron": "1.6.10",
         "@types/node": "16.11.6",
-        "@types/uniqid": "^5.3.4",
+        "@types/uniqid": "5.3.4",
         "@typescript-eslint/eslint-plugin": "7.0.2",
         "@typescript-eslint/parser": "7.0.2",
         "builtin-modules": "3.3.0",
@@ -42,10 +42,9 @@
         "svelte-preprocess": "5.0.4",
         "tslib": "2.4.0",
         "typescript": "5.3.3",
-        "uniqid": "^5.4.0",
-        "vitest": "0.34.5"
+        "uniqid": "5.4.0",
+        "vitest": "0.34.5",
+        "monkey-around": "3.0.0"
     },
-    "dependencies": {
-        "monkey-around": "^3.0.0"
-    }
+    "dependencies": {}
 }

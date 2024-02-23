@@ -4,9 +4,12 @@
 	import { ColumnNode } from 'src/view/store/document-reducer';
 	import clx from 'classnames';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
-	import { getStore } from 'src/view/components/container/ref';
+	import { getStore } from 'src/view/components/container/get-store';
 	import { draggable } from 'src/view/actions/dnd/draggable';
 	import { droppable } from 'src/view/actions/dnd/droppable';
+	import {
+		saveNodeContent
+	} from 'src/view/components/container/column/components/group/components/card/actions/save-node-content';
 
 	export let node: ColumnNode;
     export let active: ActiveStatus | null;
@@ -23,29 +26,10 @@
 
     const setActive = () => {
         store.dispatch({
-            type: 'SET_ACTIVE',
+            type: 'SET_ACTIVE_NODE',
             payload: { id: node.id },
         });
     };
-    // eslint-disable-next-line no-undef
-    let textAreaRef: HTMLTextAreaElement | null;
-    let wasEditing = false;
-    $: {
-        if (editing) {
-            if (textAreaRef) textAreaRef.value = node.content;
-            wasEditing = true;
-        } else {
-            if (wasEditing)
-                store.dispatch({
-                    type: 'SET_NODE_CONTENT',
-                    payload: {
-                        nodeId: node.id,
-                        content: textAreaRef?.value || '',
-                    },
-                });
-            wasEditing = false;
-        }
-    }
 </script>
 
 <div
@@ -55,13 +39,19 @@
     use:droppable={store}
 >
     {#if editing}
-        <textarea bind:this={textAreaRef}> </textarea>
+        <textarea use:saveNodeContent={{ editing, store, node }} />
     {:else}
         <div class="content" use:draggable={{ id: node.id, store }}>
             <div class="drag-handle"></div>
-            <span>
-                {node.content}
-            </span>
+            <div
+                on:dblclick={() => {
+                    store.dispatch({ type: 'ENABLE_EDIT_MODE' });
+                }}
+            >
+                {#each node.content.split('\n') as line}
+                    <span>{line}</span><br>
+                {/each}
+            </div>
         </div>
     {/if}
     {#if active === ActiveStatus.node}

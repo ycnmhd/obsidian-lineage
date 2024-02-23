@@ -1,10 +1,10 @@
-import LabeledAnnotations from '../../main';
 import { lang } from 'src/lang/lang';
 import { MarkdownView, TFile, ViewState } from 'obsidian';
-import { fileTypeCache } from 'src/patches/set-view-state';
+import { fileTypeCache } from 'src/obsidian/patches/set-view-state';
 import { TREE_VIEW_TYPE } from 'src/view/view';
+import TreeEdit from 'src/main';
 
-export const registerFileMenuEvent = (plugin: LabeledAnnotations) => {
+export const registerFileMenuEvent = (plugin: TreeEdit) => {
     plugin.registerEvent(
         plugin.app.workspace.on('file-menu', (menu, file, source, leaf) => {
             if (file instanceof TFile) {

@@ -1,9 +1,8 @@
-import { container } from 'src/view/components/container/ref';
 import { logger } from 'src/helpers/logger';
 
-export const alignElement = (id: string) => {
-    if (!container.current) return;
-    const element = container.current.querySelector('#' + id);
+export const alignElement = (container: HTMLElement, id: string) => {
+    if (!container) return;
+    const element = container.querySelector('#' + id);
     if (!element) {
         logger.debug('could not find el for', id);
     } else {

@@ -3,7 +3,7 @@ import { TREE_VIEW_TYPE, TreeView } from './view/view';
 import {
     setViewState,
     subscribeDocumentsTypeCacheToSettings,
-} from 'src/patches/set-view-state';
+} from 'src/obsidian/patches/set-view-state';
 import { around } from 'monkey-around';
 import {
     SettingsActions,
@@ -13,17 +13,15 @@ import { deepMerge } from 'src/helpers/deep-merge';
 import { DEFAULT_SETTINGS } from 'src/settings/default-settings';
 import { Store } from 'src/helpers/store';
 import { Settings } from 'src/settings/settings-type';
-import { registerFileMenuEvent } from 'src/events/workspace/register-file-menu-event';
-import { registerFileRenameEvent } from 'src/events/vault/register-file-move-event';
-import { registerFileDeleteEvent } from 'src/events/vault/register-file-delete-event';
+import { registerFileMenuEvent } from 'src/obsidian/events/workspace/register-file-menu-event';
+import { registerFileRenameEvent } from 'src/obsidian/events/vault/register-file-move-event';
+import { registerFileDeleteEvent } from 'src/obsidian/events/vault/register-file-delete-event';
 
 export default class TreeEdit extends Plugin {
     settings: Store<Settings, SettingsActions>;
 
     async onload() {
         await this.loadSettings();
-
-        this.registerExtensions(['tree'], TREE_VIEW_TYPE);
 
         this.registerView(TREE_VIEW_TYPE, (leaf) => new TreeView(leaf, this));
         // @ts-ignore

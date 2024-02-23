@@ -1,19 +1,18 @@
 import { DocumentState } from 'src/view/store/document-reducer';
-import { container } from 'src/view/components/container/ref';
 import { findNode } from 'src/view/store/helpers/find-node';
 import { alignElement } from 'src/view/store/effects/helpers/align-element';
 import { DocumentStore } from 'src/view/view';
 
 const alignBranch = (store: DocumentState) => {
-    if (!container.current) return;
+    if (!store.refs.container) return;
     const node = findNode(store.columns, store.state.activeBranch.node);
     if (node) {
-        alignElement(node.id);
+        alignElement(store.refs.container, node.id);
         for (const id of store.state.activeBranch.parentNodes) {
-            alignElement(id);
+            alignElement(store.refs.container, id);
         }
         for (const id of store.state.activeBranch.childGroups) {
-            alignElement(id);
+            alignElement(store.refs.container, id);
         }
     }
 };
@@ -27,11 +26,12 @@ export const alignBranchEffect = (store: DocumentStore) => {
         };
         if (!action) return;
         if (
-            action.type === 'SET_ACTIVE' ||
+            action.type === 'SET_ACTIVE_NODE' ||
             action.type === 'CREATE_NODE' ||
             action.type === 'CREATE_FIRST_NODE' ||
             action.type === 'LOAD_DATA' ||
-            action.type === 'DROP_NODE'
+            action.type === 'DROP_NODE' ||
+            action.type === 'CHANGE_ACTIVE_NODE'
         ) {
             if (timeoutRef.align) clearTimeout(timeoutRef.align);
             timeoutRef.align = setTimeout(() => {

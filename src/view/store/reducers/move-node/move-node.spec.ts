@@ -1,11 +1,11 @@
-import { moveNode } from 'src/view/store/helpers/move-node/move-node';
+import { moveNode } from 'src/view/store/reducers/move-node/move-node';
 import { describe, expect, it } from 'vitest';
 import { Columns } from 'src/view/store/document-reducer';
 import { createNode } from 'src/view/store/helpers/create-node';
 import {
     __column__,
     __populateColumn__,
-} from 'src/view/store/helpers/move-node/helpers/test-helpers';
+} from 'src/view/store/reducers/move-node/helpers/test-helpers';
 
 describe('move-node', () => {
     it('case 1', () => {

@@ -1,11 +1,19 @@
 import { findNode } from 'src/view/store/helpers/find-node';
 import { findGroup } from 'src/view/store/helpers/find-branch';
-import { Columns, DropAction } from 'src/view/store/document-reducer';
-import { moveNodeAsSibling } from 'src/view/store/helpers/move-node/helpers/move-node-as-sibling';
+import { Columns, NodePosition } from 'src/view/store/document-reducer';
+import { moveNodeAsSibling } from 'src/view/store/reducers/move-node/helpers/move-node-as-sibling';
 
-import { moveNodeAsChild } from 'src/view/store/helpers/move-node/helpers/move-node-as-child';
-import { moveChildGroups } from 'src/view/store/helpers/move-node/helpers/move-child-groups';
+import { moveNodeAsChild } from 'src/view/store/reducers/move-node/helpers/move-node-as-child';
+import { moveChildGroups } from 'src/view/store/reducers/move-node/helpers/move-child-groups';
 
+export type DropAction = {
+    type: 'DROP_NODE';
+    payload: {
+        droppedNodeId: string;
+        targetNodeId: string;
+        position: NodePosition;
+    };
+};
 export const moveNode = (columns: Columns, action: DropAction) => {
     const droppedNode = findNode(columns, action.payload.droppedNodeId);
     const targetNode = findNode(columns, action.payload.targetNodeId);

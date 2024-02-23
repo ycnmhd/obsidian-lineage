@@ -2,7 +2,7 @@
 	import { NodeGroup } from 'src/view/store/document-reducer';
 	import Node from './components/card/card.svelte';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
-	import { getStore } from 'src/view/components/container/ref';
+	import { getStore } from 'src/view/components/container/get-store';
 
 	const store = getStore();
     export let group: NodeGroup;
@@ -21,7 +21,7 @@
                 : $store.state.activeBranch.siblingNodes.has(node.id)
                 ? ActiveStatus.sibling
                 : null}
-            editing={$store.state.editing.node === node.id}
+            editing={$store.state.editing.activeNodeId === node.id}
         />
     {/each}
 </div>

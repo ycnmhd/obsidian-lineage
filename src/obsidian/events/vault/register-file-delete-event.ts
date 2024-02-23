@@ -1,6 +1,6 @@
-import LabeledAnnotations from '../../main';
+import LabeledAnnotations from '../../../main';
 import { TFile } from 'obsidian';
-import { fileTypeCache } from 'src/patches/set-view-state';
+import { fileTypeCache } from 'src/obsidian/patches/set-view-state';
 
 export const registerFileDeleteEvent = (plugin: LabeledAnnotations) => {
     plugin.registerEvent(

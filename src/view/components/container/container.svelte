@@ -1,15 +1,27 @@
 <script lang="ts">
 	import Column from './column/column.svelte';
-	import { container } from 'src/view/components/container/ref';
 	import { DocumentStore } from 'src/view/view';
-	import { setContext } from 'svelte';
+	import { onDestroy, onMount, setContext } from 'svelte';
+	import { keyboardShortcuts } from 'src/view/actions/keyboard-shortcuts/keyboard-shortcuts';
 
 	export let store: DocumentStore;
 
+    let ref: HTMLElement;
+    onMount(() => {
+        store.dispatch({ type: 'SET_CONTAINER', payload: { ref } });
+    });
+    onDestroy(() => {
+        store.dispatch({ type: 'SET_CONTAINER', payload: { ref: null } });
+    });
     setContext('store', store);
 </script>
 
-<div bind:this={container.current} class="container" id="columns-container">
+<div
+    bind:this={ref}
+    class="container"
+    id="columns-container"
+	use:keyboardShortcuts={store}
+>
     <div class="columns">
         {#each $store.columns as column (column.id)}
             <Column {column} />

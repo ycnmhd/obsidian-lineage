@@ -4,7 +4,7 @@ import {
     __generateColumn__,
     __populateColumn__,
     __treeNode__,
-} from 'src/view/store/helpers/move-node/helpers/test-helpers';
+} from 'src/view/store/reducers/move-node/helpers/test-helpers';
 import { createNode } from 'src/view/store/helpers/create-node';
 import { columnsToJsonTree } from 'src/view/store/helpers/conversion/columns-to-json/columns-to-json-tree';
 

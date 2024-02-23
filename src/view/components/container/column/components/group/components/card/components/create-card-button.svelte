@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { NodePosition } from 'src/view/store/document-reducer';
-	import { getStore } from 'src/view/components/container/ref';
+	import { getStore } from 'src/view/components/container/get-store';
 	import FloatingButton from './floating-button.svelte';
 	import { PlusIcon } from 'lucide-svelte';
 

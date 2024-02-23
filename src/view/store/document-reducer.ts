@@ -1,13 +1,38 @@
-import { createNode } from './helpers/create-node';
-import { id } from 'src/helpers/id';
-import { insertSiblingNode } from 'src/view/store/helpers/insert-sibling-node';
+import {
+    CreateNodeAction,
+    insertNode,
+} from 'src/view/store/reducers/insert-node';
 import { updateActiveNode } from 'src/view/store/helpers/update-active-node';
+import {
+    DropAction,
+    moveNode,
+} from 'src/view/store/reducers/move-node/move-node';
+import { onDragEnd } from 'src/view/store/reducers/on-drag-end';
+import { createFirstNode } from 'src/view/store/reducers/create-first-node';
+import {
+    loadDocument,
+    LoadDocumentAction,
+} from 'src/view/store/reducers/load-document';
+import { resetDocument } from 'src/view/store/reducers/reset-document';
+import {
+    setNodeContent,
+    SetNodeContentAction,
+} from 'src/view/store/reducers/editing/set-node-content';
+import {
+    onDragStart,
+    SetDragStartedAction,
+} from 'src/view/store/reducers/on-drag-start';
+import {
+    enableEditMode,
+    ToggleEditModeAction,
+} from 'src/view/store/reducers/editing/enable-edit-mode';
+import {
+    disableEditMode,
+    DisableEditModeAction,
+} from 'src/view/store/reducers/editing/disable-edit-mode';
 import { findNode } from 'src/view/store/helpers/find-node';
-import { traverseDown } from 'src/view/store/helpers/find-branch';
-import { moveNode } from 'src/view/store/helpers/move-node/move-node';
-import { onDragEnd } from 'src/view/store/helpers/on-drag-end';
-import { jsonTreeToColumns } from 'src/view/store/helpers/conversion/json-to-columns/json-tree-to-columns';
-import { markdownToJson } from 'src/view/store/helpers/conversion/markdown-to-json/markdown-to-json';
+import { findChildGroup } from 'src/view/store/helpers/find-branch';
+import { findNodeColumn } from 'src/view/store/helpers/find-node-column';
 
 export type ColumnNode = {
     id: string;
@@ -39,43 +64,31 @@ export type DocumentState = {
             node: string;
         };
         editing: {
-            node: string;
+            activeNodeId: string;
+            savePreviousNode: boolean;
         };
+    };
+    refs: {
+        container: HTMLElement | null;
     };
 };
 
 export type SiblingPosition = 'top' | 'bottom';
 export type NodePosition = SiblingPosition | 'right';
 
-export type CreateNodeAction = {
-    type: 'CREATE_NODE';
-    payload: {
-        parentId: string;
-        nodeId: string;
-        position: NodePosition;
-        __newNodeID__?: string;
-    };
-};
 export type SavedDocument = string;
 
-export type DropAction = {
-    type: 'DROP_NODE';
-    payload: {
-        droppedNodeId: string;
-        targetNodeId: string;
-        position: NodePosition;
-    };
-};
 export type DocumentAction =
-    | {
-          type: 'LOAD_DATA';
-          payload: {
-              data: SavedDocument;
-          };
-      }
+    | LoadDocumentAction
     | CreateNodeAction
     | {
-          type: 'SET_ACTIVE';
+          type: 'CHANGE_ACTIVE_NODE';
+          payload: {
+              direction: NodePosition | 'left';
+          };
+      }
+    | {
+          type: 'SET_ACTIVE_NODE';
           payload: {
               id: string;
           };
@@ -84,85 +97,88 @@ export type DocumentAction =
           type: 'CREATE_FIRST_NODE';
       }
     | { type: 'RESET_STORE' }
-    | {
-          type: 'TOGGLE_EDIT_NODE';
-          payload: {
-              nodeId: string;
-          };
-      }
-    | {
-          type: 'SET_NODE_CONTENT';
-          payload: {
-              nodeId: string;
-              content: string;
-          };
-      }
-    | {
-          type: 'SET_DRAG_STARTED';
-          payload: {
-              nodeId: string;
-          };
-      }
+    | DisableEditModeAction
+    | ToggleEditModeAction
+    | SetNodeContentAction
+    | SetDragStartedAction
     | {
           type: 'SET_DRAG_CANCELED';
       }
-    | DropAction;
+    | DropAction
+    | {
+          type: 'SET_CONTAINER';
+          payload: { ref: HTMLElement | null };
+      };
+const updateState = (state: DocumentState, action: DocumentAction) => {
+    const columns = state.columns;
+    // navigation
+    if (action.type === 'SET_ACTIVE_NODE') {
+        updateActiveNode(state, action.payload.id);
+    } else if (action.type === 'CHANGE_ACTIVE_NODE') {
+        const node = findNode(state.columns, state.state.activeBranch.node);
+        if (!node) return;
+        const columnIndex = findNodeColumn(state.columns, node.parentId);
+        const column = columns[columnIndex];
+        if (!column) return;
+        let nextNode: ColumnNode | undefined = undefined;
+        if (action.payload.direction === 'left') {
+            nextNode = findNode(columns, node.parentId);
+        } else if (action.payload.direction === 'right') {
+            const group = findChildGroup(columns, node);
+            if (group) {
+                nextNode = group.nodes[0];
+            } else {
+                const nextColumn = columns[columnIndex + 1];
+                if (!nextColumn) return;
+                nextNode = nextColumn.groups[0]?.nodes?.[0];
+            }
+        } else {
+            const allNodes = column.groups.map((g) => g.nodes).flat();
+            const nodeIndex = allNodes.findIndex((n) => n.id === node.id);
 
-const updateState = (store: DocumentState, action: DocumentAction) => {
-    if (action.type === 'LOAD_DATA') {
-        store.columns = jsonTreeToColumns(markdownToJson(action.payload.data));
-        const firstNode = store.columns[0]?.groups?.[0]?.nodes?.[0];
-        if (firstNode) updateActiveNode(store, firstNode.id);
-    } else {
-        const columns = store.columns;
-        if (action.type === 'CREATE_FIRST_NODE') {
-            if (columns.length === 0) {
-                const rootId = id.rootNode();
-                const createdNode = createNode(rootId);
-                columns.push({
-                    id: id.column(),
-                    groups: [
-                        {
-                            parentId: rootId,
-                            nodes: [createdNode],
-                            id: id.group(),
-                        },
-                    ],
-                });
-                updateActiveNode(store, createdNode.id, true);
+            if (action.payload.direction === 'top') {
+                if (nodeIndex > 0) {
+                    nextNode = allNodes[nodeIndex - 1];
+                }
+            } else if (action.payload.direction === 'bottom') {
+                if (nodeIndex < allNodes.length - 1) {
+                    nextNode = allNodes[nodeIndex + 1];
+                }
             }
-        } else if (action.type === 'CREATE_NODE') {
-            insertSiblingNode(store, action);
-        } else if (action.type === 'SET_ACTIVE') {
-            updateActiveNode(store, action.payload.id);
-        } else if (action.type === 'RESET_STORE') {
-            const newState = initialDocumentState();
-            store.state = newState.state;
-            store.columns = newState.columns;
-        } else if (action.type === 'SET_NODE_CONTENT') {
-            const node = findNode(columns, action.payload.nodeId);
-            if (node) {
-                node.content = action.payload.content;
-            }
-        } else if (action.type === 'TOGGLE_EDIT_NODE') {
-            if (store.state.editing.node === action.payload.nodeId)
-                store.state.editing.node = '';
-            else store.state.editing.node = action.payload.nodeId;
-        } else if (action.type === 'SET_DRAG_STARTED') {
-            const node = findNode(columns, action.payload.nodeId);
-            if (node) {
-                const childGroups = new Set<string>();
-                traverseDown(childGroups, new Set<string>(), columns, node);
-                store.state.draggedBranch.node = action.payload.nodeId;
-                store.state.draggedBranch.childGroups = childGroups;
-            }
-        } else if (action.type === 'SET_DRAG_CANCELED') {
-            onDragEnd(store);
-        } else if (action.type === 'DROP_NODE') {
-            moveNode(columns, action);
-            updateActiveNode(store, action.payload.droppedNodeId);
-            onDragEnd(store);
         }
+        if (nextNode) {
+            updateActiveNode(state, nextNode.id);
+        }
+    }
+    // editing actions
+    else if (action.type === 'ENABLE_EDIT_MODE') {
+        enableEditMode(state);
+    } else if (action.type === 'SET_NODE_CONTENT') {
+        setNodeContent(state, action);
+    } else if (action.type === 'CREATE_NODE') {
+        insertNode(state, action);
+    } else if (action.type === 'DISABLE_EDIT_MODE') {
+        disableEditMode(state, action);
+    }
+    // dnd
+    else if (action.type === 'SET_DRAG_STARTED') {
+        onDragStart(state, action);
+    } else if (action.type === 'SET_DRAG_CANCELED') {
+        onDragEnd(state);
+    } else if (action.type === 'DROP_NODE') {
+        moveNode(columns, action);
+        updateActiveNode(state, action.payload.droppedNodeId);
+        onDragEnd(state);
+    }
+    // life cycle
+    else if (action.type === 'LOAD_DATA') {
+        loadDocument(state, action);
+    } else if (action.type === 'CREATE_FIRST_NODE') {
+        createFirstNode(state);
+    } else if (action.type === 'RESET_STORE') {
+        resetDocument(state);
+    } else if (action.type === 'SET_CONTAINER') {
+        state.refs.container = action.payload.ref;
     }
 };
 
@@ -173,23 +189,3 @@ export const documentReducer = (
     updateState(store, action);
     return store;
 };
-
-export const initialDocumentState = (): DocumentState => ({
-    columns: [],
-    state: {
-        activeBranch: {
-            node: '',
-            childNodes: new Set<string>(),
-            childGroups: new Set<string>(),
-            parentNodes: new Set<string>(),
-            siblingNodes: new Set<string>(),
-        },
-        draggedBranch: {
-            node: '',
-            childGroups: new Set<string>(),
-        },
-        editing: {
-            node: '',
-        },
-    },
-});
