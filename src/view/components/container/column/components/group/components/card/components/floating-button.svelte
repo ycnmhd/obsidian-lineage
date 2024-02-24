@@ -7,12 +7,15 @@
         top: 'position-top',
         right: 'position-right',
         bottom: 'position-bottom',
-		'bottom-right': 'position-bottom-right',
+        'bottom-right': 'position-bottom-right',
         'top-right': 'position-top-right',
     };
 </script>
 
-<button class={classNames(classes, positionClasses[position])} on:click>
+<button
+    class={classNames(classes, positionClasses[position])}
+	on:click
+>
     <slot />
 </button>
 
@@ -24,17 +27,20 @@
         --floating-button-bg: #dbdbdb;
     }
     button {
-		color: black;
+        color: black;
         width: var(--floating-button-width);
         height: var(--floating-button-height);
         position: absolute;
         opacity: 0.3;
         background-color: var(--floating-button-bg);
         transition: opacity 200ms;
-		padding: 8px;
-		cursor: pointer;
+        padding: 8px;
+        cursor: pointer;
     }
-    button:hover {
+	.is-disabled{
+		cursor: not-allowed;
+	}
+    button:not(.is-disabled):hover {
         opacity: 8;
     }
 
@@ -58,21 +64,20 @@
         right: 0;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
-
     }
 
     .position-bottom-right {
         bottom: 0;
         right: 0;
-		border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
-		border-bottom-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
     }
     .position-top-right {
         top: 0;
         right: 0;
-		border-bottom-right-radius: 0;
-		border-top-right-radius: 0;
-		border-top-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
     }
 </style>

@@ -41,15 +41,20 @@
     {#if editing}
         <textarea use:saveNodeContent={{ editing, store, node }} />
     {:else}
-        <div class="content" use:draggable={{ id: node.id, store }}>
-            <div class="drag-handle"></div>
+        <div
+            class="content"
+            use:draggable={{ id: node.id, store }}
+        >
+            <div
+                class="drag-handle"
+            ></div>
             <div
                 on:dblclick={() => {
                     store.dispatch({ type: 'ENABLE_EDIT_MODE' });
                 }}
             >
                 {#each node.content.split('\n') as line}
-                    <span>{line}</span><br>
+                    <span>{line}</span><br />
                 {/each}
             </div>
         </div>
@@ -72,7 +77,7 @@
                 position="bottom"
             ></CreateCardButton>
         {/if}
-        <EditNodeButton nodeId={node.id} {editing} />
+        <EditNodeButton {editing} />
     {/if}
 </div>
 
@@ -148,6 +153,9 @@
             hsla(0, 0%, 44.7%, 0.25) 20%,
             transparent 50%
         );
+    }
+    .dnd-disabled {
+        cursor: not-allowed;
     }
     :root {
         --border: 10px #5acf5a solid;

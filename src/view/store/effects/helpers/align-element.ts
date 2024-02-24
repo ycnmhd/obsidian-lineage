@@ -1,6 +1,10 @@
 import { logger } from 'src/helpers/logger';
 
-export const alignElement = (container: HTMLElement, id: string) => {
+export const alignElement = (
+    container: HTMLElement,
+    id: string,
+    behavior: ScrollBehavior = 'smooth',
+) => {
     if (!container) return;
     const element = container.querySelector('#' + id);
     if (!element) {
@@ -15,7 +19,7 @@ export const alignElement = (container: HTMLElement, id: string) => {
             const scrollTop = middle - cardRect.top;
             column.scrollBy({
                 top: scrollTop * -1,
-                behavior: 'smooth',
+                behavior,
             });
         }
     }

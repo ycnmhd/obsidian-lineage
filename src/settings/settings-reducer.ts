@@ -14,7 +14,7 @@ export type SettingsActions =
           };
       }
     | {
-          type: 'SET_DOCUMENT_PATH';
+          type: 'UPDATE_DOCUMENT_PATH';
           payload: {
               oldPath: string;
               newPath: string;
@@ -26,7 +26,7 @@ const updateState = (store: Settings, action: SettingsActions) => {
         delete store.documents[action.payload.path];
     } else if (action.type === 'SET_DOCUMENT_TYPE_TO_TREE') {
         store.documents[action.payload.path] = true;
-    } else if (action.type === 'SET_DOCUMENT_PATH') {
+    } else if (action.type === 'UPDATE_DOCUMENT_PATH') {
         delete store.documents[action.payload.oldPath];
         store.documents[action.payload.newPath] = true;
     }

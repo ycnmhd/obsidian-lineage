@@ -6,7 +6,6 @@ import {
     DocumentAction,
     documentReducer,
     DocumentState,
-    SavedDocument,
 } from 'src/view/store/document-reducer';
 import { alignBranchEffect } from 'src/view/store/effects/align-branch-effect';
 import { Unsubscriber } from 'svelte/store';
@@ -16,6 +15,10 @@ import { jsonToMarkdown } from 'src/view/store/helpers/conversion/json-to-makdow
 import { Store } from 'src/helpers/store';
 import { initialDocumentState } from 'src/view/store/helpers/initial-document-state';
 import { bringFocusToContainer } from 'src/view/store/effects/bring-focus-to-container';
+import { fileHistoryStore } from 'src/features/file-histoy/file-history-store';
+import { findNode } from 'src/view/store/helpers/find-node';
+import { findNodePosition } from 'src/view/store/helpers/find-branch';
+import { stores } from 'src/view/helpers/stores-cache';
 
 export const TREE_VIEW_TYPE = 'tree';
 
@@ -56,7 +59,7 @@ export class TreeView extends TextFileView {
     }
 
     getDisplayText() {
-        return 'Example view';
+        return 'Ash' + (this.file ? ' - ' + this.file.basename : '');
     }
 
     async onOpen() {
@@ -78,25 +81,58 @@ export class TreeView extends TextFileView {
         }
     }
 
-    private saveState = async () => {
+    private requestSaveWrapper = async (actionType?: string) => {
         const store = this.store.getValue();
-        const data: SavedDocument = jsonToMarkdown(
-            columnsToJsonTree(store.columns),
-        );
-        this.setViewData(data, false);
-        this.requestSave();
+        const data: string = jsonToMarkdown(columnsToJsonTree(store.columns));
+        if (data !== this.data) {
+            const path = this.file?.path;
+            if (!path) throw new Error('view does not have a file');
+            const node = findNode(store.columns, store.state.activeBranch.node);
+
+            fileHistoryStore.dispatch({
+                type: 'ADD_SNAPSHOT',
+                payload: {
+                    data: data,
+                    path,
+                    position: node
+                        ? findNodePosition(store.columns, node)
+                        : null,
+                    actionType: actionType ? actionType : null,
+                },
+            });
+            this.setViewData(data, false);
+            this.requestSave();
+        }
     };
     private loadInitialData = () => {
+        if (!this.file) {
+            throw new Error('view does not have a file');
+        }
+        stores[this.file.path] = this.store;
+        this.store.dispatch({
+            type: 'FS/SET_FILE_PATH',
+            payload: {
+                path: this.file.path,
+            },
+        });
+        fileHistoryStore.dispatch({
+            type: 'ADD_SNAPSHOT',
+            payload: {
+                data: this.data,
+                path: this.file.path,
+                position: null,
+                actionType: 'INITIAL_DOCUMENT',
+            },
+        });
         this.onDestroyCallbacks.add(alignBranchEffect(this.store));
         this.onDestroyCallbacks.add(
-            saveDocumentEffect(this.store, this.saveState),
+            saveDocumentEffect(this.store, this.requestSaveWrapper),
         );
         this.onDestroyCallbacks.add(bringFocusToContainer(this.store));
         if (!this.data) this.store.dispatch({ type: 'CREATE_FIRST_NODE' });
         else {
-            const state = this.data as SavedDocument;
             this.store.dispatch({
-                payload: { data: state },
+                payload: { document: { data: this.data, position: null } },
                 type: 'LOAD_DATA',
             });
         }

@@ -1,5 +1,6 @@
 import { Hotkey, Notice } from 'obsidian';
 import { DocumentStore } from 'src/view/view';
+import { fileHistoryStore } from 'src/features/file-histoy/file-history-store';
 
 const lang = {
     save_changes_and_exit_card: 'Save changes and exit card',
@@ -14,6 +15,8 @@ const lang = {
     go_down: 'Go down',
     go_right: 'Go right',
     go_left: 'Go left',
+    undo_change: 'Undo change',
+    redo_change: 'Redo change',
 };
 
 export type PluginCommand = {
@@ -32,6 +35,9 @@ export const createCommands = () => {
 
     const isActiveAndNotEditing = (store: DocumentStore) => {
         return isActive(store) && !isEditing(store);
+    };
+    const isActiveAndHasFile = (store: DocumentStore) => {
+        return isActive(store) && !!store.getValue().file.path;
     };
     return {
         enable_edit_mode: {
@@ -190,6 +196,36 @@ export const createCommands = () => {
                 { key: 'j', modifiers: [] },
                 { key: 'ArrowUp', modifiers: [] },
             ],
+        },
+        undo_change: {
+            check: isActiveAndHasFile,
+            callback: (store) => {
+                const path = store.getValue().file.path;
+                if (path)
+                    fileHistoryStore.dispatch({
+                        type: 'UNDO_REDO_SNAPSHOT',
+                        payload: {
+                            direction: 'back',
+                            path,
+                        },
+                    });
+            },
+            hotkeys: [{ key: 'Z', modifiers: ['Ctrl', 'Shift'] }],
+        },
+        redo_change: {
+            check: isActiveAndHasFile,
+            callback: (store) => {
+                const path = store.getValue().file.path;
+                if (path)
+                    fileHistoryStore.dispatch({
+                        type: 'UNDO_REDO_SNAPSHOT',
+                        payload: {
+                            direction: 'forward',
+                            path,
+                        },
+                    });
+            },
+            hotkeys: [{ key: 'Y', modifiers: ['Ctrl', 'Shift'] }],
         },
     } satisfies Record<keyof typeof lang, PluginCommand>;
 };

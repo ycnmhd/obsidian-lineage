@@ -5,4 +5,5 @@ export const id = {
     node: () => uniqid.time('n-'),
     column: () => uniqid.time('c-'),
     group: () => uniqid.time('g-'),
+    snapshot: () => uniqid.time('s-'),
 };

@@ -1,5 +1,5 @@
 import { DocumentStore } from 'src/view/view';
-import { NodePosition } from 'src/view/store/document-reducer';
+import { NodeDirection } from 'src/view/store/document-reducer';
 
 const getDropPosition = (event: DragEvent, targetElement: HTMLElement) => {
     const boundingBox = targetElement.getBoundingClientRect();
@@ -51,7 +51,7 @@ export const droppable = (node: HTMLElement, store: DocumentStore) => {
             payload: {
                 droppedNodeId: data,
                 targetNodeId: event.target.id,
-                position: getDropPosition(event, event.target) as NodePosition,
+                position: getDropPosition(event, event.target) as NodeDirection,
             },
         });
     }

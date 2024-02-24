@@ -1,6 +1,6 @@
 import { findNode } from 'src/view/store/helpers/find-node';
 import { findGroup } from 'src/view/store/helpers/find-branch';
-import { Columns, NodePosition } from 'src/view/store/document-reducer';
+import { Columns, NodeDirection } from 'src/view/store/document-reducer';
 import { moveNodeAsSibling } from 'src/view/store/reducers/move-node/helpers/move-node-as-sibling';
 
 import { moveNodeAsChild } from 'src/view/store/reducers/move-node/helpers/move-node-as-child';
@@ -11,7 +11,7 @@ export type DropAction = {
     payload: {
         droppedNodeId: string;
         targetNodeId: string;
-        position: NodePosition;
+        position: NodeDirection;
     };
 };
 export const moveNode = (columns: Columns, action: DropAction) => {

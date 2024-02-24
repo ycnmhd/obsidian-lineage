@@ -18,8 +18,14 @@ export const initialDocumentState = (): DocumentState => ({
             activeNodeId: '',
             savePreviousNode: false,
         },
+        ui: {
+            showHistorySidebar: false,
+        },
     },
     refs: {
         container: null,
+    },
+    file: {
+        path: null,
     },
 });

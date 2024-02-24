@@ -2,7 +2,7 @@ import { DocumentStore } from 'src/view/view';
 import {
     createCommands,
     PluginCommand,
-} from 'src/view/actions/keyboard-shortcuts/helpers/create-commands';
+} from 'src/features/keyboard-shortcuts/helpers/create-commands';
 import { Hotkey } from 'obsidian';
 
 enum Modifiers {

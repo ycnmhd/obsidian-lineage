@@ -30,9 +30,11 @@ import {
     disableEditMode,
     DisableEditModeAction,
 } from 'src/view/store/reducers/editing/disable-edit-mode';
-import { findNode } from 'src/view/store/helpers/find-node';
-import { findChildGroup } from 'src/view/store/helpers/find-branch';
-import { findNodeColumn } from 'src/view/store/helpers/find-node-column';
+import { NodePosition } from 'src/view/store/helpers/find-branch';
+import {
+    changeActiveNode,
+    ChangeActiveNodeAction,
+} from 'src/view/store/reducers/change-active-node';
 
 export type ColumnNode = {
     id: string;
@@ -67,26 +69,30 @@ export type DocumentState = {
             activeNodeId: string;
             savePreviousNode: boolean;
         };
+        ui: {
+            showHistorySidebar: boolean;
+        };
     };
     refs: {
         container: HTMLElement | null;
     };
+    file: {
+        path: string | null;
+    };
 };
 
 export type SiblingPosition = 'top' | 'bottom';
-export type NodePosition = SiblingPosition | 'right';
+export type NodeDirection = SiblingPosition | 'right';
 
-export type SavedDocument = string;
+export type SavedDocument = {
+    data: string;
+    position: NodePosition | null;
+};
 
 export type DocumentAction =
     | LoadDocumentAction
     | CreateNodeAction
-    | {
-          type: 'CHANGE_ACTIVE_NODE';
-          payload: {
-              direction: NodePosition | 'left';
-          };
-      }
+    | ChangeActiveNodeAction
     | {
           type: 'SET_ACTIVE_NODE';
           payload: {
@@ -108,6 +114,15 @@ export type DocumentAction =
     | {
           type: 'SET_CONTAINER';
           payload: { ref: HTMLElement | null };
+      }
+    | {
+          type: 'FS/SET_FILE_PATH';
+          payload: {
+              path: string | null;
+          };
+      }
+    | {
+          type: 'UI/TOGGLE_HISTORY_SIDEBAR';
       };
 const updateState = (state: DocumentState, action: DocumentAction) => {
     const columns = state.columns;
@@ -115,40 +130,7 @@ const updateState = (state: DocumentState, action: DocumentAction) => {
     if (action.type === 'SET_ACTIVE_NODE') {
         updateActiveNode(state, action.payload.id);
     } else if (action.type === 'CHANGE_ACTIVE_NODE') {
-        const node = findNode(state.columns, state.state.activeBranch.node);
-        if (!node) return;
-        const columnIndex = findNodeColumn(state.columns, node.parentId);
-        const column = columns[columnIndex];
-        if (!column) return;
-        let nextNode: ColumnNode | undefined = undefined;
-        if (action.payload.direction === 'left') {
-            nextNode = findNode(columns, node.parentId);
-        } else if (action.payload.direction === 'right') {
-            const group = findChildGroup(columns, node);
-            if (group) {
-                nextNode = group.nodes[0];
-            } else {
-                const nextColumn = columns[columnIndex + 1];
-                if (!nextColumn) return;
-                nextNode = nextColumn.groups[0]?.nodes?.[0];
-            }
-        } else {
-            const allNodes = column.groups.map((g) => g.nodes).flat();
-            const nodeIndex = allNodes.findIndex((n) => n.id === node.id);
-
-            if (action.payload.direction === 'top') {
-                if (nodeIndex > 0) {
-                    nextNode = allNodes[nodeIndex - 1];
-                }
-            } else if (action.payload.direction === 'bottom') {
-                if (nodeIndex < allNodes.length - 1) {
-                    nextNode = allNodes[nodeIndex + 1];
-                }
-            }
-        }
-        if (nextNode) {
-            updateActiveNode(state, nextNode.id);
-        }
+        changeActiveNode(state, action);
     }
     // editing actions
     else if (action.type === 'ENABLE_EDIT_MODE') {
@@ -170,8 +152,8 @@ const updateState = (state: DocumentState, action: DocumentAction) => {
         updateActiveNode(state, action.payload.droppedNodeId);
         onDragEnd(state);
     }
-    // life cycle
-    else if (action.type === 'LOAD_DATA') {
+    // life cycle and other
+    else if (action.type === 'LOAD_DATA' || action.type === 'APPLY_SNAPSHOT') {
         loadDocument(state, action);
     } else if (action.type === 'CREATE_FIRST_NODE') {
         createFirstNode(state);
@@ -179,6 +161,10 @@ const updateState = (state: DocumentState, action: DocumentAction) => {
         resetDocument(state);
     } else if (action.type === 'SET_CONTAINER') {
         state.refs.container = action.payload.ref;
+    } else if (action.type === 'FS/SET_FILE_PATH') {
+        state.file.path = action.payload.path;
+    } else if (action.type === 'UI/TOGGLE_HISTORY_SIDEBAR') {
+        state.state.ui.showHistorySidebar = !state.state.ui.showHistorySidebar;
     }
 };
 

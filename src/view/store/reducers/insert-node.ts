@@ -1,14 +1,14 @@
 import { insertChild } from 'src/view/store/helpers/insert-child';
 import { findNodeColumn } from 'src/view/store/helpers/find-node-column';
 import { createNode } from 'src/view/store/helpers/create-node';
-import { DocumentState, NodePosition } from 'src/view/store/document-reducer';
+import { DocumentState, NodeDirection } from 'src/view/store/document-reducer';
 import { updateActiveNode } from 'src/view/store/helpers/update-active-node';
 import { findNode } from 'src/view/store/helpers/find-node';
 
 export type CreateNodeAction = {
     type: 'CREATE_NODE';
     payload: {
-        position: NodePosition;
+        position: NodeDirection;
         __newNodeID__?: string;
     };
 };

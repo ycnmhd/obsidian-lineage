@@ -1,4 +1,8 @@
-import { ColumnNode, Columns } from 'src/view/store/document-reducer';
+import {
+    ColumnNode,
+    Columns,
+    NodeGroup,
+} from 'src/view/store/document-reducer';
 import { findNode } from 'src/view/store/helpers/find-node';
 
 export type StringSet = Set<string>;
@@ -72,4 +76,58 @@ export const findChildGroup = (
             }
         }
     }
+};
+
+export type NodePosition = {
+    columnIndex: number;
+    groupIndex: number;
+    nodeIndex: number;
+};
+
+export const findNodePosition = (
+    columns: Columns,
+    node: ColumnNode,
+): NodePosition | null => {
+    for (let columnIndex = 0; columnIndex < columns.length; columnIndex++) {
+        const column = columns[columnIndex];
+        for (
+            let groupIndex = 0;
+            groupIndex < column.groups.length;
+            groupIndex++
+        ) {
+            const group = column.groups[groupIndex] as NodeGroup;
+            const nodeIndex = group.nodes.findIndex((n) => n.id === node.id);
+            if (nodeIndex !== -1) {
+                return {
+                    columnIndex,
+                    groupIndex,
+                    nodeIndex,
+                };
+            }
+        }
+    }
+    return null;
+};
+
+export const findNodeAtPosition = (
+    columns: Columns,
+    position: NodePosition,
+): ColumnNode | null => {
+    const { columnIndex, groupIndex, nodeIndex } = position;
+
+    if (columnIndex < 0 || columnIndex >= columns.length) {
+        return null;
+    }
+
+    const column = columns[columnIndex];
+    if (groupIndex < 0 || groupIndex >= column.groups.length) {
+        return null;
+    }
+
+    const group = column.groups[groupIndex] as NodeGroup;
+    if (nodeIndex < 0 || nodeIndex >= group.nodes.length) {
+        return null;
+    }
+
+    return group.nodes[nodeIndex];
 };
