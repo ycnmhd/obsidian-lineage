@@ -24,7 +24,7 @@ export const changeActiveNode = (
     const columnIndex = findNodeColumn(columns, node.parentId);
     const column = columns[columnIndex];
     if (!column) return;
-    let nextNode: ColumnNode | undefined = undefined;
+    let nextNode: ColumnNode | null = null;
     if (action.payload.direction === 'left') {
         nextNode = findNode(columns, node.parentId);
     } else if (action.payload.direction === 'right') {

@@ -1,7 +1,7 @@
 import { fileHistoryStore } from 'src/features/file-histoy/file-history-store';
 import { stores } from 'src/view/helpers/stores-cache';
 
-export const applyFileHistoryEffect = () => {
+export const applySnapshotEffect = () => {
     return fileHistoryStore.subscribe((state, action) => {
         if (!action) return;
         if (

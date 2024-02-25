@@ -6,11 +6,11 @@ const cache: { [key: string]: ColumnNode } = {};
 export const findNode = (
     columns: Columns,
     nodeId: string,
-): ColumnNode | undefined => {
+): ColumnNode | null => {
     if (cache[nodeId]) {
         return cache[nodeId];
     }
-    if (nodeId.startsWith('r-')) return;
+    if (nodeId.startsWith('r-')) return null;
     for (const column of columns) {
         for (const group of column.groups) {
             for (const node of group.nodes) {
@@ -22,5 +22,5 @@ export const findNode = (
         }
     }
     logger.error('could not find node', nodeId);
-    return undefined;
+    return null;
 };

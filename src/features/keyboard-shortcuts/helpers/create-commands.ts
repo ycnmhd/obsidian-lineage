@@ -1,4 +1,4 @@
-import { Hotkey, Notice } from 'obsidian';
+import { Hotkey } from 'obsidian';
 import { DocumentStore } from 'src/view/view';
 import { fileHistoryStore } from 'src/features/file-histoy/file-history-store';
 
@@ -132,8 +132,8 @@ export const createCommands = () => {
 
         delete_card: {
             check: isActive,
-            callback: () => {
-                new Notice('not implemented');
+            callback: (store) => {
+                store.dispatch({ type: 'TREE/DELETE_NODE' });
             },
             hotkeys: [{ key: 'Backspace', modifiers: ['Ctrl'] }],
         },

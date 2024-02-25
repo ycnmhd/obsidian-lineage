@@ -9,11 +9,12 @@ import { updateEditingNodeOnActiveNodeChange } from 'src/view/store/reducers/edi
 
 export const updateActiveNode = (
     state: DocumentState,
-    nodeId: string,
+    nodeId: string | undefined,
     newNode = false,
 ) => {
-    updateEditingNodeOnActiveNodeChange(state, nodeId, newNode);
-    const node = findNode(state.columns, nodeId);
+    if (nodeId) updateEditingNodeOnActiveNodeChange(state, nodeId, newNode);
+
+    const node = nodeId ? findNode(state.columns, nodeId) : null;
     if (node) {
         const parentIDs = new Set<string>();
         traverseUp(parentIDs, state.columns, node);
@@ -26,5 +27,13 @@ export const updateActiveNode = (
         state.state.activeBranch.childGroups = childGroups;
         state.state.activeBranch.childNodes = childNodes;
         state.state.activeBranch.siblingNodes = siblingNodes;
+    } else {
+        state.state.activeBranch = {
+            node: '',
+            childNodes: new Set<string>(),
+            parentNodes: new Set<string>(),
+            siblingNodes: new Set<string>(),
+            childGroups: new Set<string>(),
+        };
     }
 };

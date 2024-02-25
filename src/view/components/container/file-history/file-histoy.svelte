@@ -26,8 +26,8 @@
 
 <style>
     .sidebar {
-        width: 250px;
-        height: fit-content;
+        min-width: 165px;
+		width: fit-content;
         background-color: var(--background-secondary);
         position: absolute;
         right: var(--sidebar-right);

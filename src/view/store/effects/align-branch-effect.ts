@@ -18,6 +18,7 @@ const alignBranch = (store: DocumentState, behavior?: ScrollBehavior) => {
 };
 
 export const alignBranchEffect = (store: DocumentStore) => {
+    let activeNode: string | null = null;
     return store.subscribe((store, action) => {
         const timeoutRef: {
             align: ReturnType<typeof setTimeout> | null;
@@ -25,22 +26,15 @@ export const alignBranchEffect = (store: DocumentStore) => {
             align: null,
         };
         if (!action) return;
-        if (
-            action.type === 'SET_ACTIVE_NODE' ||
-            action.type === 'CREATE_NODE' ||
-            action.type === 'CREATE_FIRST_NODE' ||
-            action.type === 'LOAD_DATA' ||
-            action.type === 'DROP_NODE' ||
-            action.type === 'CHANGE_ACTIVE_NODE' ||
-            action.type === 'APPLY_SNAPSHOT'
-        ) {
-            if (timeoutRef.align) clearTimeout(timeoutRef.align);
-            timeoutRef.align = setTimeout(() => {
-                alignBranch(
-                    store,
-                    action.type === 'APPLY_SNAPSHOT' ? 'instant' : undefined,
-                );
-            }, 32);
-        }
+        if (store.state.activeBranch.node === activeNode) return;
+        activeNode = store.state.activeBranch.node;
+
+        if (timeoutRef.align) clearTimeout(timeoutRef.align);
+        timeoutRef.align = setTimeout(() => {
+            alignBranch(
+                store,
+                action.type === 'APPLY_SNAPSHOT' ? 'instant' : undefined,
+            );
+        }, 32);
     });
 };

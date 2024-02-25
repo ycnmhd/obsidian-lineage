@@ -35,6 +35,10 @@ import {
     changeActiveNode,
     ChangeActiveNodeAction,
 } from 'src/view/store/reducers/change-active-node';
+import {
+    deleteNode,
+    DeleteNodeAction,
+} from 'src/view/store/reducers/creation/delete-node';
 
 export type ColumnNode = {
     id: string;
@@ -123,7 +127,8 @@ export type DocumentAction =
       }
     | {
           type: 'UI/TOGGLE_HISTORY_SIDEBAR';
-      };
+      }
+    | DeleteNodeAction;
 const updateState = (state: DocumentState, action: DocumentAction) => {
     const columns = state.columns;
     // navigation
@@ -141,6 +146,8 @@ const updateState = (state: DocumentState, action: DocumentAction) => {
         insertNode(state, action);
     } else if (action.type === 'DISABLE_EDIT_MODE') {
         disableEditMode(state, action);
+    } else if (action.type === 'TREE/DELETE_NODE') {
+        deleteNode(state);
     }
     // dnd
     else if (action.type === 'SET_DRAG_STARTED') {

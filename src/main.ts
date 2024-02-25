@@ -16,7 +16,7 @@ import { Settings } from 'src/settings/settings-type';
 import { registerFileMenuEvent } from 'src/obsidian/events/workspace/register-file-menu-event';
 import { registerFileRenameEvent } from 'src/obsidian/events/vault/register-file-move-event';
 import { registerFileDeleteEvent } from 'src/obsidian/events/vault/register-file-delete-event';
-import { applyFileHistoryEffect } from 'src/features/file-histoy/effects/apply-file-history-effect';
+import { applySnapshotEffect } from 'src/features/file-histoy/effects/apply-snapshot-effect';
 
 export default class TreeEdit extends Plugin {
     settings: Store<Settings, SettingsActions>;
@@ -57,6 +57,6 @@ export default class TreeEdit extends Plugin {
     }
 
     private registerEffects() {
-        this.onDestroyCallbacks.add(applyFileHistoryEffect());
+        this.onDestroyCallbacks.add(applySnapshotEffect());
     }
 }

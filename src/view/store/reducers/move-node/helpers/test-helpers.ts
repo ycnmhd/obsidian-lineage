@@ -88,3 +88,7 @@ export const __generateColumn__ = (
 
 export const __clone__ = <T>(object: T): T =>
     JSON.parse(JSON.stringify(object));
+
+export const __log__ = <T>(object: T, name: string) => {
+    console.log(`const ${name} = ${JSON.stringify(object)}`);
+};

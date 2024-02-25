@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CreateCardButton from './components/create-card-button.svelte';
 	import EditNodeButton from './components/edit-node-button.svelte';
+	import DeleteNodeButton from './components/delete-node-button.svelte';
 	import { ColumnNode } from 'src/view/store/document-reducer';
 	import clx from 'classnames';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
@@ -41,13 +42,8 @@
     {#if editing}
         <textarea use:saveNodeContent={{ editing, store, node }} />
     {:else}
-        <div
-            class="content"
-            use:draggable={{ id: node.id, store }}
-        >
-            <div
-                class="drag-handle"
-            ></div>
+        <div class="content" use:draggable={{ id: node.id, store }}>
+            <div class="drag-handle"></div>
             <div
                 on:dblclick={() => {
                     store.dispatch({ type: 'ENABLE_EDIT_MODE' });
@@ -61,21 +57,10 @@
     {/if}
     {#if active === ActiveStatus.node}
         {#if !editing}
-            <CreateCardButton
-                nodeId={node.id}
-                parentId={node.parentId}
-                position="top"
-            ></CreateCardButton>
-            <CreateCardButton
-                nodeId={node.id}
-                parentId={node.parentId}
-                position="right"
-            ></CreateCardButton>
-            <CreateCardButton
-                nodeId={node.id}
-                parentId={node.parentId}
-                position="bottom"
-            ></CreateCardButton>
+            <CreateCardButton position="top" />
+            <CreateCardButton position="right" />
+            <CreateCardButton position="bottom" />
+            <DeleteNodeButton />
         {/if}
         <EditNodeButton {editing} />
     {/if}
