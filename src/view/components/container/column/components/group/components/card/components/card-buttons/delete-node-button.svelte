@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { TrashIcon } from 'lucide-svelte';
-	import { getStore } from 'src/view/components/container/get-store';
+	import { getStore } from '../../../../../../../get-store';
 	import FloatingButton from './floating-button.svelte';
 
 	const store = getStore();

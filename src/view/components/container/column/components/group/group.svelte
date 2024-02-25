@@ -32,5 +32,6 @@
         flex-direction: column;
         width: var(--node-width);
         background-color: transparent;
+		gap: var(--node-gap);
     }
 </style>

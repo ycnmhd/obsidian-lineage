@@ -53,9 +53,10 @@
         --parent-bg: #68a6ca;
         --container-bg: #1d7db4;
         --sidebar-right: 50px;
+		--node-gap: 4px;
     }
     .main {
-        background-color: var(--container-bg);
+		background-color: #161616;
         display: flex;
         height: 100%;
         width: 100%;
@@ -65,6 +66,7 @@
     .container {
         flex: 1;
         height: 100%;
+		width: 100%;
         display: flex;
         align-items: center;
         justify-content: start;
@@ -74,5 +76,6 @@
     .columns {
         display: flex;
         align-items: center;
+		gap: var(--node-gap)
     }
 </style>

@@ -29,7 +29,7 @@ export const droppable = (node: HTMLElement, store: DocumentStore) => {
     const handleDragOver = (event: DragEvent) => {
         event.preventDefault();
         if (!event.dataTransfer) return;
-        const targetCard = event.target as HTMLElement;
+        const targetCard = event.currentTarget as HTMLElement;
         if (!targetCard.id.startsWith('n-')) return;
         event.dataTransfer.dropEffect = 'move';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PencilIcon, SaveIcon } from 'lucide-svelte';
-	import { getStore } from 'src/view/components/container/get-store';
+	import { getStore } from '../../../../../../../get-store';
 	import FloatingButton from './floating-button.svelte';
 
 	export let editing: boolean;
