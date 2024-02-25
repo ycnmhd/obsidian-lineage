@@ -12,14 +12,11 @@ export const applyFileHistoryEffect = () => {
             const store = stores[path];
             if (!store) throw new Error(`store is undefined: ${path}`);
             const document = state.documents[path];
-            if (!document.activeSnapshotId)
-                throw new Error(`no active snapshot: ${path}`);
-            const snapshot = document.snapshots.find(
-                (s) => s.id === document.activeSnapshotId,
-            );
+
+            const snapshot = document.snapshots[document.state.activeIndex];
             if (!snapshot)
                 throw new Error(
-                    `snapshot not found: ${document.activeSnapshotId}`,
+                    `snapshot not found: ${JSON.stringify(document)}`,
                 );
 
             store.dispatch({

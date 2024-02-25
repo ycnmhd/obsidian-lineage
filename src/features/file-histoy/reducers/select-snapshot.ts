@@ -1,5 +1,6 @@
 import { FileHistoryState } from 'src/features/file-histoy/file-history-reducer';
 import { updateNavigationState } from 'src/features/file-histoy/helpers/update-navigation-state';
+import { findSnapshotIndex } from 'src/features/file-histoy/helpers/find-snapshot-index';
 
 export type SelectSnapshotAction = {
     type: 'SELECT_SNAPSHOT';
@@ -16,10 +17,13 @@ export const selectSnapshot = (
     const document = state.documents[action.payload.path];
 
     if (document) {
-        const snapshot = document.snapshots.find(
-            (s) => s.id === action.payload.snapshotId,
+        const index = findSnapshotIndex(
+            document.snapshots,
+            action.payload.snapshotId,
         );
-        if (snapshot) document.activeSnapshotId = snapshot.id;
-        updateNavigationState(document);
+        if (index !== -1) {
+            document.state.activeIndex = index;
+            updateNavigationState(document);
+        }
     }
 };

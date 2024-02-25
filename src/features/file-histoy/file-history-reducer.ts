@@ -29,8 +29,8 @@ export type Snapshot = {
 };
 export type FileHistory = {
     snapshots: Snapshot[];
-    activeSnapshotId: string | null;
     state: {
+        activeIndex: number;
         canGoBack: boolean;
         canGoForward: boolean;
     };

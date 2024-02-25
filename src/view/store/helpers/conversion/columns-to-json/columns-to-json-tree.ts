@@ -2,14 +2,12 @@ import { ColumnNode, Columns } from 'src/view/store/document-reducer';
 
 const createTreeNode = (node: ColumnNode): TreeNode => {
     return {
-        // id: node.id,
         content: node.content,
         children: [],
     };
 };
 
 export type TreeNode = {
-    // id: string;
     content: string;
     children: TreeNode[];
 };
@@ -36,16 +34,17 @@ export const columnsToJsonTree = (columns: Columns) => {
     }
 
     const roots: TreeNode[] = [];
-    for (const group of columns[0].groups) {
-        for (const node of group.nodes) {
-            const treeNode = nodeMap[node.id];
-            if (treeNode) {
-                roots.push(treeNode);
-            } else {
-                throw new Error(`could not find node ${node.id}`);
+    if (columns[0])
+        for (const group of columns[0].groups) {
+            for (const node of group.nodes) {
+                const treeNode = nodeMap[node.id];
+                if (treeNode) {
+                    roots.push(treeNode);
+                } else {
+                    throw new Error(`could not find node ${node.id}`);
+                }
             }
         }
-    }
 
     return roots;
 };

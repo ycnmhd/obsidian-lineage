@@ -29,4 +29,35 @@ describe('markdown to json', () => {
         const actual = markdownToJson(input.join('\n'));
         expect(actual).toEqual(output);
     });
+
+    it('case 2', () => {
+        const input = `<!--section: 1-->
+
+
+<!--section: 2-->
+
+
+<!--section: 2.1-->
+
+
+<!--section: 2.2-->
+
+
+<!--section: 2.3-->`;
+
+        const output = [
+            { content: '', children: [] },
+            {
+                content: '',
+                children: [
+                    { content: '', children: [] },
+
+                    { content: '', children: [] },
+                    { content: '', children: [] },
+                ],
+            },
+        ];
+        const actual = markdownToJson(input);
+        expect(actual).toEqual(output);
+    });
 });

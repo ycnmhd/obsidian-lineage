@@ -5,6 +5,7 @@
 
 	export let snapshot: Snapshot;
     export let active: boolean;
+    export let reverseIndex: number;
     export let filePath: string;
     const actionTypeStrings: Record<string, string> = {
         SET_NODE_CONTENT: 'Updated a node',
@@ -17,6 +18,7 @@
     const label = snapshot.actionType
         ? actionTypeStrings[snapshot.actionType] || snapshot.actionType
         : 'snapshot';
+
 </script>
 
 <div
@@ -28,12 +30,15 @@
             payload: { snapshotId: snapshot.id, path: filePath },
         })}
 >
-    <div>
-        {label}
+    <div class="index-and-label">
+        <span class="index">{reverseIndex}</span>
+        <span class="label">
+            {label}
+        </span>
     </div>
-    <div class="time" data-created={snapshot.created}>
+    <span class="time" data-created={snapshot.created}>
         {relativeTime(snapshot.created)}
-    </div>
+    </span>
 </div>
 
 <style>
@@ -46,8 +51,19 @@
         border-radius: 4px;
     }
     .label {
-        font-size: 16px;
-        color: var(--color-base-60);
+        font-size: 14px;
+        color: var(--color-base-70);
+        display: block;
+    }
+    .index {
+        font-size: 14px;
+        color: var(--color-base-40);
+        min-width: 16px;
+        text-align: center;
+    }
+    .index-and-label {
+        display: flex;
+        gap: 4px;
     }
     .selected {
         background-color: var(--nav-item-background-selected);

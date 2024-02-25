@@ -18,7 +18,7 @@ export const markdownToJson = (text: string) => {
 
     const map: Record<string, TreeNode> = {};
     const tree: TreeNode[] = [];
-    let currentNode: TreeNode | undefined;
+    let currentNode: TreeNode | null = null;
 
     let currentParentNumber = '';
     for (const line of lines) {
@@ -33,8 +33,13 @@ export const markdownToJson = (text: string) => {
             };
             map[full] = newNode;
             if (isASibling) {
-                trimCurrentNode(currentNode);
-                tree.push(newNode);
+                if (currentNode) trimCurrentNode(currentNode);
+                const parentNode = map[parent];
+                if (parentNode) {
+                    parentNode.children.push(newNode);
+                } else {
+                    tree.push(newNode);
+                }
                 currentNode = newNode;
             } else {
                 const isChild =
@@ -48,7 +53,7 @@ export const markdownToJson = (text: string) => {
                     currentNode = newNode;
                 } else {
                     if (parent.split('.').length === 1) {
-                        trimCurrentNode(currentNode);
+                        if (currentNode) trimCurrentNode(currentNode);
                         tree.push(newNode);
                         currentNode = newNode;
                     } else {
@@ -56,7 +61,7 @@ export const markdownToJson = (text: string) => {
                         if (!parentNode) {
                             throw new Error(`could not find parent of ${full}`);
                         }
-                        trimCurrentNode(currentNode);
+                        if (currentNode) trimCurrentNode(currentNode);
                         parentNode.children.push(newNode);
                         currentNode = newNode;
                     }

@@ -7,7 +7,7 @@ import { findSnapshotIndex } from 'src/features/file-histoy/helpers/find-snapsho
 import { updateNavigationState } from 'src/features/file-histoy/helpers/update-navigation-state';
 import { NodePosition } from 'src/view/store/helpers/find-branch';
 
-const MAX_SNAPSHOTS = 100;
+const MAX_SNAPSHOTS = 50;
 
 export type AddSnapshotAction = {
     type: 'ADD_SNAPSHOT';
@@ -27,11 +27,11 @@ export const addSnapshot = (
     let document = state.documents[action.payload.path];
     if (!document) {
         state.documents[action.payload.path] = {
-            activeSnapshotId: null,
             snapshots: [],
             state: {
                 canGoBack: false,
                 canGoForward: false,
+                activeIndex: 0,
             },
         };
         document = state.documents[action.payload.path];
@@ -39,35 +39,29 @@ export const addSnapshot = (
 
     const snapshots = document.snapshots;
 
-    const activeSnapshotIndex = findSnapshotIndex(
-        snapshots,
-        document.activeSnapshotId,
-    );
+    const activeSnapshot = snapshots[document.state.activeIndex];
+    if (activeSnapshot?.data === action.payload.data) return;
 
     if (
-        activeSnapshotIndex >= 0 &&
-        snapshots[activeSnapshotIndex].data === action.payload.data
+        snapshots.length > 0 &&
+        document.state.activeIndex !== snapshots.length - 1
     ) {
-        return;
-    }
-    if (activeSnapshotIndex !== snapshots.length - 1) {
-        // Remove obsolete snapshots (between the active snapshot and the end)
-        snapshots.splice(activeSnapshotIndex + 1);
+        console.log(
+            'slicing',
+            snapshots.length,
+            document.state.activeIndex - 1,
+        );
+        // remove obsolete snapshots (between the active snapshot and the end)
+        document.snapshots.splice(document.state.activeIndex + 1);
     }
 
     if (snapshots.length >= MAX_SNAPSHOTS) {
         const numSnapshotsToRemove = snapshots.length - MAX_SNAPSHOTS + 1;
-        snapshots.splice(0, numSnapshotsToRemove);
-    }
-
-    const now = Date.now();
-    // remove snapshots that less than n ms apart
-    if (snapshots.length > 0) {
-        const mostRecentSnapshot = snapshots[snapshots.length - 1];
-        const timeDifference = now - mostRecentSnapshot.created;
-        if (timeDifference < 16) {
-            snapshots.pop();
-        }
+        document.snapshots.splice(0, numSnapshotsToRemove);
+        document.state.activeIndex = findSnapshotIndex(
+            snapshots,
+            activeSnapshot.id,
+        );
     }
     const snapshot = {
         data: action.payload.data,
@@ -76,7 +70,14 @@ export const addSnapshot = (
         position: action.payload.position,
         actionType: action.payload.actionType,
     } as Snapshot;
-    snapshots.push(snapshot);
-    document.activeSnapshotId = snapshot.id;
+
+    if (snapshot.actionType === 'LOAD_DATA') {
+        document.snapshots = [snapshot];
+        document.state.activeIndex = 0;
+    } else {
+        snapshots.push(snapshot);
+        document.state.activeIndex = snapshots.length - 1;
+    }
+
     updateNavigationState(document);
 };

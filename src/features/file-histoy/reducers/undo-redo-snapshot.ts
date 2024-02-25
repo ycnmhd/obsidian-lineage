@@ -1,5 +1,4 @@
 import { FileHistoryState } from 'src/features/file-histoy/file-history-reducer';
-import { findSnapshotIndex } from 'src/features/file-histoy/helpers/find-snapshot-index';
 import { updateNavigationState } from 'src/features/file-histoy/helpers/update-navigation-state';
 
 export type UndoRedoAction = {
@@ -18,13 +17,7 @@ export const undoRedoSnapshot = (
 
     if (!document || document.snapshots.length === 0) return;
 
-    const currentIndex = findSnapshotIndex(
-        document.snapshots,
-        document.activeSnapshotId,
-    );
-    if (currentIndex === -1) {
-        throw new Error(`active snapshot not found for ${action.payload.path}`);
-    }
+    const currentIndex = document.state.activeIndex;
 
     let newIndex: number;
     if (action.payload.direction === 'back') {
@@ -37,7 +30,6 @@ export const undoRedoSnapshot = (
         return;
     }
 
-    const newSnapshot = document.snapshots[newIndex];
-    document.activeSnapshotId = newSnapshot.id;
+    document.state.activeIndex = newIndex;
     updateNavigationState(document);
 };

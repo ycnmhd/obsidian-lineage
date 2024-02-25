@@ -19,6 +19,7 @@ import { fileHistoryStore } from 'src/features/file-histoy/file-history-store';
 import { findNode } from 'src/view/store/helpers/find-node';
 import { findNodePosition } from 'src/view/store/helpers/find-branch';
 import { stores } from 'src/view/helpers/stores-cache';
+import { clone } from 'src/helpers/clone';
 
 export const TREE_VIEW_TYPE = 'tree';
 
@@ -82,24 +83,29 @@ export class TreeView extends TextFileView {
     }
 
     private requestSaveWrapper = async (actionType?: string) => {
-        const store = this.store.getValue();
+        const store = clone(this.store.getValue());
         const data: string = jsonToMarkdown(columnsToJsonTree(store.columns));
         if (data !== this.data) {
-            const path = this.file?.path;
-            if (!path) throw new Error('view does not have a file');
-            const node = findNode(store.columns, store.state.activeBranch.node);
+            if (actionType !== 'APPLY_SNAPSHOT') {
+                const path = this.file?.path;
+                if (!path) throw new Error('view does not have a file');
+                const node = findNode(
+                    store.columns,
+                    store.state.activeBranch.node,
+                );
 
-            fileHistoryStore.dispatch({
-                type: 'ADD_SNAPSHOT',
-                payload: {
-                    data: data,
-                    path,
-                    position: node
-                        ? findNodePosition(store.columns, node)
-                        : null,
-                    actionType: actionType ? actionType : null,
-                },
-            });
+                fileHistoryStore.dispatch({
+                    type: 'ADD_SNAPSHOT',
+                    payload: {
+                        data: data,
+                        path,
+                        position: node
+                            ? findNodePosition(store.columns, node)
+                            : null,
+                        actionType: actionType ? actionType : null,
+                    },
+                });
+            }
             this.setViewData(data, false);
             this.requestSave();
         }

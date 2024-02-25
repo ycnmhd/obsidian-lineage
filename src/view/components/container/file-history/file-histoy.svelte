@@ -8,12 +8,17 @@
 </script>
 
 <div class="sidebar">
-    <div class="snapshots-list" use:updateRelativeTime>
-        {#each [...fileHistory.snapshots].sort((a, b) => b.created - a.created) as snapshot (snapshot.id)}
+    <div
+        class="snapshots-list"
+        use:updateRelativeTime
+    >
+        {#each [...fileHistory.snapshots].sort((a, b) => b.created - a.created) as snapshot, index (snapshot.id)}
             <SnapshotButton
                 {snapshot}
-                active={fileHistory.activeSnapshotId === snapshot.id}
+                active={fileHistory.snapshots.length - index - 1 ===
+                    fileHistory.state.activeIndex}
                 filePath={path}
+                reverseIndex={fileHistory.snapshots.length - index}
             />
         {/each}
     </div>
