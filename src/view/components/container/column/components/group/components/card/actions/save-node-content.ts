@@ -1,4 +1,4 @@
-import { ColumnNode } from 'src/view/store/document-reducer';
+import { ColumnNode } from 'src/stores/document/document-reducer';
 import { DocumentStore } from 'src/view/view';
 
 type Props = { editing: boolean; node: ColumnNode; store: DocumentStore };

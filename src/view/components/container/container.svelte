@@ -2,9 +2,9 @@
 	import Column from './column/column.svelte';
 	import { DocumentStore } from 'src/view/view';
 	import { onDestroy, onMount, setContext } from 'svelte';
-	import { keyboardShortcuts } from 'src/features/keyboard-shortcuts/keyboard-shortcuts';
+	import { keyboardShortcuts } from 'src/view/actions/keyboard-shortcuts/keyboard-shortcuts';
 	import FileHistory from './file-history/file-histoy.svelte';
-	import { fileHistoryStore } from 'src/features/file-histoy/file-history-store';
+	import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
 	import ControlsBar from './controls-bar/controls-bar.svelte';
 
 	export let store: DocumentStore;

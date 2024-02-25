@@ -6,18 +6,18 @@ import {
     DocumentAction,
     documentReducer,
     DocumentState,
-} from 'src/view/store/document-reducer';
-import { alignBranchEffect } from 'src/view/store/effects/align-branch-effect';
+} from 'src/stores/document/document-reducer';
+import { alignBranchEffect } from 'src/stores/document/effects/align-branch-effect';
 import { Unsubscriber } from 'svelte/store';
-import { saveDocumentEffect } from 'src/view/store/effects/save-document-effect';
-import { columnsToJsonTree } from 'src/view/store/helpers/conversion/columns-to-json/columns-to-json-tree';
-import { jsonToMarkdown } from 'src/view/store/helpers/conversion/json-to-makdown/json-to-markdown';
+import { saveDocumentEffect } from 'src/stores/document/effects/save-document-effect';
+import { columnsToJsonTree } from 'src/stores/document/helpers/json-to-md/columns-to-json/columns-to-json-tree';
+import { jsonToMarkdown } from 'src/stores/document/helpers/json-to-md/json-to-makdown/json-to-markdown';
 import { Store } from 'src/helpers/store';
-import { initialDocumentState } from 'src/view/store/helpers/initial-document-state';
-import { bringFocusToContainer } from 'src/view/store/effects/bring-focus-to-container';
-import { fileHistoryStore } from 'src/features/file-histoy/file-history-store';
-import { findNode } from 'src/view/store/helpers/find-node';
-import { findNodePosition } from 'src/view/store/helpers/find-branch';
+import { initialDocumentState } from 'src/stores/document/helpers/initial-document-state';
+import { bringFocusToContainer } from 'src/stores/document/effects/bring-focus-to-container';
+import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
+import { findNode } from 'src/stores/document/helpers/find-node';
+import { findNodePosition } from 'src/stores/document/helpers/find-branch';
 import { stores } from 'src/view/helpers/stores-cache';
 import { clone } from 'src/helpers/clone';
 
@@ -30,7 +30,7 @@ export class TreeView extends TextFileView {
     component: Component;
     store: DocumentStore;
     private readonly onDestroyCallbacks: Set<Unsubscriber> = new Set();
-    private loadedInitialData = false;
+    private activeFilePath: null | string;
     constructor(
         leaf: WorkspaceLeaf,
         private plugin: TreeEdit,
@@ -44,11 +44,16 @@ export class TreeView extends TextFileView {
     }
 
     setViewData(data: string, clear: boolean): void {
-        this.data = data;
-        if (!this.loadedInitialData) {
-            this.loadedInitialData = true;
+        if (!this.activeFilePath && this.file) {
+            this.activeFilePath = this.file?.path;
             this.loadInitialData();
         }
+        this.data = data;
+    }
+    async onUnloadFile() {
+        this.activeFilePath = null;
+        this.data = '';
+        this.store.dispatch({ type: 'RESET_STORE' });
     }
 
     clear(): void {

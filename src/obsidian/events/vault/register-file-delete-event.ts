@@ -2,7 +2,7 @@ import LabeledAnnotations from '../../../main';
 import { TFile } from 'obsidian';
 import { fileTypeCache } from 'src/obsidian/patches/set-view-state';
 import { deletePath } from 'src/view/helpers/stores-cache';
-import { fileHistoryStore } from 'src/features/file-histoy/file-history-store';
+import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
 
 export const registerFileDeleteEvent = (plugin: LabeledAnnotations) => {
     plugin.registerEvent(

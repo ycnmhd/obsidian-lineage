@@ -8,15 +8,15 @@ import { around } from 'monkey-around';
 import {
     SettingsActions,
     settingsReducer,
-} from 'src/settings/settings-reducer';
+} from 'src/stores/settings/settings-reducer';
 import { deepMerge } from 'src/helpers/deep-merge';
-import { DEFAULT_SETTINGS } from 'src/settings/default-settings';
+import { DEFAULT_SETTINGS } from 'src/stores/settings/default-settings';
 import { Store } from 'src/helpers/store';
-import { Settings } from 'src/settings/settings-type';
+import { Settings } from 'src/stores/settings/settings-type';
 import { registerFileMenuEvent } from 'src/obsidian/events/workspace/register-file-menu-event';
 import { registerFileRenameEvent } from 'src/obsidian/events/vault/register-file-move-event';
 import { registerFileDeleteEvent } from 'src/obsidian/events/vault/register-file-delete-event';
-import { applySnapshotEffect } from 'src/features/file-histoy/effects/apply-snapshot-effect';
+import { applySnapshotEffect } from 'src/stores/file-history/effects/apply-snapshot-effect';
 
 export default class TreeEdit extends Plugin {
     settings: Store<Settings, SettingsActions>;

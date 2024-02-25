@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { FileHistory } from 'src/features/file-histoy/file-history-reducer';
+	import { FileHistory } from 'src/stores/file-history/file-history-reducer';
 	import SnapshotButton from './components/snapshot-button.svelte';
 	import { updateRelativeTime } from 'src/view/components/container/file-history/actions/update-relative-time';
 

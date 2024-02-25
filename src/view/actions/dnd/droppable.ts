@@ -1,5 +1,5 @@
 import { DocumentStore } from 'src/view/view';
-import { NodeDirection } from 'src/view/store/document-reducer';
+import { NodeDirection } from 'src/stores/document/document-reducer';
 
 const getDropPosition = (event: DragEvent, targetElement: HTMLElement) => {
     const boundingBox = targetElement.getBoundingClientRect();

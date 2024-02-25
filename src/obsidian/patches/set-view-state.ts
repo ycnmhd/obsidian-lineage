@@ -1,7 +1,7 @@
 import { ViewState } from 'obsidian';
 import { TREE_VIEW_TYPE } from 'src/view/view';
 import TreeEdit from 'src/main';
-import { Settings } from 'src/settings/settings-type';
+import { Settings } from 'src/stores/settings/settings-type';
 
 export let fileTypeCache: Settings['documents'] = {};
 export const subscribeDocumentsTypeCacheToSettings = (plugin: TreeEdit) => {

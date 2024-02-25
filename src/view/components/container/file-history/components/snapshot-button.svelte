@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Snapshot } from 'src/features/file-histoy/file-history-reducer';
-	import { fileHistoryStore } from 'src/features/file-histoy/file-history-store';
+	import { Snapshot } from 'src/stores/file-history/file-history-reducer';
+	import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
 	import { relativeTime } from 'src/helpers/relative-time';
 	import { FileQuestion } from 'lucide-svelte';
 	import { actionInfo } from 'src/view/components/container/file-history/components/helpers/action-info';

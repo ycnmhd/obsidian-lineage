@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { NodeGroup } from 'src/view/store/document-reducer';
+	import { NodeGroup } from 'src/stores/document/document-reducer';
 	import Node from './components/card/card.svelte';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
 	import { getStore } from 'src/view/components/container/get-store';

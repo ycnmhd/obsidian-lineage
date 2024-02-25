@@ -2,7 +2,7 @@ import { TFile } from 'obsidian';
 import TreeEdit from 'src/main';
 import { fileTypeCache } from 'src/obsidian/patches/set-view-state';
 import { updatePath } from 'src/view/helpers/stores-cache';
-import { fileHistoryStore } from 'src/features/file-histoy/file-history-store';
+import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
 
 export const registerFileRenameEvent = (plugin: TreeEdit) => {
     plugin.registerEvent(

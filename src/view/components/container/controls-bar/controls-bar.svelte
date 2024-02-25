@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { HelpCircle, HistoryIcon, RedoIcon, UndoIcon } from 'lucide-svelte';
 	import { getStore } from 'src/view/components/container/get-store';
-	import { fileHistoryStore } from 'src/features/file-histoy/file-history-store';
-	import { FileHistory } from 'src/features/file-histoy/file-history-reducer';
+	import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
+	import { FileHistory } from 'src/stores/file-history/file-history-reducer';
 
 	const store = getStore();
     export let fileHistory: FileHistory | null;
