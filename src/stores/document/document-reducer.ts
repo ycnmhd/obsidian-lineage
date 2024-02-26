@@ -78,9 +78,7 @@ export type DocumentState = {
             showHelpSidebar: boolean;
         };
     };
-    refs: {
-        container: HTMLElement | null;
-    };
+
     file: {
         path: string | null;
     };
@@ -117,10 +115,6 @@ export type DocumentAction =
       }
     | DropAction
     | {
-          type: 'SET_CONTAINER';
-          payload: { ref: HTMLElement | null };
-      }
-    | {
           type: 'FS/SET_FILE_PATH';
           payload: {
               path: string | null;
@@ -132,7 +126,8 @@ export type DocumentAction =
     | {
           type: 'UI/TOGGLE_HELP_SIDEBAR';
       }
-    | DeleteNodeAction;
+    | DeleteNodeAction
+    | { type: 'EVENT/VIEW_LOADED' };
 const updateState = (state: DocumentState, action: DocumentAction) => {
     const columns = state.columns;
     // navigation
@@ -170,8 +165,6 @@ const updateState = (state: DocumentState, action: DocumentAction) => {
         createFirstNode(state);
     } else if (action.type === 'RESET_STORE') {
         resetDocument(state);
-    } else if (action.type === 'SET_CONTAINER') {
-        state.refs.container = action.payload.ref;
     } else if (action.type === 'FS/SET_FILE_PATH') {
         state.file.path = action.payload.path;
     } else if (action.type === 'UI/TOGGLE_HISTORY_SIDEBAR') {

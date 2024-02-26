@@ -23,9 +23,6 @@ export const initialDocumentState = (): DocumentState => ({
             showHelpSidebar: false,
         },
     },
-    refs: {
-        container: null,
-    },
     file: {
         path: null,
     },

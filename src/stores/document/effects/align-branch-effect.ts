@@ -6,31 +6,29 @@ import {
 } from 'src/stores/document/effects/helpers/align-element';
 import { DocumentStore } from 'src/view/view';
 
-const alignBranch = (state: DocumentState, behavior?: ScrollBehavior) => {
-    if (!state.refs.container) return;
+const alignBranch = (
+    state: DocumentState,
+    container: HTMLElement,
+    behavior?: ScrollBehavior,
+) => {
+    if (!container) return;
     const node = findNode(state.columns, state.state.activeBranch.node);
     const localState: AlignBranchState = {
         columns: new Set<HTMLElement>(),
     };
     if (node) {
-        alignElement(
-            state.refs.container,
-            node.id,
-            behavior,
-            localState,
-            'both',
-        );
+        alignElement(container, node.id, behavior, localState, 'both');
         for (const id of state.state.activeBranch.parentNodes) {
-            alignElement(state.refs.container, id, behavior, localState);
+            alignElement(container, id, behavior, localState);
         }
         for (const id of state.state.activeBranch.childGroups) {
-            alignElement(state.refs.container, id, behavior, localState);
+            alignElement(container, id, behavior, localState);
         }
     }
     for (const column of state.columns) {
         const nodes = column.groups.map((g) => g.nodes).flat();
         alignElement(
-            state.refs.container,
+            container,
             nodes[nodes.length - 1].id,
             behavior,
             localState,
@@ -38,7 +36,10 @@ const alignBranch = (state: DocumentState, behavior?: ScrollBehavior) => {
     }
 };
 
-export const alignBranchEffect = (store: DocumentStore) => {
+export const alignBranchEffect = (
+    store: DocumentStore,
+    container: HTMLElement,
+) => {
     return store.subscribe((store, action) => {
         const timeoutRef: {
             align: ReturnType<typeof setTimeout> | null;
@@ -55,12 +56,14 @@ export const alignBranchEffect = (store: DocumentStore) => {
             action.type === 'CHANGE_ACTIVE_NODE' ||
             action.type === 'APPLY_SNAPSHOT' ||
             action.type === 'TREE/DELETE_NODE' ||
-            action.type === 'SET_NODE_CONTENT'
+            action.type === 'SET_NODE_CONTENT' ||
+            action.type === 'EVENT/VIEW_LOADED'
         ) {
             if (timeoutRef.align) clearTimeout(timeoutRef.align);
             timeoutRef.align = setTimeout(() => {
                 alignBranch(
                     store,
+                    container,
                     action.type === 'APPLY_SNAPSHOT' ? 'instant' : undefined,
                 );
             }, 32);

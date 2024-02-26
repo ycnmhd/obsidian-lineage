@@ -29,6 +29,7 @@ export class TreeView extends TextFileView {
     data: string;
     component: Component;
     store: DocumentStore;
+    private container: HTMLElement | null;
     private readonly onDestroyCallbacks: Set<Unsubscriber> = new Set();
     private activeFilePath: null | string;
     constructor(
@@ -51,9 +52,10 @@ export class TreeView extends TextFileView {
         this.data = data;
     }
     async onUnloadFile() {
+        this.detachFromStore();
         this.activeFilePath = null;
         this.data = '';
-        this.store.dispatch({ type: 'RESET_STORE' });
+        this.contentEl.empty();
     }
 
     clear(): void {
@@ -68,25 +70,32 @@ export class TreeView extends TextFileView {
         return this.file ? this.file.basename : '';
     }
 
-    async onOpen() {
-        this.component = new Component({
-            target: this.contentEl,
-            props: {
-                store: this.store,
-                plugin: this.plugin,
-            },
-        });
-    }
+    async onOpen() {}
 
     async onClose() {
         if (this.component) {
             this.component.$destroy();
         }
-        this.store.dispatch({ type: 'RESET_STORE' });
+        this.detachFromStore();
         for (const s of this.onDestroyCallbacks) {
             s();
         }
     }
+
+    private detachFromStore = () => {
+        const leavesOfType = this.plugin.app.workspace
+            .getLeavesOfType(TREE_VIEW_TYPE)
+            .filter(
+                (l) =>
+                    l.view instanceof TreeView &&
+                    l.view.file?.path === this.activeFilePath &&
+                    l.view !== this,
+            );
+        if (leavesOfType.length === 0) {
+            this.store.dispatch({ type: 'RESET_STORE' });
+            if (this.file) delete stores[this.file.path];
+        }
+    };
 
     private requestSaveWrapper = async (actionType?: string) => {
         const store = clone(this.store.getValue());
@@ -120,6 +129,37 @@ export class TreeView extends TextFileView {
         if (!this.file) {
             throw new Error('view does not have a file');
         }
+
+        if (stores[this.file.path]) {
+            this.useExistingStore();
+        } else {
+            this.createStore();
+        }
+        this.component = new Component({
+            target: this.contentEl,
+            props: {
+                store: this.store,
+                plugin: this.plugin,
+            },
+        });
+        this.container = this.contentEl.querySelector('#columns-container');
+        if (!this.container) throw new Error('could not find container');
+        this.onDestroyCallbacks.add(
+            alignBranchEffect(this.store, this.container),
+        );
+        this.onDestroyCallbacks.add(
+            saveDocumentEffect(this.store, this.requestSaveWrapper),
+        );
+        this.onDestroyCallbacks.add(
+            bringFocusToContainer(this.store, this.container),
+        );
+        this.store.dispatch({ type: 'EVENT/VIEW_LOADED' });
+    };
+
+    private createStore = () => {
+        if (!this.file) {
+            throw new Error('view does not have a file');
+        }
         stores[this.file.path] = this.store;
         this.store.dispatch({
             type: 'FS/SET_FILE_PATH',
@@ -136,11 +176,6 @@ export class TreeView extends TextFileView {
                 actionType: 'INITIAL_DOCUMENT',
             },
         });
-        this.onDestroyCallbacks.add(alignBranchEffect(this.store));
-        this.onDestroyCallbacks.add(
-            saveDocumentEffect(this.store, this.requestSaveWrapper),
-        );
-        this.onDestroyCallbacks.add(bringFocusToContainer(this.store));
         if (!this.data) this.store.dispatch({ type: 'CREATE_FIRST_NODE' });
         else {
             this.store.dispatch({
@@ -148,5 +183,9 @@ export class TreeView extends TextFileView {
                 type: 'LOAD_DATA',
             });
         }
+    };
+    private useExistingStore = () => {
+        if (!this.file) return;
+        this.store = stores[this.file.path];
     };
 }

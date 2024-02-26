@@ -45,8 +45,9 @@ export const findSiblings = (
     for (const column of columns) {
         for (const group of column.groups) {
             if (group.parentId === node.parentId) {
-                for (const node of group.nodes) {
-                    siblingNodes.add(node.id);
+                for (const groupNode of group.nodes) {
+                    if (groupNode.id !== node.id)
+                        siblingNodes.add(groupNode.id);
                 }
             }
         }

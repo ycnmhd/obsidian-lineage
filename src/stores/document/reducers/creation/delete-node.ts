@@ -8,7 +8,7 @@ const deleteGroupsById = (columns: Column[], groupIds: Set<string>): void => {
     for (const column of columns) {
         column.groups = column.groups.filter(
             (group) =>
-                !group.parentId.startsWith('r-') && !groupIds.has(group.id),
+                !(!group.parentId.startsWith('r-') && groupIds.has(group.id)),
         );
     }
 };

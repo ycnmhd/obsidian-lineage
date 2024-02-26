@@ -1,23 +1,12 @@
 <script lang="ts">
 	import Column from './column/column.svelte';
-	import { onDestroy, onMount } from 'svelte';
 	import { keyboardShortcuts } from 'src/view/actions/keyboard-shortcuts/keyboard-shortcuts';
 	import { getStore } from 'src/view/components/container/context';
 
 	const store = getStore();
-
-    // eslint-disable-next-line no-undef
-    let ref: HTMLElement;
-    onMount(() => {
-        store.dispatch({ type: 'SET_CONTAINER', payload: { ref } });
-    });
-    onDestroy(() => {
-        store.dispatch({ type: 'SET_CONTAINER', payload: { ref: null } });
-    });
 </script>
 
 <div
-    bind:this={ref}
     class="container"
     id="columns-container"
     tabindex="0"
@@ -28,13 +17,11 @@
             <Column {column} />
         {/each}
     </div>
-
 </div>
 
 <style>
-
     .container {
-		position: relative;
+        position: relative;
         flex: 1;
         height: 100%;
         width: 100%;
