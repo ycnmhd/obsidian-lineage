@@ -19,7 +19,8 @@ export type SettingsActions =
               oldPath: string;
               newPath: string;
           };
-      };
+      }
+    | { type: 'TOGGLE_THEME' };
 
 const updateState = (store: Settings, action: SettingsActions) => {
     if (action.type === 'SET_DOCUMENT_TYPE_TO_MARKDOWN') {
@@ -29,6 +30,8 @@ const updateState = (store: Settings, action: SettingsActions) => {
     } else if (action.type === 'UPDATE_DOCUMENT_PATH') {
         delete store.documents[action.payload.oldPath];
         store.documents[action.payload.newPath] = true;
+    } else if (action.type === 'TOGGLE_THEME') {
+        store.ui.theme = store.ui.theme === 'light' ? 'dark' : 'light';
     }
 };
 export const settingsReducer = (

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getStore } from '../../../../../../../get-store';
+	import { getStore } from '../../../../../../../context';
 	import { droppable } from 'src/view/actions/dnd/droppable';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
 	import clx from 'classnames';
@@ -62,23 +62,24 @@
         height: fit-content;
         display: flex;
         position: relative;
-		background-color: #1c1e25;
-		color: #525252;
+		background-color: var(--background-color-inactive-node);
+		color: var(--color-inactive-node);
         border-radius: var(--radius-m);
         overflow: hidden;
 		font-size: 16px;
+
     }
 
     .active-node,
     .active-child {
-		color: white;
-        background-color: #363e52;
+		color: var(--color-active-node);
+        background-color: var(--background-active-node);
     }
 
     .active-parent,
     .active-sibling {
-		color: white;
-        background-color: #252934;
+		color: var(--color-active-child);
+        background-color:var(--background-active-parent) ;
     }
 
 </style>

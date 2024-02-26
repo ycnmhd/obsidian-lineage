@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { NodeDirection } from '../../../../../../../../../../stores/document/document-reducer';
-	import { getStore } from '../../../../../../../get-store';
+	import { getStore } from '../../../../../../../context';
 	import FloatingButton from './floating-button.svelte';
 	import { PlusIcon } from 'lucide-svelte';
 

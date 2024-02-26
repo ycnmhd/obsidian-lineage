@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Column } from '../../../../stores/document/document-reducer';
 	import Group from './components/group/group.svelte';
-	import { getStore } from 'src/view/components/container/get-store';
+	import { getStore } from 'src/view/components/container/context';
 
 	const store = getStore();
     export let column: Column;

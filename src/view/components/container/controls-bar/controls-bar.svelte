@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { HelpCircle, HistoryIcon, RedoIcon, UndoIcon } from 'lucide-svelte';
-	import { getStore } from 'src/view/components/container/get-store';
+	import { HelpCircle, HistoryIcon, Moon, RedoIcon, Sun, UndoIcon } from 'lucide-svelte';
+	import { getPlugin, getStore } from 'src/view/components/container/context';
 	import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
 	import { FileHistory } from 'src/stores/file-history/file-history-reducer';
 
@@ -28,6 +28,11 @@
                     direction: 'back',
                 },
             });
+    };
+    const plugin = getPlugin();
+    const settings = plugin.settings;
+    const toggleTheme = () => {
+        settings.dispatch({ type: 'TOGGLE_THEME' });
     };
 </script>
 
@@ -63,6 +68,20 @@
         >
             <RedoIcon class="svg-icon" />
         </button>
+    </div>
+    <div class="canvas-control-group">
+        <div
+            aria-label="Theme"
+            class="canvas-control-item"
+            data-tooltip-position="left"
+            on:click={toggleTheme}
+        >
+            {#if $settings.ui.theme === 'dark'}
+                <Sun class="svg-icon" />
+            {:else}
+                <Moon class="svg-icon" />
+            {/if}
+        </div>
     </div>
     <div class="canvas-control-group">
         <div

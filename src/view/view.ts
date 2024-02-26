@@ -73,6 +73,7 @@ export class TreeView extends TextFileView {
             target: this.contentEl,
             props: {
                 store: this.store,
+                plugin: this.plugin,
             },
         });
     }

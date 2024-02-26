@@ -2,7 +2,7 @@
 	import { NodeGroup } from 'src/stores/document/document-reducer';
 	import Node from './components/card/card.svelte';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
-	import { getStore } from 'src/view/components/container/get-store';
+	import { getStore } from 'src/view/components/container/context';
 
 	const store = getStore();
     export let group: NodeGroup;
@@ -32,6 +32,10 @@
         flex-direction: column;
         width: var(--node-width);
         background-color: transparent;
-		gap: var(--node-gap);
+        gap: var(--node-gap);
+        margin-bottom: var(--node-gap);
+    }
+    .group:last-child {
+        margin-bottom: 0;
     }
 </style>

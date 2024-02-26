@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getStore } from '../../../../../../../get-store';
+	import { getStore } from '../../../../../../../context';
 	import { draggable } from 'src/view/actions/dnd/draggable';
 
 	export let nodeId: string
@@ -21,7 +21,6 @@
 <style>
 	.draggable {
 		width: 100%;
-		border-radius: var(--border-radius);
 		background-color: transparent;
 		display: flex;
 	}

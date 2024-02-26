@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getStore } from '../../../../../../../get-store';
+	import { getStore } from '../../../../../../../context';
 	import { ColumnNode } from 'src/stores/document/document-reducer';
 
 	export let node: ColumnNode;

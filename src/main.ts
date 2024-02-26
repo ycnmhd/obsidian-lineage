@@ -32,7 +32,11 @@ export default class TreeEdit extends Plugin {
         this.registerEffects();
     }
 
-    onunload() {}
+    onunload() {
+        for (const s of this.onDestroyCallbacks) {
+            s();
+        }
+    }
 
     async saveSettings() {
         await this.saveData(this.settings.getValue());
