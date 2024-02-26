@@ -75,6 +75,7 @@ export type DocumentState = {
         };
         ui: {
             showHistorySidebar: boolean;
+            showHelpSidebar: boolean;
         };
     };
     refs: {
@@ -128,6 +129,9 @@ export type DocumentAction =
     | {
           type: 'UI/TOGGLE_HISTORY_SIDEBAR';
       }
+    | {
+          type: 'UI/TOGGLE_HELP_SIDEBAR';
+      }
     | DeleteNodeAction;
 const updateState = (state: DocumentState, action: DocumentAction) => {
     const columns = state.columns;
@@ -171,7 +175,11 @@ const updateState = (state: DocumentState, action: DocumentAction) => {
     } else if (action.type === 'FS/SET_FILE_PATH') {
         state.file.path = action.payload.path;
     } else if (action.type === 'UI/TOGGLE_HISTORY_SIDEBAR') {
+        state.state.ui.showHelpSidebar = false;
         state.state.ui.showHistorySidebar = !state.state.ui.showHistorySidebar;
+    } else if (action.type === 'UI/TOGGLE_HELP_SIDEBAR') {
+        state.state.ui.showHistorySidebar = false;
+        state.state.ui.showHelpSidebar = !state.state.ui.showHelpSidebar;
     }
 };
 

@@ -2,14 +2,14 @@ import { Hotkey } from 'obsidian';
 import { DocumentStore } from 'src/view/view';
 import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
 
-const lang = {
+export const hotkeysLang = {
     save_changes_and_exit_card: 'Save changes and exit card',
     // toggle_edit_mode: 'Toggle edit',
     enable_edit_mode: 'Edit card',
     disable_edit_mode: 'Cancel changes',
     add_child: 'Add child',
-    add_below: 'Add below',
-    add_above: 'Add above',
+    add_below: 'Add card below',
+    add_above: 'Add card above',
     delete_card: 'Delete card',
     go_up: 'Go up',
     go_down: 'Go down',
@@ -227,5 +227,5 @@ export const createCommands = () => {
             },
             hotkeys: [{ key: 'Y', modifiers: ['Ctrl', 'Shift'] }],
         },
-    } satisfies Record<keyof typeof lang, PluginCommand>;
+    } satisfies Record<keyof typeof hotkeysLang, PluginCommand>;
 };

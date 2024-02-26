@@ -20,6 +20,7 @@ export const initialDocumentState = (): DocumentState => ({
         },
         ui: {
             showHistorySidebar: false,
+            showHelpSidebar: false,
         },
     },
     refs: {

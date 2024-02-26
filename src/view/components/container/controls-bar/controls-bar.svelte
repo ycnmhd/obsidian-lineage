@@ -34,6 +34,9 @@
     const toggleTheme = () => {
         settings.dispatch({ type: 'TOGGLE_THEME' });
     };
+	const toggleHelp = ()=>{
+		store.dispatch({type:'UI/TOGGLE_HELP_SIDEBAR'})
+	}
 </script>
 
 <div class="canvas-controls">
@@ -88,6 +91,7 @@
             aria-label="Help"
             class="canvas-control-item"
             data-tooltip-position="left"
+			on:click={toggleHelp}
         >
             <HelpCircle class="svg-icon" />
         </div>

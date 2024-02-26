@@ -6,6 +6,7 @@
 	import FileHistory from './file-history/file-histoy.svelte';
 	import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
 	import ControlsBar from './controls-bar/controls-bar.svelte';
+	import Hotkeys from './hotkeys/hotkeys.svelte';
 	import TreeEdit from 'src/main';
 
 	export let store: DocumentStore;
@@ -51,6 +52,8 @@
             fileHistory={$fileHistoryStore.documents[$store.file.path]}
             path={$store.file.path}
         />
+    {:else if $store.state.ui.showHelpSidebar}
+        <Hotkeys />
     {/if}
 </div>
 
@@ -85,7 +88,7 @@
         --color-active-child: #51575b;
     }*/
     .ash-theme-light {
-        --background-color-container:#7b92a1;
+        --background-color-container: #7b92a1;
         /*inactive node*/
         --background-color-inactive-node: #aab7bf;
         --color-inactive-node: #ffffff;
