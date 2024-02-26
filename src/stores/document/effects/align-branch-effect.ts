@@ -1,19 +1,40 @@
 import { DocumentState } from 'src/stores/document/document-reducer';
 import { findNode } from 'src/stores/document/helpers/find-node';
-import { alignElement } from 'src/stores/document/effects/helpers/align-element';
+import {
+    AlignBranchState,
+    alignElement,
+} from 'src/stores/document/effects/helpers/align-element';
 import { DocumentStore } from 'src/view/view';
 
-const alignBranch = (store: DocumentState, behavior?: ScrollBehavior) => {
-    if (!store.refs.container) return;
-    const node = findNode(store.columns, store.state.activeBranch.node);
+const alignBranch = (state: DocumentState, behavior?: ScrollBehavior) => {
+    if (!state.refs.container) return;
+    const node = findNode(state.columns, state.state.activeBranch.node);
+    const localState: AlignBranchState = {
+        columns: new Set<HTMLElement>(),
+    };
     if (node) {
-        alignElement(store.refs.container, node.id, behavior);
-        for (const id of store.state.activeBranch.parentNodes) {
-            alignElement(store.refs.container, id, behavior);
+        alignElement(
+            state.refs.container,
+            node.id,
+            behavior,
+            localState,
+            'both',
+        );
+        for (const id of state.state.activeBranch.parentNodes) {
+            alignElement(state.refs.container, id, behavior, localState);
         }
-        for (const id of store.state.activeBranch.childGroups) {
-            alignElement(store.refs.container, id, behavior);
+        for (const id of state.state.activeBranch.childGroups) {
+            alignElement(state.refs.container, id, behavior, localState);
         }
+    }
+    for (const column of state.columns) {
+        const nodes = column.groups.map((g) => g.nodes).flat();
+        alignElement(
+            state.refs.container,
+            nodes[nodes.length - 1].id,
+            behavior,
+            localState,
+        );
     }
 };
 

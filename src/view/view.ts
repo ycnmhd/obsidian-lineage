@@ -1,6 +1,6 @@
 import { TextFileView, WorkspaceLeaf } from 'obsidian';
 
-import Component from './components/container/container.svelte';
+import Component from './components/container/main.svelte';
 import TreeEdit from '../main';
 import {
     DocumentAction,

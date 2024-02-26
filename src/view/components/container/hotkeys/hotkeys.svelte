@@ -12,16 +12,15 @@
             <Hotkey {key} {command} />
         {/each}
     </div>
-    <span class="note"
-        >*If a keyboard shortcut is not working, make sure it is not assigned as an
-        Obsidian hotkey.
-    </span>
+    <div class="note">
+        *If a keyboard shortcut is not working, make sure it is not assigned to
+        an Obsidian command.
+    </div>
 </div>
 
 <style>
     .sidebar {
-        min-width: 165px;
-        width: fit-content;
+        width: 350px;
         background-color: var(--background-secondary);
         position: absolute;
         right: var(--sidebar-right);
