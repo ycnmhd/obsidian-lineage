@@ -65,7 +65,7 @@ export class TreeView extends TextFileView {
     }
 
     getDisplayText() {
-        return 'Ash' + (this.file ? ' - ' + this.file.basename : '');
+        return this.file ? this.file.basename : '';
     }
 
     async onOpen() {

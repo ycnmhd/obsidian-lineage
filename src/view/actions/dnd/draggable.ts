@@ -8,7 +8,7 @@ const toggleDraggedNodeVisibility = (
     requestAnimationFrame(() => {
         const parent = node.matchParent('#' + data.id) as HTMLElement;
         if (parent) {
-            parent.style.display = visible ? 'initial' : 'none';
+            parent.style.display = visible ? 'flex' : 'none';
         }
     });
 };

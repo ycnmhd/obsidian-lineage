@@ -42,16 +42,18 @@ export const droppable = (node: HTMLElement, store: DocumentStore) => {
 
     function handleDrop(event: DragEvent) {
         event.preventDefault();
-        if (!event.dataTransfer) return;
         if (!(event.target instanceof HTMLElement)) return;
+        if (!event.dataTransfer) return;
         const data = event.dataTransfer.getData('text/plain');
-        event.target.removeClasses(classesList);
+        const targetCard = event.currentTarget as HTMLElement;
+        if (!targetCard.id.startsWith('n-')) return;
+        targetCard.removeClasses(classesList);
         store.dispatch({
             type: 'DROP_NODE',
             payload: {
                 droppedNodeId: data,
-                targetNodeId: event.target.id,
-                position: getDropPosition(event, event.target) as NodeDirection,
+                targetNodeId: targetCard.id,
+                position: getDropPosition(event, targetCard) as NodeDirection,
             },
         });
     }

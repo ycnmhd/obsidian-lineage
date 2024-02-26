@@ -6,7 +6,6 @@ import {
 import { traverseDown } from 'src/stores/document/helpers/find-branch';
 import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
 import { id } from 'src/helpers/id';
-import { sortGroups } from 'src/stores/document/helpers/sort-groups';
 
 export const moveChildGroups = (columns: Columns, droppedNode: ColumnNode) => {
     // find children
@@ -38,9 +37,5 @@ export const moveChildGroups = (columns: Columns, droppedNode: ColumnNode) => {
             });
         }
         columns[targetColumnIndex].groups.push(group);
-        columns[targetColumnIndex].groups = sortGroups(
-            columns[targetColumnIndex - 1].groups,
-            columns[targetColumnIndex].groups,
-        );
     }
 };

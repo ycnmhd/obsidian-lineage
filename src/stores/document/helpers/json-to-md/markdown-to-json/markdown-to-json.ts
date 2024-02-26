@@ -72,6 +72,12 @@ export const markdownToJson = (text: string) => {
             if (currentNode) {
                 if (currentNode.content) currentNode.content += '\n';
                 currentNode.content += line;
+            } else if (line.trim()) {
+                currentNode = {
+                    content: line,
+                    children: [],
+                };
+                tree.push(currentNode);
             }
         }
     }

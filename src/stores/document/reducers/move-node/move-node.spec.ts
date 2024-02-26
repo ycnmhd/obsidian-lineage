@@ -56,4 +56,152 @@ describe('move-node', () => {
         expect(columns[3].groups[0].nodes[0].id === childNode.id);
         expect(columns[4].groups[0].nodes[0].id === grandChildNode.id);
     });
+    it('dnd bug 24-02-26', () => {
+        const droppedNodeId = 'n-lt33tfw9';
+        const targetNodeId = 'n-lt33tfwi';
+        const action = {
+            type: 'DROP_NODE',
+            payload: {
+                droppedNodeId: droppedNodeId,
+                targetNodeId: targetNodeId,
+                position: 'bottom',
+            },
+        } as const;
+        const content = '';
+        const columns = [
+            {
+                id: 'c-lt33tfwa',
+                groups: [
+                    {
+                        nodes: [
+                            {
+                                id: droppedNodeId,
+                                content: content,
+                                parentId: 'r-lt33tfw8',
+                            },
+                            {
+                                id: targetNodeId,
+                                content: content,
+                                parentId: 'r-lt33tfw8',
+                            },
+                        ],
+                        id: 'g-lt33tfwb',
+                        parentId: 'r-lt33tfw8',
+                    },
+                ],
+            },
+            {
+                id: 'c-lt33tfwd',
+                groups: [
+                    {
+                        nodes: [
+                            {
+                                id: 'n-lt33tfwc',
+                                content: content,
+                                parentId: droppedNodeId,
+                            },
+                        ],
+                        id: 'g-lt33tfwe',
+                        parentId: droppedNodeId,
+                    },
+                    {
+                        nodes: [
+                            {
+                                id: 'n-lt33tfwj',
+                                content: content,
+                                parentId: targetNodeId,
+                            },
+                        ],
+                        id: 'g-lt33tfwk',
+                        parentId: targetNodeId,
+                    },
+                ],
+            },
+            {
+                id: 'c-lt33tfwg',
+                groups: [
+                    {
+                        nodes: [
+                            {
+                                id: 'n-lt33tfwf',
+                                content: content,
+                                parentId: 'n-lt33tfwc',
+                            },
+                        ],
+                        id: 'g-lt33tfwh',
+                        parentId: 'n-lt33tfwc',
+                    },
+                ],
+            },
+        ];
+
+        const output = [
+            {
+                id: 'c-lt33tfwa',
+                groups: [
+                    {
+                        nodes: [
+                            {
+                                id: targetNodeId,
+                                content: content,
+                                parentId: 'r-lt33tfw8',
+                            },
+                            {
+                                id: droppedNodeId,
+                                content: content,
+                                parentId: 'r-lt33tfw8',
+                            },
+                        ],
+                        id: 'g-lt33tfwb',
+                        parentId: 'r-lt33tfw8',
+                    },
+                ],
+            },
+            {
+                id: 'c-lt33tfwd',
+                groups: [
+                    {
+                        nodes: [
+                            {
+                                id: 'n-lt33tfwj',
+                                content: content,
+                                parentId: targetNodeId,
+                            },
+                        ],
+                        id: 'g-lt33tfwk',
+                        parentId: targetNodeId,
+                    },
+                    {
+                        nodes: [
+                            {
+                                id: 'n-lt33tfwc',
+                                content: content,
+                                parentId: droppedNodeId,
+                            },
+                        ],
+                        id: 'g-lt33tfwe',
+                        parentId: droppedNodeId,
+                    },
+                ],
+            },
+            {
+                id: 'c-lt33tfwg',
+                groups: [
+                    {
+                        nodes: [
+                            {
+                                id: 'n-lt33tfwf',
+                                content: content,
+                                parentId: 'n-lt33tfwc',
+                            },
+                        ],
+                        id: 'g-lt33tfwh',
+                        parentId: 'n-lt33tfwc',
+                    },
+                ],
+            },
+        ];
+        moveNode(columns, action);
+        expect(columns).toEqual(output);
+    });
 });

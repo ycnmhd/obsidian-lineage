@@ -60,4 +60,19 @@ describe('markdown to json', () => {
         const actual = markdownToJson(input);
         expect(actual).toEqual(output);
     });
+    it('text with no sections', () => {
+        const output = [{ content: 'text', children: [] }];
+        const actual = markdownToJson('text');
+        expect(actual).toEqual(output);
+    });
+    it('text above sections', () => {
+        const output = [
+            { content: 'text 1', children: [] },
+            { content: 'text 2', children: [] },
+        ];
+        const actual = markdownToJson(
+            [`text 1`, `<!--section: 1-->`, 'text 2'].join('\n'),
+        );
+        expect(actual).toEqual(output);
+    });
 });

@@ -5,6 +5,7 @@ import { moveNodeAsSibling } from 'src/stores/document/reducers/move-node/helper
 
 import { moveNodeAsChild } from 'src/stores/document/reducers/move-node/helpers/move-node-as-child';
 import { moveChildGroups } from 'src/stores/document/reducers/move-node/helpers/move-child-groups';
+import { sortGroups } from 'src/stores/document/helpers/sort-groups';
 
 export type DropAction = {
     type: 'DROP_NODE';
@@ -33,6 +34,14 @@ export const moveNode = (columns: Columns, action: DropAction) => {
 
             if (currentParentIdOfDroppedNode !== droppedNode.parentId) {
                 moveChildGroups(columns, droppedNode);
+            }
+            for (let i = 1; i < columns.length; i++) {
+                const column = columns[i];
+                const previousColumn = columns[i - 1];
+                column.groups = sortGroups(
+                    previousColumn.groups,
+                    column.groups,
+                );
             }
         }
     }
