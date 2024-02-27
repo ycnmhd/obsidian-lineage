@@ -1,7 +1,7 @@
-import { TextFileView, WorkspaceLeaf } from 'obsidian';
+import { IconName, TextFileView, WorkspaceLeaf } from 'obsidian';
 
 import Component from './components/container/main.svelte';
-import TreeEdit from '../main';
+import Lineage from '../main';
 import {
     DocumentAction,
     documentReducer,
@@ -22,11 +22,11 @@ import { stores } from 'src/view/helpers/stores-cache';
 import { clone } from 'src/helpers/clone';
 import { extractFrontmatter } from 'src/view/helpers/extract-frontmatter';
 
-export const TREE_VIEW_TYPE = 'tree';
+export const FILE_VIEW_TYPE = 'lineage';
 
 export type DocumentStore = Store<DocumentState, DocumentAction>;
 
-export class TreeView extends TextFileView {
+export class LineageView extends TextFileView {
     data: string;
     component: Component;
     store: DocumentStore;
@@ -35,7 +35,7 @@ export class TreeView extends TextFileView {
     private activeFilePath: null | string;
     constructor(
         leaf: WorkspaceLeaf,
-        private plugin: TreeEdit,
+        private plugin: Lineage,
     ) {
         super(leaf);
         this.store = new Store(initialDocumentState(), documentReducer);
@@ -64,7 +64,10 @@ export class TreeView extends TextFileView {
     }
 
     getViewType() {
-        return TREE_VIEW_TYPE;
+        return FILE_VIEW_TYPE;
+    }
+    getIcon(): IconName {
+        return 'list-tree';
     }
 
     getDisplayText() {
@@ -85,10 +88,10 @@ export class TreeView extends TextFileView {
 
     private detachFromStore = () => {
         const leavesOfType = this.plugin.app.workspace
-            .getLeavesOfType(TREE_VIEW_TYPE)
+            .getLeavesOfType(FILE_VIEW_TYPE)
             .filter(
                 (l) =>
-                    l.view instanceof TreeView &&
+                    l.view instanceof LineageView &&
                     l.view.file?.path === this.activeFilePath &&
                     l.view !== this,
             );

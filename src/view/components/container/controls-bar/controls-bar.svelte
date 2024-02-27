@@ -1,8 +1,11 @@
 <script lang="ts">
-	import { HelpCircle, HistoryIcon, Moon, RedoIcon, Sun, UndoIcon } from 'lucide-svelte';
+	import { File, HelpCircle, HistoryIcon, Moon, RedoIcon, Sun, UndoIcon } from 'lucide-svelte';
 	import { getPlugin, getStore } from 'src/view/components/container/context';
 	import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
 	import { FileHistory } from 'src/stores/file-history/file-history-reducer';
+	import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
+	import { LineageView } from 'src/view/view';
+	import { lang } from 'src/lang/lang';
 
 	const store = getStore();
     export let fileHistory: FileHistory | null;
@@ -34,12 +37,28 @@
     const toggleTheme = () => {
         settings.dispatch({ type: 'TOGGLE_THEME' });
     };
-	const toggleHelp = ()=>{
-		store.dispatch({type:'UI/TOGGLE_HELP_SIDEBAR'})
-	}
+    const toggleHelp = () => {
+        store.dispatch({ type: 'UI/TOGGLE_HELP_SIDEBAR' });
+    };
+
+    const openAsMarkdown = () => {
+        const file =
+            plugin.app.workspace.getActiveViewOfType(LineageView)?.file;
+        if (file) toggleFileViewType(plugin, file, undefined);
+    };
 </script>
 
 <div class="canvas-controls">
+    <div class="canvas-control-group">
+        <button
+            aria-label={lang.open_in_editor}
+            class="canvas-control-item"
+            data-tooltip-position="left"
+            on:click={openAsMarkdown}
+        >
+            <File class="svg-icon" />
+        </button>
+    </div>
     <div class="canvas-control-group">
         <button
             aria-label="History"
@@ -73,7 +92,7 @@
         </button>
     </div>
     <div class="canvas-control-group">
-        <div
+        <button
             aria-label="Theme"
             class="canvas-control-item"
             data-tooltip-position="left"
@@ -84,17 +103,17 @@
             {:else}
                 <Moon class="svg-icon" />
             {/if}
-        </div>
+        </button>
     </div>
     <div class="canvas-control-group">
-        <div
+        <button
             aria-label="Help"
             class="canvas-control-item"
             data-tooltip-position="left"
-			on:click={toggleHelp}
+            on:click={toggleHelp}
         >
             <HelpCircle class="svg-icon" />
-        </div>
+        </button>
     </div>
 </div>
 

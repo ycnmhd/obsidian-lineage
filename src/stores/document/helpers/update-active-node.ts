@@ -4,7 +4,10 @@ import {
     traverseDown,
     traverseUp,
 } from 'src/stores/document/helpers/find-branch';
-import { DocumentState } from 'src/stores/document/document-reducer';
+import {
+    ColumnNode,
+    DocumentState,
+} from 'src/stores/document/document-reducer';
 import { updateEditingNodeOnActiveNodeChange } from 'src/stores/document/reducers/editing/update-editing-node-on-active-node-change';
 
 export const updateActiveNode = (
@@ -16,8 +19,10 @@ export const updateActiveNode = (
 
     const node = nodeId ? findNode(state.columns, nodeId) : null;
     if (node) {
-        const parentIDs = new Set<string>();
-        traverseUp(parentIDs, state.columns, node);
+        const sortedParents: ColumnNode[] = [];
+
+        traverseUp(sortedParents, state.columns, node);
+        const parentIDs = new Set<string>(sortedParents.map((n) => n.id));
         const childGroups = new Set<string>();
         const childNodes = new Set<string>();
         traverseDown(childGroups, childNodes, state.columns, node);
@@ -27,6 +32,7 @@ export const updateActiveNode = (
         state.state.activeBranch.childGroups = childGroups;
         state.state.activeBranch.childNodes = childNodes;
         state.state.activeBranch.siblingNodes = siblingNodes;
+        state.state.activeBranch.sortedParentNodes = sortedParents.reverse();
     } else {
         state.state.activeBranch = {
             node: '',
@@ -34,6 +40,7 @@ export const updateActiveNode = (
             parentNodes: new Set<string>(),
             siblingNodes: new Set<string>(),
             childGroups: new Set<string>(),
+            sortedParentNodes: [],
         };
     }
 };

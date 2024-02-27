@@ -7,13 +7,13 @@ import { findNode } from 'src/stores/document/helpers/find-node';
 
 export type StringSet = Set<string>;
 export const traverseUp = (
-    branch: StringSet,
+    branch: ColumnNode[],
     columns: Columns,
     node: ColumnNode,
 ) => {
     const parentNode = findNode(columns, node.parentId);
     if (parentNode) {
-        branch.add(parentNode.id);
+        branch.push(parentNode);
         traverseUp(branch, columns, parentNode);
     }
 };

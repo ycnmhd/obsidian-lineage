@@ -1,6 +1,6 @@
 import LabeledAnnotations from '../../../main';
 import { TFile } from 'obsidian';
-import { fileTypeCache } from 'src/obsidian/patches/set-view-state';
+import { fileViewTypeCache } from 'src/obsidian/patches/set-view-state';
 import { deletePath } from 'src/view/helpers/stores-cache';
 import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
 
@@ -8,7 +8,7 @@ export const registerFileDeleteEvent = (plugin: LabeledAnnotations) => {
     plugin.registerEvent(
         plugin.app.vault.on('delete', (file) => {
             if (file instanceof TFile) {
-                if (fileTypeCache[file.path]) {
+                if (fileViewTypeCache[file.path]) {
                     deletePath(file.path);
                     fileHistoryStore.dispatch({
                         type: 'DELETE_DOCUMENT',

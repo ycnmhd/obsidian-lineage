@@ -1,12 +1,12 @@
 import { ViewState } from 'obsidian';
-import { TREE_VIEW_TYPE } from 'src/view/view';
-import TreeEdit from 'src/main';
+import { FILE_VIEW_TYPE } from 'src/view/view';
+import Lineage from 'src/main';
 import { Settings } from 'src/stores/settings/settings-type';
 
-export let fileTypeCache: Settings['documents'] = {};
-export const subscribeDocumentsTypeCacheToSettings = (plugin: TreeEdit) => {
+export let fileViewTypeCache: Settings['documents'] = {};
+export const subscribeDocumentsTypeCacheToSettings = (plugin: Lineage) => {
     plugin.settings.subscribe((v) => {
-        fileTypeCache = v.documents;
+        fileViewTypeCache = v.documents;
     });
 };
 
@@ -16,10 +16,10 @@ export function setViewState(next: () => unknown) {
 
         const path = state?.state?.file;
 
-        if (isMarkdownView && fileTypeCache[path]) {
+        if (isMarkdownView && fileViewTypeCache[path]) {
             const newState = {
                 ...state,
-                type: TREE_VIEW_TYPE,
+                type: FILE_VIEW_TYPE,
             };
 
             return next.apply(this, [newState, ...rest]);

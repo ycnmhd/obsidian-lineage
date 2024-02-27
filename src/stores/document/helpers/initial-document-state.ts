@@ -9,6 +9,7 @@ export const initialDocumentState = (): DocumentState => ({
             childGroups: new Set<string>(),
             parentNodes: new Set<string>(),
             siblingNodes: new Set<string>(),
+            sortedParentNodes: [],
         },
         draggedBranch: {
             node: '',

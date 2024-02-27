@@ -1,51 +1,36 @@
 import { lang } from 'src/lang/lang';
-import { MarkdownView, TFile, ViewState } from 'obsidian';
-import { fileTypeCache } from 'src/obsidian/patches/set-view-state';
-import { TREE_VIEW_TYPE } from 'src/view/view';
-import TreeEdit from 'src/main';
+import { TFile, TFolder } from 'obsidian';
+import { fileViewTypeCache } from 'src/obsidian/patches/set-view-state';
+import Lineage from 'src/main';
+import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
+import { createNewFile } from 'src/obsidian/commands/helpers/create-new-file';
 
-export const registerFileMenuEvent = (plugin: TreeEdit) => {
+export const registerFileMenuEvent = (plugin: Lineage) => {
     plugin.registerEvent(
-        plugin.app.workspace.on('file-menu', (menu, file, source, leaf) => {
-            if (file instanceof TFile) {
-                menu.addItem((item) => {
-                    const isTree = fileTypeCache[file.path];
-                    item.setTitle(
-                        isTree ? lang.open_as_markdown : lang.open_as_tree,
-                    );
-                    item.setIcon(isTree ? 'file' : 'list-tree');
-                    item.onClick(() => {
-                        plugin.settings.dispatch({
-                            type: isTree
-                                ? 'SET_DOCUMENT_TYPE_TO_MARKDOWN'
-                                : 'SET_DOCUMENT_TYPE_TO_TREE',
-                            payload: {
-                                path: file.path,
-                            },
-                        });
+        plugin.app.workspace.on(
+            'file-menu',
+            (menu, abstractFile, source, leaf) => {
+                if (abstractFile instanceof TFile) {
+                    menu.addItem((item) => {
+                        const isTree = fileViewTypeCache[abstractFile.path];
+                        item.setTitle(
+                            isTree ? lang.open_in_editor : lang.open_in_lineage,
+                        );
+                        item.setIcon(isTree ? 'file' : 'list-tree');
 
-                        if (!leaf) {
-                            const leaves = plugin.app.workspace.getLeavesOfType(
-                                isTree ? TREE_VIEW_TYPE : 'markdown',
-                            );
-                            leaf = leaves.find(
-                                (l) =>
-                                    (l.view as MarkdownView)?.file?.path ===
-                                    file.path,
-                            );
-                        }
-                        setTimeout(() => {
-                            if (leaf) {
-                                leaf.setViewState({
-                                    type: isTree ? 'markdown' : TREE_VIEW_TYPE,
-                                    popstate: true,
-                                    state: leaf.view.getState(),
-                                } as ViewState);
-                            }
-                        }, 0);
+                        item.onClick(() =>
+                            toggleFileViewType(plugin, abstractFile, leaf),
+                        );
                     });
-                });
-            }
-        }),
+                } else if (abstractFile instanceof TFolder) {
+                    menu.addItem((item) => {
+                        item.setTitle(lang.new_file);
+                        item.setIcon('list-tree');
+
+                        item.onClick(() => createNewFile(plugin, abstractFile));
+                    });
+                }
+            },
+        ),
     );
 };

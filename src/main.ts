@@ -1,5 +1,5 @@
 import { Plugin, WorkspaceLeaf } from 'obsidian';
-import { TREE_VIEW_TYPE, TreeView } from './view/view';
+import { FILE_VIEW_TYPE, LineageView } from './view/view';
 import {
     setViewState,
     subscribeDocumentsTypeCacheToSettings,
@@ -17,19 +17,24 @@ import { registerFileMenuEvent } from 'src/obsidian/events/workspace/register-fi
 import { registerFileRenameEvent } from 'src/obsidian/events/vault/register-file-move-event';
 import { registerFileDeleteEvent } from 'src/obsidian/events/vault/register-file-delete-event';
 import { applySnapshotEffect } from 'src/stores/file-history/effects/apply-snapshot-effect';
+import { addCommands } from 'src/obsidian/commands/add-commands';
 
-export default class TreeEdit extends Plugin {
+export default class Lineage extends Plugin {
     settings: Store<Settings, SettingsActions>;
     private onDestroyCallbacks: Set<() => void> = new Set();
 
     async onload() {
         await this.loadSettings();
 
-        this.registerView(TREE_VIEW_TYPE, (leaf) => new TreeView(leaf, this));
+        this.registerView(
+            FILE_VIEW_TYPE,
+            (leaf) => new LineageView(leaf, this),
+        );
         // @ts-ignore
         this.register(around(WorkspaceLeaf.prototype, { setViewState }));
         this.registerEvents();
         this.registerEffects();
+        addCommands(this);
     }
 
     onunload() {

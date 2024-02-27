@@ -268,6 +268,7 @@ describe('delete node', () => {
                         deletedNode,
                         belowDeletedNode,
                     ]),
+                    sortedParentNodes: [],
                 },
                 draggedBranch: { node: content, childGroups: new Set() },
                 editing: { activeNodeId: content, savePreviousNode: true },
@@ -315,6 +316,7 @@ describe('delete node', () => {
                     childGroups: new Set(),
                     parentNodes: new Set(),
                     siblingNodes: new Set([belowDeletedNode]),
+                    sortedParentNodes: [],
                 },
                 draggedBranch: { node: content, childGroups: new Set() },
                 editing: { activeNodeId: '', savePreviousNode: true },
@@ -324,7 +326,7 @@ describe('delete node', () => {
                 path: 'Untitled.md',
                 frontmatter: '',
             },
-        };
+        } satisfies DocumentState;
         deleteNode(stateBefore);
         expect(stateBefore).toEqual(stateAfter);
     });

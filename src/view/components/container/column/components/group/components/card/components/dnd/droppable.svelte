@@ -26,6 +26,10 @@
     class={clx('node', active && activeStatusClasses[active])}
     id={nodeId}
     on:click={setActive}
+    on:dblclick={() => {
+        setActive();
+        store.dispatch({ type: 'ENABLE_EDIT_MODE' });
+    }}
     use:droppable={store}
 >
     <slot />
@@ -62,24 +66,23 @@
         height: fit-content;
         display: flex;
         position: relative;
-		background-color: var(--background-color-inactive-node);
-		color: var(--color-inactive-node);
+        background-color: var(--background-color-inactive-node);
+        color: var(--color-inactive-node);
         border-radius: var(--radius-m);
         overflow: hidden;
-		font-size: 16px;
-
+        font-size: 16px;
     }
 
     .active-node,
     .active-child {
-		color: var(--color-active-node);
+        color: var(--color-active-node);
         background-color: var(--background-active-node);
     }
 
     .active-parent,
     .active-sibling {
-		color: var(--color-active-child);
-        background-color:var(--background-active-parent) ;
+        color: var(--color-active-child);
+        background-color: var(--background-active-parent);
     }
 
 </style>

@@ -4,12 +4,13 @@
 	import Hotkeys from './hotkeys/hotkeys.svelte';
 	import FileHistory from './file-history/file-histoy.svelte';
 	import { DocumentStore } from '../../view';
-	import TreeEdit from '../../../main';
+	import Lineage from '../../../main';
 	import { setContext } from 'svelte';
 	import Container from './container.svelte';
+	import Breadcrumbs from './breadcrumbs/breadcrumbs.svelte';
 
 	export let store: DocumentStore;
-    export let plugin: TreeEdit;
+    export let plugin: Lineage;
     const settings = plugin.settings;
     setContext('store', store);
     setContext('plugin', plugin);
@@ -20,6 +21,7 @@
         $settings.ui.theme === 'dark' ? 'ash-theme-light' : 'ash-theme-dark'
     }`}
 >
+	<Breadcrumbs/>
     <ControlsBar
         fileHistory={$fileHistoryStore.documents[$store.file.path]}
         path={$store.file.path}
@@ -40,6 +42,7 @@
     :root {
         --sidebar-right: 50px;
         --node-gap: 4px;
+		--z-index-breadcrumbs:10;
         /*slate900*/
     }
 

@@ -63,6 +63,7 @@ export type DocumentState = {
             childGroups: Set<string>;
             siblingNodes: Set<string>;
             node: string;
+            sortedParentNodes: ColumnNode[];
         };
         draggedBranch: {
             childGroups: Set<string>;
