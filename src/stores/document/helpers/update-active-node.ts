@@ -1,5 +1,6 @@
 import { findNode } from 'src/stores/document/helpers/find-node';
 import {
+    findGroup,
     findSiblings,
     traverseDown,
     traverseUp,
@@ -28,14 +29,21 @@ export const updateActiveNode = (
         traverseDown(childGroups, childNodes, state.columns, node);
         const siblingNodes = new Set<string>();
         findSiblings(siblingNodes, state.columns, node);
-        state.state.activeBranch.parentNodes = parentIDs;
-        state.state.activeBranch.childGroups = childGroups;
-        state.state.activeBranch.childNodes = childNodes;
-        state.state.activeBranch.siblingNodes = siblingNodes;
-        state.state.activeBranch.sortedParentNodes = sortedParents.reverse();
+        const group = findGroup(state.columns, node);
+        if (!group) throw new Error('could not find group for node ' + node.id);
+        state.state.activeBranch = {
+            parentNodes: parentIDs,
+            childGroups: childGroups,
+            childNodes: childNodes,
+            siblingNodes: siblingNodes,
+            sortedParentNodes: sortedParents.reverse(),
+            node: node.id,
+            group: group.id,
+        };
     } else {
         state.state.activeBranch = {
             node: '',
+            group: '',
             childNodes: new Set<string>(),
             parentNodes: new Set<string>(),
             siblingNodes: new Set<string>(),

@@ -2,10 +2,14 @@
 	import { getStore } from '../../../../../../../context';
 	import { droppable } from 'src/view/actions/dnd/droppable';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
+	import Bridges from '../bridges/bridges.svelte';
 	import clx from 'classnames';
 
 	export let nodeId: string;
     export let active: ActiveStatus | null;
+    export let hasChildren: boolean;
+    export let parentId: string;
+    export let editing: boolean;
 
     const setActive = () => {
         store.dispatch({
@@ -23,7 +27,7 @@
 </script>
 
 <div
-    class={clx('node', active && activeStatusClasses[active])}
+    class={clx('lineage__card', 'node', active && activeStatusClasses[active])}
     id={nodeId}
     on:click={setActive}
     on:dblclick={() => {
@@ -33,6 +37,7 @@
     use:droppable={store}
 >
     <slot />
+    <Bridges {active} {editing} {hasChildren} {parentId} />
 </div>
 
 <style>
@@ -68,8 +73,6 @@
         position: relative;
         background-color: var(--background-color-inactive-node);
         color: var(--color-inactive-node);
-        border-radius: var(--radius-m);
-        overflow: hidden;
         font-size: 16px;
     }
 
@@ -79,10 +82,16 @@
         background-color: var(--background-active-node);
     }
 
+    .active-node {
+        border-left: 5px #55b1ae solid;
+    }
+    .active-child:hover {
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
     .active-parent,
     .active-sibling {
         color: var(--color-active-child);
         background-color: var(--background-active-parent);
     }
-
 </style>

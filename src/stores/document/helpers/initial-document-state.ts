@@ -5,6 +5,7 @@ export const initialDocumentState = (): DocumentState => ({
     state: {
         activeBranch: {
             node: '',
+            group: '',
             childNodes: new Set<string>(),
             childGroups: new Set<string>(),
             parentNodes: new Set<string>(),

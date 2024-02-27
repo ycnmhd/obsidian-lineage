@@ -13,7 +13,7 @@
 </script>
 
 <button
-    class={classNames(classes, positionClasses[position])}
+    class={classNames(classes, positionClasses[position],'lineage__floating-button')}
 	on:click
 >
     <slot />
@@ -22,17 +22,21 @@
 <style>
     :root {
         --floating-button-width: 30px;
-        --floating-button-height: 20px;
+        --floating-button-height: 30px;
         --node-width: 400px;
         --floating-button-bg: #dbdbdb;
+		--position-tb: -10px;
+		--position-lr:-5px;
     }
     button {
-        color: black;
+        color: var(--color-acive-node);
         width: var(--floating-button-width);
         height: var(--floating-button-height);
         position: absolute;
-        opacity: 0.3;
-        background-color: var(--floating-button-bg);
+        opacity: 0;
+		box-shadow: none;
+		border: none;
+        background-color: transparent;
         transition: opacity 200ms;
         padding: 8px;
         cursor: pointer;
@@ -46,38 +50,25 @@
 
     .position-top {
         /*top: calc((-1 * var(--height)) / 2);*/
-        top: 0;
+        top: var(--position-tb);
         left: calc(50% - calc(var(--floating-button-width) / 2));
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
     }
     .position-bottom {
         /*bottom: calc((-1 * var(--height)) / 2);*/
-        bottom: 0;
+        bottom:var(--position-tb);
         left: calc(50% - calc(var(--floating-button-width) / 2));
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
     }
     .position-right {
         top: calc(50% - calc(var(--floating-button-height) / 2));
-        /*right: calc((1 * var(--width)));*/
-        right: 0;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+        right: var(--position-lr);
     }
 
     .position-bottom-right {
-        bottom: 0;
-        right: 0;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
+        bottom: var(--position-lr);
+        right: var(--position-lr);
     }
     .position-top-right {
-        top: 0;
-        right: 0;
-        border-bottom-right-radius: 0;
-        border-top-right-radius: 0;
-        border-top-left-radius: 0;
+        top: var(--position-lr);
+        right: var(--position-lr);
     }
 </style>

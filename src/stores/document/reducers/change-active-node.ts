@@ -31,11 +31,13 @@ export const changeActiveNode = (
         const group = findChildGroup(columns, node);
         if (group) {
             nextNode = group.nodes[0];
-        } else {
+        }
+        // commenting this because a childless node should not be able to navigate right
+        /*else {
             const nextColumn = columns[columnIndex + 1];
             if (!nextColumn) return;
             nextNode = nextColumn.groups[0]?.nodes?.[0];
-        }
+        }*/
     } else {
         const allNodes = column.groups.map((g) => g.nodes).flat();
         const nodeIndex = allNodes.findIndex((n) => n.id === node.id);

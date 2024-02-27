@@ -8,18 +8,24 @@ export const jsonToMarkdown = (
     tree: TreeNode[],
     parentNumber = '',
     text = '',
+    includeStructure = true,
 ) => {
     for (let i = 0; i < tree.length; i++) {
         const node = tree[i];
         const content = node.content;
         const index = i + 1;
-        if (text) text = text + '\n';
-        text += delimiter(parentNumber, index) + '\n' + content;
+        if (text) text = text + (includeStructure ? '\n' : '\n\n');
+        if (includeStructure) {
+            text += delimiter(parentNumber, index) + '\n' + content;
+        } else {
+            text += content;
+        }
         if (node.children.length > 0) {
             text = jsonToMarkdown(
                 node.children,
                 level(parentNumber, index),
                 text,
+                includeStructure,
             );
         }
     }

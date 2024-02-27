@@ -35,6 +35,5 @@
     .columns {
         display: flex;
         align-items: center;
-        gap: var(--node-gap);
     }
 </style>

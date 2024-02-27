@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { NodeDirection } from '../../../../../../../../../../stores/document/document-reducer';
+	import { NodeDirection } from 'src/stores/document/document-reducer';
 	import { getStore } from '../../../../../../../context';
 	import FloatingButton from './floating-button.svelte';
-	import { PlusIcon } from 'lucide-svelte';
+	import { ChevronDown, ChevronRight, ChevronUp } from 'lucide-svelte';
 
 	export let position: NodeDirection;
     const store = getStore();
@@ -13,9 +13,16 @@
             payload: {  position },
         });
     };
+	const chevrons = {
+		right: ChevronRight,
+		top:ChevronUp,
+		bottom: ChevronDown
+	}
 </script>
 
-<FloatingButton on:click={createCard} {position}><PlusIcon /></FloatingButton>
+<FloatingButton on:click={createCard} {position}>
+	<svelte:component this={chevrons[position]}></svelte:component>
+</FloatingButton>
 
 <style>
 </style>

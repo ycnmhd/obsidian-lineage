@@ -104,8 +104,6 @@
                 <Moon class="svg-icon" />
             {/if}
         </button>
-    </div>
-    <div class="canvas-control-group">
         <button
             aria-label="Help"
             class="canvas-control-item"

@@ -23,19 +23,22 @@
 		width: 100%;
 		background-color: transparent;
 		display: flex;
+		position: relative;
 	}
 	.drag-handle {
 		height: 100%;
-		width: 8px;
+		width: 5px;
 		background-color: transparent;
 		cursor: grab;
+		position: absolute;
+		left: 0
 	}
 	.draggable:hover .drag-handle {
 		background-size: 2px 4px;
 		background-image: linear-gradient(
 			0deg,
 			hsla(0, 0%, 44.7%, 0.25) 20%,
-			transparent 50%
+			transparent 40%
 		);
 	}
 

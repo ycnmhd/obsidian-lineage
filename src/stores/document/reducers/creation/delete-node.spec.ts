@@ -278,7 +278,7 @@ describe('delete node', () => {
                 path: 'Untitled.md',
                 frontmatter: '',
             },
-        } satisfies DocumentState;
+        };
 
         const stateAfter = {
             columns: [
@@ -317,6 +317,7 @@ describe('delete node', () => {
                     parentNodes: new Set(),
                     siblingNodes: new Set([belowDeletedNode]),
                     sortedParentNodes: [],
+                    group: 'g-lt3bize4',
                 },
                 draggedBranch: { node: content, childGroups: new Set() },
                 editing: { activeNodeId: '', savePreviousNode: true },
@@ -326,8 +327,8 @@ describe('delete node', () => {
                 path: 'Untitled.md',
                 frontmatter: '',
             },
-        } satisfies DocumentState;
-        deleteNode(stateBefore);
+        };
+        deleteNode(stateBefore as unknown as DocumentState);
         expect(stateBefore).toEqual(stateAfter);
     });
 });

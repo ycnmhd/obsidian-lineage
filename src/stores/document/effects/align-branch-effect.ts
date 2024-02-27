@@ -63,7 +63,7 @@ export const alignBranchEffect = (
                 alignBranch(
                     store,
                     container,
-                    action.type === 'APPLY_SNAPSHOT' ? 'instant' : undefined,
+                    /*action.type === 'APPLY_SNAPSHOT' ? 'instant' :*/ undefined,
                 );
             }, 32);
         }

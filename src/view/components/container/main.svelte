@@ -73,8 +73,8 @@
     .ash-theme-light {
         --background-color-container: #7b92a1;
         /*inactive node*/
-        --background-color-inactive-node: #aab7bf;
-        --color-inactive-node: #ffffff;
+		--background-color-inactive-node: #8ba5b6;
+		--color-inactive-node: #edf1f0;
         /*active node*/
         --background-active-node: #ffffff;
         --color-active-node: #0f172a;
