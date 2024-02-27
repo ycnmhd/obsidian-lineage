@@ -26,6 +26,8 @@ export type DeleteNodeAction = {
 };
 
 export const deleteNode = (state: DocumentState) => {
+    if (state.state.activeBranch.node === state.state.editing.activeNodeId)
+        return;
     const node = findNode(state.columns, state.state.activeBranch.node);
     if (node) {
         const nextNode = findNextActiveNode(state.columns, node);

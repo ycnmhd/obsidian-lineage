@@ -71,7 +71,7 @@ export const addSnapshot = (
         actionType: action.payload.actionType,
     } as Snapshot;
 
-    if (snapshot.actionType === 'LOAD_DATA') {
+    if (snapshot.actionType === 'FILE/LOAD_DOCUMENT') {
         document.snapshots = [snapshot];
         document.state.activeIndex = 0;
     } else {

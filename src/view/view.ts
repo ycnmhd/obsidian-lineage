@@ -20,6 +20,7 @@ import { findNode } from 'src/stores/document/helpers/find-node';
 import { findNodePosition } from 'src/stores/document/helpers/find-branch';
 import { stores } from 'src/view/helpers/stores-cache';
 import { clone } from 'src/helpers/clone';
+import { extractFrontmatter } from 'src/view/helpers/extract-frontmatter';
 
 export const TREE_VIEW_TYPE = 'tree';
 
@@ -98,15 +99,17 @@ export class TreeView extends TextFileView {
     };
 
     private requestSaveWrapper = async (actionType?: string) => {
-        const store = clone(this.store.getValue());
-        const data: string = jsonToMarkdown(columnsToJsonTree(store.columns));
+        const state = clone(this.store.getValue());
+        const data: string =
+            state.file.frontmatter +
+            jsonToMarkdown(columnsToJsonTree(state.columns));
         if (data !== this.data) {
             if (actionType !== 'APPLY_SNAPSHOT') {
                 const path = this.file?.path;
                 if (!path) throw new Error('view does not have a file');
                 const node = findNode(
-                    store.columns,
-                    store.state.activeBranch.node,
+                    state.columns,
+                    state.state.activeBranch.node,
                 );
 
                 fileHistoryStore.dispatch({
@@ -115,7 +118,7 @@ export class TreeView extends TextFileView {
                         data: data,
                         path,
                         position: node
-                            ? findNodePosition(store.columns, node)
+                            ? findNodePosition(state.columns, node)
                             : null,
                         actionType: actionType ? actionType : null,
                     },
@@ -176,13 +179,14 @@ export class TreeView extends TextFileView {
                 actionType: 'INITIAL_DOCUMENT',
             },
         });
-        if (!this.data) this.store.dispatch({ type: 'CREATE_FIRST_NODE' });
-        else {
-            this.store.dispatch({
-                payload: { document: { data: this.data, position: null } },
-                type: 'LOAD_DATA',
-            });
-        }
+        const { data, frontmatter } = extractFrontmatter(this.data);
+
+        this.store.dispatch({
+            payload: {
+                document: { data: data, frontmatter, position: null },
+            },
+            type: 'FILE/LOAD_DOCUMENT',
+        });
     };
     private useExistingStore = () => {
         if (!this.file) return;

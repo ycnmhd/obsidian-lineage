@@ -275,6 +275,7 @@ describe('delete node', () => {
             },
             file: {
                 path: 'Untitled.md',
+                frontmatter: '',
             },
         } satisfies DocumentState;
 
@@ -321,6 +322,7 @@ describe('delete node', () => {
             },
             file: {
                 path: 'Untitled.md',
+                frontmatter: '',
             },
         };
         deleteNode(stateBefore);

@@ -8,7 +8,6 @@ import {
     moveNode,
 } from 'src/stores/document/reducers/move-node/move-node';
 import { onDragEnd } from 'src/stores/document/reducers/on-drag-end';
-import { createFirstNode } from 'src/stores/document/reducers/create-first-node';
 import {
     loadDocument,
     LoadDocumentAction,
@@ -81,6 +80,7 @@ export type DocumentState = {
 
     file: {
         path: string | null;
+        frontmatter: string;
     };
 };
 
@@ -90,6 +90,7 @@ export type NodeDirection = SiblingPosition | 'right';
 export type SavedDocument = {
     data: string;
     position: NodePosition | null;
+    frontmatter: string;
 };
 
 export type DocumentAction =
@@ -101,9 +102,6 @@ export type DocumentAction =
           payload: {
               id: string;
           };
-      }
-    | {
-          type: 'CREATE_FIRST_NODE';
       }
     | { type: 'RESET_STORE' }
     | DisableEditModeAction
@@ -159,10 +157,11 @@ const updateState = (state: DocumentState, action: DocumentAction) => {
         onDragEnd(state);
     }
     // life cycle and other
-    else if (action.type === 'LOAD_DATA' || action.type === 'APPLY_SNAPSHOT') {
+    else if (
+        action.type === 'FILE/LOAD_DOCUMENT' ||
+        action.type === 'APPLY_SNAPSHOT'
+    ) {
         loadDocument(state, action);
-    } else if (action.type === 'CREATE_FIRST_NODE') {
-        createFirstNode(state);
     } else if (action.type === 'RESET_STORE') {
         resetDocument(state);
     } else if (action.type === 'FS/SET_FILE_PATH') {

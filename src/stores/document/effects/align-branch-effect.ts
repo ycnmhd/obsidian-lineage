@@ -50,8 +50,7 @@ export const alignBranchEffect = (
         if (
             action.type === 'SET_ACTIVE_NODE' ||
             action.type === 'CREATE_NODE' ||
-            action.type === 'CREATE_FIRST_NODE' ||
-            action.type === 'LOAD_DATA' ||
+            action.type === 'FILE/LOAD_DOCUMENT' ||
             action.type === 'DROP_NODE' ||
             action.type === 'CHANGE_ACTIVE_NODE' ||
             action.type === 'APPLY_SNAPSHOT' ||
