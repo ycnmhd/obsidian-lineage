@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { delimiter } from 'src/stores/document/helpers/json-to-md/markdown-to-json/helpers/delimiter';
 import { markdownToJson } from 'src/stores/document/helpers/json-to-md/markdown-to-json/markdown-to-json';
+import { ginkgo_welcome } from 'src/stores/document/helpers/json-to-md/json-to-makdown/data/ginkgo_welcome';
+import { ginkgo_academic_paper } from 'src/stores/document/helpers/json-to-md/json-to-makdown/data/ginkgo_acedemic_paper';
 
 describe('markdown to json', () => {
     it('case', () => {
@@ -73,6 +75,57 @@ describe('markdown to json', () => {
         const actual = markdownToJson(
             [`text 1`, `<!--section: 1-->`, 'text 2'].join('\n'),
         );
+
         expect(actual).toEqual(output);
+    });
+    it('bug 24-02-28', () => {
+        const input = `
+<!--section: 1-->
+text 1
+
+<!--section: 1.1-->
+text 2
+
+<!--section: 1.1.1-->
+text 3
+
+<!--section: 1.2-->
+text 6
+
+<!--section: 2-->
+text 7`;
+        const output = [
+            {
+                content: 'text 1',
+                children: [
+                    {
+                        content: 'text 2',
+                        children: [
+                            { content: 'text 3', children: [] },
+                            /*   { content: 'text 4', children: [] },
+                            { content: 'text 5', children: [] },*/
+                        ],
+                    },
+                    { content: 'text 6', children: [] },
+                ],
+            },
+
+            { content: 'text 7', children: [] },
+        ];
+
+        const actual = markdownToJson(input);
+        expect(actual).toEqual(output);
+    });
+
+    it('ginkgo_welcome', () => {
+        const { annotatedMd, json } = ginkgo_welcome;
+        const actual = markdownToJson(annotatedMd);
+        expect(actual).toEqual(json);
+    });
+
+    it('ginkgo_academic_paper', () => {
+        const { annotatedMd, json } = ginkgo_academic_paper;
+        const actual = markdownToJson(annotatedMd);
+        expect(actual).toEqual(json);
     });
 });

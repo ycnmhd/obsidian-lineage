@@ -52,7 +52,7 @@ export const markdownToJson = (text: string) => {
                     currentNode.children.push(newNode);
                     currentNode = newNode;
                 } else {
-                    if (parent.split('.').length === 1) {
+                    if (!parent) {
                         if (currentNode) trimCurrentNode(currentNode);
                         tree.push(newNode);
                         currentNode = newNode;

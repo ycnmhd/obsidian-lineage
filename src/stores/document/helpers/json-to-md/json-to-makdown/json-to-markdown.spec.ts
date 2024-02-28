@@ -65,13 +65,11 @@ describe('json to markdown', () => {
     it('ginkgo_welcome', () => {
         const { md, json } = ginkgo_welcome;
         const actual = jsonToMarkdown(json, undefined, undefined, false);
-        console.log(actual);
         expect(actual).toEqual(md);
     });
     it('exported ginkgo_academic_paper', () => {
         const { md, json } = ginkgo_academic_paper;
         const actual = jsonToMarkdown(json, undefined, undefined, false);
-        console.log(actual);
         expect(actual).toEqual(md);
     });
 });
