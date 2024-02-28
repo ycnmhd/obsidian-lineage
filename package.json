@@ -1,6 +1,6 @@
 {
-    "name": "tree-edit",
-    "version": "0.1.0",
+    "name": "lineage",
+    "version": "0.1.0-dev",
     "description": "",
     "scripts": {
         "dev": "node esbuild.config.mjs",
@@ -34,6 +34,7 @@
         "husky": "8.0.3",
         "lint-staged": "13.1.0",
         "lucide-svelte": "0.292.0",
+        "monkey-around": "3.0.0",
         "obsidian": "latest",
         "prettier": "3.0.3",
         "prettier-plugin-svelte": "3.1.2",
@@ -43,8 +44,6 @@
         "tslib": "2.4.0",
         "typescript": "5.3.3",
         "uniqid": "5.4.0",
-        "vitest": "0.34.5",
-        "monkey-around": "3.0.0"
-    },
-    "dependencies": {}
+        "vitest": "0.34.5"
+    }
 }

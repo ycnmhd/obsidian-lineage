@@ -31,4 +31,4 @@ jobs:
                   gh release create "$tag" \
                     --title="$tag" \
                     --draft \
-                    manifest.json temp/vault/.obsidian/plugins/tree-edit/main.js temp/vault/.obsidian/plugins/tree-edit/styles.css
+                    manifest.json temp/vault/.obsidian/plugins/lineage-dev/main.js temp/vault/.obsidian/plugins/lineage-dev/styles.css
