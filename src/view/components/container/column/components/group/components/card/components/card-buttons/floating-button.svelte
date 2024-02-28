@@ -1,0 +1,74 @@
+<script lang="ts">
+	import classNames from 'classnames';
+
+	export let classes = '';
+    export let position: keyof typeof positionClasses;
+    const positionClasses = {
+        top: 'position-top',
+        right: 'position-right',
+        bottom: 'position-bottom',
+        'bottom-right': 'position-bottom-right',
+        'top-right': 'position-top-right',
+    };
+</script>
+
+<button
+    class={classNames(classes, positionClasses[position],'lineage__floating-button')}
+	on:click
+>
+    <slot />
+</button>
+
+<style>
+    :root {
+        --floating-button-width: 30px;
+        --floating-button-height: 30px;
+        --node-width: 400px;
+        --floating-button-bg: #dbdbdb;
+		--position-tb: -10px;
+		--position-lr:-5px;
+    }
+    button {
+        color: var(--color-acive-node);
+        width: var(--floating-button-width);
+        height: var(--floating-button-height);
+        position: absolute;
+        opacity: 0;
+		box-shadow: none;
+		border: none;
+        background-color: transparent;
+        transition: opacity 200ms;
+        padding: 8px;
+        cursor: pointer;
+    }
+	.is-disabled{
+		cursor: not-allowed;
+	}
+    button:not(.is-disabled):hover {
+        opacity: 8;
+    }
+
+    .position-top {
+        /*top: calc((-1 * var(--height)) / 2);*/
+        top: var(--position-tb);
+        left: calc(50% - calc(var(--floating-button-width) / 2));
+    }
+    .position-bottom {
+        /*bottom: calc((-1 * var(--height)) / 2);*/
+        bottom:var(--position-tb);
+        left: calc(50% - calc(var(--floating-button-width) / 2));
+    }
+    .position-right {
+        top: calc(50% - calc(var(--floating-button-height) / 2));
+        right: var(--position-lr);
+    }
+
+    .position-bottom-right {
+        bottom: var(--position-lr);
+        right: var(--position-lr);
+    }
+    .position-top-right {
+        top: var(--position-lr);
+        right: var(--position-lr);
+    }
+</style>

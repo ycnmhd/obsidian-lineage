@@ -6,3 +6,7 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+
+.lineage__card:hover .lineage__floating-button{
+	opacity: 0.3
+}
