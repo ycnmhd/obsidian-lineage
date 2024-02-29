@@ -1,4 +1,8 @@
-import { Column, DocumentState } from 'src/stores/document/document-reducer';
+import {
+    Column,
+    ColumnNode,
+    DocumentState,
+} from 'src/stores/document/document-reducer';
 import { findNode } from 'src/stores/document/helpers/find-node';
 import { traverseDown } from 'src/stores/document/helpers/find-branch';
 import { findNextActiveNode } from 'src/stores/document/reducers/structure/delete-node/helpers/find-next-active-node';
@@ -22,15 +26,16 @@ const deleteNodeById = (columns: Column[], nodeId: string): void => {
     }
 };
 
-export const isLastNode = (columns: Column[]): boolean => {
-    if (columns.length === 1) {
-        const column = columns[0];
+export const isLastRootNode = (
+    columns: Column[],
+    node: ColumnNode,
+): boolean => {
+    const column = columns[0];
 
-        if (column.groups.length === 1) {
-            const group = column.groups[0];
+    if (column.groups.length === 1) {
+        const group = column.groups[0];
 
-            if (group.nodes.length === 1) return true;
-        }
+        if (group.nodes.length === 1 && group.nodes[0] === node) return true;
     }
     return false;
 };
@@ -44,7 +49,7 @@ export const deleteNode = (state: DocumentState) => {
         return;
     const node = findNode(state.columns, state.state.activeBranch.node);
     if (node) {
-        if (isLastNode(state.columns)) return;
+        if (isLastRootNode(state.columns, node)) return;
         const nextNode = findNextActiveNode(state.columns, node);
         const childGroups = new Set<string>();
         traverseDown(childGroups, new Set<string>(), state.columns, node);

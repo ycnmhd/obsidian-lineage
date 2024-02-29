@@ -8,13 +8,14 @@ export const insertChild = (
     columns: Columns,
     nodeId: string,
     parentId: string,
+    content: string = '',
     __newNodeID__?: string,
 ) => {
     const parentColumnIndex = findNodeColumn(columns, parentId);
     let createdNode: ColumnNode | null = null;
     if (parentColumnIndex !== -1) {
         const childColumnIndex = parentColumnIndex + 1;
-        createdNode = createNode(nodeId, __newNodeID__);
+        createdNode = createNode(nodeId, __newNodeID__, content);
 
         if (columns[childColumnIndex]) {
             const childColumn = columns[childColumnIndex];

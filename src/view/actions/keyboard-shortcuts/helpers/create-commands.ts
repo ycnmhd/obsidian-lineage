@@ -1,6 +1,8 @@
 import { Hotkey } from 'obsidian';
 import { DocumentStore } from 'src/view/view';
 import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
+import Lineage from 'src/main';
+import { addNodeAndSplitAtCursor } from 'src/view/actions/keyboard-shortcuts/helpers/add-node-and-split-at-cursor';
 
 export const hotkeysLang = {
     save_changes_and_exit_card: 'Save changes and exit card',
@@ -10,6 +12,9 @@ export const hotkeysLang = {
     add_child: 'Add child',
     add_below: 'Add card below',
     add_above: 'Add card above',
+    add_child_and_split: 'Add child and split at cursor',
+    add_below_and_split: 'Add card below and split at cursor',
+    add_above_and_split: 'Add card above and split at cursor',
     delete_card: 'Delete card',
     go_up: 'Go up',
     go_down: 'Go down',
@@ -21,11 +26,11 @@ export const hotkeysLang = {
 
 export type PluginCommand = {
     check: (store: DocumentStore) => boolean;
-    callback: (store: DocumentStore) => void;
+    callback: (store: DocumentStore, event: KeyboardEvent) => void;
     hotkeys: Hotkey[];
 };
 
-export const createCommands = () => {
+export const createCommands = (plugin: Lineage) => {
     const isEditing = (store: DocumentStore) => {
         return !!store.getValue().state.editing.activeNodeId;
     };
@@ -41,8 +46,9 @@ export const createCommands = () => {
     };
     return {
         enable_edit_mode: {
-            check: isActive,
-            callback: (store) => {
+            check: isActiveAndNotEditing,
+            callback: (store, event) => {
+                event.preventDefault();
                 store.dispatch({
                     type: 'ENABLE_EDIT_MODE',
                 });
@@ -76,7 +82,7 @@ export const createCommands = () => {
             hotkeys: [{ key: 'Escape', modifiers: [] }],
         },
         add_above: {
-            check: isActive,
+            check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
                     type: 'CREATE_NODE',
@@ -86,15 +92,21 @@ export const createCommands = () => {
                 });
             },
             hotkeys: [
-                { key: 'k', modifiers: ['Ctrl'] },
                 {
                     key: 'ArrowUp',
                     modifiers: ['Ctrl'],
                 },
             ],
         },
-        add_below: {
+        add_above_and_split: {
             check: isActive,
+            callback: (store) => {
+                addNodeAndSplitAtCursor(store, plugin, 'top');
+            },
+            hotkeys: [{ key: 'k', modifiers: ['Ctrl'] }],
+        },
+        add_below: {
+            check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
                     type: 'CREATE_NODE',
@@ -104,15 +116,21 @@ export const createCommands = () => {
                 });
             },
             hotkeys: [
-                { key: 'j', modifiers: ['Ctrl'] },
                 {
                     key: 'ArrowDown',
                     modifiers: ['Ctrl'],
                 },
             ],
         },
-        add_child: {
+        add_below_and_split: {
             check: isActive,
+            callback: (store) => {
+                addNodeAndSplitAtCursor(store, plugin, 'bottom');
+            },
+            hotkeys: [{ key: 'j', modifiers: ['Ctrl'] }],
+        },
+        add_child: {
+            check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
                     type: 'CREATE_NODE',
@@ -122,14 +140,19 @@ export const createCommands = () => {
                 });
             },
             hotkeys: [
-                { key: 'l', modifiers: ['Ctrl'] },
                 {
                     key: 'ArrowRight',
                     modifiers: ['Ctrl'],
                 },
             ],
         },
-
+        add_child_and_split: {
+            check: isActive,
+            callback: (store) => {
+                addNodeAndSplitAtCursor(store, plugin, 'right');
+            },
+            hotkeys: [{ key: 'l', modifiers: ['Ctrl'] }],
+        },
         delete_card: {
             check: isActive,
             callback: (store) => {

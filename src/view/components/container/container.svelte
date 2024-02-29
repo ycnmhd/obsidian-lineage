@@ -1,16 +1,17 @@
 <script lang="ts">
 	import Column from './column/column.svelte';
 	import { keyboardShortcuts } from 'src/view/actions/keyboard-shortcuts/keyboard-shortcuts';
-	import { getStore } from 'src/view/components/container/context';
+	import { getPlugin, getStore } from 'src/view/components/container/context';
 
 	const store = getStore();
+	const plugin = getPlugin()
 </script>
 
 <div
     class="container"
     id="columns-container"
     tabindex="0"
-    use:keyboardShortcuts={store}
+    use:keyboardShortcuts={{store, plugin}}
 >
     <div class="columns">
         {#each $store.columns as column (column.id)}

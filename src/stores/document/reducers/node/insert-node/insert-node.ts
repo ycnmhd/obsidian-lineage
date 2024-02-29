@@ -13,6 +13,7 @@ export type CreateNodeAction = {
     type: 'CREATE_NODE';
     payload: {
         position: NodeDirection;
+        content?: string;
         __newNodeID__?: string;
     };
 };
@@ -27,6 +28,7 @@ export const insertNode = (state: DocumentState, action: CreateNodeAction) => {
             state.columns,
             nodeId,
             parentId,
+            action.payload.content,
             action.payload.__newNodeID__,
         );
     } else {
@@ -41,6 +43,7 @@ export const insertNode = (state: DocumentState, action: CreateNodeAction) => {
                 createdNode = createNode(
                     parentId,
                     action.payload.__newNodeID__,
+                    action.payload.content,
                 );
                 group.nodes.splice(insertionIndex, 0, createdNode);
                 createdNode.id;

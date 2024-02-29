@@ -4,6 +4,7 @@ import {
     PluginCommand,
 } from 'src/view/actions/keyboard-shortcuts/helpers/create-commands';
 import { Hotkey } from 'obsidian';
+import Lineage from 'src/main';
 
 enum Modifiers {
     'Alt' = 'Alt',
@@ -27,11 +28,17 @@ const hotkeyToString = (hotkey: Hotkey) =>
  * custom view */
 export const keyboardShortcuts = (
     target: HTMLElement,
-    store: DocumentStore,
+    {
+        store,
+        plugin,
+    }: {
+        store: DocumentStore;
+        plugin: Lineage;
+    },
 ) => {
     const event = 'keydown';
 
-    const commands = createCommands();
+    const commands = createCommands(plugin);
 
     const commandsDictionary: Record<string, PluginCommand> = {};
     for (const command of Object.values(commands)) {
@@ -44,7 +51,7 @@ export const keyboardShortcuts = (
         if (!(event instanceof KeyboardEvent)) return;
         const command = commandsDictionary[eventToString(event)];
         if (command) {
-            if (command.check(store)) command.callback(store);
+            if (command.check(store)) command.callback(store, event);
         }
     };
     target.addEventListener(event, keyboardEventHandler);
