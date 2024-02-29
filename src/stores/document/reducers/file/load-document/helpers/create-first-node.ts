@@ -1,6 +1,5 @@
 import { id } from 'src/helpers/id';
 import { createNode } from 'src/stores/document/helpers/create-node';
-import { updateActiveNode } from 'src/stores/document/helpers/update-active-node';
 import { DocumentState } from 'src/stores/document/document-reducer';
 
 export const createFirstNode = (state: DocumentState) => {
@@ -17,6 +16,5 @@ export const createFirstNode = (state: DocumentState) => {
                 },
             ],
         });
-        updateActiveNode(state, createdNode.id, true);
     }
 };

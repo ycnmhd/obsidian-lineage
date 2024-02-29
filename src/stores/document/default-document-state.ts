@@ -1,6 +1,6 @@
 import { DocumentState } from 'src/stores/document/document-reducer';
 
-export const initialDocumentState = (): DocumentState => ({
+export const defaultDocumentState = (): DocumentState => ({
     columns: [],
     state: {
         activeBranch: {

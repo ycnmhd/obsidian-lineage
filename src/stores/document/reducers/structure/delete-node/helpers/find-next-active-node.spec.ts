@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { findNextActiveNode } from 'src/stores/document/reducers/creation/helpers/find-next-active-node';
+import { findNextActiveNode } from 'src/stores/document/reducers/structure/delete-node/helpers/find-next-active-node';
 
 describe('find next active node', () => {
     it('should select parent', () => {

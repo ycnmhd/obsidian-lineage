@@ -15,15 +15,15 @@ const getDropPosition = (event: DragEvent, targetElement: HTMLElement) => {
 };
 
 export const dropClasses = {
-    top: 'drop-node-above',
-    bottom: 'drop-node-below',
-    right: 'drop-node-under',
+    top: 'lineage__drop-node-above',
+    bottom: 'lineage__drop-node-below',
+    right: 'lineage__drop-node-under',
 };
 const classesList = Object.values(dropClasses);
 export const droppable = (node: HTMLElement, store: DocumentStore) => {
     function HandleDragLeave(event: DragEvent) {
-        if (!(event.target instanceof HTMLElement)) return;
-        event.target.removeClasses(classesList);
+        if (!(event.currentTarget instanceof HTMLElement)) return;
+        event.currentTarget.removeClasses(classesList);
     }
 
     const handleDragOver = (event: DragEvent) => {
@@ -42,12 +42,14 @@ export const droppable = (node: HTMLElement, store: DocumentStore) => {
 
     function handleDrop(event: DragEvent) {
         event.preventDefault();
-        if (!(event.target instanceof HTMLElement)) return;
+        if (!(event.currentTarget instanceof HTMLElement)) return;
         if (!event.dataTransfer) return;
         const data = event.dataTransfer.getData('text/plain');
         const targetCard = event.currentTarget as HTMLElement;
         if (!targetCard.id.startsWith('n-')) return;
         targetCard.removeClasses(classesList);
+        if (!data) throw new Error(`droppedNodeId is missing`);
+        if (!targetCard.id) throw new Error(`targetCard.id is missing`);
         store.dispatch({
             type: 'DROP_NODE',
             payload: {

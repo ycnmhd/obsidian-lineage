@@ -27,12 +27,13 @@ const alignBranch = (
     }
     for (const column of state.columns) {
         const nodes = column.groups.map((g) => g.nodes).flat();
-        alignElement(
-            container,
-            nodes[nodes.length - 1].id,
-            behavior,
-            localState,
-        );
+        if (nodes.length > 0)
+            alignElement(
+                container,
+                nodes[nodes.length - 1].id,
+                behavior,
+                localState,
+            );
     }
 };
 

@@ -23,16 +23,18 @@ export const draggable = (node: HTMLElement, data: DraggableData) => {
 
     const handleDragstart = (event: DragEvent) => {
         if (!event.dataTransfer) return;
-        const target = event.target as HTMLElement;
-        if (event.clientX - target.getBoundingClientRect().x > 12)
+        const target = event.currentTarget as HTMLElement;
+        if (event.clientX - target.getBoundingClientRect().x > 12) {
             event.preventDefault();
-        else {
-            data.store.dispatch({
-                type: 'SET_DRAG_STARTED',
-                payload: { nodeId: data.id },
-            });
+        } else {
             event.dataTransfer.setData('text/plain', data.id);
-            toggleDraggedNodeVisibility(node, data, false);
+            setTimeout(() => {
+                data.store.dispatch({
+                    type: 'SET_DRAG_STARTED',
+                    payload: { nodeId: data.id },
+                });
+                toggleDraggedNodeVisibility(node, data, false);
+            }, 0);
         }
     };
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deleteNode } from 'src/stores/document/reducers/creation/delete-node';
+import { deleteNode } from 'src/stores/document/reducers/structure/delete-node/delete-node';
 import { DocumentState } from 'src/stores/document/document-reducer';
 
 describe('delete node', () => {
@@ -303,11 +303,6 @@ describe('delete node', () => {
                         },
                     ],
                 },
-
-                { id: 'c-lt3bize7', groups: [] },
-                { id: 'c-lt3bizeb', groups: [] },
-                { id: 'c-lt3bizee', groups: [] },
-                { id: 'c-lt3bizeh', groups: [] },
             ],
             state: {
                 activeBranch: {

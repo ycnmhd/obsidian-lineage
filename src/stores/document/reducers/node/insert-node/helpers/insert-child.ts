@@ -1,8 +1,8 @@
-import { findNodeColumn } from './find-node-column';
-import { createNode } from './create-node';
-import { sortGroups } from './sort-groups';
-import { Columns } from '../document-reducer';
+import { findNodeColumn } from '../../../../helpers/find-node-column';
+import { createNode } from '../../../../helpers/create-node';
+import { ColumnNode, Columns } from '../../../../document-reducer';
 import { id } from 'src/helpers/id';
+import { sortGroups } from 'src/stores/document/reducers/state/helpers/sort-groups';
 
 export const insertChild = (
     columns: Columns,
@@ -11,11 +11,11 @@ export const insertChild = (
     __newNodeID__?: string,
 ) => {
     const parentColumnIndex = findNodeColumn(columns, parentId);
-    let createdNodeId: string | null = null;
+    let createdNode: ColumnNode | null = null;
     if (parentColumnIndex !== -1) {
         const childColumnIndex = parentColumnIndex + 1;
-        const createdNode = createNode(nodeId, __newNodeID__);
-        createdNodeId = createdNode.id;
+        createdNode = createNode(nodeId, __newNodeID__);
+
         if (columns[childColumnIndex]) {
             const childColumn = columns[childColumnIndex];
             const childGroup = childColumn.groups.find(
@@ -47,5 +47,5 @@ export const insertChild = (
             });
         }
     }
-    return createdNodeId;
+    return createdNode;
 };

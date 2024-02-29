@@ -21,6 +21,6 @@ export const findNode = (
             }
         }
     }
-    logger.error('could not find node', nodeId);
+    logger.error('could not find node: ' + nodeId);
     return null;
 };

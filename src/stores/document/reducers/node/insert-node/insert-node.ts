@@ -1,12 +1,13 @@
-import { insertChild } from 'src/stores/document/helpers/insert-child';
+import { insertChild } from 'src/stores/document/reducers/node/insert-node/helpers/insert-child';
 import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
 import { createNode } from 'src/stores/document/helpers/create-node';
 import {
+    ColumnNode,
     DocumentState,
     NodeDirection,
 } from 'src/stores/document/document-reducer';
-import { updateActiveNode } from 'src/stores/document/helpers/update-active-node';
 import { findNode } from 'src/stores/document/helpers/find-node';
+import { updateActiveNode } from 'src/stores/document/reducers/state/update-active-node';
 
 export type CreateNodeAction = {
     type: 'CREATE_NODE';
@@ -20,16 +21,14 @@ export const insertNode = (state: DocumentState, action: CreateNodeAction) => {
     const node = findNode(state.columns, state.state.activeBranch.node);
     if (!node) return;
     const { id: nodeId, parentId } = node;
+    let createdNode: ColumnNode | null = null;
     if (payload.position === 'right') {
-        const createdNodeId = insertChild(
+        createdNode = insertChild(
             state.columns,
             nodeId,
             parentId,
             action.payload.__newNodeID__,
         );
-        if (createdNodeId) {
-            updateActiveNode(state, createdNodeId, true);
-        }
     } else {
         const columnIndex = findNodeColumn(state.columns, parentId);
         const column = state.columns[columnIndex];
@@ -39,13 +38,16 @@ export const insertNode = (state: DocumentState, action: CreateNodeAction) => {
             if (columnIndex !== -1 && index !== -1) {
                 const insertionIndex =
                     action.payload.position === 'top' ? index : index + 1;
-                const createdNode = createNode(
+                createdNode = createNode(
                     parentId,
                     action.payload.__newNodeID__,
                 );
                 group.nodes.splice(insertionIndex, 0, createdNode);
-                updateActiveNode(state, createdNode.id, true);
+                createdNode.id;
             }
         }
+    }
+    if (createdNode) {
+        updateActiveNode(state, createdNode.id, true);
     }
 };

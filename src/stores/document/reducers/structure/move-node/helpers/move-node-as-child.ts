@@ -1,4 +1,3 @@
-import { DropAction } from 'src/stores/document/reducers/move-node/move-node';
 import {
     Column,
     ColumnNode,
@@ -9,7 +8,6 @@ import {
     findGroup,
 } from 'src/stores/document/helpers/find-branch';
 import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
-import { sortGroups } from 'src/stores/document/helpers/sort-groups';
 import {
     createColumn,
     createGroup,
@@ -17,7 +15,6 @@ import {
 
 export const moveNodeAsChild = (
     columns: Columns,
-    action: DropAction,
     droppedNode: ColumnNode,
     targetNode: ColumnNode,
 ) => {
@@ -32,7 +29,6 @@ export const moveNodeAsChild = (
         targetGroup.nodes.push(droppedNode);
     } else {
         const currentColumnIndex = findNodeColumn(columns, targetNode.parentId);
-        const currentColumn = columns[currentColumnIndex];
         let targetColumn: Column | undefined;
         targetColumn = columns[currentColumnIndex + 1];
 
@@ -44,9 +40,5 @@ export const moveNodeAsChild = (
         const newGroup = createGroup(targetNode.id);
         newGroup.nodes.push(droppedNode);
         targetColumn.groups.push(newGroup);
-        targetColumn.groups = sortGroups(
-            currentColumn.groups,
-            targetColumn.groups,
-        );
     }
 };

@@ -13,7 +13,7 @@ import { saveDocumentEffect } from 'src/stores/document/effects/save-document-ef
 import { columnsToJsonTree } from 'src/stores/document/helpers/json-to-md/columns-to-json/columns-to-json-tree';
 import { jsonToMarkdown } from 'src/stores/document/helpers/json-to-md/json-to-makdown/json-to-markdown';
 import { Store } from 'src/helpers/store';
-import { initialDocumentState } from 'src/stores/document/helpers/initial-document-state';
+import { defaultDocumentState } from 'src/stores/document/default-document-state';
 import { bringFocusToContainer } from 'src/stores/document/effects/bring-focus-to-container';
 import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
 import { findNode } from 'src/stores/document/helpers/find-node';
@@ -38,7 +38,7 @@ export class LineageView extends TextFileView {
         private plugin: Lineage,
     ) {
         super(leaf);
-        this.store = new Store(initialDocumentState(), documentReducer);
+        this.store = new Store(defaultDocumentState(), documentReducer);
     }
 
     getViewData(): string {

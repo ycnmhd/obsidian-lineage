@@ -3,7 +3,7 @@ import {
     __clone__,
     __compareColumns__,
     __generateColumn__,
-} from 'src/stores/document/reducers/move-node/helpers/test-helpers';
+} from 'src/stores/document/reducers/structure/move-node/helpers/test-helpers';
 import { jsonTreeToColumns } from 'src/stores/document/helpers/json-to-md/json-to-columns/json-tree-to-columns';
 import { columnsToJsonTree } from 'src/stores/document/helpers/json-to-md/columns-to-json/columns-to-json-tree';
 import { Column } from 'src/stores/document/document-reducer';

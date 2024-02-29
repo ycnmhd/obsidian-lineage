@@ -1,4 +1,4 @@
-import { DropAction } from 'src/stores/document/reducers/move-node/move-node';
+import { DropAction } from 'src/stores/document/reducers/structure/move-node/move-node';
 import { ColumnNode, Columns } from 'src/stores/document/document-reducer';
 import { findGroup } from 'src/stores/document/helpers/find-branch';
 

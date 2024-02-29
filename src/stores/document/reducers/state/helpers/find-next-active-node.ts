@@ -1,20 +1,13 @@
-import { findNode } from 'src/stores/document/helpers/find-node';
-import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
-import { findChildGroup } from 'src/stores/document/helpers/find-branch';
-import { updateActiveNode } from 'src/stores/document/helpers/update-active-node';
 import {
     ColumnNode,
     DocumentState,
-    NodeDirection,
 } from 'src/stores/document/document-reducer';
+import { findNode } from 'src/stores/document/helpers/find-node';
+import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
+import { findChildGroup } from 'src/stores/document/helpers/find-branch';
+import { ChangeActiveNodeAction } from 'src/stores/document/reducers/state/change-active-node';
 
-export type ChangeActiveNodeAction = {
-    type: 'CHANGE_ACTIVE_NODE';
-    payload: {
-        direction: NodeDirection | 'left';
-    };
-};
-export const changeActiveNode = (
+export const findNextActiveNode = (
     state: DocumentState,
     action: ChangeActiveNodeAction,
 ) => {
@@ -34,10 +27,10 @@ export const changeActiveNode = (
         }
         // commenting this because a childless node should not be able to navigate right
         /*else {
-            const nextColumn = columns[columnIndex + 1];
-            if (!nextColumn) return;
-            nextNode = nextColumn.groups[0]?.nodes?.[0];
-        }*/
+			const nextColumn = columns[columnIndex + 1];
+			if (!nextColumn) return;
+			nextNode = nextColumn.groups[0]?.nodes?.[0];
+		}*/
     } else {
         const allNodes = column.groups.map((g) => g.nodes).flat();
         const nodeIndex = allNodes.findIndex((n) => n.id === node.id);
@@ -52,7 +45,5 @@ export const changeActiveNode = (
             }
         }
     }
-    if (nextNode) {
-        updateActiveNode(state, nextNode.id);
-    }
+    return nextNode;
 };

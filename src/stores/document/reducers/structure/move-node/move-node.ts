@@ -1,11 +1,14 @@
 import { findNode } from 'src/stores/document/helpers/find-node';
 import { findGroup } from 'src/stores/document/helpers/find-branch';
-import { Columns, NodeDirection } from 'src/stores/document/document-reducer';
-import { moveNodeAsSibling } from 'src/stores/document/reducers/move-node/helpers/move-node-as-sibling';
+import {
+    DocumentState,
+    NodeDirection,
+} from 'src/stores/document/document-reducer';
+import { moveNodeAsSibling } from 'src/stores/document/reducers/structure/move-node/helpers/move-node-as-sibling';
 
-import { moveNodeAsChild } from 'src/stores/document/reducers/move-node/helpers/move-node-as-child';
-import { moveChildGroups } from 'src/stores/document/reducers/move-node/helpers/move-child-groups';
-import { sortGroups } from 'src/stores/document/helpers/sort-groups';
+import { moveNodeAsChild } from 'src/stores/document/reducers/structure/move-node/helpers/move-node-as-child';
+import { moveChildGroups } from 'src/stores/document/reducers/structure/move-node/helpers/move-child-groups';
+import { cleanAndSortColumns } from 'src/stores/document/reducers/state/helpers/clean-and-sort-columns';
 
 export type DropAction = {
     type: 'DROP_NODE';
@@ -15,7 +18,11 @@ export type DropAction = {
         position: NodeDirection;
     };
 };
-export const moveNode = (columns: Columns, action: DropAction) => {
+export const moveNode = (
+    state: Pick<DocumentState, 'columns'>,
+    action: DropAction,
+) => {
+    const columns = state.columns;
     const droppedNode = findNode(columns, action.payload.droppedNodeId);
     const targetNode = findNode(columns, action.payload.targetNodeId);
     if (droppedNode && targetNode) {
@@ -27,7 +34,7 @@ export const moveNode = (columns: Columns, action: DropAction) => {
             );
 
             if (action.payload.position === 'right') {
-                moveNodeAsChild(columns, action, droppedNode, targetNode);
+                moveNodeAsChild(columns, droppedNode, targetNode);
             } else {
                 moveNodeAsSibling(columns, action, droppedNode, targetNode);
             }
@@ -35,14 +42,8 @@ export const moveNode = (columns: Columns, action: DropAction) => {
             if (currentParentIdOfDroppedNode !== droppedNode.parentId) {
                 moveChildGroups(columns, droppedNode);
             }
-            for (let i = 1; i < columns.length; i++) {
-                const column = columns[i];
-                const previousColumn = columns[i - 1];
-                column.groups = sortGroups(
-                    previousColumn.groups,
-                    column.groups,
-                );
-            }
         }
     }
+
+    cleanAndSortColumns(state);
 };

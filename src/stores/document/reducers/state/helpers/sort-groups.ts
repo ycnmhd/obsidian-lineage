@@ -1,4 +1,4 @@
-import { NodeGroup } from '../document-reducer';
+import { NodeGroup } from 'src/stores/document/document-reducer';
 
 export const sortGroups = (parents: NodeGroup[], children: NodeGroup[]) => {
     const parentsIndices = Object.fromEntries(

@@ -1,11 +1,12 @@
-import { moveNode } from 'src/stores/document/reducers/move-node/move-node';
+import { moveNode } from 'src/stores/document/reducers/structure/move-node/move-node';
 import { describe, expect, it } from 'vitest';
 import { Columns } from 'src/stores/document/document-reducer';
 import { createNode } from 'src/stores/document/helpers/create-node';
 import {
     __column__,
     __populateColumn__,
-} from 'src/stores/document/reducers/move-node/helpers/test-helpers';
+} from 'src/stores/document/reducers/structure/move-node/helpers/test-helpers';
+import { cleanAndSortColumns } from 'src/stores/document/reducers/state/helpers/clean-and-sort-columns';
 
 describe('move-node', () => {
     it('case 1', () => {
@@ -38,7 +39,8 @@ describe('move-node', () => {
         const columns = JSON.parse(
             JSON.stringify([column1, column2, column3]),
         ) as Columns;
-        moveNode(columns, {
+        const state = { columns };
+        moveNode(state, {
             type: 'DROP_NODE',
             payload: {
                 droppedNodeId: droppedNode.id,
@@ -46,6 +48,7 @@ describe('move-node', () => {
                 position: 'right',
             },
         });
+        cleanAndSortColumns(state);
         expect(columns.length).toBe(5);
         for (const column of columns) {
             expect(column.groups.length).toBe(1);
@@ -201,7 +204,9 @@ describe('move-node', () => {
                 ],
             },
         ];
-        moveNode(columns, action);
-        expect(columns).toEqual(output);
+        const state = { columns };
+        moveNode(state, action);
+        cleanAndSortColumns(state);
+        expect(state.columns).toEqual(output);
     });
 });

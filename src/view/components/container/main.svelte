@@ -17,7 +17,7 @@
 </script>
 
 <div
-    class={`main ${
+    class={`lineage__main ${
         $settings.ui.theme === 'dark' ? 'ash-theme-light' : 'ash-theme-dark'
     }`}
 >
@@ -39,12 +39,7 @@
 </div>
 
 <style>
-    :root {
-        --sidebar-right: 50px;
-        --node-gap: 4px;
-		--z-index-breadcrumbs:10;
-        /*slate900*/
-    }
+
 
     .ash-theme-dark {
         --background-color-container: #0f172a;
@@ -83,11 +78,5 @@
         --color-active-child: #0f172a;
     }
 
-    .main {
-        background-color: var(--background-color-container);
-        display: flex;
-        height: 100%;
-        width: 100%;
-        position: relative;
-    }
+
 </style>
