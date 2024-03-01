@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { saveNodeContent } from '../../actions/save-node-content';
 	import { getStore } from '../../../../../../../context';
-	import { ColumnNode } from 'src/stores/document/document-reducer';
+	import { ColumnNode } from 'src/stores/document/document-type';
 	import { expandableTextareaAction } from '../../actions/expandable-textarea-action';
 
 	export let editing: boolean;

@@ -1,13 +1,14 @@
 import { TreeNode } from 'src/stores/document/helpers/json-to-md/columns-to-json/columns-to-json-tree';
 import {
-    Column,
-    ColumnNode,
-    NodeGroup,
-} from 'src/stores/document/document-reducer';
-import {
     createColumn,
     createGroup,
 } from 'src/stores/document/helpers/create-node';
+import {
+    Column,
+    ColumnNode,
+    Content,
+    NodeGroup,
+} from 'src/stores/document/document-type';
 import { id } from 'src/helpers/id';
 
 const groupsCache: Record<string, NodeGroup | undefined> = {};
@@ -24,13 +25,13 @@ export const jsonTreeToColumns = (
     tree: TreeNode[],
     parentId = id.rootNode(),
     columns: Column[] = [],
+    content: Content = {},
     level = 0,
 ) => {
     for (const treeNode of tree) {
-        const node: ColumnNode = {
-            id: id.node(),
+        const node: ColumnNode = id.node();
+        content[node] = {
             content: treeNode.content,
-            parentId,
         };
 
         if (!columns[level]) {
@@ -45,8 +46,14 @@ export const jsonTreeToColumns = (
         }
         group.nodes.push(node);
         if (treeNode.children.length > 0) {
-            jsonTreeToColumns(treeNode.children, node.id, columns, level + 1);
+            jsonTreeToColumns(
+                treeNode.children,
+                node,
+                columns,
+                content,
+                level + 1,
+            );
         }
     }
-    return columns;
+    return { content, columns };
 };

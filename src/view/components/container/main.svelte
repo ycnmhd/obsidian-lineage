@@ -27,12 +27,12 @@
         path={$store.file.path}
     />
     <Container />
-    {#if $store.state.ui.showHistorySidebar && $store.file.path && $fileHistoryStore.documents[$store.file.path]}
+    {#if $store.ui.showHistorySidebar && $store.file.path && $fileHistoryStore.documents[$store.file.path]}
         <FileHistory
             fileHistory={$fileHistoryStore.documents[$store.file.path]}
             path={$store.file.path}
         />
-    {:else if $store.state.ui.showHelpSidebar}
+    {:else if $store.ui.showHelpSidebar}
         <Hotkeys />
     {/if}
 

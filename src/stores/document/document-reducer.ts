@@ -42,53 +42,7 @@ import {
     moveNode,
     MoveNodeAction,
 } from 'src/stores/document/reducers/structure/move-node/move-node';
-
-export type ColumnNode = {
-    id: string;
-    content: string;
-    parentId: string;
-};
-export type NodeGroup = {
-    id: string;
-    parentId: string;
-    nodes: ColumnNode[];
-};
-export type Column = {
-    id: string;
-    groups: NodeGroup[];
-};
-export type Columns = Column[];
-export type DocumentState = {
-    columns: Column[];
-    state: {
-        activeBranch: {
-            parentNodes: Set<string>;
-            childNodes: Set<string>;
-            childGroups: Set<string>;
-            siblingNodes: Set<string>;
-            node: string;
-            sortedParentNodes: ColumnNode[];
-            group: string;
-        };
-        draggedBranch: {
-            childGroups: Set<string>;
-            node: string;
-        };
-        editing: {
-            activeNodeId: string;
-            savePreviousNode: boolean;
-        };
-        ui: {
-            showHistorySidebar: boolean;
-            showHelpSidebar: boolean;
-        };
-    };
-
-    file: {
-        path: string | null;
-        frontmatter: string;
-    };
-};
+import { DocumentState } from 'src/stores/document/document-type';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -160,7 +114,7 @@ const updateState = (state: DocumentState, action: DocumentAction) => {
         deleteNode(state);
     } else if (action.type === 'DROP_NODE') {
         onDragEnd(state);
-        dropNode(state, action);
+        dropNode(state.document, action);
         updateActiveNode(state, action.payload.droppedNodeId);
     } else if (action.type === 'MOVE_NODE') {
         moveNode(state, action);
@@ -176,13 +130,12 @@ const updateState = (state: DocumentState, action: DocumentAction) => {
     } else if (action.type === 'FS/SET_FILE_PATH') {
         state.file.path = action.payload.path;
     } else if (action.type === 'UI/TOGGLE_HISTORY_SIDEBAR') {
-        state.state.ui.showHelpSidebar = false;
-        state.state.ui.showHistorySidebar = !state.state.ui.showHistorySidebar;
+        state.ui.showHelpSidebar = false;
+        state.ui.showHistorySidebar = !state.ui.showHistorySidebar;
     } else if (action.type === 'UI/TOGGLE_HELP_SIDEBAR') {
-        state.state.ui.showHistorySidebar = false;
-        state.state.ui.showHelpSidebar = !state.state.ui.showHelpSidebar;
+        state.ui.showHistorySidebar = false;
+        state.ui.showHelpSidebar = !state.ui.showHelpSidebar;
     }
-    console.log(action.type, state.columns?.[0]?.groups?.[0]?.nodes?.length);
 };
 
 export const documentReducer = (

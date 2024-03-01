@@ -5,7 +5,6 @@ import Lineage from '../main';
 import {
     DocumentAction,
     documentReducer,
-    DocumentState,
 } from 'src/stores/document/document-reducer';
 import { alignBranchEffect } from 'src/stores/document/effects/align-branch-effect';
 import { Unsubscriber } from 'svelte/store';
@@ -16,7 +15,7 @@ import { Store } from 'src/helpers/store';
 import { defaultDocumentState } from 'src/stores/document/default-document-state';
 import { bringFocusToContainer } from 'src/stores/document/effects/bring-focus-to-container';
 import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
-import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
+import { DocumentState } from 'src/stores/document/document-type';
 import { stores } from 'src/view/helpers/stores-cache';
 import { clone } from 'src/helpers/clone';
 import { extractFrontmatter } from 'src/view/helpers/extract-frontmatter';
@@ -105,15 +104,17 @@ export class LineageView extends TextFileView {
         const state = clone(this.store.getValue());
         const data: string =
             state.file.frontmatter +
-            jsonToMarkdown(columnsToJsonTree(state.columns));
+            jsonToMarkdown(
+                columnsToJsonTree(
+                    state.document.columns,
+                    state.document.content,
+                ),
+            );
         if (data !== this.data) {
             if (actionType !== 'APPLY_SNAPSHOT') {
                 const path = this.file?.path;
                 if (!path) throw new Error('view does not have a file');
-                const node = cachedFindNode(
-                    state.columns,
-                    state.state.activeBranch.node,
-                );
+                const node = state.state.activeBranch.node;
 
                 fileHistoryStore.dispatch({
                     type: 'ADD_SNAPSHOT',
@@ -121,7 +122,7 @@ export class LineageView extends TextFileView {
                         data: data,
                         path,
                         position: node
-                            ? findNodePosition(state.columns, node)
+                            ? findNodePosition(state.document.columns, node)
                             : null,
                         actionType: actionType ? actionType : null,
                     },

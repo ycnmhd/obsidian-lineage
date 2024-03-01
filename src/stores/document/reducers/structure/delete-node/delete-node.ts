@@ -1,27 +1,25 @@
-import {
-    Column,
-    ColumnNode,
-    DocumentState,
-} from 'src/stores/document/document-reducer';
-import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
 import { findNextActiveNode } from 'src/stores/document/reducers/structure/delete-node/helpers/find-next-active-node';
 import { cleanAndSortColumns } from 'src/stores/document/reducers/state/helpers/clean-and-sort-columns';
 import { updateActiveNode } from 'src/stores/document/reducers/state/update-active-node';
 import { traverseDown } from 'src/stores/document/helpers/search/traverse-down';
+import {
+    Column,
+    ColumnNode,
+    DocumentInstance,
+} from 'src/stores/document/document-type';
+import { deleteGroupsByParentId } from 'src/stores/document/reducers/structure/delete-node/delete-groups-by-parent-id';
 
-const deleteGroupsById = (columns: Column[], groupIds: Set<string>): void => {
-    for (const column of columns) {
-        column.groups = column.groups.filter(
-            (group) =>
-                !(!group.parentId.startsWith('r-') && groupIds.has(group.id)),
-        );
-    }
-};
-
-const deleteNodeById = (columns: Column[], nodeId: string): void => {
-    for (const column of columns) {
+const deleteNodeById = (document: DocumentInstance, nodeId: string): void => {
+    for (const column of document.document.columns) {
         for (const group of column.groups) {
-            group.nodes = group.nodes.filter((node) => node.id !== nodeId);
+            for (let i = 0; i < group.nodes.length; i++) {
+                const _nodeId = group.nodes[i];
+                if (_nodeId === nodeId) {
+                    group.nodes.splice(i, 1);
+                    delete document.document.content[_nodeId];
+                    return;
+                }
+            }
         }
     }
 };
@@ -44,18 +42,23 @@ export type DeleteNodeAction = {
     type: 'TREE/DELETE_NODE';
 };
 
-export const deleteNode = (state: DocumentState) => {
-    if (state.state.activeBranch.node === state.state.editing.activeNodeId)
-        return;
-    const node = cachedFindNode(state.columns, state.state.activeBranch.node);
+export const deleteNode = (state: DocumentInstance) => {
+    const node = state.state.activeBranch.node;
     if (node) {
-        if (isLastRootNode(state.columns, node)) return;
-        const nextNode = findNextActiveNode(state.columns, node);
+        if (node === state.state.editing.activeNodeId) return;
+        if (isLastRootNode(state.document.columns, node)) return;
+        const nextNode = findNextActiveNode(state.document.columns, node);
         const childGroups = new Set<string>();
-        traverseDown(childGroups, new Set<string>(), state.columns, node);
-        if (childGroups.size > 0) deleteGroupsById(state.columns, childGroups);
-        deleteNodeById(state.columns, node.id);
-        cleanAndSortColumns(state);
-        if (nextNode) updateActiveNode(state, nextNode.id);
+        traverseDown(
+            childGroups,
+            new Set<string>(),
+            state.document.columns,
+            node,
+        );
+        if (childGroups.size > 0)
+            deleteGroupsByParentId(state.document, childGroups);
+        deleteNodeById(state, node);
+        cleanAndSortColumns(state.document);
+        if (nextNode) updateActiveNode(state, nextNode);
     }
 };

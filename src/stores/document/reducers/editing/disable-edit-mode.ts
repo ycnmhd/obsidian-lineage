@@ -1,4 +1,4 @@
-import { DocumentState } from 'src/stores/document/document-reducer';
+import { DocumentState } from 'src/stores/document/document-type';
 
 export type DisableEditModeAction = {
     type: 'DISABLE_EDIT_MODE';

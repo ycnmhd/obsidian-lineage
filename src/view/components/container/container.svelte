@@ -14,7 +14,7 @@
     use:keyboardShortcuts={{store, plugin}}
 >
     <div class="columns">
-        {#each $store.columns as column (column.id)}
+        {#each $store.document.columns as column (column.id)}
             <Column {column} />
         {/each}
     </div>

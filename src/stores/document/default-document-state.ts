@@ -1,7 +1,10 @@
-import { DocumentState } from 'src/stores/document/document-reducer';
+import { DocumentState } from 'src/stores/document/document-type';
 
 export const defaultDocumentState = (): DocumentState => ({
-    columns: [],
+    document: {
+        columns: [],
+        content: {},
+    },
     state: {
         activeBranch: {
             node: '',
@@ -20,10 +23,10 @@ export const defaultDocumentState = (): DocumentState => ({
             activeNodeId: '',
             savePreviousNode: false,
         },
-        ui: {
-            showHistorySidebar: false,
-            showHelpSidebar: false,
-        },
+    },
+    ui: {
+        showHistorySidebar: false,
+        showHelpSidebar: false,
     },
     file: {
         path: null,

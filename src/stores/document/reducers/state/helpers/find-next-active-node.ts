@@ -1,25 +1,23 @@
-import {
-    ColumnNode,
-    DocumentState,
-} from 'src/stores/document/document-reducer';
-import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
 import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
 import { findChildGroup } from 'src/stores/document/helpers/search/find-child-group';
 import { ChangeActiveNodeAction } from 'src/stores/document/reducers/state/change-active-node';
+import { findGroupByNodeId } from 'src/stores/document/helpers/search/find-group-by-node-id';
+import { ColumnNode, DocumentState } from 'src/stores/document/document-type';
 
 export const findNextActiveNode = (
     state: DocumentState,
     action: ChangeActiveNodeAction,
 ) => {
-    const columns = state.columns;
-    const node = cachedFindNode(columns, state.state.activeBranch.node);
+    const columns = state.document.columns;
+    const node = state.state.activeBranch.node;
     if (!node) return;
-    const columnIndex = findNodeColumn(columns, node.parentId);
+    const columnIndex = findNodeColumn(columns, node);
     const column = columns[columnIndex];
     if (!column) return;
     let nextNode: ColumnNode | null = null;
     if (action.payload.direction === 'left') {
-        nextNode = cachedFindNode(columns, node.parentId);
+        const group = findGroupByNodeId(state.document.columns, node);
+        if (group) nextNode = group.parentId;
     } else if (action.payload.direction === 'right') {
         const group = findChildGroup(columns, node);
         if (group) {
@@ -33,7 +31,7 @@ export const findNextActiveNode = (
 		}*/
     } else {
         const allNodes = column.groups.map((g) => g.nodes).flat();
-        const nodeIndex = allNodes.findIndex((n) => n.id === node.id);
+        const nodeIndex = allNodes.findIndex((n) => n === node);
 
         if (action.payload.direction === 'up') {
             if (nodeIndex > 0) {

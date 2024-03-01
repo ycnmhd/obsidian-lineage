@@ -1,18 +1,7 @@
-import {
-    Column,
-    ColumnNode,
-    Columns,
-    VerticalDirection,
-} from 'src/stores/document/document-reducer';
+import { VerticalDirection } from 'src/stores/document/document-reducer';
 
-import { findGroup } from 'src/stores/document/helpers/search/find-group';
-
-export const removeNodeFromGroup = (columns: Column[], node: ColumnNode) => {
-    const currentGroup = findGroup(columns, node);
-    if (currentGroup) {
-        currentGroup.nodes = currentGroup.nodes.filter((n) => n.id !== node.id);
-    }
-};
+import { findGroupByNodeId } from 'src/stores/document/helpers/search/find-group-by-node-id';
+import { ColumnNode, Columns } from 'src/stores/document/document-type';
 
 export const moveNodeAsSibling = (
     columns: Columns,
@@ -20,14 +9,11 @@ export const moveNodeAsSibling = (
     node: ColumnNode,
     targetNode: ColumnNode,
 ) => {
-    const targetGroup = findGroup(columns, targetNode);
+    const targetGroup = findGroupByNodeId(columns, targetNode);
     if (targetGroup) {
-        const index = targetGroup.nodes.findIndex(
-            (n) => n.id === targetNode.id,
-        );
+        const index = targetGroup.nodes.findIndex((n) => n === targetNode);
         const insertionIndex = direction === 'up' ? index : index + 1;
 
-        node.parentId = targetNode.parentId;
         targetGroup.nodes.splice(insertionIndex, 0, node);
     }
 };

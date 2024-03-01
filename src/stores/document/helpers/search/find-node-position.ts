@@ -2,7 +2,7 @@ import {
     ColumnNode,
     Columns,
     NodeGroup,
-} from 'src/stores/document/document-reducer';
+} from 'src/stores/document/document-type';
 
 export type NodePosition = {
     columnIndex: number;
@@ -21,7 +21,7 @@ export const findNodePosition = (
             groupIndex++
         ) {
             const group = column.groups[groupIndex] as NodeGroup;
-            const nodeIndex = group.nodes.findIndex((n) => n.id === node.id);
+            const nodeIndex = group.nodes.findIndex((n) => n === node);
             if (nodeIndex !== -1) {
                 return {
                     columnIndex,

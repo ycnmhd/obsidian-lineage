@@ -1,9 +1,6 @@
-import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
-import {
-    AllDirections,
-    ColumnNode,
-    DocumentState,
-} from 'src/stores/document/document-reducer';
+import { findGroupByNodeId } from 'src/stores/document/helpers/search/find-group-by-node-id';
+import { ColumnNode, DocumentState } from 'src/stores/document/document-type';
+import { AllDirections } from 'src/stores/document/document-reducer';
 import { findAdjacentNode } from 'src/stores/document/helpers/search/find-adjacent-node';
 import { changeNodePosition } from 'src/stores/document/reducers/structure/move-node/helpers/change-node-position';
 import { updateActiveNode } from 'src/stores/document/reducers/state/update-active-node';
@@ -17,13 +14,15 @@ export type MoveNodeAction = {
 };
 
 export const moveNode = (state: DocumentState, action: MoveNodeAction) => {
-    const columns = state.columns;
-    const movedNode = cachedFindNode(columns, state.state.activeBranch.node);
-    if (!movedNode) throw new Error('could not find node');
+    const columns = state.document.columns;
+    const movedNode = state.state.activeBranch.node;
+    if (!movedNode) throw new Error('no active node');
 
     let targetNode: ColumnNode | null = null;
     if (action.payload.direction === 'left') {
-        targetNode = cachedFindNode(state.columns, movedNode.parentId);
+        const group = findGroupByNodeId(state.document.columns, movedNode);
+        if (group && !group.parentId.startsWith('r-'))
+            targetNode = group.parentId;
     } else {
         targetNode = findAdjacentNode(
             columns,
@@ -35,7 +34,7 @@ export const moveNode = (state: DocumentState, action: MoveNodeAction) => {
     }
     // if first node of column is trying to move right, move it under the node below
     if (!targetNode && action.payload.direction === 'right') {
-        const columnIndex = findNodeColumn(state.columns, movedNode.parentId);
+        const columnIndex = findNodeColumn(state.document.columns, movedNode);
         const isFirstNodeOfColumn =
             columns[columnIndex].groups[0]?.nodes[0] === movedNode;
         if (isFirstNodeOfColumn) {
@@ -45,11 +44,11 @@ export const moveNode = (state: DocumentState, action: MoveNodeAction) => {
 
     if (movedNode && targetNode) {
         changeNodePosition(
-            state,
+            state.document,
             movedNode,
             targetNode,
             action.payload.direction,
         );
-        updateActiveNode(state, movedNode.id);
+        updateActiveNode(state, movedNode);
     }
 };

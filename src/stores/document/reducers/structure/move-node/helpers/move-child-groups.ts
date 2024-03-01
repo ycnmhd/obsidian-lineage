@@ -1,11 +1,11 @@
+import { traverseDown } from 'src/stores/document/helpers/search/traverse-down';
+import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
+import { id } from 'src/helpers/id';
 import {
     ColumnNode,
     Columns,
     NodeGroup,
-} from 'src/stores/document/document-reducer';
-import { traverseDown } from 'src/stores/document/helpers/search/traverse-down';
-import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
-import { id } from 'src/helpers/id';
+} from 'src/stores/document/document-type';
 
 export const moveChildGroups = (columns: Columns, droppedNode: ColumnNode) => {
     // find children
@@ -16,7 +16,7 @@ export const moveChildGroups = (columns: Columns, droppedNode: ColumnNode) => {
     for (const column of columns) {
         const groups = [];
         for (const group of column.groups) {
-            if (childGroups.has(group.id)) {
+            if (childGroups.has(group.parentId)) {
                 sortedChildGroups.push(group);
             } else {
                 groups.push(group);
@@ -26,7 +26,7 @@ export const moveChildGroups = (columns: Columns, droppedNode: ColumnNode) => {
     }
 
     // insert child groups into their new columns
-    const parentColumnIndex = findNodeColumn(columns, droppedNode.parentId);
+    const parentColumnIndex = findNodeColumn(columns, droppedNode);
     for (let i = 0; i < sortedChildGroups.length; i++) {
         const group = sortedChildGroups[i];
         const targetColumnIndex = parentColumnIndex + 1 + i;

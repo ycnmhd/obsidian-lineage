@@ -672,4 +672,225 @@ After a couple of "passes" of expanding, you will end up with your complete, and
 Here's a (somewhat dated) video which might help.
 <iframe width="256" height="144" src="//www.youtube.com/embed/J4prcx0jZ9M?rel=0" frameborder="0" allowfullscreen></iframe>`;
 
-export const ginkgo_academic_paper = { json, md, annotatedMd };
+const lineageDocument = {
+    content: {
+        'n-lt8yutmx': {
+            content:
+                '# Title: **Statement** of your core result or finding.\nTry to make your title an assertive statement, such as:\n- "Changes in cytoplasmic volume are sufficient to drive spindle scaling." \n\nand not\n- "High-performance silicon photoanodes passivated with ultrathin nickel films for water oxidation"\n\nRule of thumb: if your title would look weird with a period at the end, it is probably a poor title.\n\nDon\'t do [this](http://www.phdcomics.com/comics/archive/phd053106s.gif).',
+        },
+        'n-lt8yutmz': {
+            content:
+                "# Abstract\nTry to tell a *story* here, no matter what your field. You are writing for human beings, not computers. What's the area, what's the problem you are trying to understand. How? What have you found?\n\n(You are *summarizing* your core results, not *cramming* them into this tiny space).\n\n---\n###### target:  84-151 words\n###### current: 43 ![](https://dl.dropboxusercontent.com/s/6k720i6vkig7siq/cross_circle.png)\n\n<!-- URL for checkmark: https://dl.dropboxusercontent.com/s/elo7ckzspvxvx0t/checkmark.gif -->\n\n###### (This is a word count footer. We don't have automatic word counts yet, so I use is [this Chrome extension](https://chrome.google.com/webstore/detail/word-count/pnngehidikgomgfjbpffonkeimgbpjlh))",
+        },
+        'n-lt8yutn1': {
+            content:
+                '## Introduction - "The Setup"\n### [In field X, we still don\'t understand Y & Z.]\n\nWrite a summary of *the question(s) you are trying to answer*.\nWhat is the state of the world before your research came along?\nAlso, answer the harsh but important question: *Who cares*?\n\nIn writing this, you can start general, but make sure clearly define the "before" state of the world\'s knowledge for the *specific area* this paper is addressing.',
+        },
+        'n-lt8yutn3': {
+            content:
+                '### Intro - Assertive Statement 1\n\nHere you can expand on your introduction. To guide your writing, title this card with assertive statements:\nInstead of "Problem Description", be direct: "The problem is that X doesn\'t do Y."',
+        },
+        'n-lt8yutn5': { content: '# Introduction' },
+        'n-lt8yutn7': {
+            content:
+                '[You can write your actual paper here in this column. Then choosing "Export column 5" to Word or Markdown will help you move it to your final platform.]',
+        },
+        'n-lt8yutn8': { content: 'You can keep notes & comments here.' },
+        'n-lt8yutna': { content: '...' },
+        'n-lt8yutnb': { content: '...' },
+        'n-lt8yutnc': { content: '### Intro - Assertive Statement 2' },
+        'n-lt8yutnd': { content: '...' },
+        'n-lt8yutne': { content: '...' },
+        'n-lt8yutnf': { content: '### Intro - Assertive Statement 3' },
+        'n-lt8yutng': { content: '...' },
+        'n-lt8yutnh': { content: '...' },
+        'n-lt8yutni': {
+            content:
+                '## Materials & Methods - "The Characters"\n### [We have here method A, B, and our new method C.]\nYou have established the core question(s) of your research. Now introduce the tools you are going to  use to understand it.',
+        },
+        'n-lt8yutnj': {
+            content:
+                '## Method A\nMore details on the method, experiment design, etc.\n\nRemember that these are cards, so you can drag and drop them to rearrange if necessary.',
+        },
+        'n-lt8yutnk': { content: '# Methods' },
+        'n-lt8yutnl': { content: '### Method A' },
+        'n-lt8yutnm': {
+            content:
+                'Some other note. For example:\n\n#Xusheng , make sure you include the voltage you used."\n\n(the # syntax makes it easier to search for & filter comments directed at a specific person).',
+        },
+        'n-lt8yutnn': { content: '...' },
+        'n-lt8yutno': { content: '...' },
+        'n-lt8yutnp': {
+            content:
+                '## Method B\nMore details on the method, experiment design, etc.',
+        },
+        'n-lt8yutnq': { content: '### Method B...' },
+        'n-lt8yutnr': { content: '...' },
+        'n-lt8yutns': { content: '...' },
+        'n-lt8yutnt': {
+            content:
+                '## Method C\nMore details on the method, experiment design, etc.\n\nIf you need a checklist to make sure you address all points, go ahead:\n[ ] e.g. "Mention pH of the setup"\n[ ] What temperature?\n[ ] For how long?',
+        },
+        'n-lt8yutnu': { content: '### Method C' },
+        'n-lt8yutnv': { content: '...' },
+        'n-lt8yutnw': { content: '...' },
+        'n-lt8yutnx': {
+            content:
+                "## Results\nWhat happened (objectively)?\n\nDo not interpret, simply state the facts.\n\nLet's be honest: the first thing most of us do when skimming a paper is look at the figures. If your key results can be presented in figures, then start with that, and structure your paper around that.",
+        },
+        'n-lt8yutny': {
+            content:
+                "## Key Result\nYou can add figures if you'd like:\n\n![](https://dl.dropboxusercontent.com/s/gieldum0s47m25v/1-plot.jpg)",
+        },
+        'n-lt8yutnz': { content: '# Results' },
+        'n-lt8yuto0': { content: 'Final text for results goes here' },
+        'n-lt8yuto1': { content: '...' },
+        'n-lt8yuto2': { content: '...' },
+        'n-lt8yuto3': {
+            content:
+                'Remember these are **cards** so you can rearrange your results at will.\nAny subcards will follow.',
+        },
+        'n-lt8yuto4': { content: 'Other results' },
+        'n-lt8yuto5': {
+            content:
+                "## Discussion\nResults are objective, but science isn't about listing data, it's about extracting meaning from what we observe.\n\nWhat do your results tell you about the core problem you were investigating?",
+        },
+        'n-lt8yuto6': {
+            content:
+                '## Conclusion\nBring it back to the big picture. How do your results fit into the current body of knowledge?\n\nMost importantly, how can these results help you [ask better questions](http://www.youtube.com/watch?v=nq0_zGzSc8g#t=493)?',
+        },
+        'n-lt8yuto7': {
+            content:
+                '## Conclusion (further detail)\n\nExpand on your conclusion summary, and add more details to it.',
+        },
+        'n-lt8yuto8': { content: '# Conclusion' },
+        'n-lt8yuto9': { content: 'Final text for conclusion goes here' },
+        'n-lt8yutoa': { content: 'in as many' },
+        'n-lt8yutob': { content: 'cards as you like.' },
+        'n-lt8yutoc': {
+            content:
+                '## References\nWe don\'t have bibliography support yet, but we do have "named links" so you can refer to specific links by name rather than retyping it each time.\n\n"Black holes are cool." [[1]][prl2010], and DNA is cool too [[2]][dnaRef]. But black holes are still cool, though not "absolute zero" cool [[1]][prl2010].\n\n[prl2010]: http://arxiv.org/abs/1311.3007\n[dnaRef]: http://biorxiv.org/content/early/2013/11/07/000026',
+        },
+        'n-lt8yutod': {
+            content:
+                '## List\nOr you can simply list your references here:\n\n1. some ref\n1. some other ref. Numbering fixes itself automatically.\n2. A third ref.',
+        },
+        'n-lt8yutoe': { content: '# References' },
+        'n-lt8yutof': { content: 'Some reference by J. Doe' },
+        'n-lt8yutog': { content: 'Notes on this reference.' },
+        'n-lt8yutoh': { content: 'Some other reference' },
+        'n-lt8yutoi': {
+            content:
+                '## How to use this template\nThe idea here is to start at the far left, and clarify what the core of what you want to say is *first*, and then expand on it by moving to the right, one column at a time.\n\nAfter a couple of "passes" of expanding, you will end up with your complete, and well structured paper on column 5, which you can export separately.\n\nHere\'s a (somewhat dated) video which might help.\n<iframe width="256" height="144" src="//www.youtube.com/embed/J4prcx0jZ9M?rel=0" frameborder="0" allowfullscreen></iframe>',
+        },
+    },
+    columns: [
+        {
+            id: 'c-lt8yutmy',
+            groups: [{ nodes: ['n-lt8yutmx'], parentId: 'r-lt8yutmw' }],
+        },
+        {
+            id: 'c-lt8yutn0',
+            groups: [
+                { nodes: ['n-lt8yutmz', 'n-lt8yutoi'], parentId: 'n-lt8yutmx' },
+            ],
+        },
+        {
+            id: 'c-lt8yutn2',
+            groups: [
+                {
+                    nodes: [
+                        'n-lt8yutn1',
+                        'n-lt8yutni',
+                        'n-lt8yutnx',
+                        'n-lt8yuto5',
+                        'n-lt8yuto6',
+                        'n-lt8yutoc',
+                    ],
+                    parentId: 'n-lt8yutmz',
+                },
+            ],
+        },
+        {
+            id: 'c-lt8yutn4',
+            groups: [
+                {
+                    nodes: ['n-lt8yutn3', 'n-lt8yutnc', 'n-lt8yutnf'],
+                    parentId: 'n-lt8yutn1',
+                },
+                {
+                    nodes: ['n-lt8yutnj', 'n-lt8yutnp', 'n-lt8yutnt'],
+                    parentId: 'n-lt8yutni',
+                },
+                { nodes: ['n-lt8yutny', 'n-lt8yuto3'], parentId: 'n-lt8yutnx' },
+                { nodes: ['n-lt8yuto7'], parentId: 'n-lt8yuto6' },
+                { nodes: ['n-lt8yutod'], parentId: 'n-lt8yutoc' },
+            ],
+        },
+        {
+            id: 'c-lt8yutn6',
+            groups: [
+                {
+                    nodes: [
+                        'n-lt8yutn5',
+                        'n-lt8yutn7',
+                        'n-lt8yutna',
+                        'n-lt8yutnb',
+                    ],
+                    parentId: 'n-lt8yutn3',
+                },
+                { nodes: ['n-lt8yutnd', 'n-lt8yutne'], parentId: 'n-lt8yutnc' },
+                { nodes: ['n-lt8yutng', 'n-lt8yutnh'], parentId: 'n-lt8yutnf' },
+                {
+                    nodes: [
+                        'n-lt8yutnk',
+                        'n-lt8yutnl',
+                        'n-lt8yutnn',
+                        'n-lt8yutno',
+                    ],
+                    parentId: 'n-lt8yutnj',
+                },
+                {
+                    nodes: ['n-lt8yutnq', 'n-lt8yutnr', 'n-lt8yutns'],
+                    parentId: 'n-lt8yutnp',
+                },
+                {
+                    nodes: ['n-lt8yutnu', 'n-lt8yutnv', 'n-lt8yutnw'],
+                    parentId: 'n-lt8yutnt',
+                },
+                {
+                    nodes: [
+                        'n-lt8yutnz',
+                        'n-lt8yuto0',
+                        'n-lt8yuto1',
+                        'n-lt8yuto2',
+                    ],
+                    parentId: 'n-lt8yutny',
+                },
+                { nodes: ['n-lt8yuto4'], parentId: 'n-lt8yuto3' },
+                {
+                    nodes: [
+                        'n-lt8yuto8',
+                        'n-lt8yuto9',
+                        'n-lt8yutoa',
+                        'n-lt8yutob',
+                    ],
+                    parentId: 'n-lt8yuto7',
+                },
+                {
+                    nodes: ['n-lt8yutoe', 'n-lt8yutof', 'n-lt8yutoh'],
+                    parentId: 'n-lt8yutod',
+                },
+            ],
+        },
+        {
+            id: 'c-lt8yutn9',
+            groups: [
+                { nodes: ['n-lt8yutn8'], parentId: 'n-lt8yutn7' },
+                { nodes: ['n-lt8yutnm'], parentId: 'n-lt8yutnl' },
+                { nodes: ['n-lt8yutog'], parentId: 'n-lt8yutof' },
+            ],
+        },
+    ],
+};
+export const ginkgo_academic_paper = { json, md, annotatedMd, lineageDocument };

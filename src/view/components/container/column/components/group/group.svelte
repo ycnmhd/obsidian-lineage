@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { NodeGroup } from 'src/stores/document/document-reducer';
+	import { NodeGroup } from 'src/stores/document/document-type';
 	import Node from './components/card/card.svelte';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
 	import { getStore } from 'src/view/components/container/context';
@@ -13,28 +13,28 @@
     <div
         class={clx(
             'group',
-            $store.state.activeBranch.childGroups.has(group.id) &&
+            $store.state.activeBranch.childGroups.has(group.parentId) &&
                 'group-has-active-parent',
-            $store.state.activeBranch.group === group.id &&
+            $store.state.activeBranch.group === group.parentId &&
                 'group-has-active-node',
         )}
-        id={group.id}
+        id={"g-"+group.parentId}
     >
-        {#each group.nodes as node (node.id)}
+        {#each group.nodes as node (node)}
             <Node
                 {node}
-                active={node.id === $store.state.activeBranch.node
+                active={node === $store.state.activeBranch.node
                     ? ActiveStatus.node
-                    : $store.state.activeBranch.parentNodes.has(node.id)
+                    : $store.state.activeBranch.parentNodes.has(node)
                     ? ActiveStatus.parent
-                    : $store.state.activeBranch.childNodes.has(node.id)
+                    : $store.state.activeBranch.childNodes.has(node)
                     ? ActiveStatus.child
-                    : $store.state.activeBranch.siblingNodes.has(node.id)
+                    : $store.state.activeBranch.siblingNodes.has(node)
                     ? ActiveStatus.sibling
                     : null}
-                editing={$store.state.editing.activeNodeId === node.id}
+                editing={$store.state.editing.activeNodeId === node}
                 hasChildren={$store.state.activeBranch.childNodes.size > 0}
-                parentId={node.parentId}
+                parentId={group.parentId}
             />
         {/each}
     </div>

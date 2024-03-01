@@ -1,14 +1,10 @@
-import {
-    Column,
-    ColumnNode,
-    Columns,
-} from 'src/stores/document/document-reducer';
 import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
 import {
     createColumn,
     createGroup,
 } from 'src/stores/document/helpers/create-node';
 import { findChildGroup } from 'src/stores/document/helpers/search/find-child-group';
+import { Column, ColumnNode, Columns } from 'src/stores/document/document-type';
 
 export const moveNodeAsChild = (
     columns: Columns,
@@ -16,11 +12,10 @@ export const moveNodeAsChild = (
     targetNode: ColumnNode,
 ) => {
     const targetGroup = findChildGroup(columns, targetNode);
-    node.parentId = targetNode.id;
     if (targetGroup) {
         targetGroup.nodes.push(node);
     } else {
-        const currentColumnIndex = findNodeColumn(columns, targetNode.parentId);
+        const currentColumnIndex = findNodeColumn(columns, targetNode);
         let targetColumn: Column | undefined;
         targetColumn = columns[currentColumnIndex + 1];
 
@@ -29,7 +24,7 @@ export const moveNodeAsChild = (
             columns.push(newColumn);
             targetColumn = newColumn;
         }
-        const newGroup = createGroup(targetNode.id);
+        const newGroup = createGroup(targetNode);
         newGroup.nodes.push(node);
         targetColumn.groups.push(newGroup);
     }

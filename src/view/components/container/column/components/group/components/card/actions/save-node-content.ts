@@ -1,4 +1,4 @@
-import { ColumnNode } from 'src/stores/document/document-reducer';
+import { ColumnNode } from 'src/stores/document/document-type';
 import { DocumentStore } from 'src/view/view';
 
 type Props = { editing: boolean; node: ColumnNode; store: DocumentStore };
@@ -9,21 +9,23 @@ export const saveNodeContent = (
     const state = {
         wasEditing: editing,
     };
+    const documentState = store.getValue();
     if (editing) {
-        element.value = node.content;
+        element.value = documentState.document.content[node]?.content || '';
         element.focus({ preventScroll: false });
     }
     return {
         update: ({ node, editing, store }: Props) => {
             if (editing && !state.wasEditing) {
-                element.value = node.content;
+                element.value =
+                    documentState.document.content[node]?.content || '';
                 state.wasEditing = true;
             } else if (!editing && state.wasEditing) {
                 if (store.getValue().state.editing.savePreviousNode)
                     store.dispatch({
                         type: 'SET_NODE_CONTENT',
                         payload: {
-                            nodeId: node.id,
+                            nodeId: node,
                             content: element.value,
                         },
                     });
@@ -31,11 +33,11 @@ export const saveNodeContent = (
             }
         },
         destroy: () => {
-            if (store.getValue().state.editing.savePreviousNode)
+            if (documentState.state.editing.savePreviousNode)
                 store.dispatch({
                     type: 'SET_NODE_CONTENT',
                     payload: {
-                        nodeId: node.id,
+                        nodeId: node,
                         content: element.value,
                     },
                 });

@@ -1,7 +1,7 @@
-import { DocumentState } from 'src/stores/document/document-reducer';
+import { DocumentInstance } from 'src/stores/document/document-type';
 
 export const updateEditingNodeOnActiveNodeChange = (
-    state: DocumentState,
+    state: DocumentInstance,
     nodeId: string,
     newNode = false,
 ) => {

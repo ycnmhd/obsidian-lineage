@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { ColumnNode } from 'src/stores/document/document-reducer';
 
-	export let node: ColumnNode;
+	export let content: string
 </script>
 
 <div
     class="content"
 
 >
-    {#each node.content.split('\n') as line}
+    {#each content.split('\n') as line}
         <span>{line}</span><br />
     {/each}
 </div>

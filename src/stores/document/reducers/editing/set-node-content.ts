@@ -1,5 +1,4 @@
-import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
-import { DocumentState } from 'src/stores/document/document-reducer';
+import { DocumentState } from 'src/stores/document/document-type';
 
 export type SetNodeContentAction = {
     type: 'SET_NODE_CONTENT';
@@ -12,8 +11,9 @@ export const setNodeContent = (
     state: DocumentState,
     action: SetNodeContentAction,
 ) => {
-    const node = cachedFindNode(state.columns, action.payload.nodeId);
-    if (node) {
-        node.content = action.payload.content;
-    }
+    const nodeId = action.payload.nodeId;
+    const nodeContent = state.document.content[nodeId];
+    if (!nodeContent)
+        state.document.content[nodeId] = { content: action.payload.content };
+    else nodeContent.content = action.payload.content;
 };

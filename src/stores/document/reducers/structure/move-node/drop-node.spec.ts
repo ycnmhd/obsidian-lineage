@@ -1,64 +1,8 @@
 import { dropNode } from 'src/stores/document/reducers/structure/move-node/drop-node';
 import { describe, expect, it } from 'vitest';
-import { Columns } from 'src/stores/document/document-reducer';
-import { createNode } from 'src/stores/document/helpers/create-node';
-import {
-    __column__,
-    __populateColumn__,
-} from 'src/stores/document/reducers/structure/move-node/helpers/test-helpers';
-import { cleanAndSortColumns } from 'src/stores/document/reducers/state/helpers/clean-and-sort-columns';
+import { Column } from 'src/stores/document/document-type';
 
 describe('move-node', () => {
-    it('case 1', () => {
-        // input
-        // --                 --           --
-        // droppedNode        [childNode]  [grandChildNode]
-        //                    --           --
-        // parentOfTargetNode [targetNode]
-        // --                 --
-
-        // output
-        // --                 --           --
-        // parentOfTargetNode [targetNode] droppedNode        [childNode]  [grandChildNode]
-        // --                 --           --
-        const rootId = 'root';
-        const column1 = __column__(rootId);
-        const droppedNode = createNode('root');
-        const parentOfTargetNode = createNode('root');
-        __populateColumn__(column1, droppedNode, parentOfTargetNode);
-
-        const column2 = __column__(droppedNode.id, parentOfTargetNode.id);
-        const childNode = createNode(droppedNode.id);
-        const targetNode = createNode(parentOfTargetNode.id);
-        __populateColumn__(column2, childNode, targetNode);
-
-        const column3 = __column__(childNode.id);
-        const grandChildNode = createNode(childNode.id);
-        __populateColumn__(column3, grandChildNode);
-
-        const columns = JSON.parse(
-            JSON.stringify([column1, column2, column3]),
-        ) as Columns;
-        const state = { columns };
-        dropNode(state, {
-            type: 'DROP_NODE',
-            payload: {
-                droppedNodeId: droppedNode.id,
-                targetNodeId: targetNode.id,
-                position: 'right',
-            },
-        });
-        cleanAndSortColumns(state);
-        expect(columns.length).toBe(5);
-        for (const column of columns) {
-            expect(column.groups.length).toBe(1);
-        }
-        expect(columns[0].groups[0].nodes[0].id === parentOfTargetNode.id);
-        expect(columns[1].groups[0].nodes[0].id === targetNode.id);
-        expect(columns[2].groups[0].nodes[0].id === droppedNode.id);
-        expect(columns[3].groups[0].nodes[0].id === childNode.id);
-        expect(columns[4].groups[0].nodes[0].id === grandChildNode.id);
-    });
     it('dnd bug 24-02-26', () => {
         const droppedNodeId = 'n-lt33tfw9';
         const targetNodeId = 'n-lt33tfwi';
@@ -70,25 +14,12 @@ describe('move-node', () => {
                 position: 'down',
             },
         } as const;
-        const content = '';
-        const columns = [
+        const columns: Column[] = [
             {
                 id: 'c-lt33tfwa',
                 groups: [
                     {
-                        nodes: [
-                            {
-                                id: droppedNodeId,
-                                content: content,
-                                parentId: 'r-lt33tfw8',
-                            },
-                            {
-                                id: targetNodeId,
-                                content: content,
-                                parentId: 'r-lt33tfw8',
-                            },
-                        ],
-                        id: 'g-lt33tfwb',
+                        nodes: [droppedNodeId, targetNodeId],
                         parentId: 'r-lt33tfw8',
                     },
                 ],
@@ -97,25 +28,11 @@ describe('move-node', () => {
                 id: 'c-lt33tfwd',
                 groups: [
                     {
-                        nodes: [
-                            {
-                                id: 'n-lt33tfwc',
-                                content: content,
-                                parentId: droppedNodeId,
-                            },
-                        ],
-                        id: 'g-lt33tfwe',
+                        nodes: ['n-lt33tfwc'],
                         parentId: droppedNodeId,
                     },
                     {
-                        nodes: [
-                            {
-                                id: 'n-lt33tfwj',
-                                content: content,
-                                parentId: targetNodeId,
-                            },
-                        ],
-                        id: 'g-lt33tfwk',
+                        nodes: ['n-lt33tfwj'],
                         parentId: targetNodeId,
                     },
                 ],
@@ -124,38 +41,19 @@ describe('move-node', () => {
                 id: 'c-lt33tfwg',
                 groups: [
                     {
-                        nodes: [
-                            {
-                                id: 'n-lt33tfwf',
-                                content: content,
-                                parentId: 'n-lt33tfwc',
-                            },
-                        ],
-                        id: 'g-lt33tfwh',
+                        nodes: ['n-lt33tfwf'],
                         parentId: 'n-lt33tfwc',
                     },
                 ],
             },
         ];
 
-        const output = [
+        const output: Column[] = [
             {
                 id: 'c-lt33tfwa',
                 groups: [
                     {
-                        nodes: [
-                            {
-                                id: targetNodeId,
-                                content: content,
-                                parentId: 'r-lt33tfw8',
-                            },
-                            {
-                                id: droppedNodeId,
-                                content: content,
-                                parentId: 'r-lt33tfw8',
-                            },
-                        ],
-                        id: 'g-lt33tfwb',
+                        nodes: [targetNodeId, droppedNodeId],
                         parentId: 'r-lt33tfw8',
                     },
                 ],
@@ -164,25 +62,11 @@ describe('move-node', () => {
                 id: 'c-lt33tfwd',
                 groups: [
                     {
-                        nodes: [
-                            {
-                                id: 'n-lt33tfwj',
-                                content: content,
-                                parentId: targetNodeId,
-                            },
-                        ],
-                        id: 'g-lt33tfwk',
+                        nodes: ['n-lt33tfwj'],
                         parentId: targetNodeId,
                     },
                     {
-                        nodes: [
-                            {
-                                id: 'n-lt33tfwc',
-                                content: content,
-                                parentId: droppedNodeId,
-                            },
-                        ],
-                        id: 'g-lt33tfwe',
+                        nodes: ['n-lt33tfwc'],
                         parentId: droppedNodeId,
                     },
                 ],
@@ -191,14 +75,7 @@ describe('move-node', () => {
                 id: 'c-lt33tfwg',
                 groups: [
                     {
-                        nodes: [
-                            {
-                                id: 'n-lt33tfwf',
-                                content: content,
-                                parentId: 'n-lt33tfwc',
-                            },
-                        ],
-                        id: 'g-lt33tfwh',
+                        nodes: ['n-lt33tfwf'],
                         parentId: 'n-lt33tfwc',
                     },
                 ],
@@ -206,7 +83,99 @@ describe('move-node', () => {
         ];
         const state = { columns };
         dropNode(state, action);
-        cleanAndSortColumns(state);
         expect(state.columns).toEqual(output);
+    });
+
+    it('case', () => {
+        const state = {
+            content: {
+                'n-lt90nq7d': { content: '1' },
+                'n-lt90nv74': { content: '1.1' },
+                'n-lt90nwh2': { content: '1.1.1' },
+                'n-lt90nyee': { content: '1.1.2' },
+                'n-lt90o0j9': { content: '1.1.3' },
+                'n-lt90o4xa': { content: '1.1.3.1' },
+                'n-lt90o8fj': { content: '1.1.3.2' },
+            },
+            columns: [
+                {
+                    id: 'c-lt90nq7e',
+                    groups: [{ nodes: ['n-lt90nq7d'], parentId: 'r-lt90nq7c' }],
+                },
+                {
+                    id: 'c-lt90nv75',
+                    groups: [{ nodes: ['n-lt90nv74'], parentId: 'n-lt90nq7d' }],
+                },
+                {
+                    id: 'c-lt90nwh3',
+                    groups: [
+                        {
+                            nodes: ['n-lt90nwh2', 'n-lt90nyee', 'n-lt90o0j9'],
+                            parentId: 'n-lt90nv74',
+                        },
+                    ],
+                },
+                {
+                    id: 'c-lt90o4xb',
+                    groups: [
+                        {
+                            nodes: ['n-lt90o4xa', 'n-lt90o8fj'],
+                            parentId: 'n-lt90o0j9',
+                        },
+                    ],
+                },
+            ],
+        };
+        const action = {
+            type: 'DROP_NODE',
+            payload: {
+                droppedNodeId: 'n-lt90o0j9',
+                targetNodeId: 'n-lt90nq7d',
+                position: 'down',
+            },
+        } as const;
+        const stateAfter = {
+            content: {
+                'n-lt90nq7d': { content: '1' },
+                'n-lt90nv74': { content: '1.1' },
+                'n-lt90nwh2': { content: '1.1.1' },
+                'n-lt90nyee': { content: '1.1.2' },
+                'n-lt90o0j9': { content: '1.1.3' },
+                'n-lt90o4xa': { content: '1.1.3.1' },
+                'n-lt90o8fj': { content: '1.1.3.2' },
+            },
+            columns: [
+                {
+                    id: 'c-lt90nq7e',
+                    groups: [
+                        {
+                            nodes: ['n-lt90nq7d', 'n-lt90o0j9'],
+                            parentId: 'r-lt90nq7c',
+                        },
+                    ],
+                },
+                {
+                    id: 'c-lt90nv75',
+                    groups: [
+                        { nodes: ['n-lt90nv74'], parentId: 'n-lt90nq7d' },
+                        {
+                            nodes: ['n-lt90o4xa', 'n-lt90o8fj'],
+                            parentId: 'n-lt90o0j9',
+                        },
+                    ],
+                },
+                {
+                    id: 'c-lt90nwh3',
+                    groups: [
+                        {
+                            nodes: ['n-lt90nwh2', 'n-lt90nyee'],
+                            parentId: 'n-lt90nv74',
+                        },
+                    ],
+                },
+            ],
+        };
+        dropNode(state, action);
+        expect(state).toEqual(stateAfter);
     });
 });

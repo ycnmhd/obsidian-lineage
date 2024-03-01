@@ -1,47 +1,119 @@
 import { describe, expect, it } from 'vitest';
+import { Column } from 'src/stores/document/document-type';
 import {
-    __column__,
-    __generateColumn__,
-    __populateColumn__,
-    __treeNode__,
-} from 'src/stores/document/reducers/structure/move-node/helpers/test-helpers';
-import { createNode } from 'src/stores/document/helpers/create-node';
-import { columnsToJsonTree } from 'src/stores/document/helpers/json-to-md/columns-to-json/columns-to-json-tree';
+    columnsToJsonTree,
+    TreeNode,
+} from 'src/stores/document/helpers/json-to-md/columns-to-json/columns-to-json-tree';
+import { ginkgo_academic_paper } from 'src/stores/document/helpers/json-to-md/json-to-makdown/data/ginkgo_acedemic_paper';
 
 const rootNodeId = 'root';
 
 describe('columns-to-json', () => {
     it('one column', () => {
-        const node1 = createNode(rootNodeId, undefined, '1');
-        const node2 = createNode(rootNodeId, undefined, '2');
-        const column1 = __column__(rootNodeId);
-        __populateColumn__(column1, node1, node2);
-        const output = [__treeNode__(node1), __treeNode__(node2)];
-        const input = [column1];
-        expect(columnsToJsonTree(input)).toEqual(output);
-    });
-    it('two columns', () => {
-        const {
-            column: column1,
-            nodes: [node1, node2],
-        } = __generateColumn__(2, rootNodeId, 'root');
-
-        const { column: column2, nodes: node1_children } = __generateColumn__(
-            3,
-            node1.id,
-            'node 1',
-        );
-        const { nodes: node2_children } = __generateColumn__(
-            3,
-            node2.id,
-            'node 2',
-            column2,
-        );
-        const output = [
-            __treeNode__(node1, ...node1_children),
-            __treeNode__(node2, ...node2_children),
+        const node1 = '1';
+        const node2 = '2';
+        const column1: Column = {
+            id: 'c-1',
+            groups: [{ nodes: [node1, node2], parentId: rootNodeId }],
+        };
+        const output: TreeNode[] = [
+            {
+                content: '',
+                children: [],
+            },
+            {
+                content: '',
+                children: [],
+            },
         ];
-        const input = [column1, column2];
-        expect(columnsToJsonTree(input)).toEqual(output);
+        expect(
+            columnsToJsonTree([column1], {
+                node1: { content: '' },
+                node2: { content: '' },
+            }),
+        ).toEqual(output);
+    });
+    it('case ', () => {
+        const columns = [
+            {
+                id: 'c-lt8wbrx2',
+                groups: [
+                    {
+                        parentId: 'r-lt8wbrx1',
+                        nodes: ['n-lt8wbucz'],
+                    },
+                ],
+            },
+        ];
+        const content = {};
+        const roots = [{ content: '', children: [] }];
+
+        expect(columnsToJsonTree(columns, content)).toEqual(roots);
+    });
+    it('case', () => {
+        const columns = [
+            {
+                id: 'c-lt8ynup5',
+                groups: [
+                    {
+                        nodes: ['n-lt8ynup4', 'n-lt8ynup6', 'n-lt8ynz4j'],
+                        parentId: 'r-lt8ynup3',
+                    },
+                ],
+            },
+            {
+                id: 'c-lt8ynup8',
+                groups: [
+                    {
+                        nodes: ['n-lt8ynup7', 'n-lt8ynup9'],
+                        parentId: 'n-lt8ynup6',
+                    },
+                ],
+            },
+            {
+                id: 'c-lt8ynupb',
+                groups: [
+                    {
+                        nodes: ['n-lt8ynupa', 'n-lt8ynupc', 'n-lt8ynupd'],
+                        parentId: 'n-lt8ynup9',
+                    },
+                ],
+            },
+        ];
+        const content = {
+            'n-lt8ynup4': { content: 'one' },
+            'n-lt8ynup6': { content: 'two' },
+            'n-lt8ynup7': { content: 'three' },
+            'n-lt8ynup9': { content: 'four' },
+            'n-lt8ynupa': { content: 'five' },
+            'n-lt8ynupc': { content: 'six' },
+            'n-lt8ynupd': { content: 'seven' },
+            'n-lt8ynz4j': { content: 'eight' },
+        };
+        const roots = [
+            { content: 'one', children: [] },
+            {
+                content: 'two',
+                children: [
+                    { content: 'three', children: [] },
+                    {
+                        content: 'four',
+                        children: [
+                            { content: 'five', children: [] },
+                            { content: 'six', children: [] },
+                            { content: 'seven', children: [] },
+                        ],
+                    },
+                ],
+            },
+            { content: 'eight', children: [] },
+        ];
+        expect(columnsToJsonTree(columns, content)).toEqual(roots);
+    });
+    it('case', () => {
+        const { json, lineageDocument } = ginkgo_academic_paper;
+        expect(
+            columnsToJsonTree(lineageDocument.columns, lineageDocument.content),
+        ).toEqual(json);
     });
 });

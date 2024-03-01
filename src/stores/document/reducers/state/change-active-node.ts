@@ -1,7 +1,5 @@
-import {
-    AllDirections,
-    DocumentState,
-} from 'src/stores/document/document-reducer';
+import { DocumentState } from 'src/stores/document/document-type';
+import { AllDirections } from 'src/stores/document/document-reducer';
 import { updateActiveNode } from 'src/stores/document/reducers/state/update-active-node';
 import { findNextActiveNode } from 'src/stores/document/reducers/state/helpers/find-next-active-node';
 
@@ -18,6 +16,6 @@ export const changeActiveNode = (
 ) => {
     const nextNode = findNextActiveNode(state, action);
     if (nextNode) {
-        updateActiveNode(state, nextNode.id);
+        updateActiveNode(state, nextNode);
     }
 };

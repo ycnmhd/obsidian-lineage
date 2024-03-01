@@ -27,7 +27,7 @@
       "allowSyntheticDefaultImports": true
     },
 	"include": [
-		"**/*.ts"
+		"src/**/*.ts"
 	],
 	"exclude": ["temp"]
 }

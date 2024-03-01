@@ -1,8 +1,8 @@
-import { ColumnNode, Columns } from 'src/stores/document/document-reducer';
+import { Columns, Content } from 'src/stores/document/document-type';
 
-const createTreeNode = (node: ColumnNode): TreeNode => {
+const createTreeNode = (content = ''): TreeNode => {
     return {
-        content: node.content,
+        content: content.trim(),
         children: [],
     };
 };
@@ -12,23 +12,19 @@ export type TreeNode = {
     children: TreeNode[];
 };
 
-export const columnsToJsonTree = (columns: Columns) => {
+export const columnsToJsonTree = (columns: Columns, content: Content) => {
     const nodeMap: { [id: string]: TreeNode } = {};
     for (const column of columns) {
         for (const group of column.groups) {
             for (const node of group.nodes) {
-                const treeNode = createTreeNode(node);
-                let parentNode: TreeNode = nodeMap[node.parentId];
+                const treeNode = createTreeNode(content[node]?.content);
+                let parentNode: TreeNode = nodeMap[group.parentId];
                 if (!parentNode) {
-                    parentNode = createTreeNode({
-                        id: node.parentId,
-                        parentId: '',
-                        content: '',
-                    });
-                    nodeMap[node.parentId] = parentNode;
+                    parentNode = createTreeNode();
+                    nodeMap[group.parentId] = parentNode;
                 }
                 parentNode.children.push(treeNode);
-                nodeMap[node.id] = treeNode;
+                nodeMap[node] = treeNode;
             }
         }
     }
@@ -37,11 +33,11 @@ export const columnsToJsonTree = (columns: Columns) => {
     if (columns[0])
         for (const group of columns[0].groups) {
             for (const node of group.nodes) {
-                const treeNode = nodeMap[node.id];
+                const treeNode = nodeMap[node];
                 if (treeNode) {
                     roots.push(treeNode);
                 } else {
-                    throw new Error(`could not find node ${node.id}`);
+                    throw new Error(`could not find node ${node}`);
                 }
             }
         }

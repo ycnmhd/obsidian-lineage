@@ -1,4 +1,4 @@
-import { DocumentState } from 'src/stores/document/document-reducer';
+import { DocumentState } from 'src/stores/document/document-type';
 
 export type ToggleEditModeAction = {
     type: 'ENABLE_EDIT_MODE';

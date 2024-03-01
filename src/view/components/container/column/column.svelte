@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Column } from 'src/stores/document/document-reducer';
+	import { Column } from 'src/stores/document/document-type';
 	import Group from './components/group/group.svelte';
 	import { getStore } from 'src/view/components/container/context';
 
@@ -9,8 +9,8 @@
 
 <div class="column" id={column.id}>
     <div class="column-buffer" />
-    {#each column.groups as group (group.id)}
-        {#if !$store.state.draggedBranch.childGroups.has(group.id)}
+    {#each column.groups as group (group.parentId)}
+        {#if !$store.state.draggedBranch.childGroups.has(group.parentId)}
             <Group {group} />
         {/if}
     {/each}

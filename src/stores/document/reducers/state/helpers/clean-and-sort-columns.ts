@@ -1,9 +1,11 @@
-import { DocumentState } from '../../../document-reducer';
+import { LineageDocument } from 'src/stores/document/document-type';
 import { sortGroups } from 'src/stores/document/reducers/state/helpers/sort-groups';
 
-export const cleanAndSortColumns = (state: Pick<DocumentState, 'columns'>) => {
+export const cleanAndSortColumns = (
+    document: Pick<LineageDocument, 'columns'>,
+) => {
     const emptyColumns: Set<string> = new Set();
-    const columns = state.columns;
+    const columns = document.columns;
     for (let i = 1; i < columns.length; i++) {
         const column = columns[i];
 
@@ -12,7 +14,7 @@ export const cleanAndSortColumns = (state: Pick<DocumentState, 'columns'>) => {
             emptyColumns.add(column.id);
         }
     }
-    state.columns = columns.filter((c) => !emptyColumns.has(c.id));
+    document.columns = columns.filter((c) => !emptyColumns.has(c.id));
     for (let i = 1; i < columns.length; i++) {
         const column = columns[i];
 

@@ -1,46 +1,22 @@
 import { describe, expect, it } from 'vitest';
 import { findNodePosition } from 'src/stores/document/helpers/search/find-node-position';
+import { Column } from 'src/stores/document/document-type';
 
 describe('find node position', () => {
     it('should find position', () => {
-        const columns = [
+        const columns: Column[] = [
             {
                 id: 'c-lt1aha5j',
                 groups: [
                     {
                         nodes: [
-                            {
-                                id: 'n-lt1aha5i',
-                                content: '',
-                                parentId: 'r-lt1aha5h',
-                            },
-                            {
-                                id: 'n-lt1aha5o',
-                                content: '',
-                                parentId: 'r-lt1aha5h',
-                            },
-                            {
-                                id: 'n-lt1aha5p',
-                                content: '',
-                                parentId: 'r-lt1aha5h',
-                            },
-                            {
-                                id: 'n-lt1aha5q',
-                                content: '',
-                                parentId: 'r-lt1aha5h',
-                            },
-                            {
-                                id: 'n-lt1aha5r',
-                                content: '',
-                                parentId: 'r-lt1aha5h',
-                            },
-                            {
-                                id: 'n-lt1aha5s',
-                                content: '',
-                                parentId: 'r-lt1aha5h',
-                            },
+                            'n-lt1aha5i',
+                            'n-lt1aha5o',
+                            'n-lt1aha5p',
+                            'n-lt1aha5q',
+                            'n-lt1aha5r',
+                            'n-lt1aha5s',
                         ],
-                        id: 'g-lt1aha5k',
                         parentId: 'r-lt1aha5h',
                     },
                 ],
@@ -49,25 +25,14 @@ describe('find node position', () => {
                 id: 'c-lt1aha5m',
                 groups: [
                     {
-                        nodes: [
-                            {
-                                id: 'n-lt1aha5l',
-                                content: '',
-                                parentId: 'n-lt1aha5i',
-                            },
-                        ],
-                        id: 'g-lt1aha5n',
+                        nodes: ['n-lt1aha5l'],
                         parentId: 'n-lt1aha5i',
                     },
                 ],
             },
         ];
 
-        const node = {
-            id: 'n-lt1aha5l',
-            content: '',
-            parentId: 'n-lt1aha5i',
-        };
+        const node = 'n-lt1aha5l';
         expect(findNodePosition(columns, node)).toEqual({
             columnIndex: 1,
             groupIndex: 0,

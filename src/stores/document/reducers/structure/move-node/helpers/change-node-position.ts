@@ -1,33 +1,28 @@
-import {
-    AllDirections,
-    ColumnNode,
-    DocumentState,
-} from 'src/stores/document/document-reducer';
+import { AllDirections } from 'src/stores/document/document-reducer';
 import { moveNodeAsChild } from 'src/stores/document/reducers/structure/move-node/helpers/move-node-as-child';
-import {
-    moveNodeAsSibling,
-    removeNodeFromGroup,
-} from 'src/stores/document/reducers/structure/move-node/helpers/move-node-as-sibling';
+import { moveNodeAsSibling } from 'src/stores/document/reducers/structure/move-node/helpers/move-node-as-sibling';
 import { cleanAndSortColumns } from 'src/stores/document/reducers/state/helpers/clean-and-sort-columns';
 import { moveChildGroups } from 'src/stores/document/reducers/structure/move-node/helpers/move-child-groups';
+import { ColumnNode, LineageDocument } from 'src/stores/document/document-type';
+import { removeNodeFromGroup } from 'src/stores/document/reducers/structure/move-node/helpers/remove-node-from-group';
 
 export const changeNodePosition = (
-    state: Pick<DocumentState, 'columns'>,
+    document: Pick<LineageDocument, 'columns'>,
     node: ColumnNode,
     targetNode: ColumnNode,
     direction: AllDirections,
 ) => {
-    removeNodeFromGroup(state.columns, node);
+    removeNodeFromGroup(document.columns, node);
     if (direction === 'right') {
-        moveNodeAsChild(state.columns, node, targetNode);
+        moveNodeAsChild(document.columns, node, targetNode);
     } else {
         moveNodeAsSibling(
-            state.columns,
+            document.columns,
             direction === 'left' ? 'down' : direction,
             node,
             targetNode,
         );
     }
-    moveChildGroups(state.columns, node);
-    cleanAndSortColumns(state);
+    moveChildGroups(document.columns, node);
+    cleanAndSortColumns(document);
 };

@@ -1,6 +1,6 @@
-import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
-import { Direction, DocumentState } from 'src/stores/document/document-reducer';
+import { Direction } from 'src/stores/document/document-reducer';
 import { changeNodePosition } from 'src/stores/document/reducers/structure/move-node/helpers/change-node-position';
+import { LineageDocument } from 'src/stores/document/document-type';
 
 export type DropAction = {
     type: 'DROP_NODE';
@@ -12,12 +12,11 @@ export type DropAction = {
 };
 
 export const dropNode = (
-    state: Pick<DocumentState, 'columns'>,
+    state: Pick<LineageDocument, 'columns'>,
     action: DropAction,
 ) => {
-    const columns = state.columns;
-    const droppedNode = cachedFindNode(columns, action.payload.droppedNodeId);
-    const targetNode = cachedFindNode(columns, action.payload.targetNodeId);
+    const droppedNode = action.payload.droppedNodeId;
+    const targetNode = action.payload.targetNodeId;
     if (droppedNode && targetNode) {
         changeNodePosition(
             state,

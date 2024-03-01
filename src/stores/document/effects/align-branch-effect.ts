@@ -1,5 +1,4 @@
-import { DocumentState } from 'src/stores/document/document-reducer';
-import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
+import { DocumentState } from 'src/stores/document/document-type';
 import {
     AlignBranchState,
     alignElement,
@@ -12,25 +11,25 @@ const alignBranch = (
     behavior?: ScrollBehavior,
 ) => {
     if (!container) return;
-    const node = cachedFindNode(state.columns, state.state.activeBranch.node);
+    const nodeId = state.state.activeBranch.node;
     const localState: AlignBranchState = {
         columns: new Set<HTMLElement>(),
     };
-    if (node) {
-        alignElement(container, node.id, behavior, localState, 'both');
+    if (nodeId) {
+        alignElement(container, nodeId, behavior, localState, 'both');
         for (const id of state.state.activeBranch.parentNodes) {
             alignElement(container, id, behavior, localState);
         }
         for (const id of state.state.activeBranch.childGroups) {
-            alignElement(container, id, behavior, localState);
+            alignElement(container, 'g-' + id, behavior, localState);
         }
     }
-    for (const column of state.columns) {
+    for (const column of state.document.columns) {
         const nodes = column.groups.map((g) => g.nodes).flat();
         if (nodes.length > 0)
             alignElement(
                 container,
-                nodes[nodes.length - 1].id,
+                nodes[nodes.length - 1],
                 behavior,
                 localState,
             );
