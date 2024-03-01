@@ -1,5 +1,5 @@
 import { DocumentStore } from 'src/view/view';
-import { NodeDirection } from 'src/stores/document/document-reducer';
+import { Direction } from 'src/stores/document/document-reducer';
 
 const getDropPosition = (event: DragEvent, targetElement: HTMLElement) => {
     const boundingBox = targetElement.getBoundingClientRect();
@@ -8,15 +8,15 @@ const getDropPosition = (event: DragEvent, targetElement: HTMLElement) => {
     const mouseY = event.clientY;
 
     if (mouseY - boundingBox.top < boundingBox.height / 4) {
-        return 'top';
+        return 'up';
     } else if (boundingBox.bottom - mouseY < boundingBox.height / 4)
-        return 'bottom';
+        return 'down';
     else if (boundingBox.right - mouseX < boundingBox.width / 4) return 'right';
 };
 
 export const dropClasses = {
-    top: 'lineage__drop-node-above',
-    bottom: 'lineage__drop-node-below',
+    up: 'lineage__drop-node-above',
+    down: 'lineage__drop-node-below',
     right: 'lineage__drop-node-under',
 };
 const classesList = Object.values(dropClasses);
@@ -55,7 +55,7 @@ export const droppable = (node: HTMLElement, store: DocumentStore) => {
             payload: {
                 droppedNodeId: data,
                 targetNodeId: targetCard.id,
-                position: getDropPosition(event, targetCard) as NodeDirection,
+                position: getDropPosition(event, targetCard) as Direction,
             },
         });
     }

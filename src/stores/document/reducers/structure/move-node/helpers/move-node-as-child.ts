@@ -3,30 +3,22 @@ import {
     ColumnNode,
     Columns,
 } from 'src/stores/document/document-reducer';
-import {
-    findChildGroup,
-    findGroup,
-} from 'src/stores/document/helpers/find-branch';
 import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
 import {
     createColumn,
     createGroup,
 } from 'src/stores/document/helpers/create-node';
+import { findChildGroup } from 'src/stores/document/helpers/search/find-child-group';
 
 export const moveNodeAsChild = (
     columns: Columns,
-    droppedNode: ColumnNode,
+    node: ColumnNode,
     targetNode: ColumnNode,
 ) => {
-    const currentGroup = findGroup(columns, droppedNode);
-    if (!currentGroup) return;
-    currentGroup.nodes = currentGroup.nodes.filter(
-        (n) => n.id !== droppedNode.id,
-    );
     const targetGroup = findChildGroup(columns, targetNode);
-    droppedNode.parentId = targetNode.id;
+    node.parentId = targetNode.id;
     if (targetGroup) {
-        targetGroup.nodes.push(droppedNode);
+        targetGroup.nodes.push(node);
     } else {
         const currentColumnIndex = findNodeColumn(columns, targetNode.parentId);
         let targetColumn: Column | undefined;
@@ -38,7 +30,7 @@ export const moveNodeAsChild = (
             targetColumn = newColumn;
         }
         const newGroup = createGroup(targetNode.id);
-        newGroup.nodes.push(droppedNode);
+        newGroup.nodes.push(node);
         targetColumn.groups.push(newGroup);
     }
 };

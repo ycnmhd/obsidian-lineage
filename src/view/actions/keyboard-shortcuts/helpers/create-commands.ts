@@ -22,6 +22,10 @@ export const hotkeysLang = {
     go_left: 'Go left',
     undo_change: 'Undo change',
     redo_change: 'Redo change',
+    move_node_up: 'Move card up',
+    move_node_down: 'Move card down',
+    move_node_right: 'Move card right',
+    move_node_left: 'Move card left',
 };
 
 export type PluginCommand = {
@@ -87,7 +91,7 @@ export const createCommands = (plugin: Lineage) => {
                 store.dispatch({
                     type: 'CREATE_NODE',
                     payload: {
-                        position: 'top',
+                        position: 'up',
                     },
                 });
             },
@@ -101,7 +105,7 @@ export const createCommands = (plugin: Lineage) => {
         add_above_and_split: {
             check: isActive,
             callback: (store) => {
-                addNodeAndSplitAtCursor(store, plugin, 'top');
+                addNodeAndSplitAtCursor(store, plugin, 'up');
             },
             hotkeys: [{ key: 'k', modifiers: ['Ctrl'] }],
         },
@@ -111,7 +115,7 @@ export const createCommands = (plugin: Lineage) => {
                 store.dispatch({
                     type: 'CREATE_NODE',
                     payload: {
-                        position: 'bottom',
+                        position: 'down',
                     },
                 });
             },
@@ -125,7 +129,7 @@ export const createCommands = (plugin: Lineage) => {
         add_below_and_split: {
             check: isActive,
             callback: (store) => {
-                addNodeAndSplitAtCursor(store, plugin, 'bottom');
+                addNodeAndSplitAtCursor(store, plugin, 'down');
             },
             hotkeys: [{ key: 'j', modifiers: ['Ctrl'] }],
         },
@@ -181,7 +185,7 @@ export const createCommands = (plugin: Lineage) => {
                 store.dispatch({
                     type: 'CHANGE_ACTIVE_NODE',
                     payload: {
-                        direction: 'bottom',
+                        direction: 'down',
                     },
                 });
             },
@@ -211,7 +215,7 @@ export const createCommands = (plugin: Lineage) => {
                 store.dispatch({
                     type: 'CHANGE_ACTIVE_NODE',
                     payload: {
-                        direction: 'top',
+                        direction: 'up',
                     },
                 });
             },
@@ -249,6 +253,58 @@ export const createCommands = (plugin: Lineage) => {
                     });
             },
             hotkeys: [{ key: 'Y', modifiers: ['Ctrl', 'Shift'] }],
+        },
+        move_node_up: {
+            check: isActive,
+            callback: (store) => {
+                store.dispatch({
+                    type: 'MOVE_NODE',
+                    payload: { direction: 'up' },
+                });
+            },
+            hotkeys: [
+                { key: 'k', modifiers: ['Alt', 'Shift'] },
+                { key: 'ArrowUp', modifiers: ['Alt', 'Shift'] },
+            ],
+        },
+        move_node_down: {
+            check: isActive,
+            callback: (store) => {
+                store.dispatch({
+                    type: 'MOVE_NODE',
+                    payload: { direction: 'down' },
+                });
+            },
+            hotkeys: [
+                { key: 'j', modifiers: ['Alt', 'Shift'] },
+                { key: 'ArrowDown', modifiers: ['Alt', 'Shift'] },
+            ],
+        },
+        move_node_right: {
+            check: isActive,
+            callback: (store) => {
+                store.dispatch({
+                    type: 'MOVE_NODE',
+                    payload: { direction: 'right' },
+                });
+            },
+            hotkeys: [
+                { key: 'l', modifiers: ['Alt', 'Shift'] },
+                { key: 'ArrowRight', modifiers: ['Alt', 'Shift'] },
+            ],
+        },
+        move_node_left: {
+            check: isActive,
+            callback: (store) => {
+                store.dispatch({
+                    type: 'MOVE_NODE',
+                    payload: { direction: 'left' },
+                });
+            },
+            hotkeys: [
+                { key: 'h', modifiers: ['Alt', 'Shift'] },
+                { key: 'ArrowLeft', modifiers: ['Alt', 'Shift'] },
+            ],
         },
     } satisfies Record<keyof typeof hotkeysLang, PluginCommand>;
 };

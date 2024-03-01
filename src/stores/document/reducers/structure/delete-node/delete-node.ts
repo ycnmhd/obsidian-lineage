@@ -3,11 +3,11 @@ import {
     ColumnNode,
     DocumentState,
 } from 'src/stores/document/document-reducer';
-import { findNode } from 'src/stores/document/helpers/find-node';
-import { traverseDown } from 'src/stores/document/helpers/find-branch';
+import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
 import { findNextActiveNode } from 'src/stores/document/reducers/structure/delete-node/helpers/find-next-active-node';
 import { cleanAndSortColumns } from 'src/stores/document/reducers/state/helpers/clean-and-sort-columns';
 import { updateActiveNode } from 'src/stores/document/reducers/state/update-active-node';
+import { traverseDown } from 'src/stores/document/helpers/search/traverse-down';
 
 const deleteGroupsById = (columns: Column[], groupIds: Set<string>): void => {
     for (const column of columns) {
@@ -47,7 +47,7 @@ export type DeleteNodeAction = {
 export const deleteNode = (state: DocumentState) => {
     if (state.state.activeBranch.node === state.state.editing.activeNodeId)
         return;
-    const node = findNode(state.columns, state.state.activeBranch.node);
+    const node = cachedFindNode(state.columns, state.state.activeBranch.node);
     if (node) {
         if (isLastRootNode(state.columns, node)) return;
         const nextNode = findNextActiveNode(state.columns, node);

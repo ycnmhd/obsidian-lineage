@@ -10,7 +10,7 @@ import {
     selectSnapshot,
     SelectSnapshotAction,
 } from 'src/stores/file-history/reducers/select-snapshot';
-import { NodePosition } from 'src/stores/document/helpers/find-branch';
+import { NodePosition } from 'src/stores/document/helpers/search/find-node-position';
 import {
     updateDocumentPath,
     UpdateDocumentPathAction,

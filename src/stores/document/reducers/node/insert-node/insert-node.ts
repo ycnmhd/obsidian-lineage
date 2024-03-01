@@ -3,23 +3,23 @@ import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
 import { createNode } from 'src/stores/document/helpers/create-node';
 import {
     ColumnNode,
+    Direction,
     DocumentState,
-    NodeDirection,
 } from 'src/stores/document/document-reducer';
-import { findNode } from 'src/stores/document/helpers/find-node';
+import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
 import { updateActiveNode } from 'src/stores/document/reducers/state/update-active-node';
 
 export type CreateNodeAction = {
     type: 'CREATE_NODE';
     payload: {
-        position: NodeDirection;
+        position: Direction;
         content?: string;
         __newNodeID__?: string;
     };
 };
 export const insertNode = (state: DocumentState, action: CreateNodeAction) => {
     const payload = action.payload;
-    const node = findNode(state.columns, state.state.activeBranch.node);
+    const node = cachedFindNode(state.columns, state.state.activeBranch.node);
     if (!node) return;
     const { id: nodeId, parentId } = node;
     let createdNode: ColumnNode | null = null;
@@ -39,7 +39,7 @@ export const insertNode = (state: DocumentState, action: CreateNodeAction) => {
             const index = group.nodes.findIndex((c) => c.id === nodeId);
             if (columnIndex !== -1 && index !== -1) {
                 const insertionIndex =
-                    action.payload.position === 'top' ? index : index + 1;
+                    action.payload.position === 'up' ? index : index + 1;
                 createdNode = createNode(
                     parentId,
                     action.payload.__newNodeID__,

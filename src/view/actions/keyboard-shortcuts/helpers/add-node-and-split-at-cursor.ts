@@ -1,11 +1,11 @@
 import { DocumentStore, LineageView } from 'src/view/view';
 import Lineage from 'src/main';
-import { NodeDirection } from 'src/stores/document/document-reducer';
+import { Direction } from 'src/stores/document/document-reducer';
 
 export const addNodeAndSplitAtCursor = (
     store: DocumentStore,
     plugin: Lineage,
-    position: NodeDirection,
+    position: Direction,
 ) => {
     let text: string = '';
     const view = plugin.app.workspace.getActiveViewOfType(LineageView);
@@ -18,7 +18,7 @@ export const addNodeAndSplitAtCursor = (
                 textArea.value = value.substring(0, cursor);
                 text = value.substring(cursor);
             }
-            if (position === 'top') {
+            if (position === 'up') {
                 const temp = text;
                 text = textArea.value;
                 textArea.value = temp;

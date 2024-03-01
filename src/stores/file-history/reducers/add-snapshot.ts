@@ -5,7 +5,8 @@ import {
 import { id } from 'src/helpers/id';
 import { findSnapshotIndex } from 'src/stores/file-history/helpers/find-snapshot-index';
 import { updateNavigationState } from 'src/stores/file-history/helpers/update-navigation-state';
-import { NodePosition } from 'src/stores/document/helpers/find-branch';
+
+import { NodePosition } from 'src/stores/document/helpers/search/find-node-position';
 
 const MAX_SNAPSHOTS = 50;
 

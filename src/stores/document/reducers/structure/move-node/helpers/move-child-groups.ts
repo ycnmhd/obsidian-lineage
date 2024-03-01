@@ -3,7 +3,7 @@ import {
     Columns,
     NodeGroup,
 } from 'src/stores/document/document-reducer';
-import { traverseDown } from 'src/stores/document/helpers/find-branch';
+import { traverseDown } from 'src/stores/document/helpers/search/traverse-down';
 import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
 import { id } from 'src/helpers/id';
 

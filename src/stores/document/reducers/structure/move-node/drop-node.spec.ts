@@ -1,4 +1,4 @@
-import { moveNode } from 'src/stores/document/reducers/structure/move-node/move-node';
+import { dropNode } from 'src/stores/document/reducers/structure/move-node/drop-node';
 import { describe, expect, it } from 'vitest';
 import { Columns } from 'src/stores/document/document-reducer';
 import { createNode } from 'src/stores/document/helpers/create-node';
@@ -40,7 +40,7 @@ describe('move-node', () => {
             JSON.stringify([column1, column2, column3]),
         ) as Columns;
         const state = { columns };
-        moveNode(state, {
+        dropNode(state, {
             type: 'DROP_NODE',
             payload: {
                 droppedNodeId: droppedNode.id,
@@ -67,7 +67,7 @@ describe('move-node', () => {
             payload: {
                 droppedNodeId: droppedNodeId,
                 targetNodeId: targetNodeId,
-                position: 'bottom',
+                position: 'down',
             },
         } as const;
         const content = '';
@@ -205,7 +205,7 @@ describe('move-node', () => {
             },
         ];
         const state = { columns };
-        moveNode(state, action);
+        dropNode(state, action);
         cleanAndSortColumns(state);
         expect(state.columns).toEqual(output);
     });

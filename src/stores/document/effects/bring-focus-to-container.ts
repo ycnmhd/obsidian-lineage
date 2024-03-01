@@ -6,7 +6,10 @@ export const bringFocusToContainer = (
 ) => {
     return store.subscribe((store, action) => {
         if (!action) return;
-        if (action.type === 'DISABLE_EDIT_MODE') {
+        if (
+            action.type === 'DISABLE_EDIT_MODE' ||
+            action.type === 'MOVE_NODE'
+        ) {
             container?.focus();
         }
     });

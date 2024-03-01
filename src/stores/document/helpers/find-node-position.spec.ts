@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { findNodePosition } from 'src/stores/document/helpers/find-branch';
+import { findNodePosition } from 'src/stores/document/helpers/search/find-node-position';
 
 describe('find node position', () => {
     it('should find position', () => {

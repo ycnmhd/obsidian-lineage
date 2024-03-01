@@ -1,15 +1,10 @@
-import { findNode } from 'src/stores/document/helpers/find-node';
-import {
-    findGroup,
-    findSiblings,
-    traverseDown,
-    traverseUp,
-} from 'src/stores/document/helpers/find-branch';
-import {
-    ColumnNode,
-    DocumentState,
-} from 'src/stores/document/document-reducer';
+import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
+import { traverseUp } from 'src/stores/document/helpers/search/traverse-up';
+import { DocumentState } from 'src/stores/document/document-reducer';
 import { updateEditingNodeOnActiveNodeChange } from 'src/stores/document/reducers/editing/update-editing-node-on-active-node-change';
+import { findGroup } from 'src/stores/document/helpers/search/find-group';
+import { findSiblings } from 'src/stores/document/helpers/search/find-siblings';
+import { traverseDown } from 'src/stores/document/helpers/search/traverse-down';
 
 export const updateActiveNode = (
     state: DocumentState,
@@ -18,11 +13,9 @@ export const updateActiveNode = (
 ) => {
     if (nodeId) updateEditingNodeOnActiveNodeChange(state, nodeId, newNode);
 
-    const node = nodeId ? findNode(state.columns, nodeId) : null;
+    const node = nodeId ? cachedFindNode(state.columns, nodeId) : null;
     if (node) {
-        const sortedParents: ColumnNode[] = [];
-
-        traverseUp(sortedParents, state.columns, node);
+        const sortedParents = traverseUp(state.columns, node);
         const parentIDs = new Set<string>(sortedParents.map((n) => n.id));
         const childGroups = new Set<string>();
         const childNodes = new Set<string>();

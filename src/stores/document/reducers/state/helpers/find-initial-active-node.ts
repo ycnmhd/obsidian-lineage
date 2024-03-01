@@ -2,7 +2,7 @@ import {
     ColumnNode,
     DocumentState,
 } from 'src/stores/document/document-reducer';
-import { findNodeAtPosition } from 'src/stores/document/helpers/find-branch';
+import { findNodeAtPosition } from 'src/stores/document/helpers/search/find-node-at-position';
 import { logger } from 'src/helpers/logger';
 import { LoadDocumentAction } from 'src/stores/document/reducers/file/load-document/load-document';
 

@@ -4,12 +4,13 @@
 	export let classes = '';
     export let position: keyof typeof positionClasses;
     const positionClasses = {
-        top: 'position-top',
+        up: 'position-top',
         right: 'position-right',
-        bottom: 'position-bottom',
-        'bottom-right': 'position-bottom-right',
-        'top-right': 'position-top-right',
+        down: 'position-bottom',
+        'down-right': 'position-bottom-right',
+        'up-right': 'position-top-right',
     };
+
 </script>
 
 <button

@@ -1,7 +1,7 @@
 import { Column, ColumnNode } from 'src/stores/document/document-reducer';
-import { findGroup } from 'src/stores/document/helpers/find-branch';
 import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
-import { findNode } from 'src/stores/document/helpers/find-node';
+import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
+import { findGroup } from 'src/stores/document/helpers/search/find-group';
 
 export const findNextActiveNode = (columns: Column[], node: ColumnNode) => {
     let nextNode: ColumnNode | null = null;
@@ -22,7 +22,7 @@ export const findNextActiveNode = (columns: Column[], node: ColumnNode) => {
     }
     if (!nextNode) {
         if (!node.parentId.startsWith('r-'))
-            nextNode = findNode(columns, node?.parentId);
+            nextNode = cachedFindNode(columns, node?.parentId);
         else nextNode = column.groups[0].nodes[0];
     }
     return nextNode;

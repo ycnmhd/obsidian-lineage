@@ -1,11 +1,23 @@
-import { DropAction } from 'src/stores/document/reducers/structure/move-node/move-node';
-import { ColumnNode, Columns } from 'src/stores/document/document-reducer';
-import { findGroup } from 'src/stores/document/helpers/find-branch';
+import {
+    Column,
+    ColumnNode,
+    Columns,
+    VerticalDirection,
+} from 'src/stores/document/document-reducer';
+
+import { findGroup } from 'src/stores/document/helpers/search/find-group';
+
+export const removeNodeFromGroup = (columns: Column[], node: ColumnNode) => {
+    const currentGroup = findGroup(columns, node);
+    if (currentGroup) {
+        currentGroup.nodes = currentGroup.nodes.filter((n) => n.id !== node.id);
+    }
+};
 
 export const moveNodeAsSibling = (
     columns: Columns,
-    action: DropAction,
-    droppedNode: ColumnNode,
+    direction: VerticalDirection,
+    node: ColumnNode,
     targetNode: ColumnNode,
 ) => {
     const targetGroup = findGroup(columns, targetNode);
@@ -13,10 +25,9 @@ export const moveNodeAsSibling = (
         const index = targetGroup.nodes.findIndex(
             (n) => n.id === targetNode.id,
         );
-        const insertionIndex =
-            action.payload.position === 'top' ? index : index + 1;
+        const insertionIndex = direction === 'up' ? index : index + 1;
 
-        droppedNode.parentId = targetNode.parentId;
-        targetGroup.nodes.splice(insertionIndex, 0, droppedNode);
+        node.parentId = targetNode.parentId;
+        targetGroup.nodes.splice(insertionIndex, 0, node);
     }
 };

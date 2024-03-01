@@ -5,8 +5,8 @@ import {
 import { updateActiveNode } from 'src/stores/document/reducers/state/update-active-node';
 import {
     DropAction,
-    moveNode,
-} from 'src/stores/document/reducers/structure/move-node/move-node';
+    dropNode,
+} from 'src/stores/document/reducers/structure/move-node/drop-node';
 import { onDragEnd } from 'src/stores/document/reducers/state/on-drag-end';
 import {
     loadDocument,
@@ -29,7 +29,6 @@ import {
     disableEditMode,
     DisableEditModeAction,
 } from 'src/stores/document/reducers/editing/disable-edit-mode';
-import { NodePosition } from 'src/stores/document/helpers/find-branch';
 import {
     changeActiveNode,
     ChangeActiveNodeAction,
@@ -38,6 +37,11 @@ import {
     deleteNode,
     DeleteNodeAction,
 } from 'src/stores/document/reducers/structure/delete-node/delete-node';
+import { NodePosition } from 'src/stores/document/helpers/search/find-node-position';
+import {
+    moveNode,
+    MoveNodeAction,
+} from 'src/stores/document/reducers/structure/move-node/move-node';
 
 export type ColumnNode = {
     id: string;
@@ -86,8 +90,9 @@ export type DocumentState = {
     };
 };
 
-export type SiblingPosition = 'top' | 'bottom';
-export type NodeDirection = SiblingPosition | 'right';
+export type VerticalDirection = 'up' | 'down';
+export type Direction = VerticalDirection | 'right';
+export type AllDirections = Direction | 'left';
 
 export type SavedDocument = {
     data: string;
@@ -127,7 +132,8 @@ export type DocumentAction =
           type: 'UI/TOGGLE_HELP_SIDEBAR';
       }
     | DeleteNodeAction
-    | { type: 'EVENT/VIEW_LOADED' };
+    | { type: 'EVENT/VIEW_LOADED' }
+    | MoveNodeAction;
 const updateState = (state: DocumentState, action: DocumentAction) => {
     // state
     if (action.type === 'SET_ACTIVE_NODE') {
@@ -154,8 +160,10 @@ const updateState = (state: DocumentState, action: DocumentAction) => {
         deleteNode(state);
     } else if (action.type === 'DROP_NODE') {
         onDragEnd(state);
-        moveNode(state, action);
+        dropNode(state, action);
         updateActiveNode(state, action.payload.droppedNodeId);
+    } else if (action.type === 'MOVE_NODE') {
+        moveNode(state, action);
     }
     // life cycle and other
     else if (
@@ -174,6 +182,7 @@ const updateState = (state: DocumentState, action: DocumentAction) => {
         state.state.ui.showHistorySidebar = false;
         state.state.ui.showHelpSidebar = !state.state.ui.showHelpSidebar;
     }
+    console.log(action.type, state.columns?.[0]?.groups?.[0]?.nodes?.length);
 };
 
 export const documentReducer = (

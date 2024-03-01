@@ -1,5 +1,5 @@
 import { DocumentState } from 'src/stores/document/document-reducer';
-import { findNode } from 'src/stores/document/helpers/find-node';
+import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
 import {
     AlignBranchState,
     alignElement,
@@ -12,7 +12,7 @@ const alignBranch = (
     behavior?: ScrollBehavior,
 ) => {
     if (!container) return;
-    const node = findNode(state.columns, state.state.activeBranch.node);
+    const node = cachedFindNode(state.columns, state.state.activeBranch.node);
     const localState: AlignBranchState = {
         columns: new Set<HTMLElement>(),
     };
@@ -57,7 +57,8 @@ export const alignBranchEffect = (
             action.type === 'APPLY_SNAPSHOT' ||
             action.type === 'TREE/DELETE_NODE' ||
             action.type === 'SET_NODE_CONTENT' ||
-            action.type === 'EVENT/VIEW_LOADED'
+            action.type === 'EVENT/VIEW_LOADED' ||
+            action.type === 'MOVE_NODE'
         ) {
             if (timeoutRef.align) clearTimeout(timeoutRef.align);
             timeoutRef.align = setTimeout(() => {

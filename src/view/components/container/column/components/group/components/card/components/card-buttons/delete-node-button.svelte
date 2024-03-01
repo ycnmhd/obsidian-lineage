@@ -13,6 +13,6 @@
     };
 </script>
 
-<FloatingButton on:click={deleteNode} position={'top-right'}>
+<FloatingButton on:click={deleteNode} position={'up-right'}>
         <TrashIcon class="svg-con" />
 </FloatingButton>

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { NodeDirection } from 'src/stores/document/document-reducer';
 	import { getStore } from '../../../../../../../context';
 	import FloatingButton from './floating-button.svelte';
 	import { ChevronDown, ChevronRight, ChevronUp } from 'lucide-svelte';
 
-	export let position: NodeDirection;
+	export let position:  "up" | "right" | "down" ;
     const store = getStore();
+	// eslint-disable-next-line no-undef
     const createCard = (e: MouseEvent) => {
         e.stopPropagation();
         store.dispatch({
@@ -15,8 +15,8 @@
     };
 	const chevrons = {
 		right: ChevronRight,
-		top:ChevronUp,
-		bottom: ChevronDown
+		up:ChevronUp,
+		down: ChevronDown
 	}
 </script>
 

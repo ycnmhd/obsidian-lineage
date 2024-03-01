@@ -4,7 +4,7 @@ import {
     NodeGroup,
 } from 'src/stores/document/document-reducer';
 import { id } from 'src/helpers/id';
-import { findGroup } from 'src/stores/document/helpers/find-branch';
+import { findGroup } from 'src/stores/document/helpers/search/find-group';
 import { TreeNode } from 'src/stores/document/helpers/json-to-md/columns-to-json/columns-to-json-tree';
 import { createNode } from 'src/stores/document/helpers/create-node';
 import { expect } from 'vitest';

@@ -16,11 +16,11 @@ import { Store } from 'src/helpers/store';
 import { defaultDocumentState } from 'src/stores/document/default-document-state';
 import { bringFocusToContainer } from 'src/stores/document/effects/bring-focus-to-container';
 import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
-import { findNode } from 'src/stores/document/helpers/find-node';
-import { findNodePosition } from 'src/stores/document/helpers/find-branch';
+import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
 import { stores } from 'src/view/helpers/stores-cache';
 import { clone } from 'src/helpers/clone';
 import { extractFrontmatter } from 'src/view/helpers/extract-frontmatter';
+import { findNodePosition } from 'src/stores/document/helpers/search/find-node-position';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -110,7 +110,7 @@ export class LineageView extends TextFileView {
             if (actionType !== 'APPLY_SNAPSHOT') {
                 const path = this.file?.path;
                 if (!path) throw new Error('view does not have a file');
-                const node = findNode(
+                const node = cachedFindNode(
                     state.columns,
                     state.state.activeBranch.node,
                 );

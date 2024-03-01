@@ -3,7 +3,7 @@ import { logger } from 'src/helpers/logger';
 
 const cache: { [key: string]: ColumnNode } = {};
 
-export const findNode = (
+export const cachedFindNode = (
     columns: Columns,
     nodeId: string,
 ): ColumnNode | null => {

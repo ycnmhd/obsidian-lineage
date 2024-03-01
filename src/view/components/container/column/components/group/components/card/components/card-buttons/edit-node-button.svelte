@@ -23,7 +23,7 @@
     };
 </script>
 
-<FloatingButton on:click={toggleEdit} position={'bottom-right'}>
+<FloatingButton on:click={toggleEdit} position={'down-right'}>
     {#if editing}
         <SaveIcon class="svg-con" />
     {:else}

@@ -5,7 +5,6 @@ export const updateEditingNodeOnActiveNodeChange = (
     nodeId: string,
     newNode = false,
 ) => {
-    state.state.activeBranch.node = nodeId;
     state.state.editing.savePreviousNode = true;
     if (newNode) {
         state.state.editing.activeNodeId = nodeId;

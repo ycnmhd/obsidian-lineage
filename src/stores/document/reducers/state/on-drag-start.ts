@@ -1,6 +1,6 @@
-import { findNode } from 'src/stores/document/helpers/find-node';
-import { traverseDown } from 'src/stores/document/helpers/find-branch';
+import { cachedFindNode } from 'src/stores/document/helpers/search/cached-find-node';
 import { DocumentState } from 'src/stores/document/document-reducer';
+import { traverseDown } from 'src/stores/document/helpers/search/traverse-down';
 
 export type SetDragStartedAction = {
     type: 'SET_DRAG_STARTED';
@@ -12,7 +12,7 @@ export const onDragStart = (
     state: DocumentState,
     action: SetDragStartedAction,
 ) => {
-    const node = findNode(state.columns, action.payload.nodeId);
+    const node = cachedFindNode(state.columns, action.payload.nodeId);
     if (node) {
         const childGroups = new Set<string>();
         traverseDown(childGroups, new Set<string>(), state.columns, node);
