@@ -10,14 +10,14 @@
         e.stopPropagation();
         if (editing) {
             store.dispatch({
-                type: 'DISABLE_EDIT_MODE',
+                type: 'DOCUMENT/DISABLE_EDIT_MODE',
                 payload: {
                     save: true,
                 },
             });
         } else {
             store.dispatch({
-                type: 'ENABLE_EDIT_MODE',
+                type: 'DOCUMENT/ENABLE_EDIT_MODE',
             });
         }
     };

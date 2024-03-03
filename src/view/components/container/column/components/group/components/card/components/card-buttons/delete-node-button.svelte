@@ -8,7 +8,7 @@
     const deleteNode = (e: MouseEvent) => {
         e.stopPropagation();
         store.dispatch({
-            type: 'TREE/DELETE_NODE',
+            type: 'DOCUMENT/DELETE_NODE',
         });
     };
 </script>

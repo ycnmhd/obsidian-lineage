@@ -1,4 +1,4 @@
-import { DocumentStore } from 'src/view/view';
+import { ViewStore } from 'src/view/view';
 
 const toggleDraggedNodeVisibility = (
     node: HTMLElement,
@@ -15,7 +15,7 @@ const toggleDraggedNodeVisibility = (
 
 export type DraggableData = {
     id: string;
-    store: DocumentStore;
+    store: ViewStore;
 };
 
 export const draggable = (node: HTMLElement, data: DraggableData) => {
@@ -40,7 +40,7 @@ export const draggable = (node: HTMLElement, data: DraggableData) => {
 
     node.addEventListener('dragstart', handleDragstart);
     const handleDragEnd = (e: DragEvent) => {
-        data.store.dispatch({ type: 'SET_DRAG_CANCELED' });
+        data.store.dispatch({ type: 'DOCUMENT/SET_DRAG_STARTED' });
         toggleDraggedNodeVisibility(node, data, true);
     };
     node.addEventListener('dragend', handleDragEnd);

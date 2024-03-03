@@ -1,9 +1,9 @@
-import { DocumentStore, LineageView } from 'src/view/view';
+import { LineageView, ViewStore } from 'src/view/view';
 import Lineage from 'src/main';
-import { Direction } from 'src/stores/document/document-reducer';
+import { Direction } from 'src/stores/view/view-reducer';
 
 export const addNodeAndSplitAtCursor = (
-    store: DocumentStore,
+    store: ViewStore,
     plugin: Lineage,
     position: Direction,
 ) => {
@@ -26,7 +26,7 @@ export const addNodeAndSplitAtCursor = (
         }
     }
     store.dispatch({
-        type: 'CREATE_NODE',
+        type: 'DOCUMENT/INSERT_NODE',
         payload: {
             position,
             content: text,

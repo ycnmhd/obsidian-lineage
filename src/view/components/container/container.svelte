@@ -5,6 +5,7 @@
 
 	const store = getStore();
 	const plugin = getPlugin()
+
 </script>
 
 <div

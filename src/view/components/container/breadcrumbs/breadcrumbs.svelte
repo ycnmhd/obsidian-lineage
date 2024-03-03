@@ -17,7 +17,7 @@
                 data-tooltip-position="left"
                 on:click={() => {
                     store.dispatch({
-                        type: 'SET_ACTIVE_NODE',
+                        type: 'DOCUMENT/SET_ACTIVE_NODE',
                         payload: { id: parent },
                     });
                 }}

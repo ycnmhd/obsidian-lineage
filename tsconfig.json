@@ -29,5 +29,5 @@
 	"include": [
 		"src/**/*.ts"
 	],
-	"exclude": ["temp"]
+	"exclude": ["temp","node_modules"]
 }

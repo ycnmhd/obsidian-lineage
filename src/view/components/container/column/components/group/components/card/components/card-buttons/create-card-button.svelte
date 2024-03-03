@@ -9,7 +9,7 @@
     const createCard = (e: MouseEvent) => {
         e.stopPropagation();
         store.dispatch({
-            type: 'CREATE_NODE',
+            type: 'DOCUMENT/INSERT_NODE',
             payload: {  position },
         });
     };

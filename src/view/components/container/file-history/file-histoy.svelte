@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { FileHistory } from 'src/stores/file-history/file-history-reducer';
 	import SnapshotButton from './components/snapshot-button.svelte';
 	import { updateRelativeTime } from 'src/view/components/container/file-history/actions/update-relative-time';
+	import { DocumentHistory } from 'src/stores/view/view-state-type';
 
-	export let fileHistory: FileHistory;
+	export let documentHistory: DocumentHistory;
     export let path: string;
 </script>
 
@@ -12,13 +12,13 @@
         class="snapshots-list"
         use:updateRelativeTime
     >
-        {#each [...fileHistory.snapshots].sort((a, b) => b.created - a.created) as snapshot, index (snapshot.id)}
+        {#each [...documentHistory.snapshots].sort((a, b) => b.created - a.created) as snapshot, index (snapshot.id)}
             <SnapshotButton
                 {snapshot}
-                active={fileHistory.snapshots.length - index - 1 ===
-                    fileHistory.state.activeIndex}
+                active={documentHistory.snapshots.length - index - 1 ===
+                    documentHistory.state.activeIndex}
                 filePath={path}
-                reverseIndex={fileHistory.snapshots.length - index}
+                reverseIndex={documentHistory.snapshots.length - index}
             />
         {/each}
     </div>

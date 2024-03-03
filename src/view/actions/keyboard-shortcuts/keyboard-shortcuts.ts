@@ -1,4 +1,4 @@
-import { DocumentStore } from 'src/view/view';
+import { ViewStore } from 'src/view/view';
 import {
     createCommands,
     PluginCommand,
@@ -32,7 +32,7 @@ export const keyboardShortcuts = (
         store,
         plugin,
     }: {
-        store: DocumentStore;
+        store: ViewStore;
         plugin: Lineage;
     },
 ) => {

@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
 	import ControlsBar from './controls-bar/controls-bar.svelte';
 	import Hotkeys from './hotkeys/hotkeys.svelte';
 	import FileHistory from './file-history/file-histoy.svelte';
-	import { DocumentStore } from '../../view';
+	import { ViewStore } from '../../view';
 	import Lineage from '../../../main';
 	import { setContext } from 'svelte';
 	import Container from './container.svelte';
 	import Breadcrumbs from './breadcrumbs/breadcrumbs.svelte';
 
-	export let store: DocumentStore;
+	export let store: ViewStore;
     export let plugin: Lineage;
     const settings = plugin.settings;
     setContext('store', store);
@@ -23,13 +22,13 @@
 >
 	<Breadcrumbs/>
     <ControlsBar
-        fileHistory={$fileHistoryStore.documents[$store.file.path]}
+		documentHistory={$store.history}
         path={$store.file.path}
     />
     <Container />
-    {#if $store.ui.showHistorySidebar && $store.file.path && $fileHistoryStore.documents[$store.file.path]}
+    {#if $store.ui.showHistorySidebar && $store.file.path}
         <FileHistory
-            fileHistory={$fileHistoryStore.documents[$store.file.path]}
+			documentHistory={$store.history}
             path={$store.file.path}
         />
     {:else if $store.ui.showHelpSidebar}

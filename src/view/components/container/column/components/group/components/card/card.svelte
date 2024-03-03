@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { NodeId } from 'src/stores/document/document-type';
+	import { NodeId } from 'src/stores/view/view-state-type';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
 	import Draggable from './components/dnd/draggable.svelte';
 	import Droppable from './components/dnd/droppable.svelte';
@@ -15,6 +15,7 @@
     export let hasChildren: boolean;
     export let parentId: string;
     const store = getStore();
+
 </script>
 
 <Droppable {active} {editing} {hasChildren} nodeId={node} {parentId}>

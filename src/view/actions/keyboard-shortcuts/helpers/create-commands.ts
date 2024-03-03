@@ -1,6 +1,5 @@
 import { Hotkey } from 'obsidian';
-import { DocumentStore } from 'src/view/view';
-import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
+import { ViewStore } from 'src/view/view';
 import Lineage from 'src/main';
 import { addNodeAndSplitAtCursor } from 'src/view/actions/keyboard-shortcuts/helpers/add-node-and-split-at-cursor';
 
@@ -31,23 +30,23 @@ export const hotkeysLang = {
 };
 
 export type PluginCommand = {
-    check: (store: DocumentStore) => boolean;
-    callback: (store: DocumentStore, event: KeyboardEvent) => void;
+    check: (store: ViewStore) => boolean;
+    callback: (store: ViewStore, event: KeyboardEvent) => void;
     hotkeys: Hotkey[];
 };
 
 export const createCommands = (plugin: Lineage) => {
-    const isEditing = (store: DocumentStore) => {
+    const isEditing = (store: ViewStore) => {
         return !!store.getValue().document.state.editing.activeNodeId;
     };
-    const isActive = (store: DocumentStore) => {
+    const isActive = (store: ViewStore) => {
         return !!store.getValue().document.state.activeBranch.node;
     };
 
-    const isActiveAndNotEditing = (store: DocumentStore) => {
+    const isActiveAndNotEditing = (store: ViewStore) => {
         return isActive(store) && !isEditing(store);
     };
-    const isActiveAndHasFile = (store: DocumentStore) => {
+    const isActiveAndHasFile = (store: ViewStore) => {
         return isActive(store) && !!store.getValue().file.path;
     };
     return {
@@ -56,7 +55,7 @@ export const createCommands = (plugin: Lineage) => {
             callback: (store, event) => {
                 event.preventDefault();
                 store.dispatch({
-                    type: 'ENABLE_EDIT_MODE',
+                    type: 'DOCUMENT/ENABLE_EDIT_MODE',
                 });
             },
             hotkeys: [{ key: 'Enter', modifiers: [] }],
@@ -66,7 +65,7 @@ export const createCommands = (plugin: Lineage) => {
             callback: (store) => {
                 if (isEditing(store))
                     store.dispatch({
-                        type: 'DISABLE_EDIT_MODE',
+                        type: 'DOCUMENT/DISABLE_EDIT_MODE',
                         payload: {
                             save: true,
                         },
@@ -79,7 +78,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActive,
             callback: (store) => {
                 store.dispatch({
-                    type: 'DISABLE_EDIT_MODE',
+                    type: 'DOCUMENT/DISABLE_EDIT_MODE',
                     payload: {
                         save: false,
                     },
@@ -91,7 +90,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CREATE_NODE',
+                    type: 'DOCUMENT/INSERT_NODE',
                     payload: {
                         position: 'up',
                     },
@@ -115,7 +114,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CREATE_NODE',
+                    type: 'DOCUMENT/INSERT_NODE',
                     payload: {
                         position: 'down',
                     },
@@ -139,7 +138,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CREATE_NODE',
+                    type: 'DOCUMENT/INSERT_NODE',
                     payload: {
                         position: 'right',
                     },
@@ -162,7 +161,7 @@ export const createCommands = (plugin: Lineage) => {
         delete_card: {
             check: isActive,
             callback: (store) => {
-                store.dispatch({ type: 'TREE/DELETE_NODE' });
+                store.dispatch({ type: 'DOCUMENT/DELETE_NODE' });
             },
             hotkeys: [{ key: 'Backspace', modifiers: ['Ctrl'] }],
         },
@@ -170,7 +169,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CHANGE_ACTIVE_NODE_USING_KEYBOARD',
+                    type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
                         direction: 'right',
                     },
@@ -185,7 +184,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CHANGE_ACTIVE_NODE_USING_KEYBOARD',
+                    type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
                         direction: 'down',
                     },
@@ -200,7 +199,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CHANGE_ACTIVE_NODE_USING_KEYBOARD',
+                    type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
                         direction: 'left',
                     },
@@ -215,7 +214,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CHANGE_ACTIVE_NODE_USING_KEYBOARD',
+                    type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
                         direction: 'up',
                     },
@@ -231,8 +230,8 @@ export const createCommands = (plugin: Lineage) => {
             callback: (store) => {
                 const path = store.getValue().file.path;
                 if (path)
-                    fileHistoryStore.dispatch({
-                        type: 'UNDO_REDO_SNAPSHOT',
+                    store.dispatch({
+                        type: 'HISTORY/UNDO_REDO_SNAPSHOT',
                         payload: {
                             direction: 'back',
                             path,
@@ -246,8 +245,8 @@ export const createCommands = (plugin: Lineage) => {
             callback: (store) => {
                 const path = store.getValue().file.path;
                 if (path)
-                    fileHistoryStore.dispatch({
-                        type: 'UNDO_REDO_SNAPSHOT',
+                    store.dispatch({
+                        type: 'HISTORY/UNDO_REDO_SNAPSHOT',
                         payload: {
                             direction: 'forward',
                             path,
@@ -260,7 +259,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActive,
             callback: (store) => {
                 store.dispatch({
-                    type: 'MOVE_NODE',
+                    type: 'DOCUMENT/MOVE_NODE',
                     payload: { direction: 'up' },
                 });
             },
@@ -273,7 +272,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActive,
             callback: (store) => {
                 store.dispatch({
-                    type: 'MOVE_NODE',
+                    type: 'DOCUMENT/MOVE_NODE',
                     payload: { direction: 'down' },
                 });
             },
@@ -286,7 +285,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActive,
             callback: (store) => {
                 store.dispatch({
-                    type: 'MOVE_NODE',
+                    type: 'DOCUMENT/MOVE_NODE',
                     payload: { direction: 'right' },
                 });
             },
@@ -299,7 +298,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActive,
             callback: (store) => {
                 store.dispatch({
-                    type: 'MOVE_NODE',
+                    type: 'DOCUMENT/MOVE_NODE',
                     payload: { direction: 'left' },
                 });
             },
@@ -312,7 +311,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActive,
             callback: (store) => {
                 store.dispatch({
-                    type: 'MERGE_NODE',
+                    type: 'DOCUMENT/MERGE_NODE',
                     payload: { direction: 'up' },
                 });
             },
@@ -325,7 +324,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActive,
             callback: (store) => {
                 store.dispatch({
-                    type: 'MERGE_NODE',
+                    type: 'DOCUMENT/MERGE_NODE',
                     payload: { direction: 'down' },
                 });
             },

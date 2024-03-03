@@ -16,12 +16,10 @@ import { Settings } from 'src/stores/settings/settings-type';
 import { registerFileMenuEvent } from 'src/obsidian/events/workspace/register-file-menu-event';
 import { registerFileRenameEvent } from 'src/obsidian/events/vault/register-file-move-event';
 import { registerFileDeleteEvent } from 'src/obsidian/events/vault/register-file-delete-event';
-import { applySnapshotEffect } from 'src/stores/file-history/effects/apply-snapshot-effect';
 import { addCommands } from 'src/obsidian/commands/add-commands';
 
 export default class Lineage extends Plugin {
     settings: Store<Settings, SettingsActions>;
-    private onDestroyCallbacks: Set<() => void> = new Set();
 
     async onload() {
         await this.loadSettings();
@@ -33,14 +31,7 @@ export default class Lineage extends Plugin {
         // @ts-ignore
         this.register(around(WorkspaceLeaf.prototype, { setViewState }));
         this.registerEvents();
-        this.registerEffects();
         addCommands(this);
-    }
-
-    onunload() {
-        for (const s of this.onDestroyCallbacks) {
-            s();
-        }
     }
 
     async saveSettings() {
@@ -63,9 +54,5 @@ export default class Lineage extends Plugin {
         registerFileMenuEvent(this);
         registerFileRenameEvent(this);
         registerFileDeleteEvent(this);
-    }
-
-    private registerEffects() {
-        this.onDestroyCallbacks.add(applySnapshotEffect());
     }
 }

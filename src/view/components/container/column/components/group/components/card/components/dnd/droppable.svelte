@@ -13,7 +13,7 @@
 
     const setActive = () => {
         store.dispatch({
-            type: 'SET_ACTIVE_NODE',
+            type: 'DOCUMENT/SET_ACTIVE_NODE',
             payload: { id: nodeId },
         });
     };
@@ -32,7 +32,7 @@
     on:click={setActive}
     on:dblclick={() => {
         setActive();
-        store.dispatch({ type: 'ENABLE_EDIT_MODE' });
+        store.dispatch({ type: 'DOCUMENT/ENABLE_EDIT_MODE' });
     }}
     use:droppable={store}
 >

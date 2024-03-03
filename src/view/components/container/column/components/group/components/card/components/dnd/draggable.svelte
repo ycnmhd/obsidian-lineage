@@ -11,7 +11,7 @@
 	<div
 		class="content"
 		on:dblclick={() => {
-                    store.dispatch({ type: 'ENABLE_EDIT_MODE' });
+                    store.dispatch({ type: 'DOCUMENT/ENABLE_EDIT_MODE' });
                 }}
 	>
 		<slot/>

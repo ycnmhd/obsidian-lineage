@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Column } from 'src/stores/document/document-type';
+	import { Column } from 'src/stores/view/view-state-type';
 	import Group from './components/group/group.svelte';
 	import { getStore } from 'src/view/components/container/context';
 

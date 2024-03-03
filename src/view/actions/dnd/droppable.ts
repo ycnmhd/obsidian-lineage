@@ -1,5 +1,5 @@
-import { DocumentStore } from 'src/view/view';
-import { Direction } from 'src/stores/document/document-reducer';
+import { ViewStore } from 'src/view/view';
+import { Direction } from 'src/stores/view/view-reducer';
 
 const getDropPosition = (event: DragEvent, targetElement: HTMLElement) => {
     const boundingBox = targetElement.getBoundingClientRect();
@@ -20,7 +20,7 @@ export const dropClasses = {
     right: 'lineage__drop-node-under',
 };
 const classesList = Object.values(dropClasses);
-export const droppable = (node: HTMLElement, store: DocumentStore) => {
+export const droppable = (node: HTMLElement, store: ViewStore) => {
     function HandleDragLeave(event: DragEvent) {
         if (!(event.currentTarget instanceof HTMLElement)) return;
         event.currentTarget.removeClasses(classesList);
@@ -51,7 +51,7 @@ export const droppable = (node: HTMLElement, store: DocumentStore) => {
         if (!data) throw new Error(`droppedNodeId is missing`);
         if (!targetCard.id) throw new Error(`targetCard.id is missing`);
         store.dispatch({
-            type: 'DROP_NODE',
+            type: 'DOCUMENT/DROP_NODE',
             payload: {
                 droppedNodeId: data,
                 targetNodeId: targetCard.id,

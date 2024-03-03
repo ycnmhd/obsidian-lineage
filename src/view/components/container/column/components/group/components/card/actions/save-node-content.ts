@@ -1,7 +1,7 @@
-import { NodeId } from 'src/stores/document/document-type';
-import { DocumentStore } from 'src/view/view';
+import { NodeId } from 'src/stores/view/view-state-type';
+import { ViewStore } from 'src/view/view';
 
-type Props = { editing: boolean; node: NodeId; store: DocumentStore };
+type Props = { editing: boolean; node: NodeId; store: ViewStore };
 export const saveNodeContent = (
     element: HTMLTextAreaElement,
     { store, editing, node }: Props,
@@ -23,7 +23,7 @@ export const saveNodeContent = (
             } else if (!editing && state.wasEditing) {
                 if (store.getValue().document.state.editing.savePreviousNode)
                     store.dispatch({
-                        type: 'SET_NODE_CONTENT',
+                        type: 'DOCUMENT/SET_NODE_CONTENT',
                         payload: {
                             nodeId: node,
                             content: element.value,
@@ -35,7 +35,7 @@ export const saveNodeContent = (
         destroy: () => {
             if (documentState.document.state.editing.savePreviousNode)
                 store.dispatch({
-                    type: 'SET_NODE_CONTENT',
+                    type: 'DOCUMENT/SET_NODE_CONTENT',
                     payload: {
                         nodeId: node,
                         content: element.value,
