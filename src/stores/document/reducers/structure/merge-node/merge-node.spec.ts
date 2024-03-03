@@ -21,10 +21,7 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([]),
-                    childNodes: new Set([]),
-                    siblingNodes: new Set([targetNode]),
                     sortedParentNodes: [],
                     node: mergedNode,
                     group: 'r60v',
@@ -46,10 +43,7 @@ describe('merge node', () => {
             content: { n8Nd: { content: '1 2' } },
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([]),
-                    childNodes: new Set([]),
-                    siblingNodes: new Set([]),
                     sortedParentNodes: [],
                     node: targetNode,
                     group: 'r60v',
@@ -74,10 +68,7 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([]),
-                    childNodes: new Set([]),
-                    siblingNodes: new Set(['nc8J']),
                     sortedParentNodes: [],
                     node: 'nTlU',
                     group: 'rv0p',
@@ -97,10 +88,7 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([]),
-                    childNodes: new Set([]),
-                    siblingNodes: new Set([]),
                     sortedParentNodes: [],
                     node: 'nc8J',
                     group: 'rv0p',
@@ -134,10 +122,8 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set(['nGQX']),
                     childGroups: new Set([]),
-                    childNodes: new Set([]),
-                    siblingNodes: new Set([]),
+
                     sortedParentNodes: ['nGQX'],
                     node: mergedNode,
                     group: 'nGQX',
@@ -166,10 +152,8 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set(['nBe1']),
                     childGroups: new Set([]),
-                    childNodes: new Set([]),
-                    siblingNodes: new Set([]),
+
                     sortedParentNodes: ['nBe1'],
                     node: targetNode,
                     group: 'nBe1',
@@ -207,10 +191,8 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set(['nPUy']),
                     childGroups: new Set([]),
-                    childNodes: new Set([]),
-                    siblingNodes: new Set([]),
+
                     sortedParentNodes: ['nPUy'],
                     node: mergedNode,
                     group: 'nPUy',
@@ -239,10 +221,8 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set(['nfIb']),
                     childGroups: new Set([]),
-                    childNodes: new Set([]),
-                    siblingNodes: new Set([]),
+
                     sortedParentNodes: ['nfIb'],
                     node: targetNode,
                     group: 'nfIb',
@@ -308,14 +288,8 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([mergedNode, childOfMergedNode]),
-                    childNodes: new Set([
-                        childOfMergedNode,
-                        grandChild1OfMergedNode,
-                        grandChild2OfMergedNode,
-                    ]),
-                    siblingNodes: new Set([targetNode]),
+
                     sortedParentNodes: [],
                     node: mergedNode,
                     group: rootNode,
@@ -367,17 +341,8 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([targetNode, childOfTargetNode]),
-                    childNodes: new Set([
-                        childOfTargetNode,
-                        childOfMergedNode,
-                        grandChild1OfTargetNode,
-                        grandChild2OfTargetNode,
-                        grandChild1OfMergedNode,
-                        grandChild2OfMergedNode,
-                    ]),
-                    siblingNodes: new Set([]),
+
                     sortedParentNodes: [],
                     node: targetNode,
                     group: rootNode,
@@ -447,14 +412,8 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([mergedNode, childOfMergedNode]),
-                    childNodes: new Set([
-                        childOfMergedNode,
-                        grandChild1OfMergedNode,
-                        grandChild2OfMergedNode,
-                    ]),
-                    siblingNodes: new Set([targetNode]),
+
                     sortedParentNodes: [],
                     node: mergedNode,
                     group: rootNode,
@@ -506,17 +465,8 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([targetNode, childOfTargetNode]),
-                    childNodes: new Set([
-                        childOfTargetNode,
-                        childOfMergedNode,
-                        grandChild1OfTargetNode,
-                        grandChild2OfTargetNode,
-                        grandChild1OfMergedNode,
-                        grandChild2OfMergedNode,
-                    ]),
-                    siblingNodes: new Set([]),
+
                     sortedParentNodes: [],
                     node: targetNode,
                     group: rootNode,
@@ -583,13 +533,8 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([parentOfMergedNode]),
                     childGroups: new Set([mergedNode]),
-                    childNodes: new Set([
-                        child1OfMergedNode,
-                        child2OfMergedNode,
-                    ]),
-                    siblingNodes: new Set([]),
+
                     sortedParentNodes: [parentOfMergedNode],
                     node: mergedNode,
                     group: parentOfMergedNode,
@@ -643,15 +588,8 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([parentOfTargetNode]),
                     childGroups: new Set([targetNode]),
-                    childNodes: new Set([
-                        child1OfTargetNode,
-                        child2OfTargetNode,
-                        child1OfMergedNode,
-                        child2OfMergedNode,
-                    ]),
-                    siblingNodes: new Set([]),
+
                     sortedParentNodes: [parentOfTargetNode],
                     node: targetNode,
                     group: parentOfTargetNode,
@@ -718,13 +656,8 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([parentOfMergedNode]),
                     childGroups: new Set([mergedNode]),
-                    childNodes: new Set([
-                        child1OfMergedNode,
-                        child2OFMergedNode,
-                    ]),
-                    siblingNodes: new Set([]),
+
                     sortedParentNodes: [parentOfMergedNode],
                     node: mergedNode,
                     group: parentOfMergedNode,
@@ -778,15 +711,8 @@ describe('merge node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([parentOfTargetNode]),
                     childGroups: new Set([targetNode]),
-                    childNodes: new Set([
-                        child1OfMergedNode,
-                        child2OFMergedNode,
-                        child1OfTargetNode,
-                        child2OFTargetNode,
-                    ]),
-                    siblingNodes: new Set([]),
+
                     sortedParentNodes: [parentOfTargetNode],
                     node: targetNode,
                     group: parentOfTargetNode,
@@ -874,14 +800,8 @@ describe('merge node', () => {
             },
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([mergedNode, childOfMergedNode]),
-                    childNodes: new Set([
-                        childOfMergedNode,
-                        grandChildOfMergedNode1,
-                        grandChildOfMergedNode2,
-                    ]),
-                    siblingNodes: new Set([targetNode, siblingOfTargetNode]),
+
                     sortedParentNodes: [],
                     node: mergedNode,
                     group: 'rYY4',
@@ -944,14 +864,8 @@ describe('merge node', () => {
             },
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([targetNode, childOfMergedNode]),
-                    childNodes: new Set([
-                        childOfMergedNode,
-                        grandChildOfMergedNode1,
-                        grandChildOfMergedNode2,
-                    ]),
-                    siblingNodes: new Set([siblingOfTargetNode]),
+
                     sortedParentNodes: [],
                     node: targetNode,
                     group: 'rYY4',
@@ -1025,14 +939,8 @@ describe('merge node', () => {
             },
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([megedNode, childOfMergedNode]),
-                    childNodes: new Set([
-                        childOfMergedNode,
-                        grandChildOfMergedNode1,
-                        grandChildOfMergedNode2,
-                    ]),
-                    siblingNodes: new Set([siblingOfTargetNode, targetNode]),
+
                     sortedParentNodes: [],
                     node: megedNode,
                     group: 'rINO',
@@ -1095,14 +1003,8 @@ describe('merge node', () => {
             },
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([targetNode, childOfMergedNode]),
-                    childNodes: new Set([
-                        childOfMergedNode,
-                        grandChildOfMergedNode1,
-                        grandChildOfMergedNode2,
-                    ]),
-                    siblingNodes: new Set([siblingOfTargetNode]),
+
                     sortedParentNodes: [],
                     node: targetNode,
                     group: 'rINO',
@@ -1177,10 +1079,8 @@ describe('merge node', () => {
             },
             state: {
                 activeBranch: {
-                    parentNodes: new Set([merged_parent]),
                     childGroups: new Set([merged]),
-                    childNodes: new Set([merged_child_1, merged_child_2]),
-                    siblingNodes: new Set([]),
+
                     sortedParentNodes: [merged_parent],
                     node: merged,
                     group: merged_parent,
@@ -1242,10 +1142,8 @@ describe('merge node', () => {
             },
             state: {
                 activeBranch: {
-                    parentNodes: new Set([target_parent]),
                     childGroups: new Set([target]),
-                    childNodes: new Set([merged_child_1, merged_child_2]),
-                    siblingNodes: new Set([target_sibling]),
+
                     sortedParentNodes: [target_parent],
                     node: target,
                     group: target_parent,
@@ -1312,10 +1210,8 @@ describe('merge node', () => {
             },
             state: {
                 activeBranch: {
-                    parentNodes: new Set([merged_parent]),
                     childGroups: new Set([merged]),
-                    childNodes: new Set([merged_child_1, merged_child_2]),
-                    siblingNodes: new Set([]),
+
                     sortedParentNodes: [merged_parent],
                     node: merged,
                     group: merged_parent,
@@ -1371,10 +1267,8 @@ describe('merge node', () => {
             },
             state: {
                 activeBranch: {
-                    parentNodes: new Set([target_parent]),
                     childGroups: new Set([target]),
-                    childNodes: new Set([merged_child_1, merged_child_2]),
-                    siblingNodes: new Set([target_sibling]),
+
                     sortedParentNodes: [target_parent],
                     node: target,
                     group: target_parent,

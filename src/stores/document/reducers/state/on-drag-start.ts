@@ -15,7 +15,7 @@ export const onDragStart = (
     const node = action.payload.nodeId;
     if (node) {
         const childGroups: NodeId[] = [];
-        traverseDown(childGroups, new Set<string>(), columns, node);
+        traverseDown(childGroups, columns, node);
         state.node = action.payload.nodeId;
         state.childGroups = new Set(childGroups);
     }

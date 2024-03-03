@@ -6,27 +6,23 @@ export const removeChildGroupsFromTheirColumns = (
     currentParentNode: NodeId,
 ) => {
     const childGroupsArray: NodeId[] = [];
-    traverseDown(
-        childGroupsArray,
-        new Set<string>(),
-        columns,
-        currentParentNode,
-    );
+    traverseDown(childGroupsArray, columns, currentParentNode);
     const childGroups = new Set(childGroupsArray);
-    // each column contains one and only one child group of a node
-    const sortedChildGroups: NodeGroup[] = [];
+    const sortedChildGroups: NodeGroup[][] = [];
     // remove child groups from their current columns
     for (const column of columns) {
+        const removedGroups: NodeGroup[] = [];
         const groups = [];
         for (const group of column.groups) {
             if (childGroups.has(group.parentId)) {
-                sortedChildGroups.push(group);
+                removedGroups.push(group);
             } else {
                 groups.push(group);
             }
         }
 
         column.groups = groups;
+        if (removedGroups.length > 0) sortedChildGroups.push(removedGroups);
     }
     return sortedChildGroups;
 };

@@ -9,7 +9,7 @@ export const deleteBranch = (
     node: string,
 ) => {
     const childGroups: NodeId[] = [];
-    traverseDown(childGroups, new Set<string>(), columns, node);
+    traverseDown(childGroups, columns, node);
     if (childGroups.length > 0)
         deleteGroupsByParentId(columns, content, new Set(childGroups));
     deleteNodeById(columns, content, node);

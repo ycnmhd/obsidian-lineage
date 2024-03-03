@@ -1,4 +1,4 @@
-export const __log__ = <T>(object: T, name: string) => {
+export const __log__ = <T>(object: T, name: string, post = '') => {
     console.log(
         `const ${name} = ${JSON.stringify(object, (_key, value) =>
             value instanceof Set
@@ -8,6 +8,6 @@ export const __log__ = <T>(object: T, name: string) => {
                           : ''
                   }])_$_$_`
                 : value,
-        )}`.replace(/_\$_\$_"|"_\$_\$_/g, ''),
+        )} ${post}`.replace(/_\$_\$_"|"_\$_\$_/g, ''),
     );
 };

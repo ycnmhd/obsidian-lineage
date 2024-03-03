@@ -21,10 +21,7 @@ export type DNDState = {
     node: string;
 };
 export type ActiveBranch = {
-    parentNodes: Set<string>;
-    childNodes: Set<string>;
     childGroups: Set<string>;
-    siblingNodes: Set<string>;
     node: string;
     sortedParentNodes: NodeId[];
     group: string;

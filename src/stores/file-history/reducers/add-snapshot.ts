@@ -47,11 +47,6 @@ export const addSnapshot = (
         snapshots.length > 0 &&
         document.state.activeIndex !== snapshots.length - 1
     ) {
-        console.log(
-            'slicing',
-            snapshots.length,
-            document.state.activeIndex - 1,
-        );
         // remove obsolete snapshots (between the active snapshot and the end)
         document.snapshots.splice(document.state.activeIndex + 1);
     }

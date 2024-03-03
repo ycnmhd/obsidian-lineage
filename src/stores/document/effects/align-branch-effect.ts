@@ -17,7 +17,7 @@ const alignBranch = (
     };
     if (nodeId) {
         alignElement(container, nodeId, behavior, localState, 'both');
-        for (const id of state.document.state.activeBranch.parentNodes) {
+        for (const id of state.document.state.activeBranch.sortedParentNodes) {
             alignElement(container, id, behavior, localState);
         }
         for (const id of state.document.state.activeBranch.childGroups) {

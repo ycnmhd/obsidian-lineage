@@ -75,10 +75,7 @@ describe('update-active-node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([]),
-                    childNodes: new Set([]),
-                    siblingNodes: new Set([]),
                     sortedParentNodes: [],
                     node: activeNodeId,
                     group: 'r-lt8upk0k',
@@ -149,24 +146,7 @@ describe('update-active-node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([activeNodeId, child4]),
-                    childNodes: new Set([
-                        child1,
-                        child2,
-                        child3,
-                        child4,
-                        child4_1,
-                    ]),
-                    siblingNodes: new Set([
-                        'n-lt8upk0u',
-                        'n-lt8upk0v',
-                        'n-lt8upk0z',
-                        'n-lt8upk10',
-                        'n-lt8upk11',
-                        'n-lt8upk12',
-                        'n-lt8upk13',
-                    ]),
                     sortedParentNodes: [],
                     node: activeNodeId,
                     group: 'r-lt8upk0k',

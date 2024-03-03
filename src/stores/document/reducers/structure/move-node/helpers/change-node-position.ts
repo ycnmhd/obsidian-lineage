@@ -24,6 +24,6 @@ export const changeNodePosition = (
     }
     moveChildGroups(columns, {
         type: 'MOVE_PARENT',
-        payload: { currentParent: targetNode },
+        payload: { currentParent: node },
     });
 };

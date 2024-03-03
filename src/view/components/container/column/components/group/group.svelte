@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { NodeGroup } from 'src/stores/document/document-type';
+	import { NodeGroup, NodeId } from 'src/stores/document/document-type';
 	import Node from './components/card/card.svelte';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
 	import { getStore } from 'src/view/components/container/context';
@@ -7,6 +7,8 @@
 
 	const store = getStore();
     export let group: NodeGroup;
+	let parentNodes: Set<NodeId> = new Set<NodeId>();
+	$: parentNodes = new Set($store.document.state.activeBranch.sortedParentNodes);
 </script>
 
 {#if group.nodes.length > 0}
@@ -25,15 +27,15 @@
                 {node}
                 active={node === $store.document.state.activeBranch.node
                     ? ActiveStatus.node
-                    : $store.document.state.activeBranch.parentNodes.has(node)
+                    :parentNodes.has(node)
                     ? ActiveStatus.parent
-                    : $store.document.state.activeBranch.childNodes.has(node)
+                    : $store.document.state.activeBranch.childGroups.has(group.parentId)
                     ? ActiveStatus.child
-                    : $store.document.state.activeBranch.siblingNodes.has(node)
+                    : $store.document.state.activeBranch.group===group.parentId
                     ? ActiveStatus.sibling
                     : null}
                 editing={$store.document.state.editing.activeNodeId === node}
-                hasChildren={$store.document.state.activeBranch.childNodes.size > 0}
+                hasChildren={$store.document.state.activeBranch.childGroups.size > 0}
                 parentId={group.parentId}
             />
         {/each}

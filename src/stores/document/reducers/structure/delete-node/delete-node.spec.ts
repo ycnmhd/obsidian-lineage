@@ -36,10 +36,8 @@ describe('delete node', () => {
             state: {
                 activeBranch: {
                     node: 'n-lt1jmx8g',
-                    childNodes: new Set<string>(),
                     childGroups: new Set<string>(),
-                    parentNodes: new Set<string>(),
-                    siblingNodes: new Set<string>(),
+
                     group: '',
                     sortedParentNodes: [],
                 },
@@ -75,10 +73,8 @@ describe('delete node', () => {
             state: {
                 activeBranch: {
                     node: 'n-lt1jmx8d',
-                    childNodes: new Set<string>(),
                     childGroups: new Set<string>(),
-                    parentNodes: new Set<string>(),
-                    siblingNodes: new Set<string>(),
+
                     sortedParentNodes: [],
                     group: '',
                 },
@@ -168,25 +164,13 @@ describe('delete node', () => {
                     group: '',
 
                     node: deletedNode,
-                    childNodes: new Set([
-                        childNode1,
-                        childNode2,
-                        childNode3,
-                        childNode4,
-                        childNode5,
-                    ]),
                     childGroups: new Set([
                         childGroup1,
                         childGroup2,
                         childGroup3,
                         childGroup4,
                     ]),
-                    parentNodes: new Set(),
-                    siblingNodes: new Set([
-                        aboveDeleteNode,
-                        deletedNode,
-                        belowDeletedNode,
-                    ]),
+
                     sortedParentNodes: [],
                 },
                 dnd: { node: content, childGroups: new Set() },
@@ -210,10 +194,8 @@ describe('delete node', () => {
             state: {
                 activeBranch: {
                     node: aboveDeleteNode,
-                    childNodes: new Set(),
                     childGroups: new Set(),
-                    parentNodes: new Set(),
-                    siblingNodes: new Set([belowDeletedNode]),
+
                     sortedParentNodes: [],
                     group: 'r-lt3bize1',
                 },
@@ -251,10 +233,7 @@ describe('delete node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([]),
-                    childNodes: new Set([]),
-                    siblingNodes: new Set([siblingNodId]),
                     sortedParentNodes: [],
                     node: activeNodeId,
                     group: 'r-lt8wz9zc',
@@ -274,10 +253,7 @@ describe('delete node', () => {
             ],
             state: {
                 activeBranch: {
-                    parentNodes: new Set([]),
                     childGroups: new Set([]),
-                    childNodes: new Set([]),
-                    siblingNodes: new Set([]),
                     sortedParentNodes: [],
                     node: siblingNodId,
                     group: 'r-lt8wz9zc',

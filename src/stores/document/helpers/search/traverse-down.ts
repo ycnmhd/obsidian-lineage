@@ -3,7 +3,6 @@ import { Columns, NodeId } from 'src/stores/document/document-type';
 export type StringSet = Set<string>;
 export const traverseDown = (
     childGroups: NodeId[],
-    childNodes: StringSet,
     columns: Columns,
     nodeId: NodeId,
     columnIndex = 0,
@@ -14,10 +13,8 @@ export const traverseDown = (
             if (group.parentId === nodeId) {
                 if (!nodeId.startsWith('-r')) childGroups.push(nodeId);
                 for (const childNodeId of group.nodes) {
-                    childNodes.add(childNodeId);
                     traverseDown(
                         childGroups,
-                        childNodes,
                         columns,
                         childNodeId,
                         columnIndex + 1,
