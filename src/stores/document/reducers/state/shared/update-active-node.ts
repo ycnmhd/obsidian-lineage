@@ -3,10 +3,15 @@ import { updateEditingNodeOnActiveNodeChange } from 'src/stores/document/reducer
 import { findGroupByNodeId } from 'src/stores/document/helpers/search/find-group-by-node-id';
 import { findSiblings } from 'src/stores/document/helpers/search/find-siblings';
 import { traverseDown } from 'src/stores/document/helpers/search/traverse-down';
-import { DocumentInstance } from 'src/stores/document/document-type';
+import {
+    Column,
+    DocumentInstanceState,
+    NodeId,
+} from 'src/stores/document/document-type';
 
 export const updateActiveNode = (
-    state: DocumentInstance,
+    columns: Column[],
+    state: DocumentInstanceState,
     nodeId: string | undefined,
     newNode = false,
 ) => {
@@ -14,18 +19,18 @@ export const updateActiveNode = (
 
     const node = nodeId;
     if (node) {
-        const sortedParents = traverseUp(state.document.columns, node);
+        const sortedParents = traverseUp(columns, node);
         const parentIDs = new Set<string>(sortedParents);
-        const childGroups = new Set<string>();
+        const childGroups: NodeId[] = [];
         const childNodes = new Set<string>();
-        traverseDown(childGroups, childNodes, state.document.columns, node);
+        traverseDown(childGroups, childNodes, columns, node);
         const siblingNodes = new Set<string>();
-        findSiblings(siblingNodes, state.document.columns, node);
-        const group = findGroupByNodeId(state.document.columns, node);
+        findSiblings(siblingNodes, columns, node);
+        const group = findGroupByNodeId(columns, node);
         if (!group) throw new Error('could not find group for node ' + node);
-        state.state.activeBranch = {
+        state.activeBranch = {
             parentNodes: parentIDs,
-            childGroups: childGroups,
+            childGroups: new Set<string>(childGroups),
             childNodes: childNodes,
             siblingNodes: siblingNodes,
             sortedParentNodes: sortedParents.reverse(),
@@ -33,7 +38,7 @@ export const updateActiveNode = (
             group: group.parentId,
         };
     } else {
-        state.state.activeBranch = {
+        state.activeBranch = {
             node: '',
             group: '',
             childNodes: new Set<string>(),

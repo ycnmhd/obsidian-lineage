@@ -4,12 +4,12 @@ import {
     createGroup,
 } from 'src/stores/document/helpers/create-node';
 import { findChildGroup } from 'src/stores/document/helpers/search/find-child-group';
-import { Column, ColumnNode, Columns } from 'src/stores/document/document-type';
+import { Column, NodeId, Columns } from 'src/stores/document/document-type';
 
 export const moveNodeAsChild = (
     columns: Columns,
-    node: ColumnNode,
-    targetNode: ColumnNode,
+    node: NodeId,
+    targetNode: NodeId,
 ) => {
     const targetGroup = findChildGroup(columns, targetNode);
     if (targetGroup) {

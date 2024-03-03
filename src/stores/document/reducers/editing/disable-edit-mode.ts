@@ -1,14 +1,14 @@
-import { DocumentState } from 'src/stores/document/document-type';
+import { DocumentInstanceState } from 'src/stores/document/document-type';
 
 export type DisableEditModeAction = {
     type: 'DISABLE_EDIT_MODE';
     payload: { save: boolean };
 };
 export const disableEditMode = (
-    state: DocumentState,
+    state: DocumentInstanceState,
     action: DisableEditModeAction,
 ) => {
-    if (!state.state.editing.activeNodeId) return;
-    state.state.editing.savePreviousNode = action.payload.save;
-    state.state.editing.activeNodeId = '';
+    if (!state.editing.activeNodeId) return;
+    state.editing.savePreviousNode = action.payload.save;
+    state.editing.activeNodeId = '';
 };

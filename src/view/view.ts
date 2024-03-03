@@ -15,7 +15,7 @@ import { Store } from 'src/helpers/store';
 import { defaultDocumentState } from 'src/stores/document/default-document-state';
 import { bringFocusToContainer } from 'src/stores/document/effects/bring-focus-to-container';
 import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
-import { DocumentState } from 'src/stores/document/document-type';
+import { ViewState } from 'src/stores/document/document-type';
 import { stores } from 'src/view/helpers/stores-cache';
 import { clone } from 'src/helpers/clone';
 import { extractFrontmatter } from 'src/view/helpers/extract-frontmatter';
@@ -23,7 +23,7 @@ import { findNodePosition } from 'src/stores/document/helpers/search/find-node-p
 
 export const FILE_VIEW_TYPE = 'lineage';
 
-export type DocumentStore = Store<DocumentState, DocumentAction>;
+export type DocumentStore = Store<ViewState, DocumentAction>;
 
 export class LineageView extends TextFileView {
     data: string;
@@ -114,7 +114,7 @@ export class LineageView extends TextFileView {
             if (actionType !== 'APPLY_SNAPSHOT') {
                 const path = this.file?.path;
                 if (!path) throw new Error('view does not have a file');
-                const node = state.state.activeBranch.node;
+                const node = state.document.state.activeBranch.node;
 
                 fileHistoryStore.dispatch({
                     type: 'ADD_SNAPSHOT',
@@ -180,7 +180,7 @@ export class LineageView extends TextFileView {
                 data: this.data,
                 path: this.file.path,
                 position: null,
-                actionType: 'INITIAL_DOCUMENT',
+                actionType: 'FILE/LOAD_DOCUMENT',
             },
         });
         const { data, frontmatter } = extractFrontmatter(this.data);

@@ -12,7 +12,8 @@ export const saveDocumentEffect = (
             action.type === 'CREATE_NODE' ||
             action.type === 'DROP_NODE' ||
             action.type === 'APPLY_SNAPSHOT' ||
-            action.type === 'TREE/DELETE_NODE'
+            action.type === 'TREE/DELETE_NODE' ||
+            action.type === 'MERGE_NODE'
         ) {
             await save(action.type);
         }

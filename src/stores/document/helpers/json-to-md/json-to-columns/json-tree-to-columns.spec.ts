@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { LineageDocument } from 'src/stores/document/document-type';
 import { TreeNode } from 'src/stores/document/helpers/json-to-md/columns-to-json/columns-to-json-tree';
 import { jsonTreeToColumns } from 'src/stores/document/helpers/json-to-md/json-to-columns/json-tree-to-columns';
+import { StatelessDocument } from 'src/stores/document/document-type';
 
 type Expect = typeof expect;
+
 export const __compareColumns__ = (
-    documentA: LineageDocument,
-    documentB: LineageDocument,
+    documentA: StatelessDocument,
+    documentB: StatelessDocument,
     expect: Expect,
 ) => {
     expect(documentA.columns.length).toEqual(documentB.columns.length);
@@ -99,7 +100,7 @@ describe('tree-to-columns', () => {
                     ],
                 },
             ],
-        } satisfies LineageDocument;
+        } satisfies StatelessDocument;
         __compareColumns__(jsonTreeToColumns(tree), document, expect);
     });
 });

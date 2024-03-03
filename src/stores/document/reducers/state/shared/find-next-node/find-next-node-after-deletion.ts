@@ -1,12 +1,13 @@
-import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
+import { Column, NodeId } from 'src/stores/document/document-type';
 import { findGroupByNodeId } from 'src/stores/document/helpers/search/find-group-by-node-id';
-import { Column, ColumnNode } from 'src/stores/document/document-type';
+import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
 
-export const findNextActiveNode = (columns: Column[], node: ColumnNode) => {
-    let nextNode: ColumnNode | null = null;
+export const findNextNodeAfterDeletion = (columns: Column[], node: string) => {
+    let nextNode: NodeId | null = null;
     const group = findGroupByNodeId(columns, node);
     const columnIndex = findNodeColumn(columns, node);
     const column = columns[columnIndex];
+
     if (group) {
         const nodeIndex = group.nodes.findIndex((n) => n === node);
         if (nodeIndex === 0) nextNode = group.nodes[1];
@@ -14,10 +15,10 @@ export const findNextActiveNode = (columns: Column[], node: ColumnNode) => {
         else nextNode = group.nodes[group.nodes.length - 1];
 
         /* if (!nextNode) {
-            const groupIndex = column.groups.indexOf(group);
-            const groupAbove = column.groups[groupIndex - 1].nodes;
-            nextNode = groupAbove[groupAbove.length - 1];
-        }*/
+		const groupIndex = column.groups.indexOf(group);
+		const groupAbove = column.groups[groupIndex - 1].nodes;
+		nextNode = groupAbove[groupAbove.length - 1];
+	}*/
     }
     if (!nextNode) {
         if (group && columnIndex > 0) nextNode = group?.parentId;

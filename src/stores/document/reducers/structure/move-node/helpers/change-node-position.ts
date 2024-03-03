@@ -1,28 +1,29 @@
 import { AllDirections } from 'src/stores/document/document-reducer';
 import { moveNodeAsChild } from 'src/stores/document/reducers/structure/move-node/helpers/move-node-as-child';
 import { moveNodeAsSibling } from 'src/stores/document/reducers/structure/move-node/helpers/move-node-as-sibling';
-import { cleanAndSortColumns } from 'src/stores/document/reducers/state/helpers/clean-and-sort-columns';
-import { moveChildGroups } from 'src/stores/document/reducers/structure/move-node/helpers/move-child-groups';
-import { ColumnNode, LineageDocument } from 'src/stores/document/document-type';
+import { moveChildGroups } from 'src/stores/document/reducers/structure/move-node/helpers/move-child-groups/move-child-groups';
+import { Column, NodeId } from 'src/stores/document/document-type';
 import { removeNodeFromGroup } from 'src/stores/document/reducers/structure/move-node/helpers/remove-node-from-group';
 
 export const changeNodePosition = (
-    document: Pick<LineageDocument, 'columns'>,
-    node: ColumnNode,
-    targetNode: ColumnNode,
+    columns: Column[],
+    node: NodeId,
+    targetNode: NodeId,
     direction: AllDirections,
 ) => {
-    removeNodeFromGroup(document.columns, node);
+    removeNodeFromGroup(columns, node);
     if (direction === 'right') {
-        moveNodeAsChild(document.columns, node, targetNode);
+        moveNodeAsChild(columns, node, targetNode);
     } else {
         moveNodeAsSibling(
-            document.columns,
+            columns,
             direction === 'left' ? 'down' : direction,
             node,
             targetNode,
         );
     }
-    moveChildGroups(document.columns, node);
-    cleanAndSortColumns(document);
+    moveChildGroups(columns, {
+        type: 'MOVE_PARENT',
+        payload: { currentParent: targetNode },
+    });
 };

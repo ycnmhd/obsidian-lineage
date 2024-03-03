@@ -1,15 +1,16 @@
-import { LineageDocument } from 'src/stores/document/document-type';
+import { Column, Content } from 'src/stores/document/document-type';
 
 export const deleteGroupsByParentId = (
-    document: LineageDocument,
+    columns: Column[],
+    content: Content,
     parentIds: Set<string>,
 ): void => {
-    for (const column of document.columns) {
+    for (const column of columns) {
         const groups = [];
         for (const group of column.groups) {
             if (parentIds.has(group.parentId)) {
                 for (const node of group.nodes) {
-                    delete document.content[node];
+                    delete content[node];
                 }
             } else {
                 groups.push(group);

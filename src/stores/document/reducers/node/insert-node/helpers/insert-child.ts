@@ -1,8 +1,8 @@
 import { findNodeColumn } from '../../../../helpers/find-node-column';
 import { createNode } from '../../../../helpers/create-node';
-import { ColumnNode, Columns } from 'src/stores/document/document-type';
+import { NodeId, Columns } from 'src/stores/document/document-type';
 import { id } from 'src/helpers/id';
-import { sortGroups } from 'src/stores/document/reducers/state/helpers/sort-groups';
+import { sortGroups } from 'src/stores/document/reducers/state/shared/sort-groups';
 
 export const insertChild = (
     columns: Columns,
@@ -10,7 +10,7 @@ export const insertChild = (
     __newNodeID__?: string,
 ) => {
     const parentColumnIndex = findNodeColumn(columns, nodeIdOfParent);
-    let createdNode: ColumnNode | null = null;
+    let createdNode: NodeId | null = null;
     if (parentColumnIndex !== -1) {
         const childColumnIndex = parentColumnIndex + 1;
         createdNode = createNode(__newNodeID__);

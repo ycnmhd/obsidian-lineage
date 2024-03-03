@@ -14,7 +14,7 @@
         snapshot.actionType && actionInfo[snapshot.actionType]
             ? actionInfo[snapshot.actionType]
             : {
-                  label: 'unknown',
+                  label: snapshot.actionType ||'unknown',
                   icon: FileQuestion,
               };
 </script>

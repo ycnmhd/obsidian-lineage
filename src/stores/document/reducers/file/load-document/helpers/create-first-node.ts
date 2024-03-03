@@ -1,12 +1,12 @@
 import { id } from 'src/helpers/id';
 import { createNode } from 'src/stores/document/helpers/create-node';
-import { DocumentState } from 'src/stores/document/document-type';
+import { Column } from 'src/stores/document/document-type';
 
-export const createFirstNode = (state: DocumentState) => {
-    if (state.document.columns.length === 0) {
+export const createFirstNode = (columns: Column[]) => {
+    if (columns.length === 0) {
         const rootId = id.rootNode();
         const createdNode = createNode();
-        state.document.columns.push({
+        columns.push({
             id: id.column(),
             groups: [
                 {

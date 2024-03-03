@@ -30,7 +30,7 @@ export const droppable = (node: HTMLElement, store: DocumentStore) => {
         event.preventDefault();
         if (!event.dataTransfer) return;
         const targetCard = event.currentTarget as HTMLElement;
-        if (!targetCard.id.startsWith('n-')) return;
+        if (!targetCard.id.startsWith('n')) return;
         event.dataTransfer.dropEffect = 'move';
 
         const position = getDropPosition(event, targetCard);
@@ -46,7 +46,7 @@ export const droppable = (node: HTMLElement, store: DocumentStore) => {
         if (!event.dataTransfer) return;
         const data = event.dataTransfer.getData('text/plain');
         const targetCard = event.currentTarget as HTMLElement;
-        if (!targetCard.id.startsWith('n-')) return;
+        if (!targetCard.id.startsWith('n')) return;
         targetCard.removeClasses(classesList);
         if (!data) throw new Error(`droppedNodeId is missing`);
         if (!targetCard.id) throw new Error(`targetCard.id is missing`);

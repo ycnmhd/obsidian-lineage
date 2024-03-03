@@ -1,13 +1,13 @@
 import { VerticalDirection } from 'src/stores/document/document-reducer';
 
 import { findGroupByNodeId } from 'src/stores/document/helpers/search/find-group-by-node-id';
-import { ColumnNode, Columns } from 'src/stores/document/document-type';
+import { NodeId, Columns } from 'src/stores/document/document-type';
 
 export const moveNodeAsSibling = (
     columns: Columns,
     direction: VerticalDirection,
-    node: ColumnNode,
-    targetNode: ColumnNode,
+    node: NodeId,
+    targetNode: NodeId,
 ) => {
     const targetGroup = findGroupByNodeId(columns, targetNode);
     if (targetGroup) {

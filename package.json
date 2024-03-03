@@ -43,7 +43,8 @@
         "svelte-preprocess": "5.0.4",
         "tslib": "2.4.0",
         "typescript": "5.3.3",
-        "uniqid": "5.4.0",
-        "vitest": "0.34.5"
+        "vitest": "0.34.5",
+        "nanoid": "5.0.6"
     }
+
 }

@@ -1,4 +1,4 @@
-import { DocumentState } from 'src/stores/document/document-type';
+import { Content } from 'src/stores/document/document-type';
 
 export type SetNodeContentAction = {
     type: 'SET_NODE_CONTENT';
@@ -8,12 +8,11 @@ export type SetNodeContentAction = {
     };
 };
 export const setNodeContent = (
-    state: DocumentState,
+    content: Content,
     action: SetNodeContentAction,
 ) => {
     const nodeId = action.payload.nodeId;
-    const nodeContent = state.document.content[nodeId];
-    if (!nodeContent)
-        state.document.content[nodeId] = { content: action.payload.content };
+    const nodeContent = content[nodeId];
+    if (!nodeContent) content[nodeId] = { content: action.payload.content };
     else nodeContent.content = action.payload.content;
 };

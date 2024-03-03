@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ColumnNode } from 'src/stores/document/document-type';
+	import { NodeId } from 'src/stores/document/document-type';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
 	import Draggable from './components/dnd/draggable.svelte';
 	import Droppable from './components/dnd/droppable.svelte';
@@ -9,7 +9,7 @@
 		from 'src/view/components/container/column/components/group/components/card/components/card-buttons/card-buttons.svelte';
 	import { getStore } from 'src/view/components/container/context';
 
-	export let node: ColumnNode;
+	export let node: NodeId;
     export let editing: boolean;
     export let active: ActiveStatus | null;
     export let hasChildren: boolean;

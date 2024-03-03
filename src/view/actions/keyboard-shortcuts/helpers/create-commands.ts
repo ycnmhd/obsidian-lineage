@@ -26,6 +26,8 @@ export const hotkeysLang = {
     move_node_down: 'Move card down',
     move_node_right: 'Move card right',
     move_node_left: 'Move card left',
+    merge_with_node_above: 'Merge with card above',
+    merge_with_node_below: 'Merge with card below',
 };
 
 export type PluginCommand = {
@@ -36,10 +38,10 @@ export type PluginCommand = {
 
 export const createCommands = (plugin: Lineage) => {
     const isEditing = (store: DocumentStore) => {
-        return !!store.getValue().state.editing.activeNodeId;
+        return !!store.getValue().document.state.editing.activeNodeId;
     };
     const isActive = (store: DocumentStore) => {
-        return !!store.getValue().state.activeBranch.node;
+        return !!store.getValue().document.state.activeBranch.node;
     };
 
     const isActiveAndNotEditing = (store: DocumentStore) => {
@@ -168,7 +170,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CHANGE_ACTIVE_NODE',
+                    type: 'CHANGE_ACTIVE_NODE_USING_KEYBOARD',
                     payload: {
                         direction: 'right',
                     },
@@ -183,7 +185,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CHANGE_ACTIVE_NODE',
+                    type: 'CHANGE_ACTIVE_NODE_USING_KEYBOARD',
                     payload: {
                         direction: 'down',
                     },
@@ -198,7 +200,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CHANGE_ACTIVE_NODE',
+                    type: 'CHANGE_ACTIVE_NODE_USING_KEYBOARD',
                     payload: {
                         direction: 'left',
                     },
@@ -213,7 +215,7 @@ export const createCommands = (plugin: Lineage) => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CHANGE_ACTIVE_NODE',
+                    type: 'CHANGE_ACTIVE_NODE_USING_KEYBOARD',
                     payload: {
                         direction: 'up',
                     },
@@ -304,6 +306,32 @@ export const createCommands = (plugin: Lineage) => {
             hotkeys: [
                 { key: 'h', modifiers: ['Alt', 'Shift'] },
                 { key: 'ArrowLeft', modifiers: ['Alt', 'Shift'] },
+            ],
+        },
+        merge_with_node_above: {
+            check: isActive,
+            callback: (store) => {
+                store.dispatch({
+                    type: 'MERGE_NODE',
+                    payload: { direction: 'up' },
+                });
+            },
+            hotkeys: [
+                { key: 'k', modifiers: ['Ctrl', 'Shift'] },
+                { key: 'ArrowUp', modifiers: ['Ctrl', 'Shift'] },
+            ],
+        },
+        merge_with_node_below: {
+            check: isActive,
+            callback: (store) => {
+                store.dispatch({
+                    type: 'MERGE_NODE',
+                    payload: { direction: 'down' },
+                });
+            },
+            hotkeys: [
+                { key: 'j', modifiers: ['Ctrl', 'Shift'] },
+                { key: 'ArrowDown', modifiers: ['Ctrl', 'Shift'] },
             ],
         },
     } satisfies Record<keyof typeof hotkeysLang, PluginCommand>;

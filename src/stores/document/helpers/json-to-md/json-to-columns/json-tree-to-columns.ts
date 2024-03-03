@@ -5,7 +5,7 @@ import {
 } from 'src/stores/document/helpers/create-node';
 import {
     Column,
-    ColumnNode,
+    NodeId,
     Content,
     NodeGroup,
 } from 'src/stores/document/document-type';
@@ -29,7 +29,7 @@ export const jsonTreeToColumns = (
     level = 0,
 ) => {
     for (const treeNode of tree) {
-        const node: ColumnNode = id.node();
+        const node: NodeId = id.node();
         content[node] = {
             content: treeNode.content,
         };

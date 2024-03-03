@@ -1,7 +1,7 @@
-export type ColumnNode = string;
+export type NodeId = string;
 export type NodeGroup = {
     parentId: string;
-    nodes: ColumnNode[];
+    nodes: NodeId[];
 };
 export type Column = {
     id: string;
@@ -15,36 +15,37 @@ export type Content = {
               content: string;
           };
 };
-export type LineageDocument = {
+
+export type DNDState = {
+    childGroups: Set<string>;
+    node: string;
+};
+export type ActiveBranch = {
+    parentNodes: Set<string>;
+    childNodes: Set<string>;
+    childGroups: Set<string>;
+    siblingNodes: Set<string>;
+    node: string;
+    sortedParentNodes: NodeId[];
+    group: string;
+};
+export type EditingState = {
+    activeNodeId: string;
+    savePreviousNode: boolean;
+};
+export type DocumentInstanceState = {
+    activeBranch: ActiveBranch;
+    dnd: DNDState;
+    editing: EditingState;
+};
+export type DocumentState = {
     columns: Column[];
     content: Content;
+    state: DocumentInstanceState;
 };
-
-export type TreeState = {
-    activeBranch: {
-        parentNodes: Set<string>;
-        childNodes: Set<string>;
-        childGroups: Set<string>;
-        siblingNodes: Set<string>;
-        node: string;
-        sortedParentNodes: ColumnNode[];
-        group: string;
-    };
-    draggedBranch: {
-        childGroups: Set<string>;
-        node: string;
-    };
-    editing: {
-        activeNodeId: string;
-        savePreviousNode: boolean;
-    };
-};
-export type DocumentInstance = {
-    document: LineageDocument;
-    state: TreeState;
-};
-
-export type DocumentState = DocumentInstance & {
+export type StatelessDocument = Omit<DocumentState, 'state'>;
+export type ViewState = {
+    document: DocumentState;
     ui: {
         showHistorySidebar: boolean;
         showHelpSidebar: boolean;

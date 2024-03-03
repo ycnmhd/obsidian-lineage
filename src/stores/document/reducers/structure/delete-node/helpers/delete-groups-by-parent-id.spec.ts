@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deleteGroupsByParentId } from 'src/stores/document/reducers/structure/delete-node/delete-groups-by-parent-id';
+import { deleteGroupsByParentId } from 'src/stores/document/reducers/structure/delete-node/helpers/delete-groups-by-parent-id';
 
 describe('delete-groups-by-parent-id', () => {
     it(() => {
@@ -74,7 +74,7 @@ describe('delete-groups-by-parent-id', () => {
             ],
         };
 
-        deleteGroupsByParentId(document, parentIds);
+        deleteGroupsByParentId(document.columns, document.content, parentIds);
         expect(document).toEqual(documentAfter);
     });
 });

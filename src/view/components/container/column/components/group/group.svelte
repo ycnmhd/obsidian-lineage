@@ -13,27 +13,27 @@
     <div
         class={clx(
             'group',
-            $store.state.activeBranch.childGroups.has(group.parentId) &&
+            $store.document.state.activeBranch.childGroups.has(group.parentId) &&
                 'group-has-active-parent',
-            $store.state.activeBranch.group === group.parentId &&
+            $store.document.state.activeBranch.group === group.parentId &&
                 'group-has-active-node',
         )}
-        id={"g-"+group.parentId}
+        id={"group-"+group.parentId}
     >
         {#each group.nodes as node (node)}
             <Node
                 {node}
-                active={node === $store.state.activeBranch.node
+                active={node === $store.document.state.activeBranch.node
                     ? ActiveStatus.node
-                    : $store.state.activeBranch.parentNodes.has(node)
+                    : $store.document.state.activeBranch.parentNodes.has(node)
                     ? ActiveStatus.parent
-                    : $store.state.activeBranch.childNodes.has(node)
+                    : $store.document.state.activeBranch.childNodes.has(node)
                     ? ActiveStatus.child
-                    : $store.state.activeBranch.siblingNodes.has(node)
+                    : $store.document.state.activeBranch.siblingNodes.has(node)
                     ? ActiveStatus.sibling
                     : null}
-                editing={$store.state.editing.activeNodeId === node}
-                hasChildren={$store.state.activeBranch.childNodes.size > 0}
+                editing={$store.document.state.editing.activeNodeId === node}
+                hasChildren={$store.document.state.activeBranch.childNodes.size > 0}
                 parentId={group.parentId}
             />
         {/each}

@@ -1,24 +1,23 @@
+import { Column, NodeId } from 'src/stores/document/document-type';
+import { AllDirections } from 'src/stores/document/document-reducer';
 import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
-import { findChildGroup } from 'src/stores/document/helpers/search/find-child-group';
-import { ChangeActiveNodeAction } from 'src/stores/document/reducers/state/change-active-node';
 import { findGroupByNodeId } from 'src/stores/document/helpers/search/find-group-by-node-id';
-import { ColumnNode, DocumentState } from 'src/stores/document/document-type';
+import { findChildGroup } from 'src/stores/document/helpers/search/find-child-group';
 
-export const findNextActiveNode = (
-    state: DocumentState,
-    action: ChangeActiveNodeAction,
+export const findNextActiveNodeOnKeyboardNavigation = (
+    columns: Column[],
+    node: string,
+    direction: AllDirections,
 ) => {
-    const columns = state.document.columns;
-    const node = state.state.activeBranch.node;
     if (!node) return;
+    let nextNode: NodeId | null = null;
     const columnIndex = findNodeColumn(columns, node);
     const column = columns[columnIndex];
     if (!column) return;
-    let nextNode: ColumnNode | null = null;
-    if (action.payload.direction === 'left') {
-        const group = findGroupByNodeId(state.document.columns, node);
+    if (direction === 'left') {
+        const group = findGroupByNodeId(columns, node);
         if (group) nextNode = group.parentId;
-    } else if (action.payload.direction === 'right') {
+    } else if (direction === 'right') {
         const group = findChildGroup(columns, node);
         if (group) {
             nextNode = group.nodes[0];
@@ -33,11 +32,11 @@ export const findNextActiveNode = (
         const allNodes = column.groups.map((g) => g.nodes).flat();
         const nodeIndex = allNodes.findIndex((n) => n === node);
 
-        if (action.payload.direction === 'up') {
+        if (direction === 'up') {
             if (nodeIndex > 0) {
                 nextNode = allNodes[nodeIndex - 1];
             }
-        } else if (action.payload.direction === 'down') {
+        } else if (direction === 'down') {
             if (nodeIndex < allNodes.length - 1) {
                 nextNode = allNodes[nodeIndex + 1];
             }

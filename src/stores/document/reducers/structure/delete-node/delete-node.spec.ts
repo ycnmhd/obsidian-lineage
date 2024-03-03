@@ -1,40 +1,38 @@
 import { describe, expect, it } from 'vitest';
 import { deleteNode } from 'src/stores/document/reducers/structure/delete-node/delete-node';
 
-import { DocumentInstance } from 'src/stores/document/document-type';
+import { DocumentState } from 'src/stores/document/document-type';
 
 describe('delete node', () => {
     const content = '';
     it('should delete node', () => {
         const input = {
-            document: {
-                content: {},
-                columns: [
-                    {
-                        id: 'c-lt1jmx8b',
-                        groups: [
-                            {
-                                nodes: ['n-lt1jmx8a', 'n-lt1jmx8j'],
-                                parentId: 'r-lt1jmx89',
-                            },
-                        ],
-                    },
-                    {
-                        id: 'c-lt1jmx8e',
-                        groups: [
-                            {
-                                nodes: [
-                                    'n-lt1jmx8d',
-                                    'n-lt1jmx8g',
-                                    'n-lt1jmx8h',
-                                    'n-lt1jmx8i',
-                                ],
-                                parentId: 'n-lt1jmx8a',
-                            },
-                        ],
-                    },
-                ],
-            },
+            content: {},
+            columns: [
+                {
+                    id: 'c-lt1jmx8b',
+                    groups: [
+                        {
+                            nodes: ['n-lt1jmx8a', 'n-lt1jmx8j'],
+                            parentId: 'r-lt1jmx89',
+                        },
+                    ],
+                },
+                {
+                    id: 'c-lt1jmx8e',
+                    groups: [
+                        {
+                            nodes: [
+                                'n-lt1jmx8d',
+                                'n-lt1jmx8g',
+                                'n-lt1jmx8h',
+                                'n-lt1jmx8i',
+                            ],
+                            parentId: 'n-lt1jmx8a',
+                        },
+                    ],
+                },
+            ],
             state: {
                 activeBranch: {
                     node: 'n-lt1jmx8g',
@@ -45,41 +43,35 @@ describe('delete node', () => {
                     group: '',
                     sortedParentNodes: [],
                 },
-                draggedBranch: {
+                dnd: {
                     node: content,
                     childGroups: new Set<string>(),
                 },
                 editing: { activeNodeId: content, savePreviousNode: true },
             },
-        } satisfies DocumentInstance;
+        } satisfies DocumentState;
         const output = {
-            document: {
-                content: {},
-                columns: [
-                    {
-                        id: 'c-lt1jmx8b',
-                        groups: [
-                            {
-                                nodes: ['n-lt1jmx8a', 'n-lt1jmx8j'],
-                                parentId: 'r-lt1jmx89',
-                            },
-                        ],
-                    },
-                    {
-                        id: 'c-lt1jmx8e',
-                        groups: [
-                            {
-                                nodes: [
-                                    'n-lt1jmx8d',
-                                    'n-lt1jmx8h',
-                                    'n-lt1jmx8i',
-                                ],
-                                parentId: 'n-lt1jmx8a',
-                            },
-                        ],
-                    },
-                ],
-            },
+            content: {},
+            columns: [
+                {
+                    id: 'c-lt1jmx8b',
+                    groups: [
+                        {
+                            nodes: ['n-lt1jmx8a', 'n-lt1jmx8j'],
+                            parentId: 'r-lt1jmx89',
+                        },
+                    ],
+                },
+                {
+                    id: 'c-lt1jmx8e',
+                    groups: [
+                        {
+                            nodes: ['n-lt1jmx8d', 'n-lt1jmx8h', 'n-lt1jmx8i'],
+                            parentId: 'n-lt1jmx8a',
+                        },
+                    ],
+                },
+            ],
             state: {
                 activeBranch: {
                     node: 'n-lt1jmx8d',
@@ -90,14 +82,16 @@ describe('delete node', () => {
                     sortedParentNodes: [],
                     group: '',
                 },
-                draggedBranch: {
+                dnd: {
                     node: content,
                     childGroups: new Set<string>(),
                 },
                 editing: { activeNodeId: content, savePreviousNode: true },
             },
-        } satisfies DocumentInstance;
-        deleteNode(input);
+        } satisfies DocumentState;
+        deleteNode(input.columns, input.state, input.content, {
+            type: 'TREE/DELETE_NODE',
+        });
         expect(input.state.activeBranch.node).toEqual(
             output.state.activeBranch.node,
         );
@@ -117,60 +111,58 @@ describe('delete node', () => {
         const childNode4 = 'n-lt3bized';
         const childNode5 = 'n-lt3bizeg';
         const stateBefore = {
-            document: {
-                content: {},
-                columns: [
-                    {
-                        id: 'c-lt3bize3',
-                        groups: [
-                            {
-                                nodes: [
-                                    aboveDeleteNode,
-                                    deletedNode,
-                                    belowDeletedNode,
-                                ],
-                                parentId: 'r-lt3bize1',
-                            },
-                        ],
-                    },
-                    {
-                        id: 'c-lt3bize7',
-                        groups: [
-                            {
-                                nodes: [childNode1, childNode2],
-                                parentId: deletedNode,
-                            },
-                        ],
-                    },
-                    {
-                        id: 'c-lt3bizeb',
-                        groups: [
-                            {
-                                nodes: [childNode3],
-                                parentId: childNode2,
-                            },
-                        ],
-                    },
-                    {
-                        id: 'c-lt3bizee',
-                        groups: [
-                            {
-                                nodes: [childNode4],
-                                parentId: childNode3,
-                            },
-                        ],
-                    },
-                    {
-                        id: 'c-lt3bizeh',
-                        groups: [
-                            {
-                                nodes: [childNode5],
-                                parentId: childNode4,
-                            },
-                        ],
-                    },
-                ],
-            },
+            content: {},
+            columns: [
+                {
+                    id: 'c-lt3bize3',
+                    groups: [
+                        {
+                            nodes: [
+                                aboveDeleteNode,
+                                deletedNode,
+                                belowDeletedNode,
+                            ],
+                            parentId: 'r-lt3bize1',
+                        },
+                    ],
+                },
+                {
+                    id: 'c-lt3bize7',
+                    groups: [
+                        {
+                            nodes: [childNode1, childNode2],
+                            parentId: deletedNode,
+                        },
+                    ],
+                },
+                {
+                    id: 'c-lt3bizeb',
+                    groups: [
+                        {
+                            nodes: [childNode3],
+                            parentId: childNode2,
+                        },
+                    ],
+                },
+                {
+                    id: 'c-lt3bizee',
+                    groups: [
+                        {
+                            nodes: [childNode4],
+                            parentId: childNode3,
+                        },
+                    ],
+                },
+                {
+                    id: 'c-lt3bizeh',
+                    groups: [
+                        {
+                            nodes: [childNode5],
+                            parentId: childNode4,
+                        },
+                    ],
+                },
+            ],
             state: {
                 activeBranch: {
                     group: '',
@@ -197,26 +189,24 @@ describe('delete node', () => {
                     ]),
                     sortedParentNodes: [],
                 },
-                draggedBranch: { node: content, childGroups: new Set() },
+                dnd: { node: content, childGroups: new Set() },
                 editing: { activeNodeId: content, savePreviousNode: true },
             },
-        } satisfies DocumentInstance;
+        } satisfies DocumentState;
 
         const stateAfter = {
-            document: {
-                content: {},
-                columns: [
-                    {
-                        id: 'c-lt3bize3',
-                        groups: [
-                            {
-                                nodes: [aboveDeleteNode, belowDeletedNode],
-                                parentId: 'r-lt3bize1',
-                            },
-                        ],
-                    },
-                ],
-            },
+            content: {},
+            columns: [
+                {
+                    id: 'c-lt3bize3',
+                    groups: [
+                        {
+                            nodes: [aboveDeleteNode, belowDeletedNode],
+                            parentId: 'r-lt3bize1',
+                        },
+                    ],
+                },
+            ],
             state: {
                 activeBranch: {
                     node: aboveDeleteNode,
@@ -227,11 +217,16 @@ describe('delete node', () => {
                     sortedParentNodes: [],
                     group: 'r-lt3bize1',
                 },
-                draggedBranch: { node: content, childGroups: new Set() },
+                dnd: { node: content, childGroups: new Set() },
                 editing: { activeNodeId: '', savePreviousNode: true },
             },
-        } satisfies DocumentInstance;
-        deleteNode(stateBefore);
+        } satisfies DocumentState;
+        deleteNode(
+            stateBefore.columns,
+            stateBefore.state,
+            stateBefore.content,
+            { type: 'TREE/DELETE_NODE' },
+        );
         expect(stateBefore).toEqual(stateAfter);
     });
 
@@ -239,23 +234,21 @@ describe('delete node', () => {
         const activeNodeId = 'n-lt8wzcvn';
         const siblingNodId = 'n-lt8wz9zd';
         const state = {
-            document: {
-                content: {
-                    'n-lt8wz9zd': { content: 'one' },
-                    'n-lt8wzcvn': { content: 'two' },
-                },
-                columns: [
-                    {
-                        id: 'c-lt8wz9ze',
-                        groups: [
-                            {
-                                parentId: 'r-lt8wz9zc',
-                                nodes: [siblingNodId, activeNodeId],
-                            },
-                        ],
-                    },
-                ],
+            content: {
+                'n-lt8wz9zd': { content: 'one' },
+                'n-lt8wzcvn': { content: 'two' },
             },
+            columns: [
+                {
+                    id: 'c-lt8wz9ze',
+                    groups: [
+                        {
+                            parentId: 'r-lt8wz9zc',
+                            nodes: [siblingNodId, activeNodeId],
+                        },
+                    ],
+                },
+            ],
             state: {
                 activeBranch: {
                     parentNodes: new Set([]),
@@ -266,23 +259,19 @@ describe('delete node', () => {
                     node: activeNodeId,
                     group: 'r-lt8wz9zc',
                 },
-                draggedBranch: { node: '', childGroups: new Set([]) },
+                dnd: { node: '', childGroups: new Set([]) },
                 editing: { activeNodeId: '', savePreviousNode: true },
             },
-        } satisfies DocumentInstance;
+        } satisfies DocumentState;
 
         const stateAfter = {
-            document: {
-                content: { 'n-lt8wz9zd': { content: 'one' } },
-                columns: [
-                    {
-                        id: 'c-lt8wz9ze',
-                        groups: [
-                            { parentId: 'r-lt8wz9zc', nodes: [siblingNodId] },
-                        ],
-                    },
-                ],
-            },
+            content: { 'n-lt8wz9zd': { content: 'one' } },
+            columns: [
+                {
+                    id: 'c-lt8wz9ze',
+                    groups: [{ parentId: 'r-lt8wz9zc', nodes: [siblingNodId] }],
+                },
+            ],
             state: {
                 activeBranch: {
                     parentNodes: new Set([]),
@@ -293,12 +282,14 @@ describe('delete node', () => {
                     node: siblingNodId,
                     group: 'r-lt8wz9zc',
                 },
-                draggedBranch: { node: '', childGroups: new Set([]) },
+                dnd: { node: '', childGroups: new Set([]) },
                 editing: { activeNodeId: '', savePreviousNode: true },
             },
-        } satisfies DocumentInstance;
+        } satisfies DocumentState;
 
-        deleteNode(state);
+        deleteNode(state.columns, state.state, state.content, {
+            type: 'TREE/DELETE_NODE',
+        });
         expect(state).toEqual(stateAfter);
     });
 });

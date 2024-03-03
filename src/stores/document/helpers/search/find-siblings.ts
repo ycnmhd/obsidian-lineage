@@ -1,11 +1,11 @@
 import { StringSet } from 'src/stores/document/helpers/search/traverse-down';
 import { findGroupByNodeId } from 'src/stores/document/helpers/search/find-group-by-node-id';
-import { ColumnNode, Columns } from 'src/stores/document/document-type';
+import { NodeId, Columns } from 'src/stores/document/document-type';
 
 export const findSiblings = (
     siblingNodes: StringSet,
     columns: Columns,
-    node: ColumnNode,
+    node: NodeId,
 ) => {
     const group = findGroupByNodeId(columns, node);
     if (group)

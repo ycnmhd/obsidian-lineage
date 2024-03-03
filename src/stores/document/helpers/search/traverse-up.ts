@@ -1,9 +1,9 @@
 import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
-import { ColumnNode, Columns } from 'src/stores/document/document-type';
+import { NodeId, Columns } from 'src/stores/document/document-type';
 import { findGroupByNodeId } from 'src/stores/document/helpers/search/find-group-by-node-id';
 
-export const traverseUp = (columns: Columns, node: ColumnNode) => {
-    const parents: ColumnNode[] = [];
+export const traverseUp = (columns: Columns, node: NodeId) => {
+    const parents: NodeId[] = [];
     const nodeColumnIndex = findNodeColumn(columns, node);
     if (nodeColumnIndex > 0) {
         const group = findGroupByNodeId(columns, node);

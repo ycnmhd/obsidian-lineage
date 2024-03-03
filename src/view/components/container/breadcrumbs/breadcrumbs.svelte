@@ -7,23 +7,23 @@
 
 <div class="breadcrumbs-container">
     <div class="breadcrumbs">
-        {#each $store.state.activeBranch.sortedParentNodes as parent, i}
+        {#each $store.document.state.activeBranch.sortedParentNodes as parent, i}
             {#if i > 0}
                 <ChevronRight class="svg-icon" size="12" />
             {/if}
             <button
-                aria-label={parent.content || 'Empty parent'}
+                aria-label={$store.document.content[parent]?.content || 'Empty parent'}
                 class="breadcrumbs-item"
                 data-tooltip-position="left"
                 on:click={() => {
                     store.dispatch({
                         type: 'SET_ACTIVE_NODE',
-                        payload: { id: parent.id },
+                        payload: { id: parent },
                     });
                 }}
             >
                 <span class="breadcrumbs-item-text">
-                    {parent.content || '(empty)'}
+                    {$store.document.content[parent]?.content || '(empty)'}
                 </span>
             </button>
         {/each}

@@ -1,14 +1,14 @@
-import { DocumentInstance } from 'src/stores/document/document-type';
+import { DocumentInstanceState } from 'src/stores/document/document-type';
 
 export const updateEditingNodeOnActiveNodeChange = (
-    state: DocumentInstance,
+    state: DocumentInstanceState,
     nodeId: string,
     newNode = false,
 ) => {
-    state.state.editing.savePreviousNode = true;
+    state.editing.savePreviousNode = true;
     if (newNode) {
-        state.state.editing.activeNodeId = nodeId;
-    } else if (state.state.editing.activeNodeId !== nodeId) {
-        state.state.editing.activeNodeId = '';
+        state.editing.activeNodeId = nodeId;
+    } else if (state.editing.activeNodeId !== nodeId) {
+        state.editing.activeNodeId = '';
     }
 };

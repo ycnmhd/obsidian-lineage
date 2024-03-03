@@ -2,12 +2,15 @@ import {
     CreateNodeAction,
     insertNode,
 } from 'src/stores/document/reducers/node/insert-node/insert-node';
-import { updateActiveNode } from 'src/stores/document/reducers/state/update-active-node';
+import { updateActiveNode } from 'src/stores/document/reducers/state/shared/update-active-node';
 import {
     DropAction,
     dropNode,
-} from 'src/stores/document/reducers/structure/move-node/drop-node';
-import { onDragEnd } from 'src/stores/document/reducers/state/on-drag-end';
+} from 'src/stores/document/reducers/structure/drop-node/drop-node';
+import {
+    onDragEnd,
+    SetDragCanceled,
+} from 'src/stores/document/reducers/state/on-drag-end';
 import {
     loadDocument,
     LoadDocumentAction,
@@ -30,9 +33,9 @@ import {
     DisableEditModeAction,
 } from 'src/stores/document/reducers/editing/disable-edit-mode';
 import {
-    changeActiveNode,
     ChangeActiveNodeAction,
-} from 'src/stores/document/reducers/state/change-active-node';
+    changeActiveNodeUsingKeyboard,
+} from 'src/stores/document/reducers/state/change-active-node-using-keyboard';
 import {
     deleteNode,
     DeleteNodeAction,
@@ -42,7 +45,11 @@ import {
     moveNode,
     MoveNodeAction,
 } from 'src/stores/document/reducers/structure/move-node/move-node';
-import { DocumentState } from 'src/stores/document/document-type';
+import { ViewState } from 'src/stores/document/document-type';
+import {
+    mergeNode,
+    MergeNodeAction,
+} from 'src/stores/document/reducers/structure/merge-node/merge-node';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -69,9 +76,7 @@ export type DocumentAction =
     | ToggleEditModeAction
     | SetNodeContentAction
     | SetDragStartedAction
-    | {
-          type: 'SET_DRAG_CANCELED';
-      }
+    | SetDragCanceled
     | DropAction
     | {
           type: 'FS/SET_FILE_PATH';
@@ -87,37 +92,61 @@ export type DocumentAction =
       }
     | DeleteNodeAction
     | { type: 'EVENT/VIEW_LOADED' }
-    | MoveNodeAction;
-const updateState = (state: DocumentState, action: DocumentAction) => {
+    | MoveNodeAction
+    | MergeNodeAction;
+const updateState = (state: ViewState, action: DocumentAction) => {
     // state
     if (action.type === 'SET_ACTIVE_NODE') {
-        updateActiveNode(state, action.payload.id);
-    } else if (action.type === 'CHANGE_ACTIVE_NODE') {
-        changeActiveNode(state, action);
+        updateActiveNode(
+            state.document.columns,
+            state.document.state,
+            action.payload.id,
+        );
+    } else if (action.type === 'CHANGE_ACTIVE_NODE_USING_KEYBOARD') {
+        changeActiveNodeUsingKeyboard(
+            state.document.columns,
+            state.document.state,
+            action,
+        );
     } else if (action.type === 'SET_DRAG_STARTED') {
-        onDragStart(state, action);
+        onDragStart(state.document.columns, state.document.state.dnd, action);
     } else if (action.type === 'SET_DRAG_CANCELED') {
-        onDragEnd(state);
+        onDragEnd(state.document.state.dnd);
     }
     // node
     else if (action.type === 'ENABLE_EDIT_MODE') {
-        enableEditMode(state);
+        enableEditMode(state.document.state);
     } else if (action.type === 'SET_NODE_CONTENT') {
-        setNodeContent(state, action);
+        setNodeContent(state.document.content, action);
     } else if (action.type === 'CREATE_NODE') {
-        insertNode(state, action);
+        insertNode(
+            state.document.columns,
+            state.document.state,
+            state.document.content,
+            action,
+        );
     } else if (action.type === 'DISABLE_EDIT_MODE') {
-        disableEditMode(state, action);
+        disableEditMode(state.document.state, action);
     }
     // structure
     else if (action.type === 'TREE/DELETE_NODE') {
-        deleteNode(state);
+        deleteNode(
+            state.document.columns,
+            state.document.state,
+            state.document.content,
+            action,
+        );
     } else if (action.type === 'DROP_NODE') {
-        onDragEnd(state);
-        dropNode(state.document, action);
-        updateActiveNode(state, action.payload.droppedNodeId);
+        dropNode(state.document.columns, state.document.state, action);
     } else if (action.type === 'MOVE_NODE') {
-        moveNode(state, action);
+        moveNode(state.document.columns, state.document.state, action);
+    } else if (action.type === 'MERGE_NODE') {
+        mergeNode(
+            state.document.columns,
+            state.document.content,
+            state.document.state,
+            action,
+        );
     }
     // life cycle and other
     else if (
@@ -139,9 +168,9 @@ const updateState = (state: DocumentState, action: DocumentAction) => {
 };
 
 export const documentReducer = (
-    store: DocumentState,
+    store: ViewState,
     action: DocumentAction,
-): DocumentState => {
+): ViewState => {
     updateState(store, action);
     return store;
 };

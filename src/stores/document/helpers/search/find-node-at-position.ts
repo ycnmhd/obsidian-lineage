@@ -1,14 +1,10 @@
 import { NodePosition } from 'src/stores/document/helpers/search/find-node-position';
-import {
-    ColumnNode,
-    Columns,
-    NodeGroup,
-} from 'src/stores/document/document-type';
+import { NodeId, Columns, NodeGroup } from 'src/stores/document/document-type';
 
 export const findNodeAtPosition = (
     columns: Columns,
     position: NodePosition,
-): ColumnNode | null => {
+): NodeId | null => {
     const { columnIndex, groupIndex, nodeIndex } = position;
 
     if (columnIndex < 0 || columnIndex >= columns.length) {

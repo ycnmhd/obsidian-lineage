@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { findNextActiveNode } from 'src/stores/document/reducers/structure/delete-node/helpers/find-next-active-node';
 import { Column } from 'src/stores/document/document-type';
+import { findNextNodeAfterDeletion } from 'src/stores/document/reducers/state/shared/find-next-node/find-next-node-after-deletion';
 
 describe('find next active node', () => {
     it('should select parent', () => {
@@ -34,7 +34,7 @@ describe('find next active node', () => {
             },
         ];
         const node = 'n-lt1j9e9b';
-        const nextNode = findNextActiveNode(columns, node);
+        const nextNode = findNextNodeAfterDeletion(columns, node);
         const output = 'n-lt1j9bt3';
         expect(nextNode).toEqual(output);
     });
@@ -53,6 +53,6 @@ describe('find next active node', () => {
         ];
         const node = 'n-lt1r64qk';
         const output = 'n-lt1r66fm';
-        expect(findNextActiveNode(columns, node)).toEqual(output);
+        expect(findNextNodeAfterDeletion(columns, node)).toEqual(output);
     });
 });

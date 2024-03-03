@@ -1,8 +1,4 @@
-import {
-    ColumnNode,
-    Columns,
-    NodeGroup,
-} from 'src/stores/document/document-type';
+import { NodeId, Columns, NodeGroup } from 'src/stores/document/document-type';
 
 export type NodePosition = {
     columnIndex: number;
@@ -11,7 +7,7 @@ export type NodePosition = {
 };
 export const findNodePosition = (
     columns: Columns,
-    node: ColumnNode,
+    node: NodeId,
 ): NodePosition | null => {
     for (let columnIndex = 0; columnIndex < columns.length; columnIndex++) {
         const column = columns[columnIndex];

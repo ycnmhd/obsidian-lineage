@@ -1,6 +1,9 @@
-import { DocumentState } from 'src/stores/document/document-type';
+import { DNDState } from 'src/stores/document/document-type';
 
-export const onDragEnd = (store: DocumentState) => {
-    store.state.draggedBranch.node = '';
-    store.state.draggedBranch.childGroups = new Set();
+export type SetDragCanceled = {
+    type: 'SET_DRAG_CANCELED';
+};
+export const onDragEnd = (state: DNDState) => {
+    state.node = '';
+    state.childGroups = new Set();
 };

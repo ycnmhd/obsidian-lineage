@@ -1,5 +1,5 @@
 import { traverseDown } from 'src/stores/document/helpers/search/traverse-down';
-import { DocumentState } from 'src/stores/document/document-type';
+import { Column, DNDState, NodeId } from 'src/stores/document/document-type';
 
 export type SetDragStartedAction = {
     type: 'SET_DRAG_STARTED';
@@ -8,19 +8,15 @@ export type SetDragStartedAction = {
     };
 };
 export const onDragStart = (
-    state: DocumentState,
+    columns: Column[],
+    state: DNDState,
     action: SetDragStartedAction,
 ) => {
     const node = action.payload.nodeId;
     if (node) {
-        const childGroups = new Set<string>();
-        traverseDown(
-            childGroups,
-            new Set<string>(),
-            state.document.columns,
-            node,
-        );
-        state.state.draggedBranch.node = action.payload.nodeId;
-        state.state.draggedBranch.childGroups = childGroups;
+        const childGroups: NodeId[] = [];
+        traverseDown(childGroups, new Set<string>(), columns, node);
+        state.node = action.payload.nodeId;
+        state.childGroups = new Set(childGroups);
     }
 };

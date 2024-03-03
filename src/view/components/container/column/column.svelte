@@ -10,7 +10,7 @@
 <div class="column" id={column.id}>
     <div class="column-buffer" />
     {#each column.groups as group (group.parentId)}
-        {#if !$store.state.draggedBranch.childGroups.has(group.parentId)}
+        {#if !$store.document.state.dnd.childGroups.has(group.parentId)}
             <Group {group} />
         {/if}
     {/each}

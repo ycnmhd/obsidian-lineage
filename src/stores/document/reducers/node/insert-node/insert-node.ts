@@ -2,9 +2,14 @@ import { insertChild } from 'src/stores/document/reducers/node/insert-node/helpe
 import { findNodeColumn } from 'src/stores/document/helpers/find-node-column';
 import { createNode } from 'src/stores/document/helpers/create-node';
 import { Direction } from 'src/stores/document/document-reducer';
-import { updateActiveNode } from 'src/stores/document/reducers/state/update-active-node';
+import { updateActiveNode } from 'src/stores/document/reducers/state/shared/update-active-node';
 import { findGroupByNodeId } from 'src/stores/document/helpers/search/find-group-by-node-id';
-import { ColumnNode, DocumentState } from 'src/stores/document/document-type';
+import {
+    Column,
+    NodeId,
+    Content,
+    DocumentInstanceState,
+} from 'src/stores/document/document-type';
 
 export type CreateNodeAction = {
     type: 'CREATE_NODE';
@@ -14,20 +19,25 @@ export type CreateNodeAction = {
         __newNodeID__?: string;
     };
 };
-export const insertNode = (state: DocumentState, action: CreateNodeAction) => {
+export const insertNode = (
+    columns: Column[],
+    state: DocumentInstanceState,
+    content: Content,
+    action: CreateNodeAction,
+) => {
     const payload = action.payload;
-    const nodeId = state.state.activeBranch.node;
+    const nodeId = state.activeBranch.node;
     if (!nodeId) return;
-    let createdNode: ColumnNode | null = null;
+    let createdNode: NodeId | null = null;
     if (payload.position === 'right') {
         createdNode = insertChild(
-            state.document.columns,
+            columns,
             nodeId,
             action.payload.__newNodeID__,
         );
     } else {
-        const columnIndex = findNodeColumn(state.document.columns, nodeId);
-        const column = state.document.columns[columnIndex];
+        const columnIndex = findNodeColumn(columns, nodeId);
+        const column = columns[columnIndex];
         const group = findGroupByNodeId([column], nodeId);
         if (group) {
             const index = group.nodes.findIndex((c) => c === nodeId);
@@ -41,10 +51,10 @@ export const insertNode = (state: DocumentState, action: CreateNodeAction) => {
     }
     if (createdNode) {
         if (action.payload.content) {
-            state.document.content[createdNode] = {
+            content[createdNode] = {
                 content: action.payload.content,
             };
         }
-        updateActiveNode(state, createdNode, true);
+        updateActiveNode(columns, state, createdNode, true);
     }
 };
