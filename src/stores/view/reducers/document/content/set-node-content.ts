@@ -11,8 +11,10 @@ export const setNodeContent = (
     content: Content,
     action: SetNodeContentAction,
 ) => {
+    const nodeContent = content[action.payload.nodeId];
+    if (nodeContent?.content === action.payload.content) return;
     const nodeId = action.payload.nodeId;
-    const nodeContent = content[nodeId];
     if (!nodeContent) content[nodeId] = { content: action.payload.content };
     else nodeContent.content = action.payload.content;
+    return true;
 };

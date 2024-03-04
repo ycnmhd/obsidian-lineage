@@ -47,7 +47,9 @@ export const addSnapshot = (
         );
     }
     const snapshot = createSnapshot(document, action);
-    snapshots.push(snapshot);
+    if (activeSnapshot && action.type === 'DOCUMENT/LOAD_FILE')
+        history.snapshots = [snapshot];
+    else snapshots.push(snapshot);
     history.state.activeIndex = snapshots.length - 1;
 
     updateNavigationState(history);

@@ -1,5 +1,6 @@
 import { NodeId } from 'src/stores/view/view-state-type';
 import { ViewStore } from 'src/view/view';
+import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-content';
 
 export const activeTextArea: {
     element: HTMLTextAreaElement | null;
@@ -10,7 +11,7 @@ export const activeTextArea: {
 };
 
 type Props = { editing: boolean; node: NodeId; store: ViewStore };
-export const saveNodeContent = (
+export const saveNodeContentAction = (
     element: HTMLTextAreaElement,
     { store, editing, node }: Props,
 ) => {
@@ -22,6 +23,7 @@ export const saveNodeContent = (
     return {
         destroy: () => {
             if (node === activeTextArea.nodeId) {
+                saveNodeContent(store);
                 activeTextArea.element = null;
                 activeTextArea.nodeId = null;
             }

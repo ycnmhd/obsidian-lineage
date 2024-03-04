@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { createCommands } from '../../../actions/keyboard-shortcuts/helpers/create-commands'; // Import the PluginCommand type
 	import Hotkey from './components/hotkey.svelte';
+	import { getPlugin } from 'src/view/components/container/context';
 
-	const commands = createCommands();
+	const plugin = getPlugin()
+	const commands = createCommands(plugin);
 </script>
 
 <div class="sidebar">

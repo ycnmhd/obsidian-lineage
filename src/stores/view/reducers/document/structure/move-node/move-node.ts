@@ -34,5 +34,6 @@ export const moveNode = (
         );
         cleanAndSortColumns(columns);
         updateActiveNode(columns, state, nodeToMove);
+        return true;
     }
 };

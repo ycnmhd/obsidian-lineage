@@ -120,6 +120,7 @@ export class LineageView extends TextFileView {
         } else {
             this.createStore();
         }
+        this.loadDocumentToStore();
         this.component = new Component({
             target: this.contentEl,
             props: {
@@ -152,7 +153,13 @@ export class LineageView extends TextFileView {
                 path: this.file.path,
             },
         });
+    };
+    private useExistingStore = () => {
+        if (!this.file) return;
+        this.store = stores[this.file.path];
+    };
 
+    private loadDocumentToStore = () => {
         const { data, frontmatter } = extractFrontmatter(this.data);
 
         this.store.dispatch({
@@ -161,9 +168,5 @@ export class LineageView extends TextFileView {
             },
             type: 'DOCUMENT/LOAD_FILE',
         });
-    };
-    private useExistingStore = () => {
-        if (!this.file) return;
-        this.store = stores[this.file.path];
     };
 }

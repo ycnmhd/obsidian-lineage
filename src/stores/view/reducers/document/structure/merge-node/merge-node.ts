@@ -64,5 +64,6 @@ export const mergeNode = (
         });
         cleanAndSortColumns(columns);
         updateActiveNode(columns, state, adjacentNode);
+        return true;
     }
 };

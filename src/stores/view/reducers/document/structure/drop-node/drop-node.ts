@@ -32,5 +32,6 @@ export const dropNode = (
         cleanAndSortColumns(columns);
         onDragEnd(state.dnd);
         updateActiveNode(columns, state, action.payload.droppedNodeId);
+        return true;
     }
 };

@@ -37,3 +37,7 @@ If your plugin does not need CSS, delete this file.
 .lineage__drop-node-under {
 	box-shadow: var(--border-shadow-right);
 }
+
+.lineage__card p {
+	margin: 0;
+}

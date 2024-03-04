@@ -56,5 +56,6 @@ export const insertNode = (
             };
         }
         updateActiveNode(columns, state, createdNode, true);
+        return true;
     }
 };

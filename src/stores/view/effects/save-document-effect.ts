@@ -1,6 +1,9 @@
 import { ViewStore } from 'src/view/view';
 
-import { structureAndContentEvents } from 'src/stores/view/helpers/state-events';
+import {
+    historyEvents,
+    structureAndContentEvents,
+} from 'src/stores/view/helpers/state-events';
 
 export const saveDocumentEffect = (
     store: ViewStore,
@@ -9,7 +12,10 @@ export const saveDocumentEffect = (
     return store.subscribe(async (state, action) => {
         if (!action) return;
 
-        if (structureAndContentEvents.has(action.type)) {
+        if (
+            structureAndContentEvents.has(action.type) ||
+            historyEvents.has(action.type)
+        ) {
             await save(action.type);
         }
     });

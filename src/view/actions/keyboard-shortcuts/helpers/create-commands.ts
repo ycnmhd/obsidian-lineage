@@ -5,6 +5,7 @@ import { addNodeAndSplitAtCursor } from 'src/view/actions/keyboard-shortcuts/hel
 import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-content';
 import { cancelChanges } from 'src/view/actions/keyboard-shortcuts/helpers/cancel-changes';
 import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-and-insert-node';
+import { mergeNode } from 'src/view/actions/keyboard-shortcuts/helpers/merge-node';
 
 export const hotkeysLang = {
     save_changes_and_exit_card: 'Save changes and exit card',
@@ -279,10 +280,7 @@ export const createCommands = (plugin: Lineage) => {
         merge_with_node_above: {
             check: isActive,
             callback: (store) => {
-                store.dispatch({
-                    type: 'DOCUMENT/MERGE_NODE',
-                    payload: { direction: 'up' },
-                });
+                mergeNode(store, 'up');
             },
             hotkeys: [
                 { key: 'k', modifiers: ['Ctrl', 'Shift'] },
@@ -292,10 +290,7 @@ export const createCommands = (plugin: Lineage) => {
         merge_with_node_below: {
             check: isActive,
             callback: (store) => {
-                store.dispatch({
-                    type: 'DOCUMENT/MERGE_NODE',
-                    payload: { direction: 'down' },
-                });
+                mergeNode(store, 'down');
             },
             hotkeys: [
                 { key: 'j', modifiers: ['Ctrl', 'Shift'] },

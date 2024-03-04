@@ -31,4 +31,5 @@ export const stateEvents = new Set<ViewAction['type']>([
 export const historyEvents = new Set<ViewAction['type']>([
     'HISTORY/APPLY_NEXT_SNAPSHOT',
     'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
+    'HISTORY/SELECT_SNAPSHOT',
 ]);

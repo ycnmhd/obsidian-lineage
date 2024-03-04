@@ -63,7 +63,6 @@ import {
     structureAndContentEvents,
     UndoableAction,
 } from 'src/stores/view/helpers/state-events';
-import { isLastRootNode } from 'src/stores/view/reducers/document/structure/delete-node/helpers/is-last-root-node';
 import { redoAction } from 'src/stores/view/reducers/history/redo-action';
 
 export type VerticalDirection = 'up' | 'down';
@@ -120,6 +119,7 @@ export type ViewAction = DocumentAction | HistoryAction;
 
 const updateViewState = (state: ViewState, action: ViewAction) => {
     // state
+    let saveSnapshot: boolean | undefined = false;
     if (action.type === 'DOCUMENT/SET_ACTIVE_NODE') {
         updateActiveNode(
             state.document.columns,
@@ -143,35 +143,35 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
     }
     // structure and content
     else if (action.type === 'DOCUMENT/SET_NODE_CONTENT') {
-        const content = state.document.content[action.payload.nodeId];
-        if (content?.content === action.payload.content) return;
-        console.log('content', content?.content, action.payload.content);
-        setNodeContent(state.document.content, action);
+        saveSnapshot = setNodeContent(state.document.content, action);
     } else if (action.type === 'DOCUMENT/INSERT_NODE') {
-        insertNode(
+        saveSnapshot = insertNode(
             state.document.columns,
             state.document.state,
             state.document.content,
             action,
         );
     } else if (action.type === 'DOCUMENT/DELETE_NODE') {
-        const lastNode = isLastRootNode(
-            state.document.columns,
-            state.document.state.activeBranch.node,
-        );
-        if (lastNode) return;
-        deleteNode(
+        saveSnapshot = deleteNode(
             state.document.columns,
             state.document.state,
             state.document.content,
             action,
         );
     } else if (action.type === 'DOCUMENT/DROP_NODE') {
-        dropNode(state.document.columns, state.document.state, action);
+        saveSnapshot = dropNode(
+            state.document.columns,
+            state.document.state,
+            action,
+        );
     } else if (action.type === 'DOCUMENT/MOVE_NODE') {
-        moveNode(state.document.columns, state.document.state, action);
+        saveSnapshot = moveNode(
+            state.document.columns,
+            state.document.state,
+            action,
+        );
     } else if (action.type === 'DOCUMENT/MERGE_NODE') {
-        mergeNode(
+        saveSnapshot = mergeNode(
             state.document.columns,
             state.document.content,
             state.document.state,
@@ -180,7 +180,7 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
     }
     // life cycle and other
     else if (action.type === 'DOCUMENT/LOAD_FILE') {
-        loadDocumentFromFile(state, action);
+        saveSnapshot = loadDocumentFromFile(state, action);
     } else if (action.type === 'RESET_STORE') {
         resetDocument(state);
     } else if (action.type === 'HISTORY/SELECT_SNAPSHOT') {
@@ -199,7 +199,7 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
         state.ui.showHelpSidebar = !state.ui.showHelpSidebar;
     }
 
-    if (structureAndContentEvents.has(action.type)) {
+    if (saveSnapshot && structureAndContentEvents.has(action.type)) {
         addSnapshot(state.document, state.history, action as UndoableAction);
     }
 };

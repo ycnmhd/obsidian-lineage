@@ -7,6 +7,7 @@ import {
     DocumentInstanceState,
 } from 'src/stores/view/view-state-type';
 import { deleteBranch } from 'src/stores/view/reducers/document/structure/delete-node/helpers/delete-branch';
+import { isLastRootNode } from 'src/stores/view/reducers/document/structure/delete-node/helpers/is-last-root-node';
 
 export type DeleteNodeAction = {
     type: 'DOCUMENT/DELETE_NODE';
@@ -21,11 +22,14 @@ export const deleteNode = (
     const activeNodeId = state.activeBranch.node;
     if (!activeNodeId) return;
     if (activeNodeId === state.editing.activeNodeId) return;
+    const lastNode = isLastRootNode(columns, activeNodeId);
+    if (lastNode) return;
 
     const nextNode = findNextActiveNode(columns, state, action);
     if (nextNode) {
         deleteBranch(columns, content, activeNodeId);
         cleanAndSortColumns(columns);
         updateActiveNode(columns, state, nextNode);
+        return true;
     }
 };

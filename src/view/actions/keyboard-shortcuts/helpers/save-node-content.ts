@@ -1,5 +1,5 @@
 import { ViewStore } from 'src/view/view';
-import { activeTextArea } from 'src/view/components/container/column/components/group/components/card/actions/save-node-content';
+import { activeTextArea } from 'src/view/components/container/column/components/group/components/card/actions/save-node-content-action';
 
 export const saveNodeContent = (store: ViewStore) => {
     if (activeTextArea.nodeId && activeTextArea.element) {

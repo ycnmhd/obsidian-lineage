@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { saveNodeContent } from '../../actions/save-node-content';
+	import { saveNodeContentAction } from '../../actions/save-node-content-action';
 	import { getStore } from '../../../../../../../context';
 	import { NodeId } from 'src/stores/view/view-state-type';
 	import { expandableTextareaAction } from '../../actions/expandable-textarea-action';
@@ -14,7 +14,7 @@
     <textarea
         class="no-outline"
         use:expandableTextareaAction
-        use:saveNodeContent={{ editing, store, node }}
+		use:saveNodeContentAction="{{ editing, store, node }}"
     />
 </div>
 

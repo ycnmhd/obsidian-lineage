@@ -32,11 +32,13 @@ export const loadDocumentFromFile = (
         state.document.state,
         action,
     );
-    if (activeNode)
+    if (activeNode) {
         updateActiveNode(
             state.document.columns,
             state.document.state,
             activeNode,
             firstNode,
         );
+        return true;
+    }
 };
