@@ -23,7 +23,7 @@
         <TextArea {node} {editing} />
     {:else}
         <Draggable nodeId={node}>
-            <Content content={$store.document.content[node]?.content || ''} />
+            <Content {active} content={$store.document.content[node]?.content || ''} />
         </Draggable>
     {/if}
     <CardButtons {active} {editing} />

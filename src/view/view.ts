@@ -125,6 +125,7 @@ export class LineageView extends TextFileView {
             props: {
                 store: this.store,
                 plugin: this.plugin,
+                view: this,
             },
         });
         this.container = this.contentEl.querySelector('#columns-container');

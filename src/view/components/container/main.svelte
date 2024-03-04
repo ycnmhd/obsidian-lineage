@@ -2,7 +2,7 @@
 	import ControlsBar from './controls-bar/controls-bar.svelte';
 	import Hotkeys from './hotkeys/hotkeys.svelte';
 	import FileHistory from './file-history/file-histoy.svelte';
-	import { ViewStore } from '../../view';
+	import { LineageView, ViewStore } from '../../view';
 	import Lineage from '../../../main';
 	import { setContext } from 'svelte';
 	import Container from './container.svelte';
@@ -10,9 +10,11 @@
 
 	export let store: ViewStore;
     export let plugin: Lineage;
+	export let view: LineageView
     const settings = plugin.settings;
     setContext('store', store);
     setContext('plugin', plugin);
+	setContext('view',view)
 </script>
 
 <div
