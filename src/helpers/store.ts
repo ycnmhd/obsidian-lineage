@@ -7,6 +7,8 @@ export type Reducer<T, U> = (store: T, action: U) => T;
 export class Store<T, U> implements Writable<T> {
     private value: T;
     private subscribers: Set<Subscriber<T, U>> = new Set();
+    private isProcessing: boolean = false;
+    private actionQueue: U[] = [];
 
     constructor(initialValue: T, reducer?: Reducer<T, U>) {
         this.value = initialValue;
@@ -18,8 +20,10 @@ export class Store<T, U> implements Writable<T> {
     }
 
     dispatch(action: U) {
-        this.value = this.reducer(this.value, action);
-        this.notifySubscribers(action);
+        this.actionQueue.push(action);
+        if (!this.isProcessing) {
+            this.processActionQueue();
+        }
     }
 
     set(value: T): void {
@@ -41,6 +45,16 @@ export class Store<T, U> implements Writable<T> {
     update(updater: Updater<T>): void {
         this.value = updater(this.value);
         this.notifySubscribers();
+    }
+
+    private processActionQueue() {
+        this.isProcessing = true;
+        while (this.actionQueue.length > 0) {
+            const action = this.actionQueue.shift();
+            this.value = this.reducer(this.value, action!);
+            this.notifySubscribers(action);
+        }
+        this.isProcessing = false;
     }
 
     private readonly reducer: Reducer<T, U> = () => this.value;

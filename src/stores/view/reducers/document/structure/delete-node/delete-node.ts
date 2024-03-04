@@ -6,7 +6,6 @@ import {
     Content,
     DocumentInstanceState,
 } from 'src/stores/view/view-state-type';
-import { isLastRootNode } from 'src/stores/view/reducers/document/structure/delete-node/helpers/is-last-root-node';
 import { deleteBranch } from 'src/stores/view/reducers/document/structure/delete-node/helpers/delete-branch';
 
 export type DeleteNodeAction = {
@@ -22,7 +21,6 @@ export const deleteNode = (
     const activeNodeId = state.activeBranch.node;
     if (!activeNodeId) return;
     if (activeNodeId === state.editing.activeNodeId) return;
-    if (isLastRootNode(columns, activeNodeId)) return;
 
     const nextNode = findNextActiveNode(columns, state, action);
     if (nextNode) {

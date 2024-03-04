@@ -60,6 +60,7 @@ import {
     undoRedoSnapshot,
 } from 'src/stores/view/reducers/history/undo-redo-snapshot';
 import { structureAndContentEvents } from 'src/stores/view/helpers/state-events';
+import { isLastRootNode } from 'src/stores/view/reducers/document/structure/delete-node/helpers/is-last-root-node';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -138,6 +139,8 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
     }
     // structure and content
     else if (action.type === 'DOCUMENT/SET_NODE_CONTENT') {
+        const content = state.document.content[action.payload.nodeId];
+        if (content?.content === action.payload.content) return;
         setNodeContent(state.document.content, action);
     } else if (action.type === 'DOCUMENT/INSERT_NODE') {
         insertNode(
@@ -147,6 +150,11 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
             action,
         );
     } else if (action.type === 'DOCUMENT/DELETE_NODE') {
+        const lastNode = isLastRootNode(
+            state.document.columns,
+            state.document.state.activeBranch.node,
+        );
+        if (lastNode) return;
         deleteNode(
             state.document.columns,
             state.document.state,
@@ -185,6 +193,7 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
     }
 
     if (structureAndContentEvents.has(action.type)) {
+        if (action.type === 'DOCUMENT/INSERT_NODE') return;
         addSnapshot(state.document, state.history, action);
     }
 };
