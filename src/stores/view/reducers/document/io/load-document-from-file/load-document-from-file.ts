@@ -39,5 +39,4 @@ export const loadDocumentFromFile = (
             activeNode,
             firstNode,
         );
-    state.document.state.editing.savePreviousNode = false;
 };

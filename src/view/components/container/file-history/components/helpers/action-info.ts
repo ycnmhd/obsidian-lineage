@@ -6,9 +6,9 @@ import {
     FilePlus,
     Merge,
 } from 'lucide-svelte';
-import { DocumentAction, HistoryAction } from 'src/stores/view/view-reducer';
+import { UndoableAction } from 'src/stores/view/helpers/state-events';
 
-type Key = DocumentAction['type'] | HistoryAction['type'];
+type Key = UndoableAction['type'];
 export const actionInfo: Partial<
     Record<Key, { label: string; icon: typeof FileEdit }>
 > = {

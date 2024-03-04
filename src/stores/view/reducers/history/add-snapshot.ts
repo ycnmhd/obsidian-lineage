@@ -1,4 +1,3 @@
-import { id } from 'src/helpers/id';
 import { findSnapshotIndex } from 'src/stores/view/reducers/history/helpers/find-snapshot-index';
 import { updateNavigationState } from 'src/stores/view/reducers/history/helpers/update-navigation-state';
 
@@ -6,9 +5,9 @@ import { NodePosition } from 'src/stores/view/helpers/search/find-node-position'
 import {
     DocumentHistory,
     DocumentState,
-    Snapshot,
 } from 'src/stores/view/view-state-type';
-import { DocumentAction, HistoryAction } from 'src/stores/view/view-reducer';
+import { createSnapshot } from 'src/stores/view/reducers/history/helpers/create-snapshot';
+import { UndoableAction } from 'src/stores/view/helpers/state-events';
 
 const MAX_SNAPSHOTS = 20;
 
@@ -25,8 +24,7 @@ export type AddSnapshotAction = {
 export const addSnapshot = (
     document: DocumentState,
     history: DocumentHistory,
-    action: DocumentAction | HistoryAction,
-    reset = false,
+    action: UndoableAction,
 ) => {
     const snapshots = history.snapshots;
 
@@ -48,31 +46,9 @@ export const addSnapshot = (
             activeSnapshot.id,
         );
     }
-
-    const snapshot = {
-        // 🤮
-        data: {
-            columns: JSON.stringify(document.columns),
-            content: JSON.stringify(document.content),
-            state: JSON.stringify(document.state),
-            sets: {
-                childGroups: JSON.stringify([
-                    ...document.state.activeBranch.childGroups,
-                ]),
-            },
-        },
-        created: Date.now(),
-        id: id.snapshot(),
-        actionType: action.type,
-    } as Snapshot;
-
-    if (reset) {
-        history.snapshots = [snapshot];
-        history.state.activeIndex = 0;
-    } else {
-        snapshots.push(snapshot);
-        history.state.activeIndex = snapshots.length - 1;
-    }
+    const snapshot = createSnapshot(document, action);
+    snapshots.push(snapshot);
+    history.state.activeIndex = snapshots.length - 1;
 
     updateNavigationState(history);
 };

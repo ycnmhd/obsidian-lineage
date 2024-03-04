@@ -12,10 +12,10 @@
 
     const store = getStore();
     const icon = (
-        snapshot.actionType && actionInfo[snapshot.actionType]
-            ? actionInfo[snapshot.actionType]
+        actionInfo[snapshot.action.type]
+            ? actionInfo[snapshot.action.type]
             : {
-                  label: snapshot.actionType || 'unknown',
+                  label: snapshot.action.type || 'unknown',
                   icon: FileQuestion,
               }
     ) as { icon: typeof FileQuestion; label: string };

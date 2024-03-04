@@ -2,19 +2,15 @@
 	import { PencilIcon, SaveIcon } from 'lucide-svelte';
 	import { getStore } from '../../../../../../../context';
 	import FloatingButton from './floating-button.svelte';
+	import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-content';
 
 	export let editing: boolean;
     const store = getStore();
-	// eslint-disable-next-line no-undef
+    // eslint-disable-next-line no-undef
     const toggleEdit = (e: MouseEvent) => {
         e.stopPropagation();
         if (editing) {
-            store.dispatch({
-                type: 'DOCUMENT/DISABLE_EDIT_MODE',
-                payload: {
-                    save: true,
-                },
-            });
+            saveNodeContent(store);
         } else {
             store.dispatch({
                 type: 'DOCUMENT/ENABLE_EDIT_MODE',

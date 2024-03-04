@@ -5,7 +5,6 @@ export const updateEditingNodeOnActiveNodeChange = (
     nodeId: string,
     newNode = false,
 ) => {
-    state.editing.savePreviousNode = true;
     if (newNode) {
         state.editing.activeNodeId = nodeId;
     } else if (state.editing.activeNodeId !== nodeId) {

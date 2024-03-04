@@ -2,10 +2,12 @@ import { LineageView, ViewStore } from 'src/view/view';
 import Lineage from 'src/main';
 import { Direction } from 'src/stores/view/view-reducer';
 
+import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-and-insert-node';
+
 export const addNodeAndSplitAtCursor = (
     store: ViewStore,
     plugin: Lineage,
-    position: Direction,
+    direction: Direction,
 ) => {
     let text: string = '';
     const view = plugin.app.workspace.getActiveViewOfType(LineageView);
@@ -18,18 +20,13 @@ export const addNodeAndSplitAtCursor = (
                 textArea.value = value.substring(0, cursor);
                 text = value.substring(cursor);
             }
-            if (position === 'up') {
+            if (direction === 'up') {
                 const temp = text;
                 text = textArea.value;
                 textArea.value = temp;
             }
         }
     }
-    store.dispatch({
-        type: 'DOCUMENT/INSERT_NODE',
-        payload: {
-            position,
-            content: text,
-        },
-    });
+
+    saveNodeAndInsertNode(store, direction, text);
 };

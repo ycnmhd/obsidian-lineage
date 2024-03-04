@@ -45,7 +45,7 @@ describe('delete node', () => {
                     node: content,
                     childGroups: new Set<string>(),
                 },
-                editing: { activeNodeId: content, savePreviousNode: true },
+                editing: { activeNodeId: content },
             },
         } satisfies DocumentState;
         const output = {
@@ -82,7 +82,7 @@ describe('delete node', () => {
                     node: content,
                     childGroups: new Set<string>(),
                 },
-                editing: { activeNodeId: content, savePreviousNode: true },
+                editing: { activeNodeId: content },
             },
         } satisfies DocumentState;
         deleteNode(input.columns, input.state, input.content, {
@@ -174,7 +174,7 @@ describe('delete node', () => {
                     sortedParentNodes: [],
                 },
                 dnd: { node: content, childGroups: new Set() },
-                editing: { activeNodeId: content, savePreviousNode: true },
+                editing: { activeNodeId: content },
             },
         } satisfies DocumentState;
 
@@ -200,7 +200,7 @@ describe('delete node', () => {
                     group: 'r-lt3bize1',
                 },
                 dnd: { node: content, childGroups: new Set() },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         } satisfies DocumentState;
         deleteNode(
@@ -239,7 +239,7 @@ describe('delete node', () => {
                     group: 'r-lt8wz9zc',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         } satisfies DocumentState;
 
@@ -259,7 +259,7 @@ describe('delete node', () => {
                     group: 'r-lt8wz9zc',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         } satisfies DocumentState;
 

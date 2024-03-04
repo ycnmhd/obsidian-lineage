@@ -6,6 +6,5 @@ export type ToggleEditModeAction = {
 export const enableEditMode = (state: DocumentInstanceState) => {
     const activeNodeId = state.activeBranch.node;
     if (!activeNodeId) return;
-    state.editing.savePreviousNode = false;
     state.editing.activeNodeId = activeNodeId;
 };

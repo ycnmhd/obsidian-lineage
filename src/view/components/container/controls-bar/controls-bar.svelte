@@ -7,28 +7,20 @@
 	import { DocumentHistory } from 'src/stores/view/view-state-type';
 
 	const store = getStore();
-    export let documentHistory: DocumentHistory | null;
+    export let documentHistory: DocumentHistory;
     export let path: string | null;
 
     const handleNextClick = () => {
         if (path)
             store.dispatch({
-                type: 'HISTORY/UNDO_REDO_SNAPSHOT',
-                payload: {
-                    path,
-                    direction: 'forward',
-                },
+                type: 'HISTORY/APPLY_NEXT_SNAPSHOT',
             });
     };
 
     const handlePreviousClick = () => {
         if (path)
             store.dispatch({
-                type: 'HISTORY/UNDO_REDO_SNAPSHOT',
-                payload: {
-                    path,
-                    direction: 'back',
-                },
+                type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
             });
     };
     const plugin = getPlugin();
@@ -63,7 +55,7 @@
             aria-label="History"
             class="canvas-control-item"
             data-tooltip-position="left"
-            disabled={!path || !documentHistory}
+            disabled={documentHistory.snapshots.length === 0}
             on:click={() => {
                 store.dispatch({ type: 'UI/TOGGLE_HISTORY_SIDEBAR' });
             }}

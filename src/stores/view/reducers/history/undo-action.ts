@@ -6,35 +6,20 @@ import {
 import { loadDocumentFromSnapshot } from 'src/stores/view/reducers/history/helpers/load-document-from-snapshot';
 
 export type UndoRedoAction = {
-    type: 'HISTORY/UNDO_REDO_SNAPSHOT';
-    payload: {
-        path: string;
-        direction: 'back' | 'forward';
-    };
+    type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT' | 'HISTORY/APPLY_NEXT_SNAPSHOT';
 };
 
-export const undoRedoSnapshot = (
+export const undoAction = (
     document: DocumentState,
     history: DocumentHistory,
-    action: UndoRedoAction,
 ) => {
-    if (!history || history.snapshots.length === 0) return;
-
     const currentIndex = history.state.activeIndex;
 
-    let newIndex: number;
-    if (action.payload.direction === 'back') {
-        newIndex = currentIndex - 1;
-    } else {
-        newIndex = currentIndex + 1;
-    }
-
-    if (newIndex < 0 || newIndex >= history.snapshots.length) {
-        return;
-    }
+    const newIndex = currentIndex - 1;
+    const snapshot = history.snapshots[newIndex];
+    if (!snapshot) return;
 
     history.state.activeIndex = newIndex;
     updateNavigationState(history);
-    const snapshot = history.snapshots[newIndex];
     loadDocumentFromSnapshot(document, snapshot);
 };

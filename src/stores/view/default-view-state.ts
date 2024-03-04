@@ -17,7 +17,6 @@ export const defaultViewState = (): ViewState => ({
             },
             editing: {
                 activeNodeId: '',
-                savePreviousNode: false,
             },
         },
     },

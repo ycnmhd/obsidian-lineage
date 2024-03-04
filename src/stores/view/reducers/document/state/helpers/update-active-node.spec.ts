@@ -81,7 +81,7 @@ describe('update-active-node', () => {
                     group: 'r-lt8upk0k',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: false },
+                editing: { activeNodeId: '' },
             },
         } satisfies DocumentState;
 
@@ -152,7 +152,7 @@ describe('update-active-node', () => {
                     group: 'r-lt8upk0k',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         } satisfies DocumentState;
         updateActiveNode(state.columns, state.state, action.payload.id);

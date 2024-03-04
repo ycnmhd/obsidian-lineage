@@ -27,7 +27,7 @@ describe('merge node', () => {
                     group: 'r60v',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: { n8Nd: { content: '1' }, nrIb: { content: '2' } },
             action: {
@@ -52,7 +52,7 @@ describe('merge node', () => {
                     group: 'r60v',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         } satisfies DocumentState;
 
@@ -77,7 +77,7 @@ describe('merge node', () => {
                     group: 'rv0p',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: { nTlU: { content: '1' }, nc8J: { content: '2' } },
             action: {
@@ -100,7 +100,7 @@ describe('merge node', () => {
                     group: 'rv0p',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: { nc8J: { content: '1 2' } },
         } satisfies DocumentState;
@@ -135,7 +135,7 @@ describe('merge node', () => {
                     group: 'nGQX',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: {
                 nBe1: { content: '1' },
@@ -168,7 +168,7 @@ describe('merge node', () => {
                     group: 'nBe1',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: {
                 nBe1: { content: '1' },
@@ -207,7 +207,7 @@ describe('merge node', () => {
                     group: 'nPUy',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: {
                 nPUy: { content: '1' },
@@ -240,7 +240,7 @@ describe('merge node', () => {
                     group: 'nfIb',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: {
                 nPUy: { content: '1' },
@@ -307,7 +307,7 @@ describe('merge node', () => {
                     group: rootNode,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: {
                 nZmk: { content: '1' },
@@ -363,7 +363,7 @@ describe('merge node', () => {
                     group: rootNode,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: {
                 nZmk: { content: '1 2' },
@@ -434,7 +434,7 @@ describe('merge node', () => {
                     group: rootNode,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: {
                 nZmk: { content: '1' },
@@ -490,7 +490,7 @@ describe('merge node', () => {
                     group: rootNode,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: {
                 nBAt: { content: '1 2' },
@@ -558,7 +558,7 @@ describe('merge node', () => {
                     group: parentOfMergedNode,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: {
                 n_2t: { content: '1' },
@@ -616,7 +616,7 @@ describe('merge node', () => {
                     group: parentOfTargetNode,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: {
                 n_2t: { content: '1' },
@@ -684,7 +684,7 @@ describe('merge node', () => {
                     group: parentOfMergedNode,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: {
                 nKBb: { content: '1' },
@@ -742,7 +742,7 @@ describe('merge node', () => {
                     group: parentOfTargetNode,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
             content: {
                 nKBb: { content: '1' },
@@ -831,7 +831,7 @@ describe('merge node', () => {
                     group: 'rYY4',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         } as DocumentState;
         const action = {
@@ -895,7 +895,7 @@ describe('merge node', () => {
                     group: 'rYY4',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         } satisfies DocumentState;
         mergeNode(input.columns, input.content, input.state, action);
@@ -970,7 +970,7 @@ describe('merge node', () => {
                     group: 'rINO',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         } satisfies DocumentState;
         const action = {
@@ -1034,7 +1034,7 @@ describe('merge node', () => {
                     group: 'rINO',
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         };
         mergeNode(input.columns, input.content, input.state, action);
@@ -1110,7 +1110,7 @@ describe('merge node', () => {
                     group: merged_parent,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         } satisfies DocumentState;
         const action = {
@@ -1173,7 +1173,7 @@ describe('merge node', () => {
                     group: target_parent,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         };
         mergeNode(input.columns, input.content, input.state, action);
@@ -1241,7 +1241,7 @@ describe('merge node', () => {
                     group: merged_parent,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         };
         const action = {
@@ -1298,7 +1298,7 @@ describe('merge node', () => {
                     group: target_parent,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                editing: { activeNodeId: '' },
             },
         };
         mergeNode(input.columns, input.content, input.state, action);

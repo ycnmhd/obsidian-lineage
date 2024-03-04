@@ -2,6 +2,9 @@ import { Hotkey } from 'obsidian';
 import { ViewStore } from 'src/view/view';
 import Lineage from 'src/main';
 import { addNodeAndSplitAtCursor } from 'src/view/actions/keyboard-shortcuts/helpers/add-node-and-split-at-cursor';
+import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-content';
+import { cancelChanges } from 'src/view/actions/keyboard-shortcuts/helpers/cancel-changes';
+import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-and-insert-node';
 
 export const hotkeysLang = {
     save_changes_and_exit_card: 'Save changes and exit card',
@@ -63,13 +66,7 @@ export const createCommands = (plugin: Lineage) => {
         save_changes_and_exit_card: {
             check: isActive,
             callback: (store) => {
-                if (isEditing(store))
-                    store.dispatch({
-                        type: 'DOCUMENT/DISABLE_EDIT_MODE',
-                        payload: {
-                            save: true,
-                        },
-                    });
+                if (isEditing(store)) saveNodeContent(store);
             },
             hotkeys: [{ key: 'Enter', modifiers: ['Alt', 'Ctrl'] }],
         },
@@ -77,24 +74,14 @@ export const createCommands = (plugin: Lineage) => {
         disable_edit_mode: {
             check: isActive,
             callback: (store) => {
-                store.dispatch({
-                    type: 'DOCUMENT/DISABLE_EDIT_MODE',
-                    payload: {
-                        save: false,
-                    },
-                });
+                cancelChanges(store);
             },
             hotkeys: [{ key: 'Escape', modifiers: [] }],
         },
         add_above: {
             check: isActiveAndNotEditing,
             callback: (store) => {
-                store.dispatch({
-                    type: 'DOCUMENT/INSERT_NODE',
-                    payload: {
-                        position: 'up',
-                    },
-                });
+                saveNodeAndInsertNode(store, 'up');
             },
             hotkeys: [
                 {
@@ -113,12 +100,7 @@ export const createCommands = (plugin: Lineage) => {
         add_below: {
             check: isActiveAndNotEditing,
             callback: (store) => {
-                store.dispatch({
-                    type: 'DOCUMENT/INSERT_NODE',
-                    payload: {
-                        position: 'down',
-                    },
-                });
+                saveNodeAndInsertNode(store, 'down');
             },
             hotkeys: [
                 {
@@ -137,12 +119,7 @@ export const createCommands = (plugin: Lineage) => {
         add_child: {
             check: isActiveAndNotEditing,
             callback: (store) => {
-                store.dispatch({
-                    type: 'DOCUMENT/INSERT_NODE',
-                    payload: {
-                        position: 'right',
-                    },
-                });
+                saveNodeAndInsertNode(store, 'right');
             },
             hotkeys: [
                 {
@@ -231,11 +208,7 @@ export const createCommands = (plugin: Lineage) => {
                 const path = store.getValue().file.path;
                 if (path)
                     store.dispatch({
-                        type: 'HISTORY/UNDO_REDO_SNAPSHOT',
-                        payload: {
-                            direction: 'back',
-                            path,
-                        },
+                        type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
                     });
             },
             hotkeys: [{ key: 'Z', modifiers: ['Ctrl', 'Shift'] }],
@@ -246,11 +219,7 @@ export const createCommands = (plugin: Lineage) => {
                 const path = store.getValue().file.path;
                 if (path)
                     store.dispatch({
-                        type: 'HISTORY/UNDO_REDO_SNAPSHOT',
-                        payload: {
-                            direction: 'forward',
-                            path,
-                        },
+                        type: 'HISTORY/APPLY_NEXT_SNAPSHOT',
                     });
             },
             hotkeys: [{ key: 'Y', modifiers: ['Ctrl', 'Shift'] }],

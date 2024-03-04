@@ -7,7 +7,6 @@ export const loadDocumentFromSnapshot = (
     document.state = JSON.parse(snapshot.data.state);
     document.state.dnd.childGroups = new Set<string>();
     document.state.editing.activeNodeId = '';
-    document.state.editing.savePreviousNode = false;
     document.state.activeBranch.childGroups = new Set(
         JSON.parse(snapshot.data.sets.childGroups),
     );

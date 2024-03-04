@@ -1,4 +1,4 @@
-import { ViewAction } from 'src/stores/view/view-reducer';
+import { UndoableAction } from 'src/stores/view/helpers/state-events';
 
 export type NodeId = string;
 export type NodeGroup = {
@@ -30,7 +30,6 @@ export type ActiveBranch = {
 };
 export type EditingState = {
     activeNodeId: string;
-    savePreviousNode: boolean;
 };
 export type DocumentInstanceState = {
     activeBranch: ActiveBranch;
@@ -66,7 +65,7 @@ export type Snapshot = {
     };
     created: number;
     id: string;
-    actionType: ViewAction['type'];
+    action: UndoableAction;
 };
 export type DocumentHistory = {
     snapshots: Snapshot[];

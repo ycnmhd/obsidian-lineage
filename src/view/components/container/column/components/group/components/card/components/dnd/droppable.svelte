@@ -12,10 +12,11 @@
     export let editing: boolean;
 
     const setActive = () => {
-        store.dispatch({
-            type: 'DOCUMENT/SET_ACTIVE_NODE',
-            payload: { id: nodeId },
-        });
+        if (active !== ActiveStatus.node)
+            store.dispatch({
+                type: 'DOCUMENT/SET_ACTIVE_NODE',
+                payload: { id: nodeId },
+            });
     };
     const store = getStore();
     const activeStatusClasses = {
@@ -41,10 +42,7 @@
 </div>
 
 <style>
-
-
-
-	.node {
+    .node {
         width: var(--node-width);
         height: fit-content;
         display: flex;
@@ -64,7 +62,7 @@
         border-left: 5px var(--lineage-accent) solid;
     }
     .active-child:hover {
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .active-parent,

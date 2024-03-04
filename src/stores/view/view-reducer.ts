@@ -56,11 +56,15 @@ import {
     SelectSnapshotAction,
 } from 'src/stores/view/reducers/history/select-snapshot';
 import {
+    undoAction,
     UndoRedoAction,
-    undoRedoSnapshot,
-} from 'src/stores/view/reducers/history/undo-redo-snapshot';
-import { structureAndContentEvents } from 'src/stores/view/helpers/state-events';
+} from 'src/stores/view/reducers/history/undo-action';
+import {
+    structureAndContentEvents,
+    UndoableAction,
+} from 'src/stores/view/helpers/state-events';
 import { isLastRootNode } from 'src/stores/view/reducers/document/structure/delete-node/helpers/is-last-root-node';
+import { redoAction } from 'src/stores/view/reducers/history/redo-action';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -141,6 +145,7 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
     else if (action.type === 'DOCUMENT/SET_NODE_CONTENT') {
         const content = state.document.content[action.payload.nodeId];
         if (content?.content === action.payload.content) return;
+        console.log('content', content?.content, action.payload.content);
         setNodeContent(state.document.content, action);
     } else if (action.type === 'DOCUMENT/INSERT_NODE') {
         insertNode(
@@ -180,8 +185,10 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
         resetDocument(state);
     } else if (action.type === 'HISTORY/SELECT_SNAPSHOT') {
         selectSnapshot(state.document, state.history, action);
-    } else if (action.type === 'HISTORY/UNDO_REDO_SNAPSHOT') {
-        undoRedoSnapshot(state.document, state.history, action);
+    } else if (action.type === 'HISTORY/APPLY_PREVIOUS_SNAPSHOT') {
+        undoAction(state.document, state.history);
+    } else if (action.type === 'HISTORY/APPLY_NEXT_SNAPSHOT') {
+        redoAction(state.document, state.history);
     } else if (action.type === 'FS/SET_FILE_PATH') {
         state.file.path = action.payload.path;
     } else if (action.type === 'UI/TOGGLE_HISTORY_SIDEBAR') {
@@ -193,8 +200,7 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
     }
 
     if (structureAndContentEvents.has(action.type)) {
-        if (action.type === 'DOCUMENT/INSERT_NODE') return;
-        addSnapshot(state.document, state.history, action);
+        addSnapshot(state.document, state.history, action as UndoableAction);
     }
 };
 

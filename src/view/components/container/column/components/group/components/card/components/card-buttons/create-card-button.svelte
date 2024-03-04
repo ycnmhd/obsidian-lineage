@@ -2,16 +2,15 @@
 	import { getStore } from '../../../../../../../context';
 	import FloatingButton from './floating-button.svelte';
 	import { ChevronDown, ChevronRight, ChevronUp } from 'lucide-svelte';
+	import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-and-insert-node';
+	import { Direction } from 'src/stores/view/view-reducer';
 
-	export let position:  "up" | "right" | "down" ;
+	export let position:  Direction ;
     const store = getStore();
 	// eslint-disable-next-line no-undef
     const createCard = (e: MouseEvent) => {
         e.stopPropagation();
-        store.dispatch({
-            type: 'DOCUMENT/INSERT_NODE',
-            payload: {  position },
-        });
+		saveNodeAndInsertNode(store,position)
     };
 	const chevrons = {
 		right: ChevronRight,
