@@ -1,4 +1,4 @@
-import { Column, DocumentInstanceState } from 'src/stores/view/view-state-type';
+import { Column } from 'src/stores/view/view-state-type';
 import { DeleteNodeAction } from 'src/stores/view/reducers/document/structure/delete-node/delete-node';
 import { ChangeActiveNodeAction } from 'src/stores/view/reducers/document/state/navigate-using-keyboard';
 import { LoadDocumentAction } from 'src/stores/view/reducers/document/io/load-document-from-file/load-document-from-file';
@@ -8,10 +8,9 @@ import { findInitialActiveNode } from 'src/stores/view/reducers/document/state/h
 
 export const findNextActiveNode = (
     columns: Column[],
-    state: DocumentInstanceState,
+    node: string,
     action: DeleteNodeAction | ChangeActiveNodeAction | LoadDocumentAction,
 ) => {
-    const node = state.activeBranch.node;
     if (action.type === 'DOCUMENT/DELETE_NODE') {
         return findNextNodeAfterDeletion(columns, node);
     } else if (action.type === 'DOCUMENT/NAVIGATE_USING_KEYBOARD') {

@@ -25,7 +25,11 @@ export const deleteNode = (
     const lastNode = isLastRootNode(columns, activeNodeId);
     if (lastNode) return;
 
-    const nextNode = findNextActiveNode(columns, state, action);
+    const nextNode = findNextActiveNode(
+        columns,
+        state.activeBranch.node,
+        action,
+    );
     if (nextNode) {
         deleteBranch(columns, content, activeNodeId);
         cleanAndSortColumns(columns);

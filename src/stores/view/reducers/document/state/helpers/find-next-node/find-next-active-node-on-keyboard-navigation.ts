@@ -16,7 +16,7 @@ export const findNextActiveNodeOnKeyboardNavigation = (
     if (!column) return;
     if (direction === 'left') {
         const group = findGroupByNodeId(columns, node);
-        if (group) nextNode = group.parentId;
+        if (group && !group.parentId.startsWith('r')) nextNode = group.parentId;
     } else if (direction === 'right') {
         const group = findChildGroup(columns, node);
         if (group) {

@@ -1,11 +1,11 @@
 import {
     Column,
     Content,
-    DocumentInstanceState,
     DocumentState,
 } from 'src/stores/view/view-state-type';
 
 import { __stringifySets } from 'src/helpers/test-helpers/stringify-sets';
+import { generateContent } from 'src/helpers/test-helpers/generate-content';
 
 const refactorContent = (IDsMap: Map<string, string>, content: Content) => {
     const indexBasedContent: string[] = [];
@@ -40,7 +40,7 @@ const createIDsMap = (content: Content, columns: Column[]) => {
 const replaceIDs = (
     IDsMap: Map<string, string>,
     columns: Column[],
-    state: DocumentInstanceState,
+    state: Record<string, unknown>,
 ) => {
     let inputString = __stringifySets({
         columns: columns,
@@ -71,17 +71,20 @@ const insertVariableName = (input: string, name: string) => {
     return `const ${name} = ${input}`;
 };
 export const __logDocument__ = (
-    input: DocumentState,
+    input: Partial<DocumentState> & { columns: Column[] },
     name: string,
     variables = true,
 ) => {
-    const IDsMap = createIDsMap(input.content, input.columns);
+    const content: Content = input.content || generateContent(input.columns);
 
-    let output = replaceIDs(IDsMap, input.columns, input.state);
+    const IDsMap = createIDsMap(content, input.columns);
 
-    const content = refactorContent(IDsMap, input.content);
+    let output = replaceIDs(IDsMap, input.columns, input.state || {});
 
-    output = insertContent(output, content);
+    if (input.content) {
+        const content = refactorContent(IDsMap, input.content);
+        output = insertContent(output, content);
+    }
     output = insertVariableName(output, name);
     if (variables) {
         const variableDeclarations = createVariableDeclarations(IDsMap);
