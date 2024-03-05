@@ -28,14 +28,12 @@ export const addSnapshot = (
 ) => {
     const snapshots = history.snapshots;
 
-    const activeSnapshot = snapshots[history.state.activeIndex];
+    const activeIndex = history.state.activeIndex;
+    const activeSnapshot = snapshots[activeIndex];
 
-    if (
-        snapshots.length > 0 &&
-        history.state.activeIndex !== snapshots.length - 1
-    ) {
+    if (snapshots.length > 0 && activeIndex !== snapshots.length - 1) {
         // remove obsolete snapshots (between the active snapshot and the end)
-        history.snapshots.splice(history.state.activeIndex + 1);
+        history.snapshots.splice(activeIndex + 1);
     }
 
     if (snapshots.length >= MAX_SNAPSHOTS) {
@@ -46,10 +44,15 @@ export const addSnapshot = (
             activeSnapshot.id,
         );
     }
+    if (activeSnapshot && action.type === 'DOCUMENT/LOAD_FILE') {
+        const content = JSON.parse(activeSnapshot.data.content);
+        const snapshotContent = JSON.stringify(Object.values(content));
+        const documentContent = JSON.stringify(Object.values(document.content));
+        if (snapshotContent === documentContent) return;
+    }
+
     const snapshot = createSnapshot(document, action);
-    if (activeSnapshot && action.type === 'DOCUMENT/LOAD_FILE')
-        history.snapshots = [snapshot];
-    else snapshots.push(snapshot);
+    snapshots.push(snapshot);
     history.state.activeIndex = snapshots.length - 1;
 
     updateNavigationState(history);

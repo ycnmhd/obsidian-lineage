@@ -51,7 +51,6 @@ export class LineageView extends TextFileView {
             this.component.$destroy();
         }
         this.activeFilePath = null;
-        this.data = '';
         this.contentEl.empty();
         this.store = new Store(defaultViewState(), viewReducer);
         for (const s of this.onDestroyCallbacks) {
