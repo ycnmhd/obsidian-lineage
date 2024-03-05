@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { File, HelpCircle, HistoryIcon, Moon, RedoIcon, Sun, UndoIcon } from 'lucide-svelte';
-	import { getPlugin, getStore } from 'src/view/components/container/context';
-	import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
-	import { LineageView } from 'src/view/view';
-	import { lang } from 'src/lang/lang';
-	import { DocumentHistory } from 'src/stores/view/view-state-type';
+    import { File, HelpCircle, HistoryIcon, Moon, RedoIcon, Sun, UndoIcon } from 'lucide-svelte';
+    import { getPlugin, getStore } from 'src/view/components/container/context';
+    import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
+    import { LineageView } from 'src/view/view';
+    import { lang } from 'src/lang/lang';
+    import { DocumentHistory } from 'src/stores/view/view-state-type';
 
-	const store = getStore();
+    const store = getStore();
     export let documentHistory: DocumentHistory;
     export let path: string | null;
 
@@ -55,7 +55,7 @@
             aria-label="History"
             class="canvas-control-item"
             data-tooltip-position="left"
-            disabled={documentHistory.snapshots.length === 0}
+            disabled={documentHistory.items.length === 0}
             on:click={() => {
                 store.dispatch({ type: 'UI/TOGGLE_HISTORY_SIDEBAR' });
             }}

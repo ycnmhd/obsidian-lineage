@@ -60,10 +60,16 @@ import {
     UndoRedoAction,
 } from 'src/stores/view/reducers/history/undo-action';
 import {
+    navigationEvents,
     structureAndContentEvents,
     UndoableAction,
 } from 'src/stores/view/helpers/state-events';
 import { redoAction } from 'src/stores/view/reducers/history/redo-action';
+import { addNavigationHistoryItem } from 'src/stores/view/reducers/ui/helpers/add-navigation-history-item';
+import {
+    navigateActiveNode,
+    NavigationAction,
+} from 'src/stores/view/reducers/ui/navigate-active-node';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -114,8 +120,7 @@ export type DocumentAction =
     | MergeNodeAction;
 
 export type HistoryAction = UndoRedoAction | SelectSnapshotAction;
-
-export type ViewAction = DocumentAction | HistoryAction;
+export type ViewAction = DocumentAction | HistoryAction | NavigationAction;
 
 const updateViewState = (state: ViewState, action: ViewAction) => {
     // state
@@ -197,10 +202,30 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
     } else if (action.type === 'UI/TOGGLE_HELP_SIDEBAR') {
         state.ui.showHistorySidebar = false;
         state.ui.showHelpSidebar = !state.ui.showHelpSidebar;
+    } else if (action.type === 'NAVIGATION/NAVIGATE_FORWARD') {
+        navigateActiveNode(
+            state.document.columns,
+            state.document.state,
+            state.navigationHistory,
+            true,
+        );
+    } else if (action.type === 'NAVIGATION/NAVIGATE_BACK') {
+        navigateActiveNode(
+            state.document.columns,
+            state.document.state,
+            state.navigationHistory,
+        );
     }
 
     if (saveSnapshot && structureAndContentEvents.has(action.type)) {
         addSnapshot(state.document, state.history, action as UndoableAction);
+    }
+    if (!navigationEvents.has(action.type)) {
+        addNavigationHistoryItem(
+            state.navigationHistory,
+            state.document.content,
+            state.document.state.activeBranch.node,
+        );
     }
 };
 

@@ -7,6 +7,7 @@ import { ViewStore } from 'src/view/view';
 import { debounce } from 'obsidian';
 import {
     historyEvents,
+    navigationEvents,
     stateEvents,
     structureAndContentEvents,
 } from 'src/stores/view/helpers/state-events';
@@ -49,7 +50,8 @@ export const alignBranchEffect = (store: ViewStore, container: HTMLElement) => {
         if (
             stateEvents.has(action.type) ||
             structureAndContentEvents.has(action.type) ||
-            historyEvents.has(action.type)
+            historyEvents.has(action.type) ||
+            navigationEvents.has(action.type)
         ) {
             run(state, container);
         }

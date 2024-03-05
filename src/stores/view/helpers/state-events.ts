@@ -33,3 +33,8 @@ export const historyEvents = new Set<ViewAction['type']>([
     'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
     'HISTORY/SELECT_SNAPSHOT',
 ]);
+
+export const navigationEvents = new Set<ViewAction['type']>([
+    'NAVIGATION/NAVIGATE_BACK',
+    'NAVIGATION/NAVIGATE_FORWARD',
+]);

@@ -50,11 +50,11 @@ export const insertNode = (
         }
     }
     if (createdNode) {
-        if (action.payload.content) {
-            content[createdNode] = {
-                content: action.payload.content,
-            };
-        }
+        content[createdNode] = action.payload.content
+            ? {
+                  content: action.payload.content,
+              }
+            : null;
         updateActiveNode(columns, state, createdNode, true);
         return true;
     }

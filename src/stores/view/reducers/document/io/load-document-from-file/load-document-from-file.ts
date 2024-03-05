@@ -23,7 +23,7 @@ export const loadDocumentFromFile = (
     state.document.content = document.content;
     const firstNode = tree.length === 0;
     if (firstNode) {
-        createFirstNode(state.document.columns);
+        createFirstNode(state.document.columns, state.document.content);
     }
     if (action.type === 'DOCUMENT/LOAD_FILE')
         state.file.frontmatter = action.payload.document.frontmatter;

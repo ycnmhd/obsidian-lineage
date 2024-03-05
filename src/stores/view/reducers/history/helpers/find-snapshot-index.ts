@@ -1,6 +1,7 @@
-import { Snapshot } from 'src/stores/view/view-state-type';
-
-export const findSnapshotIndex = (snapshots: Snapshot[], id: string | null) => {
+export const findSnapshotIndex = (
+    snapshots: { id: string }[],
+    id: string | null,
+) => {
     if (!id) return -1;
     return snapshots.findIndex((snapshot) => snapshot.id === id);
 };

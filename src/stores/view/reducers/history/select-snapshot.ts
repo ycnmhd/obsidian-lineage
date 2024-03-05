@@ -19,15 +19,12 @@ export const selectSnapshot = (
     history: DocumentHistory,
     action: SelectSnapshotAction,
 ) => {
-    const index = findSnapshotIndex(
-        history.snapshots,
-        action.payload.snapshotId,
-    );
+    const index = findSnapshotIndex(history.items, action.payload.snapshotId);
     if (index !== -1) {
         history.state.activeIndex = index;
         updateNavigationState(history);
 
-        const snapshot = history.snapshots[index];
+        const snapshot = history.items[index];
         loadDocumentFromSnapshot(document, snapshot);
     }
 };

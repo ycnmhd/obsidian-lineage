@@ -16,7 +16,7 @@ export const undoAction = (
     const currentIndex = history.state.activeIndex;
 
     const newIndex = currentIndex - 1;
-    const snapshot = history.snapshots[newIndex];
+    const snapshot = history.items[newIndex];
     if (!snapshot) return;
 
     history.state.activeIndex = newIndex;

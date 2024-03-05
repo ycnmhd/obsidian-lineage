@@ -29,7 +29,15 @@ export const defaultViewState = (): ViewState => ({
         frontmatter: '',
     },
     history: {
-        snapshots: [],
+        items: [],
+        state: {
+            activeIndex: -1,
+            canGoBack: false,
+            canGoForward: false,
+        },
+    },
+    navigationHistory: {
+        items: [],
         state: {
             activeIndex: -1,
             canGoBack: false,

@@ -11,11 +11,9 @@ export type Column = {
 };
 export type Columns = Column[];
 export type Content = {
-    [nodeId: string]:
-        | undefined
-        | {
-              content: string;
-          };
+    [nodeId: string]: null | {
+        content: string;
+    };
 };
 
 export type DNDState = {
@@ -42,6 +40,7 @@ export type DocumentState = {
     state: DocumentInstanceState;
 };
 export type StatelessDocument = Omit<DocumentState, 'state'>;
+
 export type ViewState = {
     document: DocumentState;
     ui: {
@@ -52,6 +51,7 @@ export type ViewState = {
         path: string | null;
         frontmatter: string;
     };
+    navigationHistory: NavigationHistory;
     history: DocumentHistory;
 };
 export type Snapshot = {
@@ -67,11 +67,16 @@ export type Snapshot = {
     id: string;
     action: UndoableAction;
 };
-export type DocumentHistory = {
-    snapshots: Snapshot[];
-    state: {
-        activeIndex: number;
-        canGoBack: boolean;
-        canGoForward: boolean;
-    };
+export type HistoryState = {
+    activeIndex: number;
+    canGoBack: boolean;
+    canGoForward: boolean;
 };
+
+export type History<T> = {
+    items: T[];
+    state: HistoryState;
+};
+
+export type DocumentHistory = History<Snapshot>;
+export type NavigationHistory = History<NodeId>;

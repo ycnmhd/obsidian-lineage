@@ -12,7 +12,7 @@ export const redoAction = (
     const currentIndex = history.state.activeIndex;
 
     const nexIndex = currentIndex + 1;
-    const snapshot = history.snapshots[nexIndex];
+    const snapshot = history.items[nexIndex];
     if (!snapshot) return;
 
     history.state.activeIndex = nexIndex;
