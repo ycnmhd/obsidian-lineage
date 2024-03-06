@@ -2,7 +2,7 @@
 	import { getStore } from '../../../../../../../context';
 	import FloatingButton from './floating-button.svelte';
 	import { ChevronDown, ChevronRight, ChevronUp } from 'lucide-svelte';
-	import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-and-insert-node';
+	import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/tree/save-node-and-insert-node';
 	import { Direction } from 'src/stores/view/view-reducer';
 
 	export let position:  Direction ;

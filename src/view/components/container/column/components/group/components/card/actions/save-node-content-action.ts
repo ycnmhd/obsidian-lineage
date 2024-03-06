@@ -1,6 +1,6 @@
 import { NodeId } from 'src/stores/view/view-state-type';
 import { ViewStore } from 'src/view/view';
-import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-content';
+import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/tree/save-node-content';
 
 export const activeTextArea: {
     element: HTMLTextAreaElement | null;

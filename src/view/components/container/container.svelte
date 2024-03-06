@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Column from './column/column.svelte';
-	import { keyboardShortcuts } from 'src/view/actions/keyboard-shortcuts/keyboard-shortcuts';
-	import { getPlugin, getStore } from 'src/view/components/container/context';
+    import Column from './column/column.svelte';
+    import { keyboardShortcuts } from 'src/view/actions/keyboard-shortcuts/keyboard-shortcuts';
+    import { getPlugin, getStore } from 'src/view/components/container/context';
 
-	const store = getStore();
+    const store = getStore();
 	const plugin = getPlugin()
 
 </script>

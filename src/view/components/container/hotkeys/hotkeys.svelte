@@ -1,17 +1,22 @@
 <script lang="ts">
-	import { createCommands } from '../../../actions/keyboard-shortcuts/helpers/create-commands'; // Import the PluginCommand type
-	import Hotkey from './components/hotkey.svelte';
-	import { getPlugin } from 'src/view/components/container/context';
+    import { createCommands } from '../../../actions/keyboard-shortcuts/helpers/create-commands'; // Import the PluginCommand type
+    import Hotkey from './components/command.svelte';
+    import { getPlugin, getView } from 'src/view/components/container/context';
+    import {
+        detectConflictingHotkeys
+    } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/detect-conflicting-hotkeys';
 
-	const plugin = getPlugin()
+    const plugin = getPlugin()
 	const commands = createCommands(plugin);
+    const view = getView()
+    const usedHotkeys = detectConflictingHotkeys(plugin, Object.values(commands), view.containerEl)
 </script>
 
 <div class="sidebar">
     <span class="title">Keyboard shortcuts</span>
     <div class="hotkeys-list">
         {#each Object.entries(commands) as [key, command]}
-            <Hotkey {key} {command} />
+            <Hotkey {key} {command} {usedHotkeys}/>
         {/each}
     </div>
     <div class="note">

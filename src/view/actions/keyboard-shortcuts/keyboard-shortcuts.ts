@@ -1,27 +1,17 @@
 import { ViewStore } from 'src/view/view';
+import Lineage from 'src/main';
+import { eventToString } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/event-to-string';
 import {
     createCommands,
     PluginCommand,
 } from 'src/view/actions/keyboard-shortcuts/helpers/create-commands';
-import { Hotkey } from 'obsidian';
-import Lineage from 'src/main';
+import { hotkeyToString } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/hotkey-to-string';
 
-enum Modifiers {
+export enum Modifiers {
     'Alt' = 'Alt',
     'Ctrl' = 'Ctrl',
     'Shift' = 'Shift',
 }
-
-const eventToString = (event: KeyboardEvent) => {
-    let string = event.key;
-    if (event.altKey) string += Modifiers.Alt;
-    if (event.ctrlKey) string += Modifiers.Ctrl;
-    if (event.shiftKey) string += Modifiers.Shift;
-    return string;
-};
-
-const hotkeyToString = (hotkey: Hotkey) =>
-    hotkey.key + hotkey.modifiers.sort().join('');
 
 /* using native obsidian hotkeys is not practical because (1) the plugin uses basic
  * hotkeys such as 'ArrowUp' and 'Ctrl+Enter' and (2) the plugin only listens to hotkeys in its

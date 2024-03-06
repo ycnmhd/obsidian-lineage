@@ -1,6 +1,6 @@
 import { ViewStore } from 'src/view/view';
 import { Direction } from 'src/stores/view/view-reducer';
-import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-content';
+import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/tree/save-node-content';
 
 export const saveNodeAndInsertNode = (
     store: ViewStore,

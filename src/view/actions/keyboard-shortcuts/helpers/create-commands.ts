@@ -1,11 +1,11 @@
 import { Hotkey } from 'obsidian';
 import { ViewStore } from 'src/view/view';
 import Lineage from 'src/main';
-import { addNodeAndSplitAtCursor } from 'src/view/actions/keyboard-shortcuts/helpers/add-node-and-split-at-cursor';
-import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-content';
-import { cancelChanges } from 'src/view/actions/keyboard-shortcuts/helpers/cancel-changes';
-import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/save-node-and-insert-node';
-import { mergeNode } from 'src/view/actions/keyboard-shortcuts/helpers/merge-node';
+import { addNodeAndSplitAtCursor } from 'src/view/actions/keyboard-shortcuts/helpers/tree/add-node-and-split-at-cursor';
+import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/tree/save-node-content';
+import { cancelChanges } from 'src/view/actions/keyboard-shortcuts/helpers/tree/cancel-changes';
+import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/tree/save-node-and-insert-node';
+import { mergeNode } from 'src/view/actions/keyboard-shortcuts/helpers/tree/merge-node';
 
 export const hotkeysLang = {
     save_changes_and_exit_card: 'Save changes and exit card',
@@ -39,6 +39,8 @@ export type PluginCommand = {
     hotkeys: Hotkey[];
 };
 
+export type LineageCommandName = keyof typeof hotkeysLang;
+export type LineageCommands = Record<LineageCommandName, PluginCommand>;
 export const createCommands = (plugin: Lineage) => {
     const isEditing = (store: ViewStore) => {
         return !!store.getValue().ui.state.editing.activeNodeId;
@@ -297,5 +299,5 @@ export const createCommands = (plugin: Lineage) => {
                 { key: 'ArrowDown', modifiers: ['Ctrl', 'Shift'] },
             ],
         },
-    } satisfies Record<keyof typeof hotkeysLang, PluginCommand>;
+    } satisfies LineageCommands;
 };
