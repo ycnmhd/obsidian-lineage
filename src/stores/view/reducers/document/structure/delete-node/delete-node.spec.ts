@@ -4,7 +4,6 @@ import { deleteNode } from 'src/stores/view/reducers/document/structure/delete-n
 import { DocumentState } from 'src/stores/view/view-state-type';
 
 describe('delete node', () => {
-    const content = '';
     it('should delete node', () => {
         const input = {
             content: {},
@@ -34,18 +33,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    node: 'n-lt1jmx8g',
-                    childGroups: new Set<string>(),
-
-                    group: '',
-                    sortedParentNodes: [],
-                },
-                dnd: {
-                    node: content,
-                    childGroups: new Set<string>(),
-                },
-                editing: { activeNodeId: content },
+                activeNode: 'n-lt1jmx8g',
             },
         } satisfies DocumentState;
         const output = {
@@ -71,36 +59,18 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    node: 'n-lt1jmx8d',
-                    childGroups: new Set<string>(),
-
-                    sortedParentNodes: [],
-                    group: '',
-                },
-                dnd: {
-                    node: content,
-                    childGroups: new Set<string>(),
-                },
-                editing: { activeNodeId: content },
+                activeNode: 'n-lt1jmx8d',
             },
         } satisfies DocumentState;
-        deleteNode(input.columns, input.state, input.content, {
-            type: 'DOCUMENT/DELETE_NODE',
-        });
-        expect(input.state.activeBranch.node).toEqual(
-            output.state.activeBranch.node,
-        );
+        deleteNode(input.columns, input.state, input.content);
+        expect(input.state.activeNode).toEqual(output.state.activeNode);
     });
 
     it('bug 24-02-26', () => {
         const deletedNode = 'n-lt3bize5';
         const aboveDeleteNode = 'n-lt3bize2';
         const belowDeletedNode = 'n-lt3bizej';
-        const childGroup1 = 'g-lt3bize8';
-        const childGroup2 = 'g-lt3bizec';
-        const childGroup3 = 'g-lt3bizef';
-        const childGroup4 = 'g-lt3bizei';
+
         const childNode1 = 'n-lt3bize6';
         const childNode2 = 'n-lt3bize9';
         const childNode3 = 'n-lt3bizea';
@@ -160,21 +130,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    group: '',
-
-                    node: deletedNode,
-                    childGroups: new Set([
-                        childGroup1,
-                        childGroup2,
-                        childGroup3,
-                        childGroup4,
-                    ]),
-
-                    sortedParentNodes: [],
-                },
-                dnd: { node: content, childGroups: new Set() },
-                editing: { activeNodeId: content },
+                activeNode: deletedNode,
             },
         } satisfies DocumentState;
 
@@ -192,23 +148,10 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    node: aboveDeleteNode,
-                    childGroups: new Set(),
-
-                    sortedParentNodes: [],
-                    group: 'r-lt3bize1',
-                },
-                dnd: { node: content, childGroups: new Set() },
-                editing: { activeNodeId: '' },
+                activeNode: aboveDeleteNode,
             },
         } satisfies DocumentState;
-        deleteNode(
-            stateBefore.columns,
-            stateBefore.state,
-            stateBefore.content,
-            { type: 'DOCUMENT/DELETE_NODE' },
-        );
+        deleteNode(stateBefore.columns, stateBefore.state, stateBefore.content);
         expect(stateBefore).toEqual(stateAfter);
     });
 
@@ -232,14 +175,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: activeNodeId,
-                    group: 'r-lt8wz9zc',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: activeNodeId,
             },
         } satisfies DocumentState;
 
@@ -252,20 +188,11 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: siblingNodId,
-                    group: 'r-lt8wz9zc',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: siblingNodId,
             },
         } satisfies DocumentState;
 
-        deleteNode(state.columns, state.state, state.content, {
-            type: 'DOCUMENT/DELETE_NODE',
-        });
+        deleteNode(state.columns, state.state, state.content);
         expect(state).toEqual(stateAfter);
     });
     it('>1 2 3', () => {
@@ -280,14 +207,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: n1,
-                    group: 'reOM',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n1,
             },
             content: {
                 nCjW: { content: '1' },
@@ -295,7 +215,7 @@ describe('delete node', () => {
                 njBB: { content: '3' },
             },
         };
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
+
         const output = {
             columns: [
                 {
@@ -304,18 +224,11 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: n2,
-                    group: 'reOM',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2,
             },
             content: { n7D6: { content: '2' }, njBB: { content: '3' } },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('1 >2 3', () => {
@@ -330,14 +243,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: n2,
-                    group: 'reOM',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2,
             },
             content: {
                 nCjW: { content: '1' },
@@ -345,7 +251,7 @@ describe('delete node', () => {
                 njBB: { content: '3' },
             },
         };
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
+
         const output = {
             columns: [
                 {
@@ -354,18 +260,11 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: n1,
-                    group: 'reOM',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n1,
             },
             content: { nCjW: { content: '1' }, njBB: { content: '3' } },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('1 2 >3', () => {
@@ -380,14 +279,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: n3,
-                    group: 'reOM',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n3,
             },
             content: {
                 nCjW: { content: '1' },
@@ -395,7 +287,7 @@ describe('delete node', () => {
                 njBB: { content: '3' },
             },
         };
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
+
         const output = {
             columns: [
                 {
@@ -404,22 +296,14 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: n2,
-                    group: 'reOM',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2,
             },
             content: { nCjW: { content: '1' }, n7D6: { content: '2' } },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('>1|* 2|* 3|*', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const n2 = 'nvs7';
         const n2_1 = 'n7C5';
         const n2_2 = 'nM2n';
@@ -444,14 +328,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nRBv']),
-                    sortedParentNodes: [],
-                    node: n1,
-                    group: 'rux9',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n1,
             },
             content: {
                 [n2]: { content: '2' },
@@ -477,14 +354,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nvs7']),
-                    sortedParentNodes: [],
-                    node: n2,
-                    group: 'rux9',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2,
             },
             content: {
                 [n2]: { content: '2' },
@@ -495,11 +365,10 @@ describe('delete node', () => {
                 [n3_2]: { content: '3.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('1|* >2|* 3|*', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const n1 = 'nP_R';
         const n1_1 = 'n6Zv';
         const n1_2 = 'n5_W';
@@ -524,14 +393,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nlQ9']),
-                    sortedParentNodes: [],
-                    node: n2,
-                    group: 'rDRO',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -557,14 +419,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nP_R']),
-                    sortedParentNodes: [],
-                    node: n1,
-                    group: 'rDRO',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n1,
             },
             content: {
                 [n1]: { content: '1' },
@@ -575,11 +430,10 @@ describe('delete node', () => {
                 [n3_2]: { content: '3.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('1|* 2|* >3|*', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const n1 = 'nP_R';
         const n1_1 = 'n6Zv';
         const n1_2 = 'n5_W';
@@ -604,14 +458,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nnlZ']),
-                    sortedParentNodes: [],
-                    node: n3,
-                    group: 'rDRO',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n3,
             },
             content: {
                 [n1]: { content: '1' },
@@ -637,14 +484,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nlQ9']),
-                    sortedParentNodes: [],
-                    node: n2,
-                    group: 'rDRO',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -655,11 +495,10 @@ describe('delete node', () => {
                 [n2_2]: { content: '2.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('>*|1|* *|2|* *|3|*', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const c0 = 'cK_J';
         const c1 = 'cnTn';
         const c2 = 'czcJ';
@@ -709,14 +548,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n1_2]),
-                    sortedParentNodes: [n1],
-                    node: n1_2,
-                    group: n1,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n1_2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -765,14 +597,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n1_1]),
-                    sortedParentNodes: [n1],
-                    node: n1_1,
-                    group: n1,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n1_1,
             },
             content: {
                 [n1]: { content: '1' },
@@ -795,11 +620,10 @@ describe('delete node', () => {
                 [n3_2_2]: { content: '3.2.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('*|1|* >*|2|* *|3|*', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const c0 = 'cK_J';
         const c1 = 'cnTn';
         const c2 = 'czcJ';
@@ -849,14 +673,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n2_1]),
-                    sortedParentNodes: [n2],
-                    node: n2_1,
-                    group: n2,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2_1,
             },
             content: {
                 [n1]: { content: '1' },
@@ -905,14 +722,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n2_2]),
-                    sortedParentNodes: [n2],
-                    node: n2_2,
-                    group: n2,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2_2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -935,11 +745,10 @@ describe('delete node', () => {
                 [n3_2_2]: { content: '3.2.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('*|1|* *|2|* >*|3|*', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const c0 = 'cK_J';
         const c1 = 'cnTn';
         const c2 = 'czcJ';
@@ -989,14 +798,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n3_1]),
-                    sortedParentNodes: [n3],
-                    node: n3_1,
-                    group: n3,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n3_1,
             },
             content: {
                 [n1]: { content: '1' },
@@ -1045,14 +847,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n3_2]),
-                    sortedParentNodes: [n3],
-                    node: n3_2,
-                    group: n3,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n3_2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -1075,11 +870,10 @@ describe('delete node', () => {
                 [n3_2_2]: { content: '3.2.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('*|*|1 *|*|2 >*|*|3', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const c0 = 'cK_J';
         const c1 = 'cnTn';
         const c2 = 'czcJ';
@@ -1129,14 +923,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [n3, n3_2],
-                    node: n3_2_1,
-                    group: n3_2,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n3_2_1,
             },
             content: {
                 [n1]: { content: '1' },
@@ -1186,14 +973,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [n3, n3_2],
-                    node: n3_2_2,
-                    group: n3_2,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n3_2_2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -1218,11 +998,10 @@ describe('delete node', () => {
                 [n3_2_2]: { content: '3.2.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('*|*|1 >*|*|2 *|*|3', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const c0 = 'cK_J';
         const c1 = 'cnTn';
         const c2 = 'czcJ';
@@ -1272,14 +1051,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [n2, n2_1],
-                    node: n2_1_2,
-                    group: n2_1,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2_1_2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -1329,14 +1101,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [n2, n2_1],
-                    node: n2_1_1,
-                    group: n2_1,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2_1_1,
             },
             content: {
                 [n1]: { content: '1' },
@@ -1361,11 +1126,10 @@ describe('delete node', () => {
                 [n3_2_2]: { content: '3.2.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('1|*|*|* 2|*|*|* >3|*|*|*', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const c0 = 'cK_J';
         const c1 = 'cnTn';
         const c2 = 'czcJ';
@@ -1453,22 +1217,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([
-                        n3,
-                        n3_1,
-                        n3_1_1,
-                        n3_1_2,
-                        n3_2,
-                        n3_2_1,
-                        n3_2_2,
-                    ]),
-                    sortedParentNodes: [],
-                    node: n3,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n3,
             },
             content: {
                 [n1]: { content: '1' },
@@ -1548,21 +1297,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([
-                        n2,
-                        n2_1,
-                        n2_1_1,
-                        n2_2,
-                        n2_2_1,
-                        n2_2_2,
-                    ]),
-                    sortedParentNodes: [],
-                    node: n2,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -1594,11 +1329,10 @@ describe('delete node', () => {
                 [n2_2_2_2]: { content: '2.2.2.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('1|*|*|* >2|*|*|* 3|*|*|*', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const c0 = 'cucq';
         const c1 = 'cIGA';
         const c2 = 'ciKH';
@@ -1686,21 +1420,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([
-                        n2,
-                        n2_1,
-                        n2_1_1,
-                        n2_2,
-                        n2_2_1,
-                        n2_2_2,
-                    ]),
-                    sortedParentNodes: [],
-                    node: n2,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -1781,22 +1501,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([
-                        n1,
-                        n1_1,
-                        n1_1_1,
-                        n1_1_2,
-                        n1_2,
-                        n1_2_1,
-                        n1_2_2,
-                    ]),
-                    sortedParentNodes: [],
-                    node: n1,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n1,
             },
             content: {
                 [n1]: { content: '1' },
@@ -1831,12 +1536,11 @@ describe('delete node', () => {
                 [n3_2_2_2]: { content: '3.2.2.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
 
     it('>*|1|*|* *|2|*|* *|3|*|*', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const c0 = 'cucq';
         const c1 = 'cIGA';
         const c2 = 'ciKH';
@@ -1924,14 +1628,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n1_2, n1_2_1, n1_2_2]),
-                    sortedParentNodes: [n1],
-                    node: n1_2,
-                    group: n1,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n1_2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -2015,14 +1712,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n1_1, n1_1_1, n1_1_2]),
-                    sortedParentNodes: [n1],
-                    node: n1_1,
-                    group: n1,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n1_1,
             },
             content: {
                 [n1]: { content: '1' },
@@ -2062,11 +1752,10 @@ describe('delete node', () => {
                 [n3_2_2_2]: { content: '3.2.2.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('*|1|*|* >*|2|*|* *|3|*|*', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const c0 = 'cucq';
         const c1 = 'cIGA';
         const c2 = 'ciKH';
@@ -2154,14 +1843,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n2_1, n2_1_1]),
-                    sortedParentNodes: [n2],
-                    node: n2_1,
-                    group: n2,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2_1,
             },
             content: {
                 [n1]: { content: '1' },
@@ -2246,14 +1928,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n2_2, n2_2_1, n2_2_2]),
-                    sortedParentNodes: [n2],
-                    node: n2_2,
-                    group: n2,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2_2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -2296,11 +1971,10 @@ describe('delete node', () => {
                 [n3_2_2_2]: { content: '3.2.2.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('*|*|1|* >*|*|2|* *|*|3|*', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const c0 = 'cucq';
         const c1 = 'cIGA';
         const c2 = 'ciKH';
@@ -2388,14 +2062,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n2_2_1]),
-                    sortedParentNodes: [n2, n2_2],
-                    node: n2_2_1,
-                    group: n2_2,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2_2_1,
             },
             content: {
                 [n1]: { content: '1' },
@@ -2481,14 +2148,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n2_2_2]),
-                    sortedParentNodes: [n2, n2_2],
-                    node: n2_2_2,
-                    group: n2_2,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2_2_2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -2532,11 +2192,10 @@ describe('delete node', () => {
                 [n3_2_2_2]: { content: '3.2.2.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
     it('*|*|1|* >*|*|2|* *|*|3|*', () => {
-        const action = { type: 'DOCUMENT/DELETE_NODE' } as const;
         const c0 = 'cucq';
         const c1 = 'cIGA';
         const c2 = 'ciKH';
@@ -2620,14 +2279,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([n2_2_2]),
-                    sortedParentNodes: [n2, n2_2],
-                    node: n2_2_2,
-                    group: n2_2,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2_2_2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -2708,14 +2360,7 @@ describe('delete node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [n2],
-                    node: n2_2,
-                    group: n2,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: n2_2,
             },
             content: {
                 [n1]: { content: '1' },
@@ -2756,7 +2401,7 @@ describe('delete node', () => {
                 [n3_2_2_2]: { content: '3.2.2.2' },
             },
         };
-        deleteNode(input.columns, input.state, input.content, action);
+        deleteNode(input.columns, input.state, input.content);
         expect(input).toEqual(output);
     });
 });

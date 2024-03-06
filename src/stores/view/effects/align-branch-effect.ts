@@ -18,16 +18,16 @@ const alignBranch = (
     behavior?: ScrollBehavior,
 ) => {
     if (!container) return;
-    const nodeId = state.document.state.activeBranch.node;
+    const nodeId = state.document.state.activeNode;
     const localState: AlignBranchState = {
         columns: new Set<HTMLElement>(),
     };
     if (nodeId) {
         alignElement(container, nodeId, behavior, localState, 'both');
-        for (const id of state.document.state.activeBranch.sortedParentNodes) {
+        for (const id of state.ui.state.activeBranch.sortedParentNodes) {
             alignElement(container, id, behavior, localState);
         }
-        for (const id of state.document.state.activeBranch.childGroups) {
+        for (const id of state.ui.state.activeBranch.childGroups) {
             alignElement(container, 'group-' + id, behavior, localState);
         }
     }

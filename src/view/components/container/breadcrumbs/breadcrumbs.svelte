@@ -7,7 +7,7 @@
 
 <div class="breadcrumbs-container">
     <div class="breadcrumbs">
-        {#each $store.document.state.activeBranch.sortedParentNodes as parent, i}
+        {#each $store.ui.state.activeBranch.sortedParentNodes as parent, i}
             {#if i > 0}
                 <ChevronRight class="svg-icon chevron" size="12"  />
             {/if}

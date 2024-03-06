@@ -22,6 +22,6 @@ export const navigateActiveNode = (
     if (newItem) {
         navigation.state.activeIndex = newIndex;
         updateNavigationState(navigation);
-        updateActiveNode(columns, state, newItem);
+        updateActiveNode(state, newItem);
     }
 };

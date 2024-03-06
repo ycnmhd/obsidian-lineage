@@ -15,14 +15,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         const action = {
@@ -37,14 +30,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         moveNode(input.columns, input.state, action);
@@ -69,14 +55,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         const output = {
@@ -87,14 +66,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         moveNode(input.columns, input.state, action);
@@ -117,14 +89,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         const col1 = 'cj8x';
@@ -134,14 +99,7 @@ describe('move-node', () => {
                 { id: col1, groups: [{ nodes: [mov], parentId: adj }] },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [adj],
-                    node: mov,
-                    group: adj,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         moveNode(input.columns, input.state, action);
@@ -165,14 +123,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         const output = {
@@ -183,14 +134,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         moveNode(input.columns, input.state, action);
@@ -213,14 +157,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         const output = {
@@ -231,14 +168,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         moveNode(input.columns, input.state, action);
@@ -261,14 +191,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         const col1 = 'cDb3';
@@ -278,14 +201,7 @@ describe('move-node', () => {
                 { id: col1, groups: [{ nodes: [mov], parentId: adj }] },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [adj],
-                    node: mov,
-                    group: adj,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         moveNode(input.columns, input.state, action);
@@ -308,14 +224,7 @@ describe('move-node', () => {
                 { id: col1, groups: [{ nodes: [mov], parentId: adj }] },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [adj],
-                    node: mov,
-                    group: adj,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         const output = {
@@ -326,14 +235,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         moveNode(input.columns, input.state, action);
@@ -355,14 +257,7 @@ describe('move-node', () => {
                 { id: col1, groups: [{ nodes: [mov], parentId: adj }] },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [adj],
-                    node: mov,
-                    group: adj,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         const output = {
@@ -373,14 +268,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         moveNode(input.columns, input.state, action);
@@ -433,14 +321,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([mov, mov_c1, mov_c2]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         const output = {
@@ -467,14 +348,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([mov, mov_c1, mov_c2]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         moveNode(input.columns, input.state, action);
@@ -527,14 +401,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([mov, mov_1, mov_2]),
-                    sortedParentNodes: [],
-                    node: mov,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         const col3 = 'cbQd';
@@ -562,14 +429,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([mov, mov_1, mov_2]),
-                    sortedParentNodes: [adj],
-                    node: mov,
-                    group: adj,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mov,
             },
         };
         moveNode(input.columns, input.state, action);
@@ -605,14 +465,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nQ-X', 'nCoJ', 'nPFV']),
-                    sortedParentNodes: [],
-                    node: 'nQ-X',
-                    group: 'rqXI',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nQ-X',
             },
         };
         const output = {
@@ -639,14 +492,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nQ-X', 'nCoJ', 'nPFV']),
-                    sortedParentNodes: [],
-                    node: 'nQ-X',
-                    group: 'rqXI',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nQ-X',
             },
         };
         moveNode(input.columns, input.state, action);
@@ -681,14 +527,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nDVm', 'nk7L', 'n84c']),
-                    sortedParentNodes: [],
-                    node: 'nDVm',
-                    group: 'rqXI',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nDVm',
             },
         };
         const output = {
@@ -715,14 +554,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nDVm', 'nk7L', 'n84c']),
-                    sortedParentNodes: [],
-                    node: 'nDVm',
-                    group: 'rqXI',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nDVm',
             },
         };
         moveNode(input.columns, input.state, action);
@@ -760,14 +592,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nDVm', 'nk7L', 'n84c']),
-                    sortedParentNodes: [],
-                    node: 'nDVm',
-                    group: 'rqXI',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nDVm',
             },
         };
         const col3 = 'c8Sb';
@@ -797,14 +622,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nDVm', 'nk7L', 'n84c']),
-                    sortedParentNodes: ['nQ-X'],
-                    node: 'nDVm',
-                    group: 'nQ-X',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nDVm',
             },
         };
         moveNode(input.columns, input.state, action);
@@ -840,14 +658,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nDVm', 'nk7L', 'n84c']),
-                    sortedParentNodes: [],
-                    node: 'nDVm',
-                    group: 'rqXI',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nDVm',
             },
         };
         const output = {
@@ -874,14 +685,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nDVm', 'nk7L', 'n84c']),
-                    sortedParentNodes: [],
-                    node: 'nDVm',
-                    group: 'rqXI',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nDVm',
             },
         };
         moveNode(input.columns, input.state, action);
@@ -916,14 +720,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nCoJ']),
-                    sortedParentNodes: ['nQ-X'],
-                    node: 'nCoJ',
-                    group: 'nQ-X',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nCoJ',
             },
         };
         const output = {
@@ -950,14 +747,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nCoJ']),
-                    sortedParentNodes: ['nQ-X'],
-                    node: 'nCoJ',
-                    group: 'nQ-X',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nCoJ',
             },
         };
         moveNode(input.columns, input.state, action);
@@ -995,14 +785,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nPFV']),
-                    sortedParentNodes: ['nQ-X'],
-                    node: 'nPFV',
-                    group: 'nQ-X',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nPFV',
             },
         };
         const col3 = 'cHDY';
@@ -1033,14 +816,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nPFV']),
-                    sortedParentNodes: ['nQ-X', 'nCoJ'],
-                    node: 'nPFV',
-                    group: 'nCoJ',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nPFV',
             },
         };
         moveNode(input.columns, input.state, action);
@@ -1076,14 +852,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nPFV']),
-                    sortedParentNodes: ['nQ-X'],
-                    node: 'nPFV',
-                    group: 'nQ-X',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nPFV',
             },
         };
         const output = {
@@ -1110,14 +879,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nPFV']),
-                    sortedParentNodes: ['nQ-X'],
-                    node: 'nPFV',
-                    group: 'nQ-X',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nPFV',
             },
         };
         moveNode(input.columns, input.state, action);
@@ -1152,14 +914,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nyrI']),
-                    sortedParentNodes: ['nsdN'],
-                    node: 'nyrI',
-                    group: 'nsdN',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nyrI',
             },
         };
         const output = {
@@ -1188,14 +943,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nyrI']),
-                    sortedParentNodes: [],
-                    node: 'nyrI',
-                    group: 'roiv',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nyrI',
             },
         };
         moveNode(input.columns, input.state, action);
@@ -1230,14 +978,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nBcR']),
-                    sortedParentNodes: ['nJEa'],
-                    node: 'nBcR',
-                    group: 'nJEa',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nBcR',
             },
         };
         const output = {
@@ -1264,14 +1005,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nBcR']),
-                    sortedParentNodes: ['nqo0'],
-                    node: 'nBcR',
-                    group: 'nqo0',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nBcR',
             },
         };
         moveNode(input.columns, input.state, action);
@@ -1306,14 +1040,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nJQr']),
-                    sortedParentNodes: ['nIKd'],
-                    node: 'nJQr',
-                    group: 'nIKd',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nJQr',
             },
         };
         const output = {
@@ -1340,14 +1067,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nJQr']),
-                    sortedParentNodes: ['nIKd'],
-                    node: 'nJQr',
-                    group: 'nIKd',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nJQr',
             },
         };
         moveNode(input.columns, input.state, action);
@@ -1385,14 +1105,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['n5JK']),
-                    sortedParentNodes: ['n42q'],
-                    node: 'n5JK',
-                    group: 'n42q',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'n5JK',
             },
         };
         const col3 = 'cF6B';
@@ -1423,14 +1136,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['n5JK']),
-                    sortedParentNodes: ['neHE', 'nqdD'],
-                    node: 'n5JK',
-                    group: 'nqdD',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'n5JK',
             },
         };
         moveNode(input.columns, input.state, action);
@@ -1469,14 +1175,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nsYt']),
-                    sortedParentNodes: ['niYL', 'nf1i'],
-                    node: 'nsYt',
-                    group: 'nf1i',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nsYt',
             },
         };
         const output = {
@@ -1503,14 +1202,7 @@ describe('move-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set(['nsYt']),
-                    sortedParentNodes: ['niYL'],
-                    node: 'nsYt',
-                    group: 'niYL',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nsYt',
             },
         };
         moveNode(input.columns, input.state, action);

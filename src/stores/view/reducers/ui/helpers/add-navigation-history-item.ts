@@ -13,17 +13,24 @@ export const addNavigationHistoryItem = (
     nodeId: NodeId,
 ) => {
     if (!nodeId) return;
-    const activeItem = history.items[history.state.activeIndex];
-    if (activeItem === nodeId) return;
 
-    history.items = history.items.filter((item) =>
-        content.hasOwnProperty(item),
-    );
-    removeObsoleteHistoryItems(history);
-    removeOldHistoryItems(history, 100);
+    const items: NodeId[] = [];
+    let previous: NodeId | null = null;
+    for (const item of history.items) {
+        if (content.hasOwnProperty(item) && item !== previous) {
+            items.push(item);
+            previous = item;
+        }
+    }
 
-    history.items.push(nodeId);
+    history.items = items;
+    const activeItem = history.items[history.items.length - 1];
+    if (activeItem !== nodeId) {
+        removeObsoleteHistoryItems(history);
+        removeOldHistoryItems(history, 100);
+        history.items.push(nodeId);
+    }
+
     history.state.activeIndex = history.items.length - 1;
-
     updateNavigationState(history);
 };

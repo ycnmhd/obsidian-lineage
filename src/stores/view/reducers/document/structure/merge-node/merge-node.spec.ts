@@ -20,14 +20,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: mergedNode,
-                    group: 'r60v',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mergedNode,
             },
             content: { n8Nd: { content: '1' }, nrIb: { content: '2' } },
             action: {
@@ -45,14 +38,7 @@ describe('merge node', () => {
             ],
             content: { n8Nd: { content: '1 2' } },
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: targetNode,
-                    group: 'r60v',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: targetNode,
             },
         } satisfies DocumentState;
 
@@ -70,14 +56,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: 'nTlU',
-                    group: 'rv0p',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nTlU',
             },
             content: { nTlU: { content: '1' }, nc8J: { content: '2' } },
             action: {
@@ -93,14 +72,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: 'nc8J',
-                    group: 'rv0p',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: 'nc8J',
             },
             content: { nc8J: { content: '1 2' } },
         } satisfies DocumentState;
@@ -127,15 +99,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-
-                    sortedParentNodes: ['nGQX'],
-                    node: mergedNode,
-                    group: 'nGQX',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mergedNode,
             },
             content: {
                 nBe1: { content: '1' },
@@ -160,15 +124,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-
-                    sortedParentNodes: ['nBe1'],
-                    node: targetNode,
-                    group: 'nBe1',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: targetNode,
             },
             content: {
                 nBe1: { content: '1' },
@@ -199,15 +155,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-
-                    sortedParentNodes: ['nPUy'],
-                    node: mergedNode,
-                    group: 'nPUy',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mergedNode,
             },
             content: {
                 nPUy: { content: '1' },
@@ -232,15 +180,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-
-                    sortedParentNodes: ['nfIb'],
-                    node: targetNode,
-                    group: 'nfIb',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: targetNode,
             },
             content: {
                 nPUy: { content: '1' },
@@ -299,15 +239,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([mergedNode, childOfMergedNode]),
-
-                    sortedParentNodes: [],
-                    node: mergedNode,
-                    group: rootNode,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mergedNode,
             },
             content: {
                 nZmk: { content: '1' },
@@ -355,15 +287,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([targetNode, childOfTargetNode]),
-
-                    sortedParentNodes: [],
-                    node: targetNode,
-                    group: rootNode,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: targetNode,
             },
             content: {
                 nZmk: { content: '1 2' },
@@ -426,15 +350,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([mergedNode, childOfMergedNode]),
-
-                    sortedParentNodes: [],
-                    node: mergedNode,
-                    group: rootNode,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mergedNode,
             },
             content: {
                 nZmk: { content: '1' },
@@ -482,15 +398,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([targetNode, childOfTargetNode]),
-
-                    sortedParentNodes: [],
-                    node: targetNode,
-                    group: rootNode,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: targetNode,
             },
             content: {
                 nBAt: { content: '1 2' },
@@ -550,15 +458,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([mergedNode]),
-
-                    sortedParentNodes: [parentOfMergedNode],
-                    node: mergedNode,
-                    group: parentOfMergedNode,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mergedNode,
             },
             content: {
                 n_2t: { content: '1' },
@@ -608,15 +508,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([targetNode]),
-
-                    sortedParentNodes: [parentOfTargetNode],
-                    node: targetNode,
-                    group: parentOfTargetNode,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: targetNode,
             },
             content: {
                 n_2t: { content: '1' },
@@ -676,15 +568,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([mergedNode]),
-
-                    sortedParentNodes: [parentOfMergedNode],
-                    node: mergedNode,
-                    group: parentOfMergedNode,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mergedNode,
             },
             content: {
                 nKBb: { content: '1' },
@@ -734,15 +618,7 @@ describe('merge node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([targetNode]),
-
-                    sortedParentNodes: [parentOfTargetNode],
-                    node: targetNode,
-                    group: parentOfTargetNode,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: targetNode,
             },
             content: {
                 nKBb: { content: '1' },
@@ -823,15 +699,7 @@ describe('merge node', () => {
                 nbKt: { content: '2.1.2' },
             },
             state: {
-                activeBranch: {
-                    childGroups: new Set([mergedNode, childOfMergedNode]),
-
-                    sortedParentNodes: [],
-                    node: mergedNode,
-                    group: 'rYY4',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: mergedNode,
             },
         } as DocumentState;
         const action = {
@@ -887,15 +755,7 @@ describe('merge node', () => {
                 nbKt: { content: '2.1.2' },
             },
             state: {
-                activeBranch: {
-                    childGroups: new Set([targetNode, childOfMergedNode]),
-
-                    sortedParentNodes: [],
-                    node: targetNode,
-                    group: 'rYY4',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: targetNode,
             },
         } satisfies DocumentState;
         mergeNode(input.columns, input.content, input.state, action);
@@ -962,15 +822,7 @@ describe('merge node', () => {
                 ndoV: { content: '2.1.2' },
             },
             state: {
-                activeBranch: {
-                    childGroups: new Set([megedNode, childOfMergedNode]),
-
-                    sortedParentNodes: [],
-                    node: megedNode,
-                    group: 'rINO',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: megedNode,
             },
         } satisfies DocumentState;
         const action = {
@@ -1026,15 +878,7 @@ describe('merge node', () => {
                 ndoV: { content: '2.1.2' },
             },
             state: {
-                activeBranch: {
-                    childGroups: new Set([targetNode, childOfMergedNode]),
-
-                    sortedParentNodes: [],
-                    node: targetNode,
-                    group: 'rINO',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: targetNode,
             },
         };
         mergeNode(input.columns, input.content, input.state, action);
@@ -1102,15 +946,7 @@ describe('merge node', () => {
                 nBBa: { content: 'middle' },
             },
             state: {
-                activeBranch: {
-                    childGroups: new Set([merged]),
-
-                    sortedParentNodes: [merged_parent],
-                    node: merged,
-                    group: merged_parent,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: merged,
             },
         } satisfies DocumentState;
         const action = {
@@ -1165,15 +1001,7 @@ describe('merge node', () => {
                 nBBa: { content: '1.1 middle' },
             },
             state: {
-                activeBranch: {
-                    childGroups: new Set([target]),
-
-                    sortedParentNodes: [target_parent],
-                    node: target,
-                    group: target_parent,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: target,
             },
         };
         mergeNode(input.columns, input.content, input.state, action);
@@ -1233,15 +1061,7 @@ describe('merge node', () => {
                 nqZO: { content: 'middle' },
             },
             state: {
-                activeBranch: {
-                    childGroups: new Set([merged]),
-
-                    sortedParentNodes: [merged_parent],
-                    node: merged,
-                    group: merged_parent,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: merged,
             },
         };
         const action = {
@@ -1290,15 +1110,7 @@ describe('merge node', () => {
                 nqZO: { content: 'middle 2.1' },
             },
             state: {
-                activeBranch: {
-                    childGroups: new Set([target]),
-
-                    sortedParentNodes: [target_parent],
-                    node: target,
-                    group: target_parent,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: target,
             },
         };
         mergeNode(input.columns, input.content, input.state, action);

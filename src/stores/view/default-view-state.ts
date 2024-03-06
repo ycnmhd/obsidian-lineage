@@ -5,8 +5,12 @@ export const defaultViewState = (): ViewState => ({
         columns: [],
         content: {},
         state: {
+            activeNode: '',
+        },
+    },
+    ui: {
+        state: {
             activeBranch: {
-                node: '',
                 group: '',
                 childGroups: new Set<string>(),
                 sortedParentNodes: [],
@@ -19,8 +23,6 @@ export const defaultViewState = (): ViewState => ({
                 activeNodeId: '',
             },
         },
-    },
-    ui: {
         showHistorySidebar: false,
         showHelpSidebar: false,
     },

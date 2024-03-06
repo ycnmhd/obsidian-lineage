@@ -1,4 +1,4 @@
-import { ActiveBranch, Column, NodeId } from 'src/stores/view/view-state-type';
+import { Column, NodeId } from 'src/stores/view/view-state-type';
 import { AllDirections } from 'src/stores/view/view-reducer';
 import { findGroupByNodeId } from 'src/stores/view/helpers/search/find-group-by-node-id';
 import { findAdjacentSiblingNode } from 'src/stores/view/reducers/document/structure/helpers/find-adjacent-sibling-node';
@@ -6,11 +6,11 @@ import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
 
 export const findAdjacentNode = (
     columns: Column[],
-    state: ActiveBranch,
+    activeNodeId: string,
     direction: AllDirections,
 ) => {
     let targetNode: NodeId | null = null;
-    const nodeToMove = state.node;
+    const nodeToMove = activeNodeId;
     if (direction === 'left') {
         const group = findGroupByNodeId(columns, nodeToMove);
         if (group && !group.parentId.startsWith('r'))

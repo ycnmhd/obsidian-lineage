@@ -17,12 +17,12 @@ export const moveNode = (
     state: DocumentInstanceState,
     action: MoveNodeAction,
 ) => {
-    const nodeToMove = state.activeBranch.node;
+    const nodeToMove = state.activeNode;
     if (!nodeToMove) return;
 
     const targetNode = findAdjacentNode(
         columns,
-        state.activeBranch,
+        state.activeNode,
         action.payload.direction,
     );
     if (nodeToMove && targetNode) {
@@ -33,7 +33,7 @@ export const moveNode = (
             action.payload.direction,
         );
         cleanAndSortColumns(columns);
-        updateActiveNode(columns, state, nodeToMove);
+        updateActiveNode(state, nodeToMove);
         return true;
     }
 };

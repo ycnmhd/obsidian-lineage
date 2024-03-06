@@ -15,12 +15,8 @@ export const navigateUsingKeyboard = (
     state: DocumentInstanceState,
     action: ChangeActiveNodeAction,
 ) => {
-    const nextNode = findNextActiveNode(
-        columns,
-        state.activeBranch.node,
-        action,
-    );
+    const nextNode = findNextActiveNode(columns, state.activeNode, action);
     if (nextNode) {
-        updateActiveNode(columns, state, nextNode);
+        updateActiveNode(state, nextNode);
     }
 };

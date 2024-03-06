@@ -70,6 +70,7 @@ import {
     navigateActiveNode,
     NavigationAction,
 } from 'src/stores/view/reducers/ui/navigate-active-node';
+import { updateTreeState } from 'src/stores/view/reducers/document/state/helpers/update-tree-state';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -125,12 +126,10 @@ export type ViewAction = DocumentAction | HistoryAction | NavigationAction;
 const updateViewState = (state: ViewState, action: ViewAction) => {
     // state
     let saveSnapshot: boolean | undefined = false;
+    const activeNodeId = state.document.state.activeNode;
+    let isNewNode = false;
     if (action.type === 'DOCUMENT/SET_ACTIVE_NODE') {
-        updateActiveNode(
-            state.document.columns,
-            state.document.state,
-            action.payload.id,
-        );
+        updateActiveNode(state.document.state, action.payload.id);
     } else if (action.type === 'DOCUMENT/NAVIGATE_USING_KEYBOARD') {
         navigateUsingKeyboard(
             state.document.columns,
@@ -138,13 +137,13 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
             action,
         );
     } else if (action.type === 'SET_DRAG_STARTED') {
-        onDragStart(state.document.columns, state.document.state.dnd, action);
+        onDragStart(state.document.columns, state.ui.state.dnd, action);
     } else if (action.type === 'DOCUMENT/SET_DRAG_STARTED') {
-        onDragEnd(state.document.state.dnd);
+        onDragEnd(state.ui.state.dnd);
     } else if (action.type === 'DOCUMENT/ENABLE_EDIT_MODE') {
-        enableEditMode(state.document.state);
+        enableEditMode(state.document.state, state.ui.state);
     } else if (action.type === 'DOCUMENT/DISABLE_EDIT_MODE') {
-        disableEditMode(state.document.state, action);
+        disableEditMode(state.ui.state);
     }
     // structure and content
     else if (action.type === 'DOCUMENT/SET_NODE_CONTENT') {
@@ -156,12 +155,13 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
             state.document.content,
             action,
         );
+        isNewNode = true;
     } else if (action.type === 'DOCUMENT/DELETE_NODE') {
         saveSnapshot = deleteNode(
             state.document.columns,
             state.document.state,
             state.document.content,
-            action,
+            state.ui.state.editing.activeNodeId,
         );
     } else if (action.type === 'DOCUMENT/DROP_NODE') {
         saveSnapshot = dropNode(
@@ -169,6 +169,7 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
             state.document.state,
             action,
         );
+        onDragEnd(state.ui.state.dnd);
     } else if (action.type === 'DOCUMENT/MOVE_NODE') {
         saveSnapshot = moveNode(
             state.document.columns,
@@ -185,7 +186,8 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
     }
     // life cycle and other
     else if (action.type === 'DOCUMENT/LOAD_FILE') {
-        saveSnapshot = loadDocumentFromFile(state, action);
+        isNewNode = loadDocumentFromFile(state, action);
+        saveSnapshot = true;
     } else if (action.type === 'RESET_STORE') {
         resetDocument(state);
     } else if (action.type === 'HISTORY/SELECT_SNAPSHOT') {
@@ -220,11 +222,24 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
     if (saveSnapshot && structureAndContentEvents.has(action.type)) {
         addSnapshot(state.document, state.history, action as UndoableAction);
     }
-    if (!navigationEvents.has(action.type)) {
-        addNavigationHistoryItem(
-            state.navigationHistory,
-            state.document.content,
-            state.document.state.activeBranch.node,
+    console.log(
+        activeNodeId,
+        state.document.state.activeNode,
+        activeNodeId !== state.document.state.activeNode,
+    );
+    if (activeNodeId !== state.document.state.activeNode) {
+        if (!navigationEvents.has(action.type)) {
+            addNavigationHistoryItem(
+                state.navigationHistory,
+                state.document.content,
+                state.document.state.activeNode,
+            );
+        }
+        updateTreeState(
+            state.document.columns,
+            state.ui.state,
+            state.document.state.activeNode,
+            isNewNode,
         );
     }
 };

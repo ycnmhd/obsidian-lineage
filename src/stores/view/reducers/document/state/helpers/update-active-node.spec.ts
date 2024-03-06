@@ -74,14 +74,7 @@ describe('update-active-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: activeNodeId,
-                    group: 'r-lt8upk0k',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: activeNodeId,
             },
         } satisfies DocumentState;
 
@@ -145,17 +138,10 @@ describe('update-active-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([activeNodeId, child4]),
-                    sortedParentNodes: [],
-                    node: activeNodeId,
-                    group: 'r-lt8upk0k',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '' },
+                activeNode: activeNodeId,
             },
         } satisfies DocumentState;
-        updateActiveNode(state.columns, state.state, action.payload.id);
+        updateActiveNode(state.state, action.payload.id);
         expect(state).toEqual(stateAfter);
     });
 });

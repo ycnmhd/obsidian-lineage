@@ -12,11 +12,6 @@ export const createSnapshot = (
             columns: JSON.stringify(document.columns),
             content: JSON.stringify(document.content),
             state: JSON.stringify(document.state),
-            sets: {
-                childGroups: JSON.stringify([
-                    ...document.state.activeBranch.childGroups,
-                ]),
-            },
         },
         created: Date.now(),
         id: id.snapshot(),

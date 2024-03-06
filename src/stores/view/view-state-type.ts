@@ -22,7 +22,6 @@ export type DNDState = {
 };
 export type ActiveBranch = {
     childGroups: Set<string>;
-    node: string;
     sortedParentNodes: NodeId[];
     group: string;
 };
@@ -30,9 +29,7 @@ export type EditingState = {
     activeNodeId: string;
 };
 export type DocumentInstanceState = {
-    activeBranch: ActiveBranch;
-    dnd: DNDState;
-    editing: EditingState;
+    activeNode: string;
 };
 export type DocumentState = {
     columns: Column[];
@@ -41,11 +38,17 @@ export type DocumentState = {
 };
 export type StatelessDocument = Omit<DocumentState, 'state'>;
 
+export type TreeState = {
+    activeBranch: ActiveBranch;
+    dnd: DNDState;
+    editing: EditingState;
+};
 export type ViewState = {
     document: DocumentState;
     ui: {
         showHistorySidebar: boolean;
         showHelpSidebar: boolean;
+        state: TreeState;
     };
     file: {
         path: string | null;
@@ -59,9 +62,6 @@ export type Snapshot = {
         content: string;
         columns: string;
         state: string;
-        sets: {
-            childGroups: string;
-        };
     };
     created: number;
     id: string;

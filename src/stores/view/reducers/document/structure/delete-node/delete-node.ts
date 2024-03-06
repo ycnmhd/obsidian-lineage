@@ -17,23 +17,21 @@ export const deleteNode = (
     columns: Column[],
     state: DocumentInstanceState,
     content: Content,
-    action: DeleteNodeAction,
+    editingNode?: string,
 ) => {
-    const activeNodeId = state.activeBranch.node;
+    const activeNodeId = state.activeNode;
     if (!activeNodeId) return;
-    if (activeNodeId === state.editing.activeNodeId) return;
+    if (editingNode && activeNodeId === editingNode) return;
     const lastNode = isLastRootNode(columns, activeNodeId);
     if (lastNode) return;
 
-    const nextNode = findNextActiveNode(
-        columns,
-        state.activeBranch.node,
-        action,
-    );
+    const nextNode = findNextActiveNode(columns, state.activeNode, {
+        type: 'DOCUMENT/DELETE_NODE',
+    });
     if (nextNode) {
         deleteBranch(columns, content, activeNodeId);
         cleanAndSortColumns(columns);
-        updateActiveNode(columns, state, nextNode);
+        updateActiveNode(state, nextNode);
         return true;
     }
 };

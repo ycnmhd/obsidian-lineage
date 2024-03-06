@@ -22,7 +22,7 @@ export const mergeNode = (
     state: DocumentInstanceState,
     action: MergeNodeAction,
 ) => {
-    const mergedNode = state.activeBranch.node;
+    const mergedNode = state.activeNode;
     const adjacentNode = findAdjacentSiblingNode(
         columns,
         mergedNode,
@@ -63,7 +63,7 @@ export const mergeNode = (
             },
         });
         cleanAndSortColumns(columns);
-        updateActiveNode(columns, state, adjacentNode);
+        updateActiveNode(state, adjacentNode);
         return true;
     }
 };

@@ -41,10 +41,10 @@ export type PluginCommand = {
 
 export const createCommands = (plugin: Lineage) => {
     const isEditing = (store: ViewStore) => {
-        return !!store.getValue().document.state.editing.activeNodeId;
+        return !!store.getValue().ui.state.editing.activeNodeId;
     };
     const isActive = (store: ViewStore) => {
-        return !!store.getValue().document.state.activeBranch.node;
+        return !!store.getValue().document.state.activeNode;
     };
 
     const isActiveAndNotEditing = (store: ViewStore) => {

@@ -1,10 +1,16 @@
-import { DocumentInstanceState } from 'src/stores/view/view-state-type';
+import {
+    DocumentInstanceState,
+    TreeState,
+} from 'src/stores/view/view-state-type';
 
 export type ToggleEditModeAction = {
     type: 'DOCUMENT/ENABLE_EDIT_MODE';
 };
-export const enableEditMode = (state: DocumentInstanceState) => {
-    const activeNodeId = state.activeBranch.node;
+export const enableEditMode = (
+    documentState: DocumentInstanceState,
+    treeState: TreeState,
+) => {
+    const activeNodeId = documentState.activeNode;
     if (!activeNodeId) return;
-    state.editing.activeNodeId = activeNodeId;
+    treeState.editing.activeNodeId = activeNodeId;
 };

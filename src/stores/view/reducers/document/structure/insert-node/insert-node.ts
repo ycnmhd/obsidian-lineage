@@ -26,7 +26,7 @@ export const insertNode = (
     action: CreateNodeAction,
 ) => {
     const payload = action.payload;
-    const nodeId = state.activeBranch.node;
+    const nodeId = state.activeNode;
     if (!nodeId) return;
     let createdNode: NodeId | null = null;
     if (payload.position === 'right') {
@@ -55,7 +55,7 @@ export const insertNode = (
                   content: action.payload.content,
               }
             : null;
-        updateActiveNode(columns, state, createdNode, true);
+        updateActiveNode(state, createdNode);
         return true;
     }
 };

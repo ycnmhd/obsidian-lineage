@@ -29,16 +29,9 @@ export const loadDocumentFromFile = (
         state.file.frontmatter = action.payload.document.frontmatter;
     const activeNode = findNextActiveNode(
         state.document.columns,
-        state.document.state.activeBranch.node,
+        state.document.state.activeNode,
         action,
     );
-    if (activeNode) {
-        updateActiveNode(
-            state.document.columns,
-            state.document.state,
-            activeNode,
-            firstNode,
-        );
-        return true;
-    }
+    updateActiveNode(state.document.state, activeNode as string);
+    return firstNode;
 };

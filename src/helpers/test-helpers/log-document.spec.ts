@@ -19,14 +19,7 @@ it('should replace node IDs', () => {
             },
         ],
         state: {
-            activeBranch: {
-                childGroups: new Set(['n-iE']),
-                sortedParentNodes: [],
-                node: 'n-iE',
-                group: 'rSPW',
-            },
-            dnd: { node: '', childGroups: new Set([]) },
-            editing: { activeNodeId: '' },
+            activeNode: 'n-iE',
         },
         content: {
             'n-iE': { content: '1' },
@@ -53,6 +46,6 @@ const n2_1 = "n3O0";
 const n2_2 = "nLp0";
 const n3_1 = "nuD9";
 const n3_2 = "nhqd";
-const input = {"columns":[{"id":c0,"groups":[{"nodes":[n1,n2,n3],"parentId":root}]},{"id":c1,"groups":[{"nodes":[n1_1,n1_2],"parentId":n1},{"nodes":[n2_1,n2_2],"parentId":n2},{"nodes":[n3_1,n3_2],"parentId":n3}]}],"state":{"activeBranch":{"childGroups":new Set([n1]),"sortedParentNodes":[],"node":n1,"group":root},"dnd":{"node":"","childGroups":new Set([])},"editing":{"activeNodeId":""}},"content": {[n1]: { content: "1" },[n2]: { content: "2" },[n3]: { content: "3" },[n1_1]: { content: "1.1" },[n1_2]: { content: "1.2" },[n2_1]: { content: "2.1" },[n2_2]: { content: "2.2" },[n3_1]: { content: "3.1" },[n3_2]: { content: "3.2" }}}`;
+const input = {"columns":[{"id":c0,"groups":[{"nodes":[n1,n2,n3],"parentId":root}]},{"id":c1,"groups":[{"nodes":[n1_1,n1_2],"parentId":n1},{"nodes":[n2_1,n2_2],"parentId":n2},{"nodes":[n3_1,n3_2],"parentId":n3}]}],"state":{"activeNode":n1},"content": {[n1]: { content: "1" },[n2]: { content: "2" },[n3]: { content: "3" },[n1_1]: { content: "1.1" },[n1_2]: { content: "1.2" },[n2_1]: { content: "2.1" },[n2_2]: { content: "2.2" },[n3_1]: { content: "3.1" },[n3_2]: { content: "3.2" }}}`;
     expect(__logDocument__(input, 'input')).toEqual(output);
 });

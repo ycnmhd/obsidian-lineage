@@ -16,14 +16,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: dropped_parent,
-                },
-                dnd: { node: dropped, childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         const action = {
@@ -44,14 +37,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: dropped_parent,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         dropNode(input.columns, input.state, action);
@@ -72,15 +58,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: dropped_parent,
-                },
-                dnd: { node: dropped, childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         const action = {
@@ -101,15 +79,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: dropped_parent,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         dropNode(input.columns, input.state, action);
@@ -141,15 +111,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: parent_of_dropped,
-                },
-                dnd: { node: dropped, childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: false },
+                activeNode: dropped,
             },
         };
         const output = {
@@ -165,15 +127,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: parent_of_dropped,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         dropNode(input.columns, input.state, action);
@@ -208,15 +162,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: parent_of_dropped,
-                },
-                dnd: { node: dropped, childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: false },
+                activeNode: dropped,
             },
         };
         const column_2 = 'c5xD';
@@ -232,15 +178,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([]),
-
-                    sortedParentNodes: [target],
-                    node: dropped,
-                    group: target,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         dropNode(input.columns, input.state, action);
@@ -282,15 +220,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dropped]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: parent_of_dropped,
-                },
-                dnd: { node: dropped, childGroups: new Set([dropped]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         const output = {
@@ -313,15 +243,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dropped]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: parent_of_dropped,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         dropNode(input.columns, input.state, action);
@@ -362,15 +284,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dropped]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: parent_of_dropped,
-                },
-                dnd: { node: dropped, childGroups: new Set([dropped]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         const output = {
@@ -393,15 +307,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dropped]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: parent_of_dropped,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         dropNode(input.columns, input.state, action);
@@ -450,15 +356,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dropped]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: parent_of_dropped,
-                },
-                dnd: { node: dropped, childGroups: new Set([dropped]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         const created_column_id = 'column_1';
@@ -492,14 +390,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dropped]),
-                    sortedParentNodes: [target],
-                    node: dropped,
-                    group: target,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         dropNode(input.columns, input.state, action);
@@ -551,15 +442,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dropped]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: parent_of_dropped,
-                },
-                dnd: { node: dropped, childGroups: new Set([dropped]) },
-                editing: { activeNodeId: '', savePreviousNode: false },
+                activeNode: dropped,
             },
         };
         const column_3 = 'cXd6';
@@ -593,14 +476,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dropped]),
-                    sortedParentNodes: [target],
-                    node: dropped,
-                    group: target,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
 
@@ -671,18 +547,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dropped, drop_c1, drop_c2]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: 'rwGc',
-                },
-                dnd: {
-                    node: dropped,
-                    childGroups: new Set([dropped, drop_c1, drop_c2]),
-                },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         const output = {
@@ -721,15 +586,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dropped, drop_c1, drop_c2]),
-
-                    sortedParentNodes: [],
-                    node: dropped,
-                    group: 'rwGc',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dropped,
             },
         };
         dropNode(input.columns, input.state, action);
@@ -787,18 +644,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dro, dro_c1, dro_c2]),
-
-                    sortedParentNodes: [],
-                    node: dro,
-                    group: root,
-                },
-                dnd: {
-                    node: dro,
-                    childGroups: new Set([dro, dro_c1, dro_c2]),
-                },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dro,
             },
         };
         const output = {
@@ -825,15 +671,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dro, dro_c1, dro_c2]),
-
-                    sortedParentNodes: [],
-                    node: dro,
-                    group: root,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dro,
             },
         };
         dropNode(input.columns, input.state, action);
@@ -905,30 +743,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([
-                        dro,
-                        dro_c1,
-                        dro_c1_c1,
-                        dro_c2,
-                        dro_c2_c1,
-                    ]),
-
-                    sortedParentNodes: [],
-                    node: dro,
-                    group: root,
-                },
-                dnd: {
-                    node: dro,
-                    childGroups: new Set([
-                        dro,
-                        dro_c1,
-                        dro_c1_c1,
-                        dro_c2,
-                        dro_c2_c1,
-                    ]),
-                },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dro,
             },
         };
         const col5 = 'cjDt';
@@ -965,21 +780,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([
-                        dro,
-                        dro_c1,
-                        dro_c1_c1,
-                        dro_c2,
-                        dro_c2_c1,
-                    ]),
-
-                    sortedParentNodes: [tar],
-                    node: dro,
-                    group: tar,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dro,
             },
         };
         dropNode(input.columns, input.state, action);
@@ -1051,30 +852,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([
-                        dro,
-                        dro_c1,
-                        dro_c1_c1,
-                        dro_c2,
-                        dro_c2_c1,
-                    ]),
-
-                    sortedParentNodes: [],
-                    node: dro,
-                    group: 'rac7',
-                },
-                dnd: {
-                    node: dro,
-                    childGroups: new Set([
-                        dro,
-                        dro_c1,
-                        dro_c1_c1,
-                        dro_c2,
-                        dro_c2_c1,
-                    ]),
-                },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dro,
             },
         };
         const col5 = 'crVB';
@@ -1111,21 +889,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([
-                        dro,
-                        dro_c1,
-                        dro_c1_c1,
-                        dro_c2,
-                        dro_c2_c1,
-                    ]),
-
-                    sortedParentNodes: [tar],
-                    node: dro,
-                    group: tar,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dro,
             },
         };
         dropNode(input.columns, input.state, action);
@@ -1190,30 +954,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([
-                        dro,
-                        dro_c1,
-                        dro_c1_c1,
-                        dro_c2,
-                        dro_c2_c1,
-                    ]),
-
-                    sortedParentNodes: [],
-                    node: dro,
-                    group: 'rH33',
-                },
-                dnd: {
-                    node: dro,
-                    childGroups: new Set([
-                        dro,
-                        dro_c1,
-                        dro_c1_c1,
-                        dro_c2,
-                        dro_c2_c1,
-                    ]),
-                },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dro,
             },
         };
         const col5 = 'cGBl';
@@ -1262,21 +1003,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([
-                        dro,
-                        dro_c1,
-                        dro_c1_c1,
-                        dro_c2,
-                        dro_c2_c1,
-                    ]),
-
-                    sortedParentNodes: ['ngQD', 'nrSz', 'nitG', tar],
-                    node: dro,
-                    group: tar,
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dro,
             },
         };
         dropNode(input.columns, input.state, action);
@@ -1335,15 +1062,7 @@ describe('drop-node', () => {
                 },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dro, 'ndO_']),
-
-                    sortedParentNodes: ['nUPO'],
-                    node: dro,
-                    group: 'nUPO',
-                },
-                dnd: { node: dro, childGroups: new Set([dro, 'ndO_']) },
-                editing: { activeNodeId: '', savePreviousNode: false },
+                activeNode: dro,
             },
         };
         const col5 = 'cbht';
@@ -1384,15 +1103,7 @@ describe('drop-node', () => {
                 { id: col6, groups: [{ nodes: ['n1qC'], parentId: 'ndO_' }] },
             ],
             state: {
-                activeBranch: {
-                    childGroups: new Set([dro, 'ndO_']),
-
-                    sortedParentNodes: ['n88Q', 'nQ4l', 'n9OD'],
-                    node: dro,
-                    group: 'n9OD',
-                },
-                dnd: { node: '', childGroups: new Set([]) },
-                editing: { activeNodeId: '', savePreviousNode: true },
+                activeNode: dro,
             },
         };
         dropNode(input.columns, input.state, action);
