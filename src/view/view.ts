@@ -3,7 +3,7 @@ import { IconName, TextFileView, WorkspaceLeaf } from 'obsidian';
 import Component from './components/container/main.svelte';
 import Lineage from '../main';
 import { ViewAction, viewReducer } from 'src/stores/view/view-reducer';
-import { alignBranchEffect } from 'src/stores/view/effects/align-branch-effect';
+import { alignBranchEffect } from 'src/stores/view/effects/align-branch-effect/align-branch-effect';
 import { Unsubscriber } from 'svelte/store';
 import { saveDocumentEffect } from 'src/stores/view/effects/save-document-effect';
 import { columnsToJsonTree } from 'src/stores/view/helpers/json-to-md/columns-to-json/columns-to-json-tree';

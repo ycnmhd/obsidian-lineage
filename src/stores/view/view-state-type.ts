@@ -24,6 +24,7 @@ export type ActiveBranch = {
     childGroups: Set<string>;
     sortedParentNodes: NodeId[];
     group: string;
+    column: string;
 };
 export type EditingState = {
     activeNodeId: string;

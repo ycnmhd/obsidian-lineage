@@ -14,6 +14,7 @@ export const defaultViewState = (): ViewState => ({
                 group: '',
                 childGroups: new Set<string>(),
                 sortedParentNodes: [],
+                column: '',
             },
             dnd: {
                 node: '',

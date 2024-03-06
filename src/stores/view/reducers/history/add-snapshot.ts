@@ -42,10 +42,12 @@ export const addSnapshot = (
         if (snapshotContent === documentContent) return;
     }
 
-    if (items[history.state.activeIndex])
-        items[history.state.activeIndex].data.state = JSON.stringify({
+    const mostRecentSnapshot = items[history.state.activeIndex];
+    if (mostRecentSnapshot) {
+        mostRecentSnapshot.data.state = JSON.stringify({
             activeNode: previousActiveNodeId,
         } satisfies DocumentInstanceState);
+    }
     const snapshot = createSnapshot(document, action);
     items.push(snapshot);
     history.state.activeIndex = items.length - 1;

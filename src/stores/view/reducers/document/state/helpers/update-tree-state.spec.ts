@@ -14,6 +14,7 @@ describe('update-tree-state', () => {
         const child3 = 'n-lt8upk0q';
         const child4 = 'n-lt8upk0r';
         const child4_1 = 'n-lt8upk0s';
+        const col = 'c-lt8upk0m';
         const document = {
             content: {
                 'n-lt8upk0l': { content: '' },
@@ -35,7 +36,7 @@ describe('update-tree-state', () => {
             },
             columns: [
                 {
-                    id: 'c-lt8upk0m',
+                    id: col,
                     groups: [
                         {
                             nodes: [
@@ -84,6 +85,7 @@ describe('update-tree-state', () => {
                     childGroups: new Set([]),
                     sortedParentNodes: [],
                     group: 'r-lt8upk0k',
+                    column: col,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
                 editing: { activeNodeId: '' },
@@ -98,6 +100,7 @@ describe('update-tree-state', () => {
                     childGroups: new Set([activeNodeId, child4]),
                     sortedParentNodes: [],
                     group: 'r-lt8upk0k',
+                    column: col,
                 },
                 dnd: { node: '', childGroups: new Set([]) },
                 editing: { activeNodeId: '' },

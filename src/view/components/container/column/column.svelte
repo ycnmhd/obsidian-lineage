@@ -18,9 +18,6 @@
 </div>
 
 <style>
-
-
-
     .column {
         width: fit-content;
         height: 100vh;
