@@ -1,29 +1,29 @@
 <script lang="ts">
-	import { getStore } from 'src/view/components/container/context';
-	import { ChevronRight } from 'lucide-svelte';
+    import { getStore } from 'src/view/components/container/context';
+    import { ChevronRight } from 'lucide-svelte';
 
-	const store = getStore();
+    const store = getStore();
 </script>
 
 <div class="breadcrumbs-container">
     <div class="breadcrumbs">
-        {#each $store.state.activeBranch.sortedParentNodes as parent, i}
+        {#each $store.ui.state.activeBranch.sortedParentNodes as parent, i}
             {#if i > 0}
-                <ChevronRight class="svg-icon" size="12" />
+                <ChevronRight class="svg-icon chevron" size="12"  />
             {/if}
             <button
-                aria-label={parent.content || 'Empty parent'}
+                aria-label={$store.document.content[parent]?.content || 'Empty parent'}
                 class="breadcrumbs-item"
-                data-tooltip-position="left"
+                data-tooltip-position="up"
                 on:click={() => {
                     store.dispatch({
-                        type: 'SET_ACTIVE_NODE',
-                        payload: { id: parent.id },
+                        type: 'DOCUMENT/SET_ACTIVE_NODE',
+                        payload: { id: parent },
                     });
                 }}
             >
                 <span class="breadcrumbs-item-text">
-                    {parent.content || '(empty)'}
+                    {$store.document.content[parent]?.content || '(empty)'}
                 </span>
             </button>
         {/each}
@@ -51,9 +51,12 @@
         box-shadow: var(--input-shadow);
         overflow: hidden;
     }
+    .chevron {
+        color: var(--text-muted);
+    }
     .breadcrumbs-item {
         box-shadow: none;
-        height: auto;
+        height: 30px;
         display: flex;
         line-height: 1;
         font-size: inherit;

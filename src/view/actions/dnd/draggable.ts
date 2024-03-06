@@ -1,4 +1,4 @@
-import { DocumentStore } from 'src/view/view';
+import { ViewStore } from 'src/view/view';
 
 const toggleDraggedNodeVisibility = (
     node: HTMLElement,
@@ -15,7 +15,7 @@ const toggleDraggedNodeVisibility = (
 
 export type DraggableData = {
     id: string;
-    store: DocumentStore;
+    store: ViewStore;
 };
 
 export const draggable = (node: HTMLElement, data: DraggableData) => {
@@ -23,22 +23,24 @@ export const draggable = (node: HTMLElement, data: DraggableData) => {
 
     const handleDragstart = (event: DragEvent) => {
         if (!event.dataTransfer) return;
-        const target = event.target as HTMLElement;
-        if (event.clientX - target.getBoundingClientRect().x > 12)
+        const target = event.currentTarget as HTMLElement;
+        if (event.clientX - target.getBoundingClientRect().x > 12) {
             event.preventDefault();
-        else {
-            data.store.dispatch({
-                type: 'SET_DRAG_STARTED',
-                payload: { nodeId: data.id },
-            });
+        } else {
             event.dataTransfer.setData('text/plain', data.id);
-            toggleDraggedNodeVisibility(node, data, false);
+            setTimeout(() => {
+                data.store.dispatch({
+                    type: 'SET_DRAG_STARTED',
+                    payload: { nodeId: data.id },
+                });
+                toggleDraggedNodeVisibility(node, data, false);
+            }, 0);
         }
     };
 
     node.addEventListener('dragstart', handleDragstart);
     const handleDragEnd = (e: DragEvent) => {
-        data.store.dispatch({ type: 'SET_DRAG_CANCELED' });
+        data.store.dispatch({ type: 'DOCUMENT/SET_DRAG_STARTED' });
         toggleDraggedNodeVisibility(node, data, true);
     };
     node.addEventListener('dragend', handleDragEnd);

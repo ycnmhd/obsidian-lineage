@@ -9,9 +9,9 @@ export let active: ActiveStatus | null;
 </script>
 {#if active === ActiveStatus.node}
 	{#if !editing}
-		<CreateCardButton position="top" />
+		<CreateCardButton position="up" />
 		<CreateCardButton position="right" />
-		<CreateCardButton position="bottom" />
+		<CreateCardButton position="down" />
 		<DeleteNodeButton />
 	{/if}
 	<EditNodeButton {editing} />

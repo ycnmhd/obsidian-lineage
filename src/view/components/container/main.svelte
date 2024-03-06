@@ -1,51 +1,40 @@
 <script lang="ts">
-	import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
-	import ControlsBar from './controls-bar/controls-bar.svelte';
-	import Hotkeys from './hotkeys/hotkeys.svelte';
-	import FileHistory from './file-history/file-histoy.svelte';
-	import { DocumentStore } from '../../view';
-	import Lineage from '../../../main';
-	import { setContext } from 'svelte';
-	import Container from './container.svelte';
-	import Breadcrumbs from './breadcrumbs/breadcrumbs.svelte';
+    import ControlsBar from './controls-bar/controls-bar.svelte';
+    import Hotkeys from './hotkeys/hotkeys.svelte';
+    import FileHistory from './file-history/file-histoy.svelte';
+    import { LineageView, ViewStore } from '../../view';
+    import Lineage from '../../../main';
+    import { setContext } from 'svelte';
+    import Container from './container.svelte';
+    import Breadcrumbs from './breadcrumbs/breadcrumbs.svelte';
+    import NavigationHistory from './navigation-history/navigation-history.svelte';
 
-	export let store: DocumentStore;
+    export let store: ViewStore;
     export let plugin: Lineage;
+    export let view: LineageView;
     const settings = plugin.settings;
     setContext('store', store);
     setContext('plugin', plugin);
+    setContext('view', view);
 </script>
 
 <div
-    class={`main ${
+    class={`lineage__main ${
         $settings.ui.theme === 'dark' ? 'ash-theme-light' : 'ash-theme-dark'
     }`}
 >
-	<Breadcrumbs/>
-    <ControlsBar
-        fileHistory={$fileHistoryStore.documents[$store.file.path]}
-        path={$store.file.path}
-    />
+    <Breadcrumbs />
+    <NavigationHistory/>
+    <ControlsBar documentHistory={$store.history} path={$store.file.path} />
     <Container />
-    {#if $store.state.ui.showHistorySidebar && $store.file.path && $fileHistoryStore.documents[$store.file.path]}
-        <FileHistory
-            fileHistory={$fileHistoryStore.documents[$store.file.path]}
-            path={$store.file.path}
-        />
-    {:else if $store.state.ui.showHelpSidebar}
+    {#if $store.ui.showHistorySidebar && $store.file.path}
+        <FileHistory documentHistory={$store.history} path={$store.file.path} />
+    {:else if $store.ui.showHelpSidebar}
         <Hotkeys />
     {/if}
-
 </div>
 
 <style>
-    :root {
-        --sidebar-right: 50px;
-        --node-gap: 4px;
-		--z-index-breadcrumbs:10;
-        /*slate900*/
-    }
-
     .ash-theme-dark {
         --background-color-container: #0f172a;
         /*inactive node*/
@@ -73,21 +62,13 @@
     .ash-theme-light {
         --background-color-container: #7b92a1;
         /*inactive node*/
-		--background-color-inactive-node: #8ba5b6;
-		--color-inactive-node: #edf1f0;
+        --background-color-inactive-node: #8ba5b6;
+        --color-inactive-node: #edf1f0;
         /*active node*/
         --background-active-node: #ffffff;
         --color-active-node: #0f172a;
         /*active parent*/
         --background-active-parent: #c8dcea;
         --color-active-child: #0f172a;
-    }
-
-    .main {
-        background-color: var(--background-color-container);
-        display: flex;
-        height: 100%;
-        width: 100%;
-        position: relative;
     }
 </style>

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { saveNodeContent } from '../../actions/save-node-content';
+	import { saveNodeContentAction } from '../../actions/save-node-content-action';
 	import { getStore } from '../../../../../../../context';
-	import { ColumnNode } from 'src/stores/document/document-reducer';
+	import { NodeId } from 'src/stores/view/view-state-type';
 	import { expandableTextareaAction } from '../../actions/expandable-textarea-action';
 
 	export let editing: boolean;
-    export let node: ColumnNode;
+    export let node: NodeId;
     const store = getStore();
 </script>
 
@@ -14,7 +14,7 @@
     <textarea
         class="no-outline"
         use:expandableTextareaAction
-        use:saveNodeContent={{ editing, store, node }}
+		use:saveNodeContentAction="{{ editing, store, node }}"
     />
 </div>
 

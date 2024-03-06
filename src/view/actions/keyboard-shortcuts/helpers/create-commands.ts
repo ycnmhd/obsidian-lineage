@@ -1,6 +1,11 @@
 import { Hotkey } from 'obsidian';
-import { DocumentStore } from 'src/view/view';
-import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
+import { ViewStore } from 'src/view/view';
+import Lineage from 'src/main';
+import { addNodeAndSplitAtCursor } from 'src/view/actions/keyboard-shortcuts/helpers/tree/add-node-and-split-at-cursor';
+import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/tree/save-node-content';
+import { cancelChanges } from 'src/view/actions/keyboard-shortcuts/helpers/tree/cancel-changes';
+import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/tree/save-node-and-insert-node';
+import { mergeNode } from 'src/view/actions/keyboard-shortcuts/helpers/tree/merge-node';
 
 export const hotkeysLang = {
     save_changes_and_exit_card: 'Save changes and exit card',
@@ -10,6 +15,9 @@ export const hotkeysLang = {
     add_child: 'Add child',
     add_below: 'Add card below',
     add_above: 'Add card above',
+    add_child_and_split: 'Add child and split at cursor',
+    add_below_and_split: 'Add card below and split at cursor',
+    add_above_and_split: 'Add card above and split at cursor',
     delete_card: 'Delete card',
     go_up: 'Go up',
     go_down: 'Go down',
@@ -17,34 +25,43 @@ export const hotkeysLang = {
     go_left: 'Go left',
     undo_change: 'Undo change',
     redo_change: 'Redo change',
+    move_node_up: 'Move card up',
+    move_node_down: 'Move card down',
+    move_node_right: 'Move card right',
+    move_node_left: 'Move card left',
+    merge_with_node_above: 'Merge with card above',
+    merge_with_node_below: 'Merge with card below',
 };
 
 export type PluginCommand = {
-    check: (store: DocumentStore) => boolean;
-    callback: (store: DocumentStore) => void;
+    check: (store: ViewStore) => boolean;
+    callback: (store: ViewStore, event: KeyboardEvent) => void;
     hotkeys: Hotkey[];
 };
 
-export const createCommands = () => {
-    const isEditing = (store: DocumentStore) => {
-        return !!store.getValue().state.editing.activeNodeId;
+export type LineageCommandName = keyof typeof hotkeysLang;
+export type LineageCommands = Record<LineageCommandName, PluginCommand>;
+export const createCommands = (plugin: Lineage) => {
+    const isEditing = (store: ViewStore) => {
+        return !!store.getValue().ui.state.editing.activeNodeId;
     };
-    const isActive = (store: DocumentStore) => {
-        return !!store.getValue().state.activeBranch.node;
+    const isActive = (store: ViewStore) => {
+        return !!store.getValue().document.state.activeNode;
     };
 
-    const isActiveAndNotEditing = (store: DocumentStore) => {
+    const isActiveAndNotEditing = (store: ViewStore) => {
         return isActive(store) && !isEditing(store);
     };
-    const isActiveAndHasFile = (store: DocumentStore) => {
+    const isActiveAndHasFile = (store: ViewStore) => {
         return isActive(store) && !!store.getValue().file.path;
     };
     return {
         enable_edit_mode: {
-            check: isActive,
-            callback: (store) => {
+            check: isActiveAndNotEditing,
+            callback: (store, event) => {
+                event.preventDefault();
                 store.dispatch({
-                    type: 'ENABLE_EDIT_MODE',
+                    type: 'DOCUMENT/ENABLE_EDIT_MODE',
                 });
             },
             hotkeys: [{ key: 'Enter', modifiers: [] }],
@@ -52,13 +69,7 @@ export const createCommands = () => {
         save_changes_and_exit_card: {
             check: isActive,
             callback: (store) => {
-                if (isEditing(store))
-                    store.dispatch({
-                        type: 'DISABLE_EDIT_MODE',
-                        payload: {
-                            save: true,
-                        },
-                    });
+                if (isEditing(store)) saveNodeContent(store);
             },
             hotkeys: [{ key: 'Enter', modifiers: ['Alt', 'Ctrl'] }],
         },
@@ -66,74 +77,71 @@ export const createCommands = () => {
         disable_edit_mode: {
             check: isActive,
             callback: (store) => {
-                store.dispatch({
-                    type: 'DISABLE_EDIT_MODE',
-                    payload: {
-                        save: false,
-                    },
-                });
+                cancelChanges(store);
             },
             hotkeys: [{ key: 'Escape', modifiers: [] }],
         },
         add_above: {
-            check: isActive,
+            check: isActiveAndNotEditing,
             callback: (store) => {
-                store.dispatch({
-                    type: 'CREATE_NODE',
-                    payload: {
-                        position: 'top',
-                    },
-                });
+                saveNodeAndInsertNode(store, 'up');
             },
             hotkeys: [
-                { key: 'k', modifiers: ['Ctrl'] },
                 {
                     key: 'ArrowUp',
                     modifiers: ['Ctrl'],
                 },
             ],
         },
-        add_below: {
+        add_above_and_split: {
             check: isActive,
             callback: (store) => {
-                store.dispatch({
-                    type: 'CREATE_NODE',
-                    payload: {
-                        position: 'bottom',
-                    },
-                });
+                addNodeAndSplitAtCursor(store, plugin, 'up');
+            },
+            hotkeys: [{ key: 'k', modifiers: ['Ctrl'] }],
+        },
+        add_below: {
+            check: isActiveAndNotEditing,
+            callback: (store) => {
+                saveNodeAndInsertNode(store, 'down');
             },
             hotkeys: [
-                { key: 'j', modifiers: ['Ctrl'] },
                 {
                     key: 'ArrowDown',
                     modifiers: ['Ctrl'],
                 },
             ],
         },
-        add_child: {
+        add_below_and_split: {
             check: isActive,
             callback: (store) => {
-                store.dispatch({
-                    type: 'CREATE_NODE',
-                    payload: {
-                        position: 'right',
-                    },
-                });
+                addNodeAndSplitAtCursor(store, plugin, 'down');
+            },
+            hotkeys: [{ key: 'j', modifiers: ['Ctrl'] }],
+        },
+        add_child: {
+            check: isActiveAndNotEditing,
+            callback: (store) => {
+                saveNodeAndInsertNode(store, 'right');
             },
             hotkeys: [
-                { key: 'l', modifiers: ['Ctrl'] },
                 {
                     key: 'ArrowRight',
                     modifiers: ['Ctrl'],
                 },
             ],
         },
-
+        add_child_and_split: {
+            check: isActive,
+            callback: (store) => {
+                addNodeAndSplitAtCursor(store, plugin, 'right');
+            },
+            hotkeys: [{ key: 'l', modifiers: ['Ctrl'] }],
+        },
         delete_card: {
             check: isActive,
             callback: (store) => {
-                store.dispatch({ type: 'TREE/DELETE_NODE' });
+                store.dispatch({ type: 'DOCUMENT/DELETE_NODE' });
             },
             hotkeys: [{ key: 'Backspace', modifiers: ['Ctrl'] }],
         },
@@ -141,7 +149,7 @@ export const createCommands = () => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CHANGE_ACTIVE_NODE',
+                    type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
                         direction: 'right',
                     },
@@ -156,9 +164,9 @@ export const createCommands = () => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CHANGE_ACTIVE_NODE',
+                    type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
-                        direction: 'bottom',
+                        direction: 'down',
                     },
                 });
             },
@@ -171,7 +179,7 @@ export const createCommands = () => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CHANGE_ACTIVE_NODE',
+                    type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
                         direction: 'left',
                     },
@@ -186,9 +194,9 @@ export const createCommands = () => {
             check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({
-                    type: 'CHANGE_ACTIVE_NODE',
+                    type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
-                        direction: 'top',
+                        direction: 'up',
                     },
                 });
             },
@@ -202,12 +210,8 @@ export const createCommands = () => {
             callback: (store) => {
                 const path = store.getValue().file.path;
                 if (path)
-                    fileHistoryStore.dispatch({
-                        type: 'UNDO_REDO_SNAPSHOT',
-                        payload: {
-                            direction: 'back',
-                            path,
-                        },
+                    store.dispatch({
+                        type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
                     });
             },
             hotkeys: [{ key: 'Z', modifiers: ['Ctrl', 'Shift'] }],
@@ -217,15 +221,83 @@ export const createCommands = () => {
             callback: (store) => {
                 const path = store.getValue().file.path;
                 if (path)
-                    fileHistoryStore.dispatch({
-                        type: 'UNDO_REDO_SNAPSHOT',
-                        payload: {
-                            direction: 'forward',
-                            path,
-                        },
+                    store.dispatch({
+                        type: 'HISTORY/APPLY_NEXT_SNAPSHOT',
                     });
             },
             hotkeys: [{ key: 'Y', modifiers: ['Ctrl', 'Shift'] }],
         },
-    } satisfies Record<keyof typeof hotkeysLang, PluginCommand>;
+        move_node_up: {
+            check: isActive,
+            callback: (store) => {
+                store.dispatch({
+                    type: 'DOCUMENT/MOVE_NODE',
+                    payload: { direction: 'up' },
+                });
+            },
+            hotkeys: [
+                { key: 'k', modifiers: ['Alt', 'Shift'] },
+                { key: 'ArrowUp', modifiers: ['Alt', 'Shift'] },
+            ],
+        },
+        move_node_down: {
+            check: isActive,
+            callback: (store) => {
+                store.dispatch({
+                    type: 'DOCUMENT/MOVE_NODE',
+                    payload: { direction: 'down' },
+                });
+            },
+            hotkeys: [
+                { key: 'j', modifiers: ['Alt', 'Shift'] },
+                { key: 'ArrowDown', modifiers: ['Alt', 'Shift'] },
+            ],
+        },
+        move_node_right: {
+            check: isActive,
+            callback: (store) => {
+                store.dispatch({
+                    type: 'DOCUMENT/MOVE_NODE',
+                    payload: { direction: 'right' },
+                });
+            },
+            hotkeys: [
+                { key: 'l', modifiers: ['Alt', 'Shift'] },
+                { key: 'ArrowRight', modifiers: ['Alt', 'Shift'] },
+            ],
+        },
+        move_node_left: {
+            check: isActive,
+            callback: (store) => {
+                store.dispatch({
+                    type: 'DOCUMENT/MOVE_NODE',
+                    payload: { direction: 'left' },
+                });
+            },
+            hotkeys: [
+                { key: 'h', modifiers: ['Alt', 'Shift'] },
+                { key: 'ArrowLeft', modifiers: ['Alt', 'Shift'] },
+            ],
+        },
+        merge_with_node_above: {
+            check: isActive,
+            callback: (store) => {
+                mergeNode(store, 'up');
+            },
+            hotkeys: [
+                { key: 'k', modifiers: ['Ctrl', 'Shift'] },
+                { key: 'ArrowUp', modifiers: ['Ctrl', 'Shift'] },
+            ],
+        },
+        merge_with_node_below: {
+            check: isActive,
+            callback: (store) => {
+                mergeNode(store, 'down');
+            },
+            hotkeys: [
+                { key: 'j', modifiers: ['Ctrl', 'Shift'] },
+                { key: 'ArrowDown', modifiers: ['Ctrl', 'Shift'] },
+            ],
+        },
+    } satisfies LineageCommands;
 };

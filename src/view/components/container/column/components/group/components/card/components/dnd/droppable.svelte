@@ -12,10 +12,11 @@
     export let editing: boolean;
 
     const setActive = () => {
-        store.dispatch({
-            type: 'SET_ACTIVE_NODE',
-            payload: { id: nodeId },
-        });
+        if (active !== ActiveStatus.node)
+            store.dispatch({
+                type: 'DOCUMENT/SET_ACTIVE_NODE',
+                payload: { id: nodeId },
+            });
     };
     const store = getStore();
     const activeStatusClasses = {
@@ -32,7 +33,7 @@
     on:click={setActive}
     on:dblclick={() => {
         setActive();
-        store.dispatch({ type: 'ENABLE_EDIT_MODE' });
+        store.dispatch({ type: 'DOCUMENT/ENABLE_EDIT_MODE' });
     }}
     use:droppable={store}
 >
@@ -41,31 +42,6 @@
 </div>
 
 <style>
-    :root {
-        --border: 10px #5acf5a solid;
-        --border-shadow-top: 0 -5px 15px -5px rgba(90, 207, 90, 0.79);
-        --border-shadow-right: 5px 0 15px -5px rgba(90, 207, 90, 0.79);
-        --border-shadow-bottom: 0 5px 15px -5px rgba(90, 207, 90, 0.79);
-    }
-
-    :global(.drop-node-above) {
-        border-bottom: none;
-        border-right: none;
-        border-top: var(--border);
-        box-shadow: var(--border-shadow-top);
-    }
-    :global(.drop-node-below) {
-        border-top: none;
-        border-right: none;
-        border-bottom: var(--border);
-        box-shadow: var(--border-shadow-bottom);
-    }
-    :global(.drop-node-under) {
-        border-top: none;
-        border-bottom: none;
-        border-right: var(--border);
-        box-shadow: var(--border-shadow-right);
-    }
     .node {
         width: var(--node-width);
         height: fit-content;
@@ -83,10 +59,10 @@
     }
 
     .active-node {
-        border-left: 5px #55b1ae solid;
+        border-left: 5px var(--lineage-accent) solid;
     }
     .active-child:hover {
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .active-parent,

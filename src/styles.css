@@ -10,3 +10,34 @@ If your plugin does not need CSS, delete this file.
 .lineage__card:hover .lineage__floating-button{
 	opacity: 0.3
 }
+
+
+.lineage__main{
+		--sidebar-right: 50px;
+		--node-gap: 4px;
+		--z-index-breadcrumbs:10;
+	--lineage-accent: #55b1ae;
+	--border-shadow-color: var(--lineage-accent);
+	--border-shadow-top:  inset 2px 51px 19px -28px  var(--border-shadow-color);
+	--border-shadow-right:inset -51px 2px 19px -28px  var(--border-shadow-color);
+	--border-shadow-bottom:inset 2px -51px 19px -28px  var(--border-shadow-color);
+	background-color: var(--background-color-container);
+	display: flex;
+	height: 100%;
+	width: 100%;
+	position: relative;
+}
+
+.lineage__drop-node-above {
+	box-shadow: var(--border-shadow-top);
+}
+.lineage__drop-node-below {
+	box-shadow: var(--border-shadow-bottom);
+}
+.lineage__drop-node-under {
+	box-shadow: var(--border-shadow-right);
+}
+
+.lineage__card p {
+	margin: 0;
+}

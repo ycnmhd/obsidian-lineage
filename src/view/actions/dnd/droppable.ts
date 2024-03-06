@@ -1,5 +1,5 @@
-import { DocumentStore } from 'src/view/view';
-import { NodeDirection } from 'src/stores/document/document-reducer';
+import { ViewStore } from 'src/view/view';
+import { Direction } from 'src/stores/view/view-reducer';
 
 const getDropPosition = (event: DragEvent, targetElement: HTMLElement) => {
     const boundingBox = targetElement.getBoundingClientRect();
@@ -8,29 +8,29 @@ const getDropPosition = (event: DragEvent, targetElement: HTMLElement) => {
     const mouseY = event.clientY;
 
     if (mouseY - boundingBox.top < boundingBox.height / 4) {
-        return 'top';
+        return 'up';
     } else if (boundingBox.bottom - mouseY < boundingBox.height / 4)
-        return 'bottom';
+        return 'down';
     else if (boundingBox.right - mouseX < boundingBox.width / 4) return 'right';
 };
 
 export const dropClasses = {
-    top: 'drop-node-above',
-    bottom: 'drop-node-below',
-    right: 'drop-node-under',
+    up: 'lineage__drop-node-above',
+    down: 'lineage__drop-node-below',
+    right: 'lineage__drop-node-under',
 };
 const classesList = Object.values(dropClasses);
-export const droppable = (node: HTMLElement, store: DocumentStore) => {
+export const droppable = (node: HTMLElement, store: ViewStore) => {
     function HandleDragLeave(event: DragEvent) {
-        if (!(event.target instanceof HTMLElement)) return;
-        event.target.removeClasses(classesList);
+        if (!(event.currentTarget instanceof HTMLElement)) return;
+        event.currentTarget.removeClasses(classesList);
     }
 
     const handleDragOver = (event: DragEvent) => {
         event.preventDefault();
         if (!event.dataTransfer) return;
         const targetCard = event.currentTarget as HTMLElement;
-        if (!targetCard.id.startsWith('n-')) return;
+        if (!targetCard.id.startsWith('n')) return;
         event.dataTransfer.dropEffect = 'move';
 
         const position = getDropPosition(event, targetCard);
@@ -42,18 +42,20 @@ export const droppable = (node: HTMLElement, store: DocumentStore) => {
 
     function handleDrop(event: DragEvent) {
         event.preventDefault();
-        if (!(event.target instanceof HTMLElement)) return;
+        if (!(event.currentTarget instanceof HTMLElement)) return;
         if (!event.dataTransfer) return;
         const data = event.dataTransfer.getData('text/plain');
         const targetCard = event.currentTarget as HTMLElement;
-        if (!targetCard.id.startsWith('n-')) return;
+        if (!targetCard.id.startsWith('n')) return;
         targetCard.removeClasses(classesList);
+        if (!data) throw new Error(`droppedNodeId is missing`);
+        if (!targetCard.id) throw new Error(`targetCard.id is missing`);
         store.dispatch({
-            type: 'DROP_NODE',
+            type: 'DOCUMENT/DROP_NODE',
             payload: {
                 droppedNodeId: data,
                 targetNodeId: targetCard.id,
-                position: getDropPosition(event, targetCard) as NodeDirection,
+                position: getDropPosition(event, targetCard) as Direction,
             },
         });
     }

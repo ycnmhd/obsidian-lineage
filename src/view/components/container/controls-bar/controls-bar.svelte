@@ -1,35 +1,26 @@
 <script lang="ts">
-	import { File, HelpCircle, HistoryIcon, Moon, RedoIcon, Sun, UndoIcon } from 'lucide-svelte';
-	import { getPlugin, getStore } from 'src/view/components/container/context';
-	import { fileHistoryStore } from 'src/stores/file-history/file-history-store';
-	import { FileHistory } from 'src/stores/file-history/file-history-reducer';
-	import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
-	import { LineageView } from 'src/view/view';
-	import { lang } from 'src/lang/lang';
+    import { File, HelpCircle, HistoryIcon, Moon, RedoIcon, Sun, UndoIcon } from 'lucide-svelte';
+    import { getPlugin, getStore } from 'src/view/components/container/context';
+    import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
+    import { LineageView } from 'src/view/view';
+    import { lang } from 'src/lang/lang';
+    import { DocumentHistory } from 'src/stores/view/view-state-type';
 
-	const store = getStore();
-    export let fileHistory: FileHistory | null;
+    const store = getStore();
+    export let documentHistory: DocumentHistory;
     export let path: string | null;
 
     const handleNextClick = () => {
         if (path)
-            fileHistoryStore.dispatch({
-                type: 'UNDO_REDO_SNAPSHOT',
-                payload: {
-                    path,
-                    direction: 'forward',
-                },
+            store.dispatch({
+                type: 'HISTORY/APPLY_NEXT_SNAPSHOT',
             });
     };
 
     const handlePreviousClick = () => {
         if (path)
-            fileHistoryStore.dispatch({
-                type: 'UNDO_REDO_SNAPSHOT',
-                payload: {
-                    path,
-                    direction: 'back',
-                },
+            store.dispatch({
+                type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
             });
     };
     const plugin = getPlugin();
@@ -64,7 +55,7 @@
             aria-label="History"
             class="canvas-control-item"
             data-tooltip-position="left"
-            disabled={!path || !$fileHistoryStore.documents[path]}
+            disabled={documentHistory.items.length === 0}
             on:click={() => {
                 store.dispatch({ type: 'UI/TOGGLE_HISTORY_SIDEBAR' });
             }}
@@ -76,7 +67,7 @@
             aria-label="Undo"
             class="canvas-control-item"
             data-tooltip-position="left"
-            disabled={!fileHistory || !fileHistory.state.canGoBack}
+            disabled={!documentHistory || !documentHistory.state.canGoBack}
             on:click={handlePreviousClick}
         >
             <UndoIcon class="svg-icon" />
@@ -85,7 +76,7 @@
             aria-label="Redo"
             class="canvas-control-item"
             data-tooltip-position="left"
-            disabled={!fileHistory || !fileHistory.state.canGoForward}
+            disabled={!documentHistory || !documentHistory.state.canGoForward}
             on:click={handleNextClick}
         >
             <RedoIcon class="svg-icon" />

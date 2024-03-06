@@ -11,7 +11,7 @@
     <div class="active-node-bridge"></div>
 {:else if active === ActiveStatus.parent}
     <div class={'active-parent-bridge-right'}></div>
-    {#if !parentId.startsWith('r-')}
+    {#if !parentId.startsWith("r")}
         <div class="active-parent-bridge-left"></div>
     {/if}
 {/if}

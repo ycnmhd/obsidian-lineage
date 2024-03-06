@@ -8,11 +8,11 @@
     const deleteNode = (e: MouseEvent) => {
         e.stopPropagation();
         store.dispatch({
-            type: 'TREE/DELETE_NODE',
+            type: 'DOCUMENT/DELETE_NODE',
         });
     };
 </script>
 
-<FloatingButton on:click={deleteNode} position={'top-right'}>
+<FloatingButton on:click={deleteNode} position={'up-right'}>
         <TrashIcon class="svg-con" />
 </FloatingButton>

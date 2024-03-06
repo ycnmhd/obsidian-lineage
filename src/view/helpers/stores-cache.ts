@@ -1,15 +1,12 @@
-import { DocumentStore } from 'src/view/view';
+import { ViewStore } from 'src/view/view';
 
 export const deletePath = (oldPath: string) => {
     if (oldPath in stores) {
         const oldEntry = stores[oldPath];
-        delete stores[oldPath];
         oldEntry.dispatch({
-            type: 'FS/SET_FILE_PATH',
-            payload: {
-                path: null,
-            },
+            type: 'RESET_STORE',
         });
+        delete stores[oldPath];
     }
 };
 export const updatePath = (oldPath: string, newPath: string) => {
@@ -26,5 +23,5 @@ export const updatePath = (oldPath: string, newPath: string) => {
     }
 };
 export const stores: {
-    [path: string]: DocumentStore;
+    [path: string]: ViewStore;
 } = {};
