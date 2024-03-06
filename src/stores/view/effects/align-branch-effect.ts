@@ -5,12 +5,7 @@ import {
 } from 'src/stores/view/effects/helpers/align-element';
 import { ViewStore } from 'src/view/view';
 import { debounce } from 'obsidian';
-import {
-    historyEvents,
-    navigationEvents,
-    stateEvents,
-    structureAndContentEvents,
-} from 'src/stores/view/helpers/state-events';
+import { getViewEventType } from 'src/stores/view/helpers/get-view-event-type';
 
 const alignBranch = (
     state: ViewState,
@@ -47,11 +42,12 @@ export const alignBranchEffect = (store: ViewStore, container: HTMLElement) => {
     alignBranch(store.getValue(), container);
     return store.subscribe((state, action) => {
         if (!action) return;
+        const eventType = getViewEventType(action.type);
         if (
-            stateEvents.has(action.type) ||
-            structureAndContentEvents.has(action.type) ||
-            historyEvents.has(action.type) ||
-            navigationEvents.has(action.type)
+            eventType.activeNode ||
+            eventType.structureAndContent ||
+            eventType.changeHistory ||
+            eventType.activeNodeHistory
         ) {
             run(state, container);
         }

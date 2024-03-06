@@ -59,11 +59,7 @@ import {
     undoAction,
     UndoRedoAction,
 } from 'src/stores/view/reducers/history/undo-action';
-import {
-    navigationEvents,
-    structureAndContentEvents,
-    UndoableAction,
-} from 'src/stores/view/helpers/state-events';
+import { getViewEventType } from 'src/stores/view/helpers/get-view-event-type';
 import { redoAction } from 'src/stores/view/reducers/history/redo-action';
 import { addNavigationHistoryItem } from 'src/stores/view/reducers/ui/helpers/add-navigation-history-item';
 import {
@@ -122,6 +118,15 @@ export type DocumentAction =
 
 export type HistoryAction = UndoRedoAction | SelectSnapshotAction;
 export type ViewAction = DocumentAction | HistoryAction | NavigationAction;
+
+export type UndoableAction =
+    | SetNodeContentAction
+    | CreateNodeAction
+    | DeleteNodeAction
+    | DropAction
+    | MoveNodeAction
+    | MergeNodeAction
+    | LoadDocumentAction;
 
 const updateViewState = (state: ViewState, action: ViewAction) => {
     // state
@@ -219,27 +224,32 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
         );
     }
 
-    if (saveSnapshot && structureAndContentEvents.has(action.type)) {
-        addSnapshot(state.document, state.history, action as UndoableAction);
+    const event = getViewEventType(action.type);
+    if (saveSnapshot && event.structureAndContent) {
+        addSnapshot(
+            state.document,
+            state.history,
+            action as UndoableAction,
+            activeNodeId,
+        );
     }
-    console.log(
-        activeNodeId,
-        state.document.state.activeNode,
-        activeNodeId !== state.document.state.activeNode,
-    );
-    if (activeNodeId !== state.document.state.activeNode) {
-        if (!navigationEvents.has(action.type)) {
-            addNavigationHistoryItem(
-                state.navigationHistory,
-                state.document.content,
-                state.document.state.activeNode,
-            );
-        }
+    if (
+        event.structureAndContent ||
+        event.activeNodeHistory ||
+        event.changeHistory ||
+        event.activeNode
+    )
         updateTreeState(
             state.document.columns,
             state.ui.state,
             state.document.state.activeNode,
             isNewNode,
+        );
+    if (!event.activeNodeHistory) {
+        addNavigationHistoryItem(
+            state.navigationHistory,
+            state.document.content,
+            state.document.state.activeNode,
         );
     }
 };

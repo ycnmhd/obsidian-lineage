@@ -1,4 +1,4 @@
-import { UndoableAction } from 'src/stores/view/helpers/state-events';
+import { UndoableAction } from 'src/stores/view/view-reducer';
 
 export type NodeId = string;
 export type NodeGroup = {

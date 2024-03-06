@@ -3,10 +3,12 @@ import { updateNavigationState } from 'src/stores/view/reducers/history/helpers/
 import { NodePosition } from 'src/stores/view/helpers/search/find-node-position';
 import {
     DocumentHistory,
+    DocumentInstanceState,
     DocumentState,
+    NodeId,
 } from 'src/stores/view/view-state-type';
 import { createSnapshot } from 'src/stores/view/reducers/history/helpers/create-snapshot';
-import { UndoableAction } from 'src/stores/view/helpers/state-events';
+import { UndoableAction } from 'src/stores/view/view-reducer';
 import { removeOldHistoryItems } from 'src/stores/view/reducers/history/helpers/remove-old-history-items';
 import { removeObsoleteHistoryItems } from 'src/stores/view/reducers/history/helpers/remove-obsolete-history-items';
 
@@ -24,6 +26,7 @@ export const addSnapshot = (
     document: DocumentState,
     history: DocumentHistory,
     action: UndoableAction,
+    previousActiveNodeId: NodeId,
 ) => {
     const items = history.items;
 
@@ -39,6 +42,10 @@ export const addSnapshot = (
         if (snapshotContent === documentContent) return;
     }
 
+    if (items[history.state.activeIndex])
+        items[history.state.activeIndex].data.state = JSON.stringify({
+            activeNode: previousActiveNodeId,
+        } satisfies DocumentInstanceState);
     const snapshot = createSnapshot(document, action);
     items.push(snapshot);
     history.state.activeIndex = items.length - 1;

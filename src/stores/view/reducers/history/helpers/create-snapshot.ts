@@ -1,6 +1,6 @@
 import { id } from 'src/helpers/id';
 import { DocumentState, Snapshot } from 'src/stores/view/view-state-type';
-import { UndoableAction } from 'src/stores/view/helpers/state-events';
+import { UndoableAction } from 'src/stores/view/view-reducer';
 
 export const createSnapshot = (
     document: DocumentState,

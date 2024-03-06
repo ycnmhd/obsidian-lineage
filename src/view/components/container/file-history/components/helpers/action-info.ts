@@ -6,7 +6,7 @@ import {
     FileUp,
     Merge,
 } from 'lucide-svelte';
-import { UndoableAction } from 'src/stores/view/helpers/state-events';
+import { UndoableAction } from 'src/stores/view/view-reducer';
 
 type Key = UndoableAction['type'];
 export const actionInfo: Partial<

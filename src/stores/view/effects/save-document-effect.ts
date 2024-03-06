@@ -1,9 +1,6 @@
 import { ViewStore } from 'src/view/view';
 
-import {
-    historyEvents,
-    structureAndContentEvents,
-} from 'src/stores/view/helpers/state-events';
+import { getViewEventType } from 'src/stores/view/helpers/get-view-event-type';
 
 export const saveDocumentEffect = (
     store: ViewStore,
@@ -12,10 +9,8 @@ export const saveDocumentEffect = (
     return store.subscribe(async (state, action) => {
         if (!action) return;
 
-        if (
-            structureAndContentEvents.has(action.type) ||
-            historyEvents.has(action.type)
-        ) {
+        const event = getViewEventType(action.type);
+        if (event.structureAndContent || event.changeHistory) {
             await save(action.type);
         }
     });
