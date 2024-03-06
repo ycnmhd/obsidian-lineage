@@ -1,4 +1,4 @@
-import { ViewState } from 'src/stores/view/view-state-type';
+import { NodeId, ViewState } from 'src/stores/view/view-state-type';
 import {
     AlignBranchState,
     alignElement,
@@ -6,6 +6,8 @@ import {
 import { ViewStore } from 'src/view/view';
 import { debounce } from 'obsidian';
 import { getViewEventType } from 'src/stores/view/helpers/get-view-event-type';
+
+const lastActiveNodeOfGroups: Record<NodeId, NodeId> = {};
 
 const alignBranch = (
     state: ViewState,
@@ -18,12 +20,24 @@ const alignBranch = (
         columns: new Set<HTMLElement>(),
     };
     if (nodeId) {
+        const group = state.ui.state.activeBranch.group;
+        lastActiveNodeOfGroups[group] = nodeId;
         alignElement(container, nodeId, behavior, localState, 'both');
         for (const id of state.ui.state.activeBranch.sortedParentNodes) {
             alignElement(container, id, behavior, localState);
         }
         for (const id of state.ui.state.activeBranch.childGroups) {
-            alignElement(container, 'group-' + id, behavior, localState);
+            const lastActiveNodeOfGroup = lastActiveNodeOfGroups[id];
+            if (lastActiveNodeOfGroup) {
+                alignElement(
+                    container,
+                    lastActiveNodeOfGroup,
+                    behavior,
+                    localState,
+                );
+            } else {
+                alignElement(container, 'group-' + id, behavior, localState);
+            }
         }
     }
     for (const column of state.document.columns) {
