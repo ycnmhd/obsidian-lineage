@@ -17,6 +17,8 @@ import { registerFileMenuEvent } from 'src/obsidian/events/workspace/register-fi
 import { registerFileRenameEvent } from 'src/obsidian/events/vault/register-file-move-event';
 import { registerFileDeleteEvent } from 'src/obsidian/events/vault/register-file-delete-event';
 import { addCommands } from 'src/obsidian/commands/add-commands';
+import { loadCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/load-commands';
+import { saveCustomHotkeys } from 'src/stores/hotkeys/effects/save-custom-hotkeys';
 
 export default class Lineage extends Plugin {
     settings: Store<Settings, SettingsActions>;
@@ -32,6 +34,8 @@ export default class Lineage extends Plugin {
         this.register(around(WorkspaceLeaf.prototype, { setViewState }));
         this.registerEvents();
         addCommands(this);
+        loadCommands(this);
+        saveCustomHotkeys(this);
     }
 
     async saveSettings() {

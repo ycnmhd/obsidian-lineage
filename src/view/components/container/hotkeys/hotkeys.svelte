@@ -1,41 +1,27 @@
 <script lang="ts">
-    import {
-        createCommands,
-        hotkeysLang,
-        LineageCommandName
-    } from '../../../actions/keyboard-shortcuts/helpers/create-commands'; // Import the PluginCommand type
     import Hotkey from './components/command.svelte';
-    import { getPlugin, getView } from 'src/view/components/container/context';
+    import { getPlugin } from 'src/view/components/container/context';
+    import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
+    import { onMount } from 'svelte';
     import {
-        detectConflictingHotkeys
-    } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/detect-conflicting-hotkeys';
+        checkForHotkeyConflicts
+    } from 'src/stores/hotkeys/effects/check-for-hotkey-conflicts/check-for-hotkey-conflicts';
+    import { filteredHotkeys } from 'src/stores/hotkeys/derived/filtered-hotkeys';
 
     const plugin = getPlugin();
-    const commands = createCommands(plugin);
-    const view = getView();
-    const usedHotkeys = detectConflictingHotkeys(
-        plugin,
-        Object.values(commands),
-        view.containerEl,
-    );
     let searchTerm = '';
 
-    const entries = Object.keys(commands).map((k) => [
-        hotkeysLang[k as LineageCommandName].toLowerCase(),
-        k,
-    ]);
-    let matches = new Set();
     $: {
-        matches = new Set();
-        if (searchTerm) {
-            const search_term = searchTerm.toLowerCase();
-            for (const [name, key] of entries) {
-                if (name.includes(search_term)) {
-                    matches.add(key);
-                }
-            }
-        }
+        hotkeyStore.dispatch({
+            type: 'UI/SET_SEARCH_TERM',
+            payload: {
+                searchTerm,
+            },
+        });
     }
+    onMount(() => {
+        return checkForHotkeyConflicts(plugin);
+    });
 </script>
 
 <div class="sidebar">
@@ -60,10 +46,8 @@
         </div>
     </div>
     <div class="hotkeys-list">
-        {#each Object.entries(commands) as [key, command]}
-            {#if !matches.size || matches.has(key)}
-                <Hotkey {key} {command} {usedHotkeys} />
-            {/if}
+        {#each $filteredHotkeys as commandHotkeys (commandHotkeys.name)}
+            <Hotkey {commandHotkeys} />
         {/each}
     </div>
     <div class="note">

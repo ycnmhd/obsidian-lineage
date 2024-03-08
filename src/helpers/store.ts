@@ -1,6 +1,10 @@
 import { Invalidator, Unsubscriber, Updater, Writable } from 'svelte/store';
 
-export type Subscriber<T, U> = (value: T, action?: U) => void;
+export type Subscriber<T, U> = (
+    value: T,
+    action?: U,
+    firstRun?: boolean,
+) => void;
 
 export type Reducer<T, U> = (store: T, action: U) => T;
 
@@ -36,7 +40,7 @@ export class Store<T, U> implements Writable<T> {
         invalidate?: Invalidator<T>,
     ): Unsubscriber {
         this.subscribers.add(run);
-        run(this.value);
+        run(this.value, undefined, true);
         return () => {
             this.subscribers.delete(run);
         };
