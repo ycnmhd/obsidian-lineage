@@ -12,10 +12,11 @@
     export let editing: boolean;
 
     const setActive = () => {
-        store.dispatch({
-            type: 'DOCUMENT/SET_ACTIVE_NODE',
-            payload: { id: nodeId },
-        });
+        if (!editing)
+            store.dispatch({
+                type: 'DOCUMENT/SET_ACTIVE_NODE',
+                payload: { id: nodeId },
+            });
     };
     const store = getStore();
     const activeStatusClasses = {

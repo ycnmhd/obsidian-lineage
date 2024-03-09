@@ -1,4 +1,4 @@
-import { Command, MarkdownView } from 'obsidian';
+import { Command, MarkdownView, TFolder } from 'obsidian';
 import Lineage from 'src/main';
 import { lang } from 'src/lang/lang';
 import { slugify } from 'src/helpers/slugify';
@@ -26,17 +26,17 @@ const createCommands = (plugin: Lineage) => {
     commands.push({
         name: lang.create_new_file,
         icon: 'list-tree',
-        checkCallback: (checking) => {
+        callback: async () => {
             const file =
                 plugin.app.workspace.getActiveViewOfType(MarkdownView)?.file ||
                 plugin.app.workspace.getActiveViewOfType(LineageView)?.file;
+            let folder: TFolder | null = null;
             if (file) {
-                if (checking) return true;
-                else {
-                    const folder = file.parent;
-                    if (folder) createNewFile(plugin, folder);
-                }
+                folder = file.parent;
+            } else {
+                folder = plugin.app.vault.getRoot();
             }
+            if (folder) await createNewFile(plugin, folder);
         },
     });
     return commands;

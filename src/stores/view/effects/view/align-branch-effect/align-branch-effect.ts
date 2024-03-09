@@ -2,6 +2,7 @@ import { NodeId } from 'src/stores/view/view-state-type';
 import { ViewStore } from 'src/view/view';
 import { getViewEventType } from 'src/stores/view/helpers/get-view-event-type';
 import { alignBranch } from 'src/stores/view/effects/view/align-branch-effect/helpers/align-branch/align-branch';
+import { debounce } from 'obsidian';
 
 export const lastActiveNodeOfGroups: {
     [columnId: string]: {
@@ -9,6 +10,8 @@ export const lastActiveNodeOfGroups: {
         nodeId: NodeId;
     };
 } = {};
+
+const debounced = debounce(alignBranch, 32);
 
 export const alignBranchEffect = (store: ViewStore, container: HTMLElement) => {
     alignBranch(store.getValue(), container);
@@ -23,7 +26,7 @@ export const alignBranchEffect = (store: ViewStore, container: HTMLElement) => {
             eventType.activeNodeHistory ||
             eventType.search
         ) {
-            alignBranch(state, container);
+            debounced(state, container);
         }
     });
 };

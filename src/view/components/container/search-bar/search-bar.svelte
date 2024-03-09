@@ -28,7 +28,7 @@
                 spellcheck="false"
                 type="search"
                 autofocus="autofocus"
-                on:keydown={(e) => {
+                on:input={(e) => {
                     store.dispatch({
                         type: 'SEARCH/SET_QUERY',
                         payload: {

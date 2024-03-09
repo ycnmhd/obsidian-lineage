@@ -1,10 +1,13 @@
 <script lang="ts">
-	import { saveNodeContentAction } from '../../actions/save-node-content-action';
-	import { getStore } from '../../../../../../../context';
-	import { NodeId } from 'src/stores/view/view-state-type';
-	import { expandableTextareaAction } from '../../actions/expandable-textarea-action';
+    import { saveNodeContentAction } from '../../actions/save-node-content-action';
+    import { getStore } from '../../../../../../../context';
+    import { NodeId } from 'src/stores/view/view-state-type';
+    import { expandableTextareaAction } from '../../actions/expandable-textarea-action';
+    import {
+        scrollTextAreaAction
+    } from 'src/view/components/container/column/components/group/components/card/actions/scroll-text-area-action';
 
-	export let editing: boolean;
+    export let editing: boolean;
     export let node: NodeId;
     const store = getStore();
 </script>
@@ -12,9 +15,11 @@
 <!--the wrapper is used to hide the textarea outline-->
 <div class="wrapper">
     <textarea
+        autofocus="autofocus"
         class="no-outline"
-        use:expandableTextareaAction
-		use:saveNodeContentAction="{{ editing, store, node }}"
+		use:expandableTextareaAction
+        use:saveNodeContentAction="{{ editing, store, node }}"
+        use:scrollTextAreaAction
     />
 </div>
 
@@ -28,6 +33,7 @@
     textarea {
         width: 100%;
         min-height: 100px;
+        max-height: 80vh;
         padding: 6px 12px;
         font-size: 16px;
         background-color: transparent;
