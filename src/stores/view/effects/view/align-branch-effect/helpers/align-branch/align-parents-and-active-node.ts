@@ -2,9 +2,9 @@ import { ViewState } from 'src/stores/view/view-state-type';
 import {
     AlignBranchState,
     alignElement,
-} from 'src/stores/view/effects/align-branch-effect/helpers/align-branch/helpers/align-element';
-import { lastActiveNodeOfGroups } from 'src/stores/view/effects/align-branch-effect/align-branch-effect';
-import { getNodeElement } from 'src/stores/view/effects/align-branch-effect/helpers/align-branch/helpers/get-node-element';
+} from 'src/stores/view/effects/view/align-branch-effect/helpers/align-branch/helpers/align-element';
+import { lastActiveNodeOfGroups } from 'src/stores/view/effects/view/align-branch-effect/align-branch-effect';
+import { getNodeElement } from 'src/stores/view/effects/view/align-branch-effect/helpers/align-branch/helpers/get-node-element';
 
 export const alignParentsAndActiveNode = (
     state: ViewState,

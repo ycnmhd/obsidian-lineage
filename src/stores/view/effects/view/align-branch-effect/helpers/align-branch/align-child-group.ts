@@ -1,7 +1,7 @@
 import { NodeGroup, ViewState } from 'src/stores/view/view-state-type';
-import { alignElement } from 'src/stores/view/effects/align-branch-effect/helpers/align-branch/helpers/align-element';
-import { lastActiveNodeOfGroups } from 'src/stores/view/effects/align-branch-effect/align-branch-effect';
-import { getNodeElement } from 'src/stores/view/effects/align-branch-effect/helpers/align-branch/helpers/get-node-element';
+import { alignElement } from 'src/stores/view/effects/view/align-branch-effect/helpers/align-branch/helpers/align-element';
+import { lastActiveNodeOfGroups } from 'src/stores/view/effects/view/align-branch-effect/align-branch-effect';
+import { getNodeElement } from 'src/stores/view/effects/view/align-branch-effect/helpers/align-branch/helpers/get-node-element';
 
 export const alignChildGroup = (
     state: ViewState,

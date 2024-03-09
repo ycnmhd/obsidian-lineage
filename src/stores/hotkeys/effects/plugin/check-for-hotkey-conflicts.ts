@@ -1,6 +1,6 @@
 import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
 import Lineage from 'src/main';
-import { getUsedHotkeys } from 'src/stores/hotkeys/effects/check-for-hotkey-conflicts/helpers/get-used-hotkeys';
+import { getUsedHotkeys } from 'src/obsidian/helpers/get-used-hotkeys';
 
 export const checkForHotkeyConflicts = (plugin: Lineage) => {
     return hotkeyStore.subscribe((state, action, firstRun) => {

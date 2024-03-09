@@ -1,4 +1,4 @@
-import { Subscriber } from 'src/helpers/store';
+import { Subscriber } from 'src/helpers/store/store';
 import { Invalidator, Unsubscriber } from 'svelte/store';
 
 export type Derivable<DerivedValue, Action extends { type: string }> = {

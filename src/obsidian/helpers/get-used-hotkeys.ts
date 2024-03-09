@@ -1,32 +1,49 @@
 import Lineage from 'src/main';
-import { App, Hotkey } from 'obsidian';
+import { App, Command, Hotkey } from 'obsidian';
 import { hotkeyToString } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/hotkey-to-string';
 
-export type HotkeyDictionary = {
-    [commandId: string]: Hotkey[];
-};
-
 type ExtendedApp = App & {
+    commands: {
+        commands: Record<string, Command>;
+        editorCommands: Record<string, Command>;
+    };
     hotkeyManager: {
-        defaultKeys: HotkeyDictionary;
-        customKeys: HotkeyDictionary;
+        customKeys: Record<string, Hotkey[]>;
     };
 };
 
-const reverseDictionary = (dictionary: HotkeyDictionary) => {
-    const entries = Object.entries(dictionary)
-        .map(([command, hotkeys]) => {
-            return hotkeys.map((hk) => [hotkeyToString(hk), command]);
-        })
-        .filter((x) => x)
-        .flat() as [string, string][];
-    return Object.fromEntries(entries);
-};
+/* [hotkey_string]: command name */
+export type ConflictingHotkeys = Map<string, string>;
 
 export const getUsedHotkeys = (plugin: Lineage) => {
-    const hotkeyManager = (plugin.app as ExtendedApp).hotkeyManager;
-    return {
-        ...reverseDictionary(hotkeyManager.defaultKeys),
-        ...reverseDictionary(hotkeyManager.customKeys),
+    const app = plugin.app as ExtendedApp;
+    const conflicting: ConflictingHotkeys = new Map<string, string>();
+
+    const allCommands = {
+        ...app.commands.commands,
+        ...app.commands.editorCommands,
     };
+    const customHotkeys = Object.fromEntries(
+        Object.entries(app.hotkeyManager.customKeys).map(
+            ([name, hotkeys]) =>
+                [
+                    name,
+                    { hotkeys, name: allCommands[name]?.name || name },
+                ] as const,
+        ),
+    );
+
+    const commands = {
+        ...allCommands,
+        ...customHotkeys,
+    };
+    for (const command of Object.values(commands)) {
+        if (command.hotkeys?.length) {
+            for (const hotkey of command.hotkeys) {
+                const hotkey_string = hotkeyToString(hotkey);
+                conflicting.set(hotkey_string, command.name);
+            }
+        }
+    }
+    return conflicting;
 };

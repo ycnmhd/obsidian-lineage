@@ -1,5 +1,5 @@
 import { CommandHotkeys, HotkeyState } from 'src/stores/hotkeys/hotkey-store';
-import { ConflictingHotkeys } from 'src/stores/hotkeys/effects/check-for-hotkey-conflicts/helpers/get-used-hotkeys';
+import { ConflictingHotkeys } from 'src/obsidian/helpers/get-used-hotkeys';
 
 export type UpdateConflictingHotkeysAction = {
     type: 'SET_CONFLICTING_HOTKEYS';

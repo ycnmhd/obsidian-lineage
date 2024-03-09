@@ -3,27 +3,17 @@
     import { getStore } from 'src/view/components/container/context';
 
     const store = getStore();
-    let searchTerm = '';
-    $: {
-        store.dispatch({
-            type: 'SEARCH/SET_QUERY',
-            payload: {
-                query: searchTerm,
-            },
-        });
 
-    }
 </script>
 
 <div class="search-container">
     <button
         aria-label={'Search'}
-
-        class={$store.search.showInput? 'search-toggle-active':"" }
+        class={'search-toggle ' +
+            ($store.search.showInput ? 'search-toggle-active' : '')}
         data-tooltip-position="bottom"
-        id="toggle-search"
         on:click={() => {
-            store.dispatch({ type: "SEARCH/TOGGLE_INPUT"})
+            store.dispatch({ type: 'SEARCH/TOGGLE_INPUT' });
         }}
     >
         <Search class="svg-icon" size="12" />
@@ -31,20 +21,33 @@
     {#if $store.search.showInput}
         <div class="">
             <input
-                bind:value={searchTerm}
+                value={$store.search.query}
                 class="search-input search-input-element"
                 enterkeyhint="search"
                 placeholder={'Filter'}
                 spellcheck="false"
                 type="search"
                 autofocus="autofocus"
+                on:keydown={(e) => {
+                    store.dispatch({
+                        type: 'SEARCH/SET_QUERY',
+                        payload: {
+                            query: e.target.value,
+                        },
+                    });
+                }}
             />
             <div
-                style={searchTerm?"":"display: none"}
+                style={$store.search.query ? '' : 'display: none'}
                 aria-label={'Clear'}
                 class="search-input-clear-button"
                 on:click={() => {
-                    searchTerm = '';
+                    store.dispatch({
+                        type: 'SEARCH/SET_QUERY',
+                        payload: {
+                            query:"",
+                        },
+                    });
                 }}
             ></div>
         </div>
@@ -72,6 +75,9 @@
         width: 300px;
     }
 
+    .search-toggle {
+        cursor: pointer;
+    }
     .search-toggle-active {
         background-color: var(--color-base-40);
     }

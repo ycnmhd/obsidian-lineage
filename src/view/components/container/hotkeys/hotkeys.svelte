@@ -1,14 +1,8 @@
 <script lang="ts">
     import Hotkey from './components/command.svelte';
-    import { getPlugin } from 'src/view/components/container/context';
     import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
-    import { onMount } from 'svelte';
-    import {
-        checkForHotkeyConflicts
-    } from 'src/stores/hotkeys/effects/check-for-hotkey-conflicts/check-for-hotkey-conflicts';
     import { filteredHotkeys } from 'src/stores/hotkeys/derived/filtered-hotkeys';
 
-    const plugin = getPlugin();
     let searchTerm = '';
 
     $: {
@@ -19,9 +13,6 @@
             },
         });
     }
-    onMount(() => {
-        return checkForHotkeyConflicts(plugin);
-    });
 </script>
 
 <div class="sidebar">

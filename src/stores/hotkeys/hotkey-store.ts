@@ -1,4 +1,4 @@
-import { Store } from 'src/helpers/store';
+import { Store } from 'src/helpers/store/store';
 import { CommandName } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
 import { HotkeyAction, hotkeyReducer } from 'src/stores/hotkeys/hotkey-reducer';
 import { CustomHotkeys } from 'src/stores/settings/settings-type';

@@ -1,4 +1,4 @@
-import { derived } from 'src/helpers/derived';
+import { derived } from 'src/helpers/store/derived';
 import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
 import { hotkeysLang } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
 

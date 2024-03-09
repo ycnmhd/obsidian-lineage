@@ -1,8 +1,8 @@
 import { ViewState } from 'src/stores/view/view-state-type';
-import { AlignBranchState } from 'src/stores/view/effects/align-branch-effect/helpers/align-branch/helpers/align-element';
-import { alignParentsAndActiveNode } from 'src/stores/view/effects/align-branch-effect/helpers/align-branch/align-parents-and-active-node';
-import { alignChildGroup } from 'src/stores/view/effects/align-branch-effect/helpers/align-branch/align-child-group';
-import { alignInactiveColumn } from 'src/stores/view/effects/align-branch-effect/helpers/align-branch/align-inactive-column';
+import { AlignBranchState } from 'src/stores/view/effects/view/align-branch-effect/helpers/align-branch/helpers/align-element';
+import { alignParentsAndActiveNode } from 'src/stores/view/effects/view/align-branch-effect/helpers/align-branch/align-parents-and-active-node';
+import { alignChildGroup } from 'src/stores/view/effects/view/align-branch-effect/helpers/align-branch/align-child-group';
+import { alignInactiveColumn } from 'src/stores/view/effects/view/align-branch-effect/helpers/align-branch/align-inactive-column';
 
 export const alignBranch = (
     state: ViewState,

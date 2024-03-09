@@ -11,14 +11,15 @@ import {
 } from 'src/stores/settings/settings-reducer';
 import { deepMerge } from 'src/helpers/deep-merge';
 import { DEFAULT_SETTINGS } from 'src/stores/settings/default-settings';
-import { Store } from 'src/helpers/store';
+import { Store } from 'src/helpers/store/store';
 import { Settings } from 'src/stores/settings/settings-type';
 import { registerFileMenuEvent } from 'src/obsidian/events/workspace/register-file-menu-event';
 import { registerFileRenameEvent } from 'src/obsidian/events/vault/register-file-move-event';
 import { registerFileDeleteEvent } from 'src/obsidian/events/vault/register-file-delete-event';
 import { addCommands } from 'src/obsidian/commands/add-commands';
 import { loadCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/load-commands';
-import { saveCustomHotkeys } from 'src/stores/hotkeys/effects/save-custom-hotkeys';
+import { saveCustomHotkeys } from 'src/stores/hotkeys/effects/plugin/save-custom-hotkeys';
+import { checkForHotkeyConflicts } from 'src/stores/hotkeys/effects/plugin/check-for-hotkey-conflicts';
 
 export default class Lineage extends Plugin {
     settings: Store<Settings, SettingsActions>;
@@ -35,7 +36,7 @@ export default class Lineage extends Plugin {
         this.registerEvents();
         addCommands(this);
         loadCommands(this);
-        saveCustomHotkeys(this);
+        this.registerEffects();
     }
 
     async saveSettings() {
@@ -58,5 +59,10 @@ export default class Lineage extends Plugin {
         registerFileMenuEvent(this);
         registerFileRenameEvent(this);
         registerFileDeleteEvent(this);
+    }
+
+    private registerEffects() {
+        checkForHotkeyConflicts(this);
+        saveCustomHotkeys(this);
     }
 }

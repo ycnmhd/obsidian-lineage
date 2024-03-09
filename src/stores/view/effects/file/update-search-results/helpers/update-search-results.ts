@@ -40,7 +40,6 @@ export const updateSearchResults = (store: ViewStore, action: ViewAction) => {
                 fuse = new Fuse(items, {
                     keys: ['content'],
                     threshold: 0.4,
-                    minMatchCharLength: 2,
                     shouldSort: true,
                     isCaseSensitive: false,
                     ignoreLocation: true,

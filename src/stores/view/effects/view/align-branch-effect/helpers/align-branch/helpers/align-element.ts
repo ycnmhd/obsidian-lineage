@@ -1,4 +1,4 @@
-import { getCombinedBoundingClientRect } from 'src/stores/view/effects/align-branch-effect/helpers/align-branch/helpers/get-combined-client-rect';
+import { getCombinedBoundingClientRect } from 'src/stores/view/effects/view/align-branch-effect/helpers/align-branch/helpers/get-combined-client-rect';
 
 export type AlignBranchState = { columns: Set<string> };
 export const alignElement = (
@@ -10,6 +10,7 @@ export const alignElement = (
     if (!container) return;
     const isArray = Array.isArray(elements);
     const element = isArray ? elements[0] : elements;
+    if (!element) return;
     const column = element.matchParent('.column') as HTMLElement;
     if (column) {
         const elementRect = isArray
