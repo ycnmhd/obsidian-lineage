@@ -1,132 +1,31 @@
-import {
-    CreateNodeAction,
-    insertNode,
-} from 'src/stores/view/reducers/document/structure/insert-node/insert-node';
+import { insertNode } from 'src/stores/view/reducers/document/structure/insert-node/insert-node';
 import { updateActiveNode } from 'src/stores/view/reducers/document/state/helpers/update-active-node';
-import {
-    DropAction,
-    dropNode,
-} from 'src/stores/view/reducers/document/structure/drop-node/drop-node';
-import {
-    onDragEnd,
-    SetDragCanceled,
-} from 'src/stores/view/reducers/document/state/on-drag-end';
-import {
-    LoadDocumentAction,
-    loadDocumentFromFile,
-} from 'src/stores/view/reducers/document/io/load-document-from-file/load-document-from-file';
+import { dropNode } from 'src/stores/view/reducers/document/structure/drop-node/drop-node';
+import { onDragEnd } from 'src/stores/view/reducers/document/state/on-drag-end';
+import { loadDocumentFromFile } from 'src/stores/view/reducers/document/io/load-document-from-file/load-document-from-file';
 import { resetDocument } from 'src/stores/view/reducers/document/io/reset-document';
-import {
-    setNodeContent,
-    SetNodeContentAction,
-} from 'src/stores/view/reducers/document/content/set-node-content';
-import {
-    onDragStart,
-    SetDragStartedAction,
-} from 'src/stores/view/reducers/document/state/on-drag-start';
-import {
-    enableEditMode,
-    ToggleEditModeAction,
-} from 'src/stores/view/reducers/document/state/enable-edit-mode';
-import {
-    disableEditMode,
-    DisableEditModeAction,
-} from 'src/stores/view/reducers/document/state/disable-edit-mode';
-import {
-    ChangeActiveNodeAction,
-    navigateUsingKeyboard,
-} from 'src/stores/view/reducers/document/state/navigate-using-keyboard';
-import {
-    deleteNode,
-    DeleteNodeAction,
-} from 'src/stores/view/reducers/document/structure/delete-node/delete-node';
-import { NodePosition } from 'src/stores/view/helpers/search/find-node-position';
-import {
-    moveNode,
-    MoveNodeAction,
-} from 'src/stores/view/reducers/document/structure/move-node/move-node';
+import { setNodeContent } from 'src/stores/view/reducers/document/content/set-node-content';
+import { onDragStart } from 'src/stores/view/reducers/document/state/on-drag-start';
+import { enableEditMode } from 'src/stores/view/reducers/document/state/enable-edit-mode';
+import { disableEditMode } from 'src/stores/view/reducers/document/state/disable-edit-mode';
+import { navigateUsingKeyboard } from 'src/stores/view/reducers/document/state/navigate-using-keyboard';
+import { deleteNode } from 'src/stores/view/reducers/document/structure/delete-node/delete-node';
+import { moveNode } from 'src/stores/view/reducers/document/structure/move-node/move-node';
 import { ViewState } from 'src/stores/view/view-state-type';
-import {
-    mergeNode,
-    MergeNodeAction,
-} from 'src/stores/view/reducers/document/structure/merge-node/merge-node';
+import { mergeNode } from 'src/stores/view/reducers/document/structure/merge-node/merge-node';
 import { addSnapshot } from 'src/stores/view/reducers/history/add-snapshot';
-import {
-    selectSnapshot,
-    SelectSnapshotAction,
-} from 'src/stores/view/reducers/history/select-snapshot';
-import {
-    undoAction,
-    UndoRedoAction,
-} from 'src/stores/view/reducers/history/undo-action';
+import { selectSnapshot } from 'src/stores/view/reducers/history/select-snapshot';
+import { undoAction } from 'src/stores/view/reducers/history/undo-action';
 import { getViewEventType } from 'src/stores/view/helpers/get-view-event-type';
 import { redoAction } from 'src/stores/view/reducers/history/redo-action';
 import { addNavigationHistoryItem } from 'src/stores/view/reducers/ui/helpers/add-navigation-history-item';
-import {
-    navigateActiveNode,
-    NavigationAction,
-} from 'src/stores/view/reducers/ui/navigate-active-node';
+import { navigateActiveNode } from 'src/stores/view/reducers/ui/navigate-active-node';
 import { updateTreeState } from 'src/stores/view/reducers/document/state/helpers/update-tree-state';
 
-export type VerticalDirection = 'up' | 'down';
-export type Direction = VerticalDirection | 'right';
-export type AllDirections = Direction | 'left';
-
-export type SavedDocument = {
-    data: string;
-    position: NodePosition | null;
-    frontmatter: string;
-};
-
-type SetActiveNodeAction = {
-    type: 'DOCUMENT/SET_ACTIVE_NODE';
-    payload: {
-        id: string;
-    };
-};
-type ResetStoreAction = { type: 'RESET_STORE' };
-type SetFilePathAction = {
-    type: 'FS/SET_FILE_PATH';
-    payload: {
-        path: string | null;
-    };
-};
-type ToggleHistorySidebarAction = {
-    type: 'UI/TOGGLE_HISTORY_SIDEBAR';
-};
-type ToggleHelpSidebarAction = {
-    type: 'UI/TOGGLE_HELP_SIDEBAR';
-};
-export type DocumentAction =
-    | LoadDocumentAction
-    | CreateNodeAction
-    | ChangeActiveNodeAction
-    | SetActiveNodeAction
-    | ResetStoreAction
-    | DisableEditModeAction
-    | ToggleEditModeAction
-    | SetNodeContentAction
-    | SetDragStartedAction
-    | SetDragCanceled
-    | DropAction
-    | SetFilePathAction
-    | ToggleHistorySidebarAction
-    | ToggleHelpSidebarAction
-    | DeleteNodeAction
-    | MoveNodeAction
-    | MergeNodeAction;
-
-export type HistoryAction = UndoRedoAction | SelectSnapshotAction;
-export type ViewAction = DocumentAction | HistoryAction | NavigationAction;
-
-export type UndoableAction =
-    | SetNodeContentAction
-    | CreateNodeAction
-    | DeleteNodeAction
-    | DropAction
-    | MoveNodeAction
-    | MergeNodeAction
-    | LoadDocumentAction;
+import { setSearchResults } from 'src/stores/view/reducers/search/set-search-results';
+import { setSearchQuery } from 'src/stores/view/reducers/search/set-search-query';
+import { UndoableAction, ViewAction } from 'src/stores/view/view-store-actions';
+import { toggleSearchInput } from 'src/stores/view/reducers/search/toggle-search-input';
 
 const updateViewState = (state: ViewState, action: ViewAction) => {
     // state
@@ -222,10 +121,18 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
             state.document.state,
             state.navigationHistory,
         );
+    } else if (action.type === 'SEARCH/SET_QUERY') {
+        setSearchQuery(state, action.payload.query);
+    } else if (action.type === 'SEARCH/SET_RESULTS') {
+        setSearchResults(state, action.payload.results);
+    } else if (action.type === 'SEARCH/TOGGLE_INPUT') {
+        toggleSearchInput(state);
     }
 
     const event = getViewEventType(action.type);
-    if (saveSnapshot && event.structureAndContent) {
+    const contentShapeCreation =
+        event.content || event.shape || event.creationAndDeletion;
+    if (saveSnapshot && contentShapeCreation) {
         addSnapshot(
             state.document,
             state.history,
@@ -234,7 +141,7 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
         );
     }
     if (
-        event.structureAndContent ||
+        contentShapeCreation ||
         event.activeNodeHistory ||
         event.changeHistory ||
         event.activeNode

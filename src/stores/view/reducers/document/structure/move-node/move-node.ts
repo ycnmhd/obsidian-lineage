@@ -1,5 +1,5 @@
 import { Column, DocumentInstanceState } from 'src/stores/view/view-state-type';
-import { AllDirections } from 'src/stores/view/view-reducer';
+import { AllDirections } from 'src/stores/view/view-store-actions';
 import { changeNodePosition } from 'src/stores/view/reducers/document/structure/helpers/change-node-position';
 import { updateActiveNode } from 'src/stores/view/reducers/document/state/helpers/update-active-node';
 import { findAdjacentNode } from 'src/stores/view/reducers/document/structure/helpers/find-adjacent-node';

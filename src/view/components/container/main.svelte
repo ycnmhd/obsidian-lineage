@@ -8,6 +8,7 @@
     import Container from './container.svelte';
     import Breadcrumbs from './breadcrumbs/breadcrumbs.svelte';
     import NavigationHistory from './navigation-history/navigation-history.svelte';
+    import SearchBar from './search-bar/search-bar.svelte';
 
     export let store: ViewStore;
     export let plugin: Lineage;
@@ -21,10 +22,10 @@
 <div
     class={`lineage__main ${
         $settings.ui.theme === 'dark' ? 'ash-theme-light' : 'ash-theme-dark'
-    }`}
+    } ${$store.search.searching ? "is-loading":""}`}
 >
     <Breadcrumbs />
-    <NavigationHistory/>
+    <NavigationHistory />
     <ControlsBar documentHistory={$store.history} path={$store.file.path} />
     <Container />
     {#if $store.ui.showHistorySidebar && $store.file.path}
@@ -32,6 +33,7 @@
     {:else if $store.ui.showHelpSidebar}
         <Hotkeys />
     {/if}
+    <SearchBar />
 </div>
 
 <style>

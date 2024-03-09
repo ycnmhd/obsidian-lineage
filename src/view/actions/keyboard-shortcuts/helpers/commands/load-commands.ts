@@ -294,6 +294,16 @@ export const loadCommands = (plugin: Lineage) => {
                 { key: 'ArrowDown', modifiers: ['Ctrl', 'Shift'] },
             ],
         },
+        {
+            name: 'toggle_search_input',
+            check: isActive,
+            callback: (store, e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                store.dispatch({ type: 'SEARCH/TOGGLE_INPUT' });
+            },
+            hotkeys: [{ key: '/', modifiers: [] }],
+        },
     ];
     hotkeyStore.dispatch({
         type: 'SETTINGS/LOAD_CUSTOM_HOTKEYS',

@@ -8,7 +8,7 @@ import {
     NodeId,
 } from 'src/stores/view/view-state-type';
 import { createSnapshot } from 'src/stores/view/reducers/history/helpers/create-snapshot';
-import { UndoableAction } from 'src/stores/view/view-reducer';
+import { UndoableAction } from 'src/stores/view/view-store-actions';
 import { removeOldHistoryItems } from 'src/stores/view/reducers/history/helpers/remove-old-history-items';
 import { removeObsoleteHistoryItems } from 'src/stores/view/reducers/history/helpers/remove-obsolete-history-items';
 

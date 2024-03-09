@@ -98,10 +98,12 @@
         />
     </div>
     <div class="save-and-cancel-buttons">
-        <button class="hotkey-button" on:click={reset}
+        <button aria-label="Reset" class="hotkey-button"
+                on:click={reset}
             ><RotateCcw class="svg-icon" size={8} /></button
         >
-        <button class="hotkey-button" on:click={onCancel}
+        <button aria-label="Go back" class="hotkey-button"
+                on:click={onCancel}
             ><X class="svg-icon" size={8} /></button
         >
     </div>

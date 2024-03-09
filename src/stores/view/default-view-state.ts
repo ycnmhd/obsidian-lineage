@@ -47,4 +47,10 @@ export const defaultViewState = (): ViewState => ({
             canGoForward: false,
         },
     },
+    search: {
+        query: '',
+        results: new Set(),
+        searching: false,
+        showInput: false,
+    },
 });

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { File, HelpCircle, HistoryIcon, Moon, RedoIcon, Sun, UndoIcon } from 'lucide-svelte';
+    import { File, HistoryIcon, Keyboard, Moon, RedoIcon, Sun, UndoIcon } from 'lucide-svelte';
     import { getPlugin, getStore } from 'src/view/components/container/context';
     import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
     import { LineageView } from 'src/view/view';
@@ -96,12 +96,12 @@
             {/if}
         </button>
         <button
-            aria-label="Help"
+            aria-label="Keyboard shortcuts"
             class="canvas-control-item"
             data-tooltip-position="left"
             on:click={toggleHelp}
         >
-            <HelpCircle class="svg-icon" />
+            <Keyboard class="svg-icon" />
         </button>
     </div>
 </div>

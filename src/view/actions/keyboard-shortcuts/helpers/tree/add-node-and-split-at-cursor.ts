@@ -1,6 +1,6 @@
 import { ViewStore } from 'src/view/view';
 import Lineage from 'src/main';
-import { Direction } from 'src/stores/view/view-reducer';
+import { Direction } from 'src/stores/view/view-store-actions';
 
 import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/tree/save-node-and-insert-node';
 import { activeTextArea } from 'src/view/components/container/column/components/group/components/card/actions/save-node-content-action';

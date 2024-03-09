@@ -2,7 +2,7 @@ import { Columns, NodeGroup, NodeId } from 'src/stores/view/view-state-type';
 import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
 import { id } from 'src/helpers/id';
 import { traverseDown } from 'src/stores/view/helpers/search/traverse-down';
-import { VerticalDirection } from 'src/stores/view/view-reducer';
+import { VerticalDirection } from 'src/stores/view/view-store-actions';
 
 export const moveOrphanGroupsToANewParent = (
     columns: Columns,

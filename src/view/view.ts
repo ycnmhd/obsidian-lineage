@@ -2,7 +2,7 @@ import { IconName, TextFileView, WorkspaceLeaf } from 'obsidian';
 
 import Component from './components/container/main.svelte';
 import Lineage from '../main';
-import { ViewAction, viewReducer } from 'src/stores/view/view-reducer';
+import { viewReducer } from 'src/stores/view/view-reducer';
 import { alignBranchEffect } from 'src/stores/view/effects/align-branch-effect/align-branch-effect';
 import { Unsubscriber } from 'svelte/store';
 import { saveDocumentEffect } from 'src/stores/view/effects/save-document-effect';
@@ -15,6 +15,8 @@ import { ViewState } from 'src/stores/view/view-state-type';
 import { stores } from 'src/view/helpers/stores-cache';
 import { clone } from 'src/helpers/clone';
 import { extractFrontmatter } from 'src/view/helpers/extract-frontmatter';
+import { ViewAction } from 'src/stores/view/view-store-actions';
+import { updateSearchResultsEffect } from 'src/stores/view/effects/update-search-results/update-search-results-effect';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -139,6 +141,7 @@ export class LineageView extends TextFileView {
         this.onDestroyCallbacks.add(
             alignBranchEffect(this.store, this.container),
         );
+        this.onDestroyCallbacks.add(updateSearchResultsEffect(this.store));
     };
 
     private createStore = () => {

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import classNames from 'classnames';
-	import { Direction } from 'src/stores/view/view-reducer';
+    import classNames from 'classnames';
+    import { Direction } from 'src/stores/view/view-store-actions';
 
-	export let classes = '';
+    export let classes = '';
     export let position: Direction | 'down-right' | 'up-right';
     const positionClasses = {
         up: 'position-top',

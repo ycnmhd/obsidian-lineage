@@ -20,6 +20,7 @@
 <style>
     .column {
         width: fit-content;
+        min-width: 416px;
         height: 100vh;
         overflow-y: scroll;
     }

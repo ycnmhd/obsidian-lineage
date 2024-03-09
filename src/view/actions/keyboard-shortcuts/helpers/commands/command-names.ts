@@ -25,6 +25,7 @@ export const hotkeysLang = {
     move_node_left: 'Move card left',
     merge_with_node_above: 'Merge with card above',
     merge_with_node_below: 'Merge with card below',
+    toggle_search_input: 'Search',
 };
 export type PluginCommand = {
     check: (store: ViewStore) => boolean;

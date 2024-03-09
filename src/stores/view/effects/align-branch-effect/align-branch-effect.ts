@@ -20,9 +20,11 @@ export const alignBranchEffect = (store: ViewStore, container: HTMLElement) => {
         const eventType = getViewEventType(action.type);
         if (
             eventType.activeNode ||
-            eventType.structureAndContent ||
+            eventType.creationAndDeletion ||
+            eventType.shape ||
             eventType.changeHistory ||
-            eventType.activeNodeHistory
+            eventType.activeNodeHistory ||
+            eventType.search
         ) {
             run(state, container);
         }

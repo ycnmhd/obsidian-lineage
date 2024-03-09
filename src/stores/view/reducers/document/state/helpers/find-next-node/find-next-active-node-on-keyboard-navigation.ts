@@ -1,5 +1,5 @@
 import { Column, NodeId } from 'src/stores/view/view-state-type';
-import { AllDirections } from 'src/stores/view/view-reducer';
+import { AllDirections } from 'src/stores/view/view-store-actions';
 import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
 import { findGroupByNodeId } from 'src/stores/view/helpers/search/find-group-by-node-id';
 import { findChildGroup } from 'src/stores/view/helpers/search/find-child-group';

@@ -10,7 +10,12 @@ export const saveDocumentEffect = (
         if (!action) return;
 
         const event = getViewEventType(action.type);
-        if (event.structureAndContent || event.changeHistory) {
+        if (
+            event.creationAndDeletion ||
+            event.shape ||
+            event.content ||
+            event.changeHistory
+        ) {
             await save(action.type);
         }
     });
