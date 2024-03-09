@@ -17,6 +17,7 @@ import { DeleteNodeAction } from 'src/stores/view/reducers/document/structure/de
 import { MoveNodeAction } from 'src/stores/view/reducers/document/structure/move-node/move-node';
 import { MergeNodeAction } from 'src/stores/view/reducers/document/structure/merge-node/merge-node';
 import { ToggleSearchInputAction } from 'src/stores/view/reducers/search/toggle-search-input';
+import { ChangeZoomLevelAction } from 'src/stores/view/reducers/ui/change-zoom-level';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -45,11 +46,14 @@ type ToggleHistorySidebarAction = {
 type ToggleHelpSidebarAction = {
     type: 'UI/TOGGLE_HELP_SIDEBAR';
 };
+
 export type ViewAction =
     | DocumentAction
     | HistoryAction
     | NavigationAction
-    | SearchAction;
+    | SearchAction
+    | UIActions;
+
 export type DocumentAction =
     | LoadDocumentAction
     | CreateNodeAction
@@ -63,8 +67,6 @@ export type DocumentAction =
     | SetDragCanceled
     | DropAction
     | SetFilePathAction
-    | ToggleHistorySidebarAction
-    | ToggleHelpSidebarAction
     | DeleteNodeAction
     | MoveNodeAction
     | MergeNodeAction;
@@ -72,6 +74,7 @@ export type SearchAction =
     | SetSearchQueryAction
     | SetSearchResultsAction
     | ToggleSearchInputAction;
+
 export type HistoryAction = UndoRedoAction | SelectSnapshotAction;
 export type UndoableAction =
     | SetNodeContentAction
@@ -81,3 +84,8 @@ export type UndoableAction =
     | MoveNodeAction
     | MergeNodeAction
     | LoadDocumentAction;
+
+export type UIActions =
+    | ChangeZoomLevelAction
+    | ToggleHelpSidebarAction
+    | ToggleHistorySidebarAction;

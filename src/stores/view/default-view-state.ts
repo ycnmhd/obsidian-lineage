@@ -26,6 +26,7 @@ export const defaultViewState = (): ViewState => ({
         },
         showHistorySidebar: false,
         showHelpSidebar: false,
+        zoomLevel: 1,
     },
     file: {
         path: null,

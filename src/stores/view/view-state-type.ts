@@ -6,6 +6,7 @@ export type ViewState = {
         showHistorySidebar: boolean;
         showHelpSidebar: boolean;
         state: TreeState;
+        zoomLevel: number;
     };
     file: {
         path: string | null;

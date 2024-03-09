@@ -29,6 +29,6 @@
         display: none;
     }
     .column-buffer {
-        height: 60vh;
+        height: 60%
     }
 </style>

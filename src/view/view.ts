@@ -17,6 +17,7 @@ import { clone } from 'src/helpers/clone';
 import { extractFrontmatter } from 'src/view/helpers/extract-frontmatter';
 import { ViewAction } from 'src/stores/view/view-store-actions';
 import { updateSearchResultsEffect } from 'src/stores/view/effects/file/update-search-results/update-search-results-effect';
+import { changeZoomLevelEffect } from 'src/stores/view/effects/view/change-zoom-level-effect';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -138,6 +139,9 @@ export class LineageView extends TextFileView {
         );
         this.onDestroyCallbacks.add(
             alignBranchEffect(this.store, this.container),
+        );
+        this.onDestroyCallbacks.add(
+            changeZoomLevelEffect(this.store, this.container),
         );
         if (!fileHasAStore) {
             saveDocumentEffect(this.store, this.requestSaveWrapper);

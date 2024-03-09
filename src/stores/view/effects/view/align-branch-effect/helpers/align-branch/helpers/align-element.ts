@@ -1,4 +1,8 @@
 import { getCombinedBoundingClientRect } from 'src/stores/view/effects/view/align-branch-effect/helpers/align-branch/helpers/get-combined-client-rect';
+import {
+    restoreZoom,
+    suspendZoom,
+} from 'src/stores/view/effects/view/align-branch-effect/helpers/align-branch/helpers/restore-zoom';
 
 export type AlignBranchState = { columns: Set<string> };
 export const alignElement = (
@@ -12,7 +16,9 @@ export const alignElement = (
     const element = isArray ? elements[0] : elements;
     if (!element) return;
     const column = element.matchParent('.column') as HTMLElement;
+    const columns = column.matchParent('.columns') as HTMLElement;
     if (column) {
+        const zoomStyle = suspendZoom(column, columns);
         const elementRect = isArray
             ? getCombinedBoundingClientRect(elements)
             : element.getBoundingClientRect();
@@ -40,6 +46,7 @@ export const alignElement = (
                 behavior,
             });
         }
+        restoreZoom(column, columns, zoomStyle);
         return column.id;
     }
 };

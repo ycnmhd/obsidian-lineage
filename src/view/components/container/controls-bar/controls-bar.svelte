@@ -1,11 +1,25 @@
 <script lang="ts">
-    import { File, HistoryIcon, Keyboard, Moon, RedoIcon, Sun, UndoIcon } from 'lucide-svelte';
-    import { getPlugin, getStore } from 'src/view/components/container/context';
+    import {
+        File,
+        HistoryIcon,
+        Keyboard,
+        Maximize,
+        Moon,
+        RedoIcon,
+        RotateCcw,
+        Sun,
+        UndoIcon,
+        ZoomIn,
+        ZoomOut
+    } from 'lucide-svelte';
+    import { getPlugin, getStore, getView } from 'src/view/components/container/context';
     import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
     import { LineageView } from 'src/view/view';
     import { lang } from 'src/lang/lang';
     import { DocumentHistory } from 'src/stores/view/view-state-type';
+    import { maxZoomLevel, minZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
 
+    const view = getView();
     const store = getStore();
     export let documentHistory: DocumentHistory;
     export let path: string | null;
@@ -36,6 +50,42 @@
         const file =
             plugin.app.workspace.getActiveViewOfType(LineageView)?.file;
         if (file) toggleFileViewType(plugin, file, undefined);
+    };
+    const zoomIn = () => {
+        store.dispatch({
+            type: 'UI/CHANGE_ZOOM_LEVEL',
+            payload: { direction: 'in' },
+        });
+    };
+    const zoomOut = () => {
+        store.dispatch({
+            type: 'UI/CHANGE_ZOOM_LEVEL',
+            payload: { direction: 'out' },
+        });
+    };
+
+    const restoreZoom = () => {
+        store.dispatch({
+            type: 'UI/CHANGE_ZOOM_LEVEL',
+            payload: { value: 1 },
+        });
+    };
+
+    const fitToScale = () => {
+        restoreZoom();
+        const columns = Array.from(
+            view.containerEl.querySelectorAll('.column'),
+        );
+        if (columns.length) {
+            const scrolls = columns.map((c) => c.scrollHeight).sort();
+            const biggest = scrolls[scrolls.length - 1];
+            // eslint-disable-next-line no-undef
+            const scale = window.innerHeight / biggest;
+            store.dispatch({
+                type: 'UI/CHANGE_ZOOM_LEVEL',
+                payload: { value: scale },
+            });
+        }
     };
 </script>
 
@@ -80,6 +130,42 @@
             on:click={handleNextClick}
         >
             <RedoIcon class="svg-icon" />
+        </button>
+    </div>
+    <div class="canvas-control-group">
+        <button
+            aria-label="zoom in"
+            class="canvas-control-item"
+            data-tooltip-position="left"
+            disabled={$store.ui.zoomLevel === maxZoomLevel}
+            on:click={zoomIn}
+        >
+            <ZoomIn class="svg-icon" />
+        </button>
+        <button
+            aria-label="Restore zoom level"
+            class="canvas-control-item"
+            data-tooltip-position="left"
+            on:click={restoreZoom}
+        >
+            <RotateCcw class="svg-icon" />
+        </button>
+        <button
+            aria-label="Restore zoom level"
+            class="canvas-control-item"
+            data-tooltip-position="left"
+            on:click={fitToScale}
+        >
+            <Maximize class="svg-icon" />
+        </button>
+        <button
+            aria-label="Zoom out"
+            class="canvas-control-item"
+            data-tooltip-position="left"
+            disabled={$store.ui.zoomLevel === minZoomLevel}
+            on:click={zoomOut}
+        >
+            <ZoomOut class="svg-icon" />
         </button>
     </div>
     <div class="canvas-control-group">
