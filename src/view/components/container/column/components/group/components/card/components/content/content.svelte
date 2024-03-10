@@ -46,7 +46,7 @@
         min-height: 100px;
         padding: 6px;
         font-size: 16px;
-		padding-left: 16px
+		padding-left: 12px
     }
     .active {
         color: var(--color-active-node);

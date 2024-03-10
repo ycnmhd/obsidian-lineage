@@ -10,8 +10,8 @@
     const view = getView();
     export let nodeId: string;
     export let activeStatus: ActiveStatus | null;
-    
-    const openFileAndJumpToLine = async (file: TFile, line: number) => {
+
+    const openFileAndJumpToLine = async (file: TFile, line: number,ch: number) => {
         const leaf = plugin.app.workspace.getLeaf('split');
         plugin.settings.dispatch({
             type: 'SET_DOCUMENT_TYPE_TO_MARKDOWN',
@@ -19,7 +19,7 @@
         });
         await leaf.openFile(file);
         const markdownView = leaf.view as MarkdownView;
-        markdownView.editor.setCursor({ line, ch: 0 });
+        markdownView.editor.setCursor({ line, ch });
         plugin.settings.dispatch({
             type: 'SET_DOCUMENT_TYPE_TO_TREE',
             payload: { path: file.path },
@@ -35,7 +35,9 @@
             if (line.startsWith('<!--')) {
                 const section = parseDelimiter(line);
                 if (section && section[2] === treeIndex) {
-                    await openFileAndJumpToLine(view.file, i + 1);
+                    const nextLineIndex = i+1;
+                    const nextLine = lines[nextLineIndex]||"";
+                    await openFileAndJumpToLine(view.file, nextLineIndex,nextLine.length);
                 }
             }
         }
