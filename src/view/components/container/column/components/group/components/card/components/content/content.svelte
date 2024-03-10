@@ -5,7 +5,7 @@
 		markdownPreviewAction
 	} from 'src/view/components/container/column/components/group/components/card/components/content/actions/markdown-preview-action';
 
-	export let active: ActiveStatus;
+	export let active: ActiveStatus | null;
 
     export let content: string;
     // eslint-disable-next-line no-undef
@@ -35,7 +35,7 @@
 </script>
 
 <div
-    class={'lineage__card content markdown-preview-view ' + classes[active]}
+    class={'lineage__card content markdown-preview-view ' + (active?classes[active]:'')}
     on:click={onClick}
 	use:markdownPreviewAction={content}
 ></div>
@@ -46,6 +46,7 @@
         min-height: 100px;
         padding: 6px;
         font-size: 16px;
+		padding-left: 16px
     }
     .active {
         color: var(--color-active-node);

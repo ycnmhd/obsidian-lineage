@@ -34,7 +34,7 @@
         width: 100%;
         min-height: 100px;
         max-height: 80vh;
-        padding: 6px 12px;
+        padding: 6px 16px;
         font-size: 16px;
         background-color: transparent;
         resize: none;

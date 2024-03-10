@@ -1,4 +1,5 @@
 import { UndoableAction } from 'src/stores/view/view-store-actions';
+import { TreeIndexDict } from 'src/stores/view/effects/file/update-tree-index/calculate-tree-index';
 
 export type ViewState = {
     document: DocumentState;
@@ -7,6 +8,7 @@ export type ViewState = {
         showHelpSidebar: boolean;
         state: TreeState;
         zoomLevel: number;
+        treeIndex: TreeIndexDict;
     };
     file: {
         path: string | null;
@@ -33,7 +35,6 @@ export type Column = {
     id: string;
     groups: NodeGroup[];
 };
-export type Columns = Column[];
 
 export type NodeGroup = {
     parentId: string;
@@ -42,6 +43,7 @@ export type NodeGroup = {
 
 export type NodeId = string;
 
+export type Columns = Column[];
 export type Content = {
     [nodeId: string]: null | {
         content: string;

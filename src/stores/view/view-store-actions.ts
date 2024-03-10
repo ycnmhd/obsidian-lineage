@@ -18,6 +18,7 @@ import { MoveNodeAction } from 'src/stores/view/reducers/document/structure/move
 import { MergeNodeAction } from 'src/stores/view/reducers/document/structure/merge-node/merge-node';
 import { ToggleSearchInputAction } from 'src/stores/view/reducers/search/toggle-search-input';
 import { ChangeZoomLevelAction } from 'src/stores/view/reducers/ui/change-zoom-level';
+import { SetTreeIndex } from 'src/stores/view/reducers/ui/set-tree-index';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -88,4 +89,5 @@ export type UndoableAction =
 export type UIActions =
     | ChangeZoomLevelAction
     | ToggleHelpSidebarAction
-    | ToggleHistorySidebarAction;
+    | ToggleHistorySidebarAction
+    | SetTreeIndex;

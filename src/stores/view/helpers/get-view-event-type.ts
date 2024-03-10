@@ -34,10 +34,11 @@ const searchEvents = new Set<ViewAction['type']>([
     'SEARCH/SET_QUERY',
     'SEARCH/SET_RESULTS',
 ]);
+const zoomEvents = new Set<ViewAction['type']>(['UI/CHANGE_ZOOM_LEVEL']);
 
 const cachedResults: { [key: string]: EventType } = {};
 
-type EventType = {
+export type EventType = {
     content?: boolean;
     shape?: boolean;
     creationAndDeletion?: boolean;
@@ -45,6 +46,7 @@ type EventType = {
     changeHistory?: boolean;
     activeNode?: boolean;
     search?: boolean;
+    zoom?: boolean;
 };
 export const getViewEventType = (type: ViewAction['type']): EventType => {
     if (cachedResults[type]) {
@@ -60,7 +62,7 @@ export const getViewEventType = (type: ViewAction['type']): EventType => {
     else if (historyEvents.has(type)) result = { changeHistory: true };
     else if (stateEvents.has(type)) result = { activeNode: true };
     else if (searchEvents.has(type)) result = { search: true };
-
+    else if (zoomEvents.has(type)) result = { zoom: true };
     if (!result) result = {};
 
     cachedResults[type] = result;

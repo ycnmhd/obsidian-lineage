@@ -27,6 +27,7 @@ import { setSearchQuery } from 'src/stores/view/reducers/search/set-search-query
 import { UndoableAction, ViewAction } from 'src/stores/view/view-store-actions';
 import { toggleSearchInput } from 'src/stores/view/reducers/search/toggle-search-input';
 import { changeZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
+import { setTreeIndex } from 'src/stores/view/reducers/ui/set-tree-index';
 
 const updateViewState = (state: ViewState, action: ViewAction) => {
     // state
@@ -130,6 +131,8 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
         toggleSearchInput(state);
     } else if (action.type === 'UI/CHANGE_ZOOM_LEVEL') {
         changeZoomLevel(state, action.payload);
+    } else if (action.type === 'UI/SET_TREE_INDEX') {
+        setTreeIndex(state.ui, action.payload.treeIndex);
     }
 
     const event = getViewEventType(action.type);

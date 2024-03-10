@@ -24,7 +24,8 @@ export const alignBranchEffect = (store: ViewStore, container: HTMLElement) => {
             eventType.shape ||
             eventType.changeHistory ||
             eventType.activeNodeHistory ||
-            eventType.search
+            eventType.search ||
+            eventType.zoom
         ) {
             debounced(state, container);
         }
