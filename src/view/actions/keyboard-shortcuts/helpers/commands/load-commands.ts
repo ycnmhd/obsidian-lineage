@@ -304,6 +304,58 @@ export const loadCommands = (plugin: Lineage) => {
             },
             hotkeys: [{ key: '/', modifiers: [] }],
         },
+        {
+            name: 'go_to_beginning_of_group',
+            check: isActive,
+            callback: (store, e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                store.dispatch({
+                    type: 'DOCUMENT/JUMP_TO_NODE',
+                    payload: { target: 'start-of-group' },
+                });
+            },
+            hotkeys: [{ key: 'PageUp', modifiers: [] }],
+        },
+        {
+            name: 'go_to_end_of_group',
+            check: isActive,
+            callback: (store, e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                store.dispatch({
+                    type: 'DOCUMENT/JUMP_TO_NODE',
+                    payload: { target: 'end-of-group' },
+                });
+            },
+            hotkeys: [{ key: 'PageDown', modifiers: [] }],
+        },
+        {
+            name: 'go_to_beginning_of_column',
+            check: isActive,
+            callback: (store, e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                store.dispatch({
+                    type: 'DOCUMENT/JUMP_TO_NODE',
+                    payload: { target: 'start-of-column' },
+                });
+            },
+            hotkeys: [{ key: 'Home', modifiers: [] }],
+        },
+        {
+            name: 'go_to_end_of_column',
+            check: isActive,
+            callback: (store, e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                store.dispatch({
+                    type: 'DOCUMENT/JUMP_TO_NODE',
+                    payload: { target: 'end-of-column' },
+                });
+            },
+            hotkeys: [{ key: 'End', modifiers: [] }],
+        },
     ];
     hotkeyStore.dispatch({
         type: 'SETTINGS/LOAD_CUSTOM_HOTKEYS',

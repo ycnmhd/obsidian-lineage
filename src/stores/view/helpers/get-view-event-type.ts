@@ -18,6 +18,7 @@ const shapeEvents = new Set<ViewAction['type']>([
 export const stateEvents = new Set<ViewAction['type']>([
     'DOCUMENT/SET_ACTIVE_NODE',
     'DOCUMENT/NAVIGATE_USING_KEYBOARD',
+    'DOCUMENT/JUMP_TO_NODE',
 ]);
 const historyEvents = new Set<ViewAction['type']>([
     'HISTORY/APPLY_NEXT_SNAPSHOT',

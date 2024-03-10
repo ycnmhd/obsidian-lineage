@@ -26,6 +26,10 @@ export const hotkeysLang = {
     merge_with_node_above: 'Merge with card above',
     merge_with_node_below: 'Merge with card below',
     toggle_search_input: 'Search',
+    go_to_beginning_of_group: 'Go to beginning of group',
+    go_to_end_of_group: 'Go to end of group',
+    go_to_beginning_of_column: 'Go to beginning of column',
+    go_to_end_of_column: 'Go to end of column',
 };
 export type PluginCommand = {
     check: (store: ViewStore) => boolean;

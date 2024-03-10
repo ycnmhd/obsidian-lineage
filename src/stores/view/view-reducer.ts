@@ -28,6 +28,7 @@ import { UndoableAction, ViewAction } from 'src/stores/view/view-store-actions';
 import { toggleSearchInput } from 'src/stores/view/reducers/search/toggle-search-input';
 import { changeZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
 import { setTreeIndex } from 'src/stores/view/reducers/ui/set-tree-index';
+import { jumpToNode } from 'src/stores/view/reducers/document/state/jump-to-node';
 
 const updateViewState = (state: ViewState, action: ViewAction) => {
     // state
@@ -133,11 +134,13 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
         changeZoomLevel(state, action.payload);
     } else if (action.type === 'UI/SET_TREE_INDEX') {
         setTreeIndex(state.ui, action.payload.treeIndex);
+    } else if (action.type === 'DOCUMENT/JUMP_TO_NODE') {
+        jumpToNode(state.document.columns, state.document.state, action);
     }
 
-    const event = getViewEventType(action.type);
+    const eventType = getViewEventType(action.type);
     const contentShapeCreation =
-        event.content || event.shape || event.creationAndDeletion;
+        eventType.content || eventType.shape || eventType.creationAndDeletion;
     if (saveSnapshot && contentShapeCreation) {
         addSnapshot(
             state.document,
@@ -148,9 +151,9 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
     }
     if (
         contentShapeCreation ||
-        event.activeNodeHistory ||
-        event.changeHistory ||
-        event.activeNode
+        eventType.activeNodeHistory ||
+        eventType.changeHistory ||
+        eventType.activeNode
     )
         updateTreeState(
             state.document.columns,
@@ -158,7 +161,7 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
             state.document.state.activeNode,
             isNewNode,
         );
-    if (!event.activeNodeHistory) {
+    if (!eventType.activeNodeHistory) {
         addNavigationHistoryItem(
             state.navigationHistory,
             state.document.content,

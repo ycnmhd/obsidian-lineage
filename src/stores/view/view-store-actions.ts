@@ -19,6 +19,7 @@ import { MergeNodeAction } from 'src/stores/view/reducers/document/structure/mer
 import { ToggleSearchInputAction } from 'src/stores/view/reducers/search/toggle-search-input';
 import { ChangeZoomLevelAction } from 'src/stores/view/reducers/ui/change-zoom-level';
 import { SetTreeIndex } from 'src/stores/view/reducers/ui/set-tree-index';
+import { JumpToNodeAction } from 'src/stores/view/reducers/document/state/jump-to-node';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -53,13 +54,12 @@ export type ViewAction =
     | HistoryAction
     | NavigationAction
     | SearchAction
-    | UIActions;
+    | UIActions
+    | NodeSelectionAction;
 
 export type DocumentAction =
     | LoadDocumentAction
     | CreateNodeAction
-    | ChangeActiveNodeAction
-    | SetActiveNodeAction
     | ResetStoreAction
     | DisableEditModeAction
     | ToggleEditModeAction
@@ -71,6 +71,12 @@ export type DocumentAction =
     | DeleteNodeAction
     | MoveNodeAction
     | MergeNodeAction;
+
+export type NodeSelectionAction =
+    | JumpToNodeAction
+    | ChangeActiveNodeAction
+    | SetActiveNodeAction;
+
 export type SearchAction =
     | SetSearchQueryAction
     | SetSearchResultsAction
