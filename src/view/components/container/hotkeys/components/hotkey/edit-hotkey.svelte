@@ -90,7 +90,7 @@
         </div>
         <input
             bind:value={key}
-            class="search-input input"
+            class="search-input input hotkey-key"
             on:keydown={onKeyDown}
             placeholder={'Key'}
             spellcheck="false"
@@ -153,5 +153,10 @@
         box-shadow: none;
         padding: 2px;
         cursor: pointer;
+    }
+    .hotkey-key{
+        color: lightgrey;
+        background-color: #175c5a;
+        border-color: #227f7d
     }
 </style>

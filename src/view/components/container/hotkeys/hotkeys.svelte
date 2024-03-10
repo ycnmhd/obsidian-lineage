@@ -1,44 +1,14 @@
 <script lang="ts">
-    import Hotkey from './components/command.svelte';
-    import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
     import { filteredHotkeys } from 'src/stores/hotkeys/derived/filtered-hotkeys';
-
-    let searchTerm = '';
-
-    $: {
-        hotkeyStore.dispatch({
-            type: 'UI/SET_SEARCH_TERM',
-            payload: {
-                searchTerm,
-            },
-        });
-    }
+    import Group from './group.svelte';
+    import Front from './front.svelte';
 </script>
 
 <div class="sidebar">
-    <div class="front">
-        <span class="title">Keyboard shortcuts </span>
-        <div class="search-input-container">
-            <input
-                bind:value={searchTerm}
-                class="search-input"
-                enterkeyhint="search"
-                placeholder={'Filter'}
-                spellcheck="false"
-                type="search"
-            />
-            <div
-                aria-label={'Clear'}
-                class="search-input-clear-button"
-                on:click={() => {
-                    searchTerm = '';
-                }}
-            ></div>
-        </div>
-    </div>
-    <div class="hotkeys-list">
-        {#each $filteredHotkeys as commandHotkeys (commandHotkeys.name)}
-            <Hotkey {commandHotkeys} />
+    <Front />
+    <div class="groups">
+        {#each Object.entries($filteredHotkeys) as [groupName, group] (groupName)}
+            <Group {groupName} {group} />
         {/each}
     </div>
     <div class="note">
@@ -50,36 +20,25 @@
 <style>
     .sidebar {
         width: 350px;
-        background-color: var(--background-secondary);
+        background-color: var(--background-primary);
         position: absolute;
         right: var(--sidebar-right);
         top: var(--size-4-2);
         padding: var(--size-4-2) 0;
-    }
-
-    .hotkeys-list {
         display: flex;
         flex-direction: column;
-        gap: 5px;
-        max-height: 200px;
-        overflow-y: auto;
-        padding: var(--size-4-2);
+        gap: var(--size-4-2)
     }
 
-    .front {
+    .groups {
+        padding:0 var(--size-4-2);
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        padding: 12px var(--size-4-2);
+        flex-direction: column;
+        gap: var(--size-4-2);
+        max-height: 400px;
+        overflow-y: auto;
     }
-    .title {
-        font-size: 16px;
-        color: var(--color-base-70);
-    }
-    .search-input-container {
-        width: 150px;
-    }
+
     .note {
         font-size: 12px;
         color: var(--color-base-40);

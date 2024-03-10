@@ -11,10 +11,10 @@
         ><Pen class="svg-icon" size={8} /></button
     >
 </div>
+<kbd class="hotkey-key">{hotkey.key}</kbd>
 {#each hotkey.modifiers as modifier}
     <kbd>{modifier}</kbd>
 {/each}
-<kbd>{hotkey.key}</kbd>
 
 <style>
     .hotkey-buttons {
@@ -43,5 +43,9 @@
     }
     .hotkey-buttons:hover {
         opacity: 0.8;
+    }
+    .hotkey-key {
+        color: lightgrey;
+        background-color: #175c5a;
     }
 </style>

@@ -28,7 +28,6 @@
     {#if editing}
         <EditHotkey
             {hotkey}
-            onSave={() => (editing = false)}
             onCancel={() => (editing = false)}
             {isPrimary}
             {commandName}
