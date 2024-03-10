@@ -31,7 +31,7 @@
         --node-width: 400px;
         --floating-button-bg: #dbdbdb;
         --position-tb: -10px;
-        --position-lr: -5px;
+        --position-lr: -4px;
     }
     button {
         color: var(--color-acive-node);
@@ -69,11 +69,11 @@
     }
 
     .position-bottom-right {
-        bottom: var(--position-lr);
+        top: var(--position-lr);
         right: var(--position-lr);
     }
     .position-top-right {
         top: var(--position-lr);
-        right: var(--position-lr);
+        right: 16px;
     }
 </style>
