@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { getPlugin, getStore } from 'src/view/components/container/context';
-    import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
-    import {
-        markdownPreviewAction
-    } from 'src/view/components/container/column/components/group/components/card/components/content/actions/markdown-preview-action';
+	import { getPlugin, getStore } from 'src/view/components/container/context';
+	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
+	import {
+		markdownPreviewAction
+	} from 'src/view/components/container/column/components/group/components/card/components/content/actions/markdown-preview-action';
 
-    export let active: ActiveStatus | null;
+	export let active: ActiveStatus | null;
 
     export let content: string;
     // eslint-disable-next-line no-undef
@@ -35,7 +35,7 @@
 </script>
 
 <div
-    class={'lineage__card content markdown-preview-view ' + (active?classes[active]:'')}
+    class={' content markdown-preview-view ' + (active?classes[active]:'')}
     data-active={active||"inactive"}
     on:click={onClick}
 	use:markdownPreviewAction={content}
