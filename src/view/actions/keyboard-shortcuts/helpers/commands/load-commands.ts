@@ -7,6 +7,7 @@ import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpe
 import { mergeNode } from 'src/view/actions/keyboard-shortcuts/helpers/tree/merge-node';
 import { PluginCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
 import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
+import { moveNode } from 'src/view/actions/keyboard-shortcuts/helpers/tree/move-node';
 
 export const pluginCommands: {
     current: PluginCommand[] | null;
@@ -220,10 +221,7 @@ export const loadCommands = (plugin: Lineage) => {
             name: 'move_node_up',
             check: isActive,
             callback: (store) => {
-                store.dispatch({
-                    type: 'DOCUMENT/MOVE_NODE',
-                    payload: { direction: 'up' },
-                });
+                moveNode(store, 'up');
             },
             hotkeys: [
                 { key: 'K', modifiers: ['Alt', 'Shift'] },
@@ -234,10 +232,7 @@ export const loadCommands = (plugin: Lineage) => {
             name: 'move_node_down',
             check: isActive,
             callback: (store) => {
-                store.dispatch({
-                    type: 'DOCUMENT/MOVE_NODE',
-                    payload: { direction: 'down' },
-                });
+                moveNode(store, 'down');
             },
             hotkeys: [
                 { key: 'J', modifiers: ['Alt', 'Shift'] },
@@ -248,10 +243,7 @@ export const loadCommands = (plugin: Lineage) => {
             name: 'move_node_right',
             check: isActive,
             callback: (store) => {
-                store.dispatch({
-                    type: 'DOCUMENT/MOVE_NODE',
-                    payload: { direction: 'right' },
-                });
+                moveNode(store, 'right');
             },
             hotkeys: [
                 { key: 'L', modifiers: ['Alt', 'Shift'] },
@@ -262,10 +254,7 @@ export const loadCommands = (plugin: Lineage) => {
             name: 'move_node_left',
             check: isActive,
             callback: (store) => {
-                store.dispatch({
-                    type: 'DOCUMENT/MOVE_NODE',
-                    payload: { direction: 'left' },
-                });
+                moveNode(store, 'left');
             },
             hotkeys: [
                 { key: 'H', modifiers: ['Alt', 'Shift'] },
