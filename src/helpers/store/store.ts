@@ -8,15 +8,26 @@ export type Subscriber<T, U> = (
 
 export type Reducer<T, U> = (store: T, action: U) => T;
 
+export type OnError<U> = (
+    error: Error,
+    location: 'reducer' | 'subscriber',
+    action?: U,
+) => void;
+
 export class Store<T, U> implements Writable<T> {
     private value: T;
     private subscribers: Set<Subscriber<T, U>> = new Set();
     private isProcessing: boolean = false;
     private actionQueue: U[] = [];
 
-    constructor(initialValue: T, reducer?: Reducer<T, U>) {
+    constructor(
+        initialValue: T,
+        reducer?: Reducer<T, U>,
+        onError?: OnError<U>,
+    ) {
         this.value = initialValue;
         if (reducer) this.reducer = reducer;
+        if (onError) this.onError = onError;
     }
 
     getValue(): T {
@@ -40,7 +51,12 @@ export class Store<T, U> implements Writable<T> {
         invalidate?: Invalidator<T>,
     ): Unsubscriber {
         this.subscribers.add(run);
-        run(this.value, undefined, true);
+        try {
+            run(this.value, undefined, true);
+        } catch (error) {
+            this.onError(error, 'subscriber');
+        }
+
         return () => {
             this.subscribers.delete(run);
         };
@@ -55,17 +71,27 @@ export class Store<T, U> implements Writable<T> {
         this.isProcessing = true;
         while (this.actionQueue.length > 0) {
             const action = this.actionQueue.shift();
-            this.value = this.reducer(this.value, action!);
-            this.notifySubscribers(action);
+            try {
+                this.value = this.reducer(this.value, action!);
+                this.notifySubscribers(action);
+            } catch (error) {
+                this.onError(error, 'reducer', action);
+            }
         }
         this.isProcessing = false;
     }
 
     private readonly reducer: Reducer<T, U> = () => this.value;
+    // eslint-disable-next-line no-console
+    private readonly onError: OnError<U> = (error) => console.error(error);
 
     private notifySubscribers(action?: U): void {
         for (const subscriber of this.subscribers) {
-            subscriber(this.value, action);
+            try {
+                subscriber(this.value, action);
+            } catch (error) {
+                this.onError(error, 'subscriber', action);
+            }
         }
     }
 }

@@ -40,7 +40,7 @@
 <style>
     .hotkey {
         padding: 5px;
-        background-color: var(--color-base-60);
+        background-color: var(--color-base-50);
         display: flex;
         gap: 5px;
         border-radius: 3px;

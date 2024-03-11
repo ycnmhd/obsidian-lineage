@@ -6,6 +6,7 @@ export const calculateColumnTreeIndexes = (
     columns: Column[],
 ): TreeIndexDict => {
     const treeIndexDict: TreeIndexDict = {};
+    if (columns.length === 0) return treeIndexDict;
 
     for (let nI = 0; nI < columns[0].groups[0].nodes.length; nI++) {
         const node = columns[0].groups[0].nodes[nI];

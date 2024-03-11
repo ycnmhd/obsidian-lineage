@@ -45,7 +45,7 @@
         opacity: 0.8;
     }
     .hotkey-key {
-        color: lightgrey;
+        color: var(--text-on-accent);
         background-color: #175c5a;
     }
 </style>

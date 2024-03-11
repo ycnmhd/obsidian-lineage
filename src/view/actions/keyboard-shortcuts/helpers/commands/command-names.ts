@@ -80,4 +80,3 @@ export const hotkeysGroups: Record<CommandName, GroupName> = Object.fromEntries(
         .map(([group, commands]) => Array.from(commands).map((c) => [c, group]))
         .flat(),
 );
-console.log(hotkeysGroups);

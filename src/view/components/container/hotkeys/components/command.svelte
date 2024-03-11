@@ -23,7 +23,7 @@
         justify-content: space-between;
         border-radius: 4px;
         gap: 8px;
-        background-color: var(--color-base-70);
+        background-color: var(--color-base-30);
     }
     .hotkeys {
         display: flex;
@@ -34,7 +34,7 @@
 
     .label {
         font-size: 14px;
-        color: var(--color-base-20);
+        color: var(--text-normal);
         display: block;
     }
 </style>

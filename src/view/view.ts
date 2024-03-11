@@ -1,4 +1,4 @@
-import { IconName, TextFileView, WorkspaceLeaf } from 'obsidian';
+import { IconName, Notice, TextFileView, WorkspaceLeaf } from 'obsidian';
 
 import Component from './components/container/main.svelte';
 import Lineage from '../main';
@@ -8,7 +8,7 @@ import { Unsubscriber } from 'svelte/store';
 import { saveDocumentEffect } from 'src/stores/view/effects/file/save-document-effect';
 import { columnsToJsonTree } from 'src/stores/view/helpers/json-to-md/columns-to-json/columns-to-json-tree';
 import { jsonToMarkdown } from 'src/stores/view/helpers/json-to-md/json-to-makdown/json-to-markdown';
-import { Store } from 'src/helpers/store/store';
+import { OnError, Store } from 'src/helpers/store/store';
 import { defaultViewState } from 'src/stores/view/default-view-state';
 import { bringFocusToContainer } from 'src/stores/view/effects/view/bring-focus-to-container';
 import { ViewState } from 'src/stores/view/view-state-type';
@@ -19,6 +19,7 @@ import { ViewAction } from 'src/stores/view/view-store-actions';
 import { updateSearchResultsEffect } from 'src/stores/view/effects/file/update-search-results/update-search-results-effect';
 import { changeZoomLevelEffect } from 'src/stores/view/effects/view/change-zoom-level-effect';
 import { updateTreeIndexEffect } from 'src/stores/view/effects/file/update-tree-index/update-tree-index-effect';
+import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -36,7 +37,11 @@ export class LineageView extends TextFileView {
         private plugin: Lineage,
     ) {
         super(leaf);
-        this.store = new Store(defaultViewState(), viewReducer);
+        this.store = new Store(
+            defaultViewState(),
+            viewReducer,
+            this.onViewStoreError,
+        );
     }
 
     getViewData(): string {
@@ -56,7 +61,11 @@ export class LineageView extends TextFileView {
         }
         this.activeFilePath = null;
         this.contentEl.empty();
-        this.store = new Store(defaultViewState(), viewReducer);
+        this.store = new Store(
+            defaultViewState(),
+            viewReducer,
+            this.onViewStoreError,
+        );
         for (const s of this.onDestroyCallbacks) {
             s();
         }
@@ -97,6 +106,20 @@ export class LineageView extends TextFileView {
 		   if (this.file) delete stores[this.file.path];
 	   }
    };*/
+
+    onViewStoreError: OnError<ViewAction> = (error, location, action) => {
+        if (action && action.type === 'DOCUMENT/LOAD_FILE') {
+            if (this.file) {
+                delete stores[this.file.path];
+                toggleFileViewType(this.plugin, this.file, this.leaf);
+            }
+        }
+        // eslint-disable-next-line no-console
+        console.error(`[${location}] action: `, action);
+        // eslint-disable-next-line no-console
+        console.error(`[${location}] error: `, error);
+        new Notice('Lineage plugin: ' + error.message);
+    };
 
     private requestSaveWrapper = async (actionType?: string) => {
         const state = clone(this.store.getValue());
