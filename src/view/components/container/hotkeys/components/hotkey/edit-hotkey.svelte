@@ -126,6 +126,7 @@
         width: 115px;
         height: 25px;
         text-align: center;
+        font-size:14px;
     }
 
     .modifiers {

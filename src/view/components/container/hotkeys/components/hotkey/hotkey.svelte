@@ -14,9 +14,9 @@
 
 <div
     aria-label={hotkey.obsidianConflict
-        ? 'Obsidian conflict: ' + hotkey.obsidianConflict
+        ? `Used by "${hotkey.obsidianConflict}"`
         : hotkey.pluginConflict
-          ? 'Plugin conflict: ' + hotkey.pluginConflict
+          ? `Used by "${hotkey.pluginConflict}"`
           : ''}
     class={clx(
         'hotkey',
