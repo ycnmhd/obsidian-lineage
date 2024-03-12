@@ -1,7 +1,7 @@
 {
 	"id": "lineage",
 	"name": "Lineage",
-	"version": "0.2.0-dev",
+	"version": "0.3.0-dev",
 	"minAppVersion": "0.15.0",
 	"description": "Gingko-like writing experience.",
 	"author": "ycnmhd",

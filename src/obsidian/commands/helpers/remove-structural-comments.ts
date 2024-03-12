@@ -23,7 +23,7 @@ export const removeStructuralComments = async (
             newLines.join('\n'),
             file.basename,
         );
-        if (newFile) await openFile(plugin, newFile, 'split');
+        if (newFile) await openFile(plugin, newFile, 'split', 'markdown');
     } else {
         new Notice(`File ${file.basename} does not have structural comments`);
     }

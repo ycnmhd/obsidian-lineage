@@ -13,11 +13,11 @@
         ZoomOut
     } from 'lucide-svelte';
     import { getPlugin, getStore, getView } from 'src/view/components/container/context';
-    import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
     import { LineageView } from 'src/view/view';
     import { lang } from 'src/lang/lang';
     import { DocumentHistory } from 'src/stores/view/view-state-type';
     import { maxZoomLevel, minZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
+    import { setFileViewType } from 'src/obsidian/events/workspace/helpers/set-file-view-type';
 
     const view = getView();
     const store = getStore();
@@ -49,7 +49,7 @@
     const openAsMarkdown = () => {
         const file =
             plugin.app.workspace.getActiveViewOfType(LineageView)?.file;
-        if (file) toggleFileViewType(plugin, file, undefined);
+        if (file) setFileViewType(plugin, file, view.leaf,"markdown");
     };
     const zoomIn = () => {
         store.dispatch({

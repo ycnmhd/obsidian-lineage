@@ -11,7 +11,7 @@ import { openFile } from 'src/obsidian/commands/helpers/open-file';
 const createCommands = (plugin: Lineage) => {
     const commands: Omit<Command, 'id'>[] = [];
 
-    const getFile = () => {
+    const getActiveFile = () => {
         return (
             plugin.app.workspace.getActiveViewOfType(MarkdownView)?.file ||
             plugin.app.workspace.getActiveViewOfType(LineageView)?.file
@@ -21,10 +21,12 @@ const createCommands = (plugin: Lineage) => {
         name: lang.toggle_lineage_view,
         icon: 'list-tree',
         checkCallback: (checking) => {
-            const file = getFile();
+            const file = getActiveFile();
             if (file) {
                 if (checking) return true;
-                else toggleFileViewType(plugin, file, undefined);
+                else {
+                    toggleFileViewType(plugin, file, undefined);
+                }
             }
         },
     });
@@ -33,7 +35,7 @@ const createCommands = (plugin: Lineage) => {
         name: lang.create_new_file,
         icon: 'list-tree',
         callback: async () => {
-            const file = getFile();
+            const file = getActiveFile();
             let folder: TFolder | null = null;
             if (file) {
                 folder = file.parent;
@@ -53,7 +55,7 @@ const createCommands = (plugin: Lineage) => {
         name: lang.toggle_lineage_view,
         icon: 'list-tree',
         checkCallback: (checking) => {
-            const file = getFile();
+            const file = getActiveFile();
             if (file) {
                 if (checking) return true;
                 else toggleFileViewType(plugin, file, undefined);
@@ -64,7 +66,7 @@ const createCommands = (plugin: Lineage) => {
         name: lang.remove_structural_comments,
         icon: 'list-tree',
         checkCallback: (checking) => {
-            const file = getFile();
+            const file = getActiveFile();
             if (file) {
                 if (checking) return true;
                 else {

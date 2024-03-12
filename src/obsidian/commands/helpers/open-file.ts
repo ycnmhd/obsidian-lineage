@@ -1,16 +1,15 @@
 import { TFile } from 'obsidian';
 import Lineage from 'src/main';
-import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
+import { setFileViewType } from 'src/obsidian/events/workspace/helpers/set-file-view-type';
+import { FILE_VIEW_TYPE } from 'src/view/view';
 
 export const openFile = async (
     plugin: Lineage,
     file: TFile,
-    newLeaf?: 'split' | 'tab',
-    mode?: 'lineage',
+    newLeaf: 'split' | 'tab',
+    mode: 'markdown' | typeof FILE_VIEW_TYPE,
 ) => {
     const leaf = plugin.app.workspace.getLeaf(newLeaf);
     await leaf.openFile(file);
-    if (mode === 'lineage') {
-        toggleFileViewType(plugin, file, leaf);
-    }
+    setFileViewType(plugin, file, leaf, mode);
 };

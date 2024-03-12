@@ -1,38 +1,20 @@
 import Lineage from 'src/main';
-import { MarkdownView, TFile, ViewState, WorkspaceLeaf } from 'obsidian';
+import { TFile, WorkspaceLeaf } from 'obsidian';
 import { fileViewTypeCache } from 'src/obsidian/patches/set-view-state';
-import { FILE_VIEW_TYPE } from 'src/view/view';
+import { setFileViewType } from 'src/obsidian/events/workspace/helpers/set-file-view-type';
+import { getLeafOfFile } from 'src/obsidian/events/workspace/helpers/get-leaf-of-file';
+import { openFile } from 'src/obsidian/commands/helpers/open-file';
 
 export const toggleFileViewType = (
     plugin: Lineage,
     file: TFile,
     leaf: WorkspaceLeaf | undefined,
 ) => {
-    const isTree = fileViewTypeCache[file.path];
-    plugin.settings.dispatch({
-        type: isTree
-            ? 'SET_DOCUMENT_TYPE_TO_MARKDOWN'
-            : 'SET_DOCUMENT_TYPE_TO_TREE',
-        payload: {
-            path: file.path,
-        },
-    });
+    const currentModeIsLineage = fileViewTypeCache[file.path];
+    const currentViewType = currentModeIsLineage ? 'lineage' : 'markdown';
+    const newViewType = currentModeIsLineage ? 'markdown' : 'lineage';
 
-    if (!leaf) {
-        const leaves = plugin.app.workspace.getLeavesOfType(
-            isTree ? FILE_VIEW_TYPE : 'markdown',
-        );
-        leaf = leaves.find(
-            (l) => (l.view as MarkdownView)?.file?.path === file.path,
-        );
-    }
-    setTimeout(() => {
-        if (leaf) {
-            leaf.setViewState({
-                type: isTree ? 'markdown' : FILE_VIEW_TYPE,
-                popstate: true,
-                state: leaf.view.getState(),
-            } as ViewState);
-        }
-    }, 0);
+    const fileLeaf = leaf || getLeafOfFile(plugin, file, currentViewType);
+    setFileViewType(plugin, file, fileLeaf, newViewType);
+    if (!fileLeaf) openFile(plugin, file, 'tab', newViewType);
 };

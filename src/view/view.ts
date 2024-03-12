@@ -19,7 +19,7 @@ import { ViewAction } from 'src/stores/view/view-store-actions';
 import { updateSearchResultsEffect } from 'src/stores/view/effects/file/update-search-results/update-search-results-effect';
 import { changeZoomLevelEffect } from 'src/stores/view/effects/view/change-zoom-level-effect';
 import { updateTreeIndexEffect } from 'src/stores/view/effects/file/update-tree-index/update-tree-index-effect';
-import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
+import { setFileViewType } from 'src/obsidian/events/workspace/helpers/set-file-view-type';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -111,7 +111,7 @@ export class LineageView extends TextFileView {
         if (action && action.type === 'DOCUMENT/LOAD_FILE') {
             if (this.file) {
                 delete stores[this.file.path];
-                toggleFileViewType(this.plugin, this.file, this.leaf);
+                setFileViewType(this.plugin, this.file, this.leaf, 'markdown');
             }
         }
         // eslint-disable-next-line no-console
