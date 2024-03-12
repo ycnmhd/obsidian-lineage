@@ -1,6 +1,6 @@
 <script lang="ts">
     import { PencilIcon, SaveIcon } from 'lucide-svelte';
-    import { getStore } from '../../../../../../../context';
+    import { getStore, getView } from '../../../../../../../context';
     import FloatingButton from './floating-button.svelte';
     import {
         saveNodeContent
@@ -8,11 +8,12 @@
 
     export let editing: boolean;
     const store = getStore();
+    const view = getView()
     // eslint-disable-next-line no-undef
     const toggleEdit = (e: MouseEvent) => {
         e.stopPropagation();
         if (editing) {
-            saveNodeContent(store);
+            saveNodeContent(view);
         } else {
             store.dispatch({
                 type: 'DOCUMENT/ENABLE_EDIT_MODE',

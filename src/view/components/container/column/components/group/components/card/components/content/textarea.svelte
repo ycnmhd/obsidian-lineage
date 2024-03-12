@@ -15,7 +15,7 @@
 <!--the wrapper is used to hide the textarea outline-->
 <div class="wrapper">
     <textarea
-        autofocus="autofocus"
+        autofocus={true}
         class="no-outline"
         data-node-id={node}
 		use:expandableTextareaAction

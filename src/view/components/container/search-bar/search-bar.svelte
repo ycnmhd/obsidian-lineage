@@ -3,7 +3,17 @@
     import { getStore } from 'src/view/components/container/context';
 
     const store = getStore();
-
+    const onInput = (
+        // eslint-disable-next-line no-undef
+        e: Event & { currentTarget: EventTarget & HTMLInputElement },
+    ) => {
+        store.dispatch({
+            type: 'SEARCH/SET_QUERY',
+            payload: {
+                query: (e.currentTarget).value,
+            },
+        });
+    };
 </script>
 
 <div class="search-container">
@@ -27,15 +37,8 @@
                 placeholder={'Filter'}
                 spellcheck="false"
                 type="search"
-                autofocus="autofocus"
-                on:input={(e) => {
-                    store.dispatch({
-                        type: 'SEARCH/SET_QUERY',
-                        payload: {
-                            query: e.target.value,
-                        },
-                    });
-                }}
+                autofocus={true}
+                on:input={onInput}
             />
             <div
                 style={$store.search.query ? '' : 'display: none'}
@@ -45,7 +48,7 @@
                     store.dispatch({
                         type: 'SEARCH/SET_QUERY',
                         payload: {
-                            query:"",
+                            query: '',
                         },
                     });
                 }}

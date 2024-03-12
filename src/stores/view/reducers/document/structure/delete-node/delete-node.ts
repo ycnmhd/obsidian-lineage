@@ -20,14 +20,16 @@ export const deleteNode = (
     editingNode?: string,
 ) => {
     const activeNodeId = state.activeNode;
-    if (!activeNodeId) return;
-    if (editingNode && activeNodeId === editingNode) return;
+    if (!activeNodeId) throw new Error('no active node');
+    if (editingNode && activeNodeId === editingNode)
+        throw new Error('active node is not in edit mode');
     const lastNode = isLastRootNode(columns, activeNodeId);
-    if (lastNode) return;
+    if (lastNode) throw new Error('cannot delete last node');
 
     const nextNode = findNextActiveNode(columns, state.activeNode, {
         type: 'DOCUMENT/DELETE_NODE',
     });
+    if (!nextNode) throw new Error('could not find next node');
     if (nextNode) {
         deleteBranch(columns, content, activeNodeId);
         cleanAndSortColumns(columns);

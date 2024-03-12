@@ -26,7 +26,6 @@ export const FILE_VIEW_TYPE = 'lineage';
 export type ViewStore = Store<ViewState, ViewAction>;
 
 export class LineageView extends TextFileView {
-    data: string;
     component: Component;
     store: ViewStore;
     private container: HTMLElement | null;
