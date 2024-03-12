@@ -17,6 +17,7 @@
     <textarea
         autofocus="autofocus"
         class="no-outline"
+        data-node-id={node}
 		use:expandableTextareaAction
         use:saveNodeContentAction="{{ editing, store, node }}"
         use:scrollTextAreaAction

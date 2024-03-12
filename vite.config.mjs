@@ -4,7 +4,7 @@ const configMain = defineConfig({
     test: {
         threads: true,
         environment: 'node',
-        exclude: ['temp/**', "node_modules/**","src/e2e/**"],
+        exclude: ['temp/**', "node_modules/**","e2e/**"],
     },
 });
 

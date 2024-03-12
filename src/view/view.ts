@@ -117,7 +117,7 @@ export class LineageView extends TextFileView {
         // eslint-disable-next-line no-console
         console.error(`[${location}] action: `, action);
         // eslint-disable-next-line no-console
-        console.error(`[${location}] error: `, error);
+        console.error(`[${location}] `, error);
         new Notice('Lineage plugin: ' + error.message);
     };
 

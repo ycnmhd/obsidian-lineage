@@ -43,7 +43,7 @@ const createCommands = (plugin: Lineage) => {
             if (folder) {
                 const newFile = await createNewFile(plugin, folder);
                 if (newFile) {
-                    await openFile(plugin, newFile, undefined, 'lineage');
+                    await openFile(plugin, newFile, 'tab', 'lineage');
                 }
             }
         },

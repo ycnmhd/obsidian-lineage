@@ -8,6 +8,7 @@
     "version": "node version-bump.mjs && git add manifest.json versions.json",
     "test:watch": "vitest",
     "test": "vitest run",
+    "test:e2e": "playwright test",
     "prepare": "husky install"
   },
   "keywords": [],

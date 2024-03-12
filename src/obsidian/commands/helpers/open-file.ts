@@ -5,7 +5,7 @@ import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle
 export const openFile = async (
     plugin: Lineage,
     file: TFile,
-    newLeaf?: 'split',
+    newLeaf?: 'split' | 'tab',
     mode?: 'lineage',
 ) => {
     const leaf = plugin.app.workspace.getLeaf(newLeaf);

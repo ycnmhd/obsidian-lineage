@@ -2,7 +2,9 @@
     import { PencilIcon, SaveIcon } from 'lucide-svelte';
     import { getStore } from '../../../../../../../context';
     import FloatingButton from './floating-button.svelte';
-    import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/tree/save-node-content';
+    import {
+        saveNodeContent
+    } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/save-node-content';
 
     export let editing: boolean;
     const store = getStore();

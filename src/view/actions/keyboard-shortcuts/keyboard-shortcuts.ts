@@ -6,6 +6,7 @@ import {
     commandsDictionary,
     updateCommandsDictionary,
 } from 'src/view/actions/keyboard-shortcuts/helpers/commands/update-commands-dictionary';
+import { Notice } from 'obsidian';
 
 /* using native obsidian hotkeys is not practical because (1) the plugin uses basic
  * hotkeys such as 'ArrowUp' and 'Ctrl+Enter' and (2) the plugin only listens to hotkeys in its
@@ -36,7 +37,17 @@ export const keyboardShortcuts = (
         if (!(event instanceof KeyboardEvent)) return;
         const command = commandsDictionary.current[eventToString(event)];
         if (command) {
-            if (command.check(store)) command.callback(store, event);
+            if (command.check(store)) {
+                try {
+                    command.callback(store, event);
+                } catch (error) {
+                    // eslint-disable-next-line no-console
+                    console.error(`[hotkey] command: `, command.name);
+                    // eslint-disable-next-line no-console
+                    console.error(`[hotkey] `, error);
+                    new Notice('Lineage plugin: ' + error.message);
+                }
+            }
         }
     };
 

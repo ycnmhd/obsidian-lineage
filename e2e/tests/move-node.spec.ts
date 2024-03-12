@@ -1,24 +1,24 @@
 import { expect, test } from '@playwright/test';
-import { _electron as electron } from 'playwright-core';
-import { runCommand } from 'src/e2e/helpers/interactions/run-command';
+import { runCommand } from '../helpers/interactions/run-command';
 import {
     COLUMN,
     LINEAGE_CARD,
     LINEAGE_VIEW,
-} from 'src/e2e/helpers/consts/selectors';
-import { getCardText } from 'src/e2e/helpers/getters/get-card-text';
+} from '../helpers/consts/selectors';
 import {
     CMD_CLOSE_OTHER_TABS,
-    CMD_CREATE_CARD,
-} from 'src/e2e/helpers/consts/commands';
+    CMD_CREATE_FILE,
+} from '../helpers/consts/commands';
+import {
+    createCardBelow,
+    moveCardRight,
+} from '../helpers/interactions/lineage-view-hotkeys';
+import { getCardText } from '../helpers/getters/lineage-view';
+import { closeObsidian, getObsidian } from '../helpers/getters/obsidian';
 
 test('should save node before moving it', async ({ page }) => {
-    const electronApp = await electron.launch({
-        executablePath: process.env.OBSIDIAN_EXECUTABLE_PATH,
-    });
-
-    const obsidian = await electronApp.firstWindow();
-    await runCommand(obsidian, CMD_CREATE_CARD);
+    const obsidian = await getObsidian();
+    await runCommand(obsidian, CMD_CREATE_FILE);
     await obsidian.focus(LINEAGE_VIEW);
     await runCommand(obsidian, CMD_CLOSE_OTHER_TABS, false);
     await obsidian.focus(LINEAGE_VIEW);
@@ -29,12 +29,12 @@ test('should save node before moving it', async ({ page }) => {
     await obsidian.keyboard.type(n1_text);
 
     // create a card below
-    await obsidian.keyboard.press('Control+J');
+    await createCardBelow(obsidian);
     const n2_text = 'card 2';
     await obsidian.keyboard.type(n2_text);
 
     // move card 2 right without saving
-    await obsidian.keyboard.press('Shift+Alt+ArrowRight');
+    await moveCardRight(obsidian);
 
     // assert that both cards are saved
     const columns = await obsidian.$$(COLUMN);
@@ -49,4 +49,5 @@ test('should save node before moving it', async ({ page }) => {
     const c2_cards = await columns[1].$$(LINEAGE_CARD);
     expect(c2_cards.length).toBe(1);
     expect(await getCardText(c2_cards[0])).toEqual(n2_text);
+    await closeObsidian();
 });
