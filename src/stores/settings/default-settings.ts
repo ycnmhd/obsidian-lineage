@@ -5,4 +5,7 @@ export const DEFAULT_SETTINGS = (): Settings => ({
     ui: {
         theme: 'dark',
     },
+    hotkeys: {
+        customHotkeys: {},
+    },
 });

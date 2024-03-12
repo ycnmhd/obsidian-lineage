@@ -1,4 +1,4 @@
-import { AllDirections } from 'src/stores/view/view-reducer';
+import { AllDirections } from 'src/stores/view/view-store-actions';
 import { moveNodeAsChild } from 'src/stores/view/reducers/document/structure/helpers/move-node-as-child';
 import { moveNodeAsSibling } from 'src/stores/view/reducers/document/structure/helpers/move-node-as-sibling';
 import { moveChildGroups } from 'src/stores/view/reducers/document/structure/helpers/move-child-groups/move-child-groups';

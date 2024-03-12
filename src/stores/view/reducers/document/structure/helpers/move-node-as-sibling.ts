@@ -1,4 +1,4 @@
-import { VerticalDirection } from 'src/stores/view/view-reducer';
+import { VerticalDirection } from 'src/stores/view/view-store-actions';
 
 import { findGroupByNodeId } from 'src/stores/view/helpers/search/find-group-by-node-id';
 import { Columns, NodeId } from 'src/stores/view/view-state-type';

@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { getStore } from '../../../../../../../context';
-	import { droppable } from 'src/view/actions/dnd/droppable';
-	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
-	import Bridges from '../bridges/bridges.svelte';
-	import clx from 'classnames';
+    import { getStore } from '../../../../../../../context';
+    import { droppable } from 'src/view/actions/dnd/droppable';
+    import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
+    import Bridges from '../bridges/bridges.svelte';
+    import clx from 'classnames';
 
-	export let nodeId: string;
+    export let nodeId: string;
     export let active: ActiveStatus | null;
     export let hasChildren: boolean;
     export let parentId: string;
     export let editing: boolean;
 
     const setActive = () => {
-        if (active !== ActiveStatus.node)
+        if (!editing)
             store.dispatch({
                 type: 'DOCUMENT/SET_ACTIVE_NODE',
                 payload: { id: nodeId },

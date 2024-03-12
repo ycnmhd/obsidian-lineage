@@ -7,11 +7,11 @@
 
     const store = getStore();
     export let group: NodeGroup;
-	let parentNodes: Set<NodeId> = new Set<NodeId>();
-	$: parentNodes = new Set($store.ui.state.activeBranch.sortedParentNodes);
+    let parentNodes: Set<NodeId> = new Set<NodeId>();
+    $: parentNodes = new Set($store.ui.state.activeBranch.sortedParentNodes);
 </script>
 
-{#if group.nodes.length > 0}
+{#if group.nodes.length > 0 && ($store.search.query.length === 0 || group.nodes.some( (n) => $store.search.results.has(n), ))}
     <div
         class={clx(
             'group',
@@ -20,24 +20,30 @@
             $store.ui.state.activeBranch.group === group.parentId &&
                 'group-has-active-node',
         )}
-        id={"group-"+group.parentId}
+        id={'group-' + group.parentId}
     >
         {#each group.nodes as node (node)}
-            <Node
-                {node}
-                active={node === $store.document.state.activeNode
-                    ? ActiveStatus.node
-                    :parentNodes.has(node)
-                    ? ActiveStatus.parent
-                    : $store.ui.state.activeBranch.childGroups.has(group.parentId)
-                    ? ActiveStatus.child
-                    : $store.ui.state.activeBranch.group===group.parentId
-                    ? ActiveStatus.sibling
-                    : null}
-                editing={$store.ui.state.editing.activeNodeId === node}
-                hasChildren={$store.ui.state.activeBranch.childGroups.size > 0}
-                parentId={group.parentId}
-            />
+            {#if $store.search.query.length === 0 || (!$store.search.searching && $store.search.results.has(node))}
+                <Node
+                    {node}
+                    active={node === $store.document.state.activeNode
+                        ? ActiveStatus.node
+                        : parentNodes.has(node)
+                          ? ActiveStatus.parent
+                          : $store.ui.state.activeBranch.childGroups.has(
+                                  group.parentId,
+                              )
+                            ? ActiveStatus.child
+                            : $store.ui.state.activeBranch.group ===
+                                group.parentId
+                              ? ActiveStatus.sibling
+                              : null}
+                    editing={$store.ui.state.editing.activeNodeId === node}
+                    hasChildren={$store.ui.state.activeBranch.childGroups.size >
+                        0}
+                    parentId={group.parentId}
+                />
+            {/if}
         {/each}
     </div>
 {/if}

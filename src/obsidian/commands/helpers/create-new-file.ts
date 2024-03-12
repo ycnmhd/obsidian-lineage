@@ -1,30 +1,35 @@
 import Lineage from 'src/main';
 import { TFile, TFolder } from 'obsidian';
-import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
 
-const getUniqueFileName = (folderPath: string, files: string[]): string => {
+const getUniqueFileName = (
+    folderPath: string,
+    files: string[],
+    basename = 'Untitled',
+): string => {
     let index = 1;
-    let newFileName = `Untitled`;
+    let newFileName = basename;
 
     while (files.includes(`${newFileName}`)) {
-        newFileName = `Untitled (${index})`;
+        newFileName = `${basename} (${index})`;
         index++;
     }
 
     return `${folderPath}/${newFileName}`;
 };
 
-export const createNewFile = async (plugin: Lineage, folder: TFolder) => {
+export const createNewFile = async (
+    plugin: Lineage,
+    folder: TFolder,
+    data = '',
+    basename?: string,
+) => {
     if (folder) {
         const children = folder.children
             .map((c) => (c instanceof TFile ? c.basename : null))
             .filter((f) => f) as string[];
-        const path = getUniqueFileName(folder.path, children);
+        const path = getUniqueFileName(folder.path, children, basename);
         const newFilePath = path + '.md';
 
-        const file = await plugin.app.vault.create(newFilePath, '');
-        const leaf = plugin.app.workspace.getLeaf();
-        await leaf.openFile(file);
-        toggleFileViewType(plugin, file, leaf);
+        return await plugin.app.vault.create(newFilePath, data);
     }
 };

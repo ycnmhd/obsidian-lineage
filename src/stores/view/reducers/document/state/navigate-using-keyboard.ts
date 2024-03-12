@@ -1,5 +1,5 @@
 import { Column, DocumentInstanceState } from 'src/stores/view/view-state-type';
-import { AllDirections } from 'src/stores/view/view-reducer';
+import { AllDirections } from 'src/stores/view/view-store-actions';
 import { updateActiveNode } from 'src/stores/view/reducers/document/state/helpers/update-active-node';
 import { findNextActiveNode } from 'src/stores/view/reducers/document/state/helpers/find-next-node/find-next-active-node';
 

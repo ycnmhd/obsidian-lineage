@@ -1,20 +1,25 @@
-import { IconName, TextFileView, WorkspaceLeaf } from 'obsidian';
+import { IconName, Notice, TextFileView, WorkspaceLeaf } from 'obsidian';
 
 import Component from './components/container/main.svelte';
 import Lineage from '../main';
-import { ViewAction, viewReducer } from 'src/stores/view/view-reducer';
-import { alignBranchEffect } from 'src/stores/view/effects/align-branch-effect/align-branch-effect';
+import { viewReducer } from 'src/stores/view/view-reducer';
+import { alignBranchEffect } from 'src/stores/view/effects/view/align-branch-effect/align-branch-effect';
 import { Unsubscriber } from 'svelte/store';
-import { saveDocumentEffect } from 'src/stores/view/effects/save-document-effect';
+import { saveDocumentEffect } from 'src/stores/view/effects/file/save-document-effect';
 import { columnsToJsonTree } from 'src/stores/view/helpers/json-to-md/columns-to-json/columns-to-json-tree';
 import { jsonToMarkdown } from 'src/stores/view/helpers/json-to-md/json-to-makdown/json-to-markdown';
-import { Store } from 'src/helpers/store';
+import { OnError, Store } from 'src/helpers/store/store';
 import { defaultViewState } from 'src/stores/view/default-view-state';
-import { bringFocusToContainer } from 'src/stores/view/effects/bring-focus-to-container';
+import { bringFocusToContainer } from 'src/stores/view/effects/view/bring-focus-to-container';
 import { ViewState } from 'src/stores/view/view-state-type';
 import { stores } from 'src/view/helpers/stores-cache';
 import { clone } from 'src/helpers/clone';
 import { extractFrontmatter } from 'src/view/helpers/extract-frontmatter';
+import { ViewAction } from 'src/stores/view/view-store-actions';
+import { updateSearchResultsEffect } from 'src/stores/view/effects/file/update-search-results/update-search-results-effect';
+import { changeZoomLevelEffect } from 'src/stores/view/effects/view/change-zoom-level-effect';
+import { updateTreeIndexEffect } from 'src/stores/view/effects/file/update-tree-index/update-tree-index-effect';
+import { setFileViewType } from 'src/obsidian/events/workspace/helpers/set-file-view-type';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -32,7 +37,11 @@ export class LineageView extends TextFileView {
         private plugin: Lineage,
     ) {
         super(leaf);
-        this.store = new Store(defaultViewState(), viewReducer);
+        this.store = new Store(
+            defaultViewState(),
+            viewReducer,
+            this.onViewStoreError,
+        );
     }
 
     getViewData(): string {
@@ -52,7 +61,11 @@ export class LineageView extends TextFileView {
         }
         this.activeFilePath = null;
         this.contentEl.empty();
-        this.store = new Store(defaultViewState(), viewReducer);
+        this.store = new Store(
+            defaultViewState(),
+            viewReducer,
+            this.onViewStoreError,
+        );
         for (const s of this.onDestroyCallbacks) {
             s();
         }
@@ -94,6 +107,20 @@ export class LineageView extends TextFileView {
 	   }
    };*/
 
+    onViewStoreError: OnError<ViewAction> = (error, location, action) => {
+        if (action && action.type === 'DOCUMENT/LOAD_FILE') {
+            if (this.file) {
+                delete stores[this.file.path];
+                setFileViewType(this.plugin, this.file, this.leaf, 'markdown');
+            }
+        }
+        // eslint-disable-next-line no-console
+        console.error(`[${location}] action: `, action);
+        // eslint-disable-next-line no-console
+        console.error(`[${location}] `, error);
+        new Notice('Lineage plugin: ' + error.message);
+    };
+
     private requestSaveWrapper = async (actionType?: string) => {
         const state = clone(this.store.getValue());
         const data: string =
@@ -114,7 +141,8 @@ export class LineageView extends TextFileView {
             throw new Error('view does not have a file');
         }
 
-        if (stores[this.file.path]) {
+        const fileHasAStore = stores[this.file.path];
+        if (fileHasAStore) {
             this.useExistingStore();
         } else {
             this.createStore();
@@ -134,11 +162,16 @@ export class LineageView extends TextFileView {
             bringFocusToContainer(this.store, this.container),
         );
         this.onDestroyCallbacks.add(
-            saveDocumentEffect(this.store, this.requestSaveWrapper),
-        );
-        this.onDestroyCallbacks.add(
             alignBranchEffect(this.store, this.container),
         );
+        this.onDestroyCallbacks.add(
+            changeZoomLevelEffect(this.store, this.container),
+        );
+        if (!fileHasAStore) {
+            saveDocumentEffect(this.store, this.requestSaveWrapper);
+            updateSearchResultsEffect(this.store);
+            updateTreeIndexEffect(this.store);
+        }
     };
 
     private createStore = () => {

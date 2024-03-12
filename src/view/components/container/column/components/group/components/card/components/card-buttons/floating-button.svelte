@@ -1,8 +1,8 @@
 <script lang="ts">
-	import classNames from 'classnames';
-	import { Direction } from 'src/stores/view/view-reducer';
+    import classNames from 'classnames';
+    import { Direction } from 'src/stores/view/view-store-actions';
 
-	export let classes = '';
+    export let classes = '';
     export let position: Direction | 'down-right' | 'up-right';
     const positionClasses = {
         up: 'position-top',
@@ -31,7 +31,7 @@
         --node-width: 400px;
         --floating-button-bg: #dbdbdb;
         --position-tb: -10px;
-        --position-lr: -5px;
+        --position-lr: -4px;
     }
     button {
         color: var(--color-acive-node);
@@ -69,11 +69,11 @@
     }
 
     .position-bottom-right {
-        bottom: var(--position-lr);
+        top: var(--position-lr);
         right: var(--position-lr);
     }
     .position-top-right {
         top: var(--position-lr);
-        right: var(--position-lr);
+        right: 16px;
     }
 </style>

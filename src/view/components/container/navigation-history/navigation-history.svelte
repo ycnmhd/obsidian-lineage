@@ -5,12 +5,12 @@
     const store = getStore();
 </script>
 
-<div class="navigation-history-container">
+<div class="navigation-history-container" >
     <div class="navigation-history">
         <button
             aria-label={'Navigate back'}
             class="navigation-button"
-            data-tooltip-position="up"
+            data-tooltip-position="bottom"
             disabled={!$store.navigationHistory.state.canGoBack}
             on:click={() => {
                 store.dispatch({ type: 'NAVIGATION/NAVIGATE_BACK' });
@@ -21,7 +21,7 @@
         <button
             aria-label={'Navigate forward'}
             class="navigation-button"
-            data-tooltip-position="up"
+            data-tooltip-position="bottom"
             disabled={!$store.navigationHistory.state.canGoForward}
             on:click={() => {
                 store.dispatch({ type: 'NAVIGATION/NAVIGATE_FORWARD' });

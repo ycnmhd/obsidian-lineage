@@ -3,7 +3,7 @@ import {
     Content,
     DocumentInstanceState,
 } from 'src/stores/view/view-state-type';
-import { VerticalDirection } from 'src/stores/view/view-reducer';
+import { VerticalDirection } from 'src/stores/view/view-store-actions';
 import { findAdjacentSiblingNode } from 'src/stores/view/reducers/document/structure/helpers/find-adjacent-sibling-node';
 import { deleteNodeById } from 'src/stores/view/reducers/document/structure/delete-node/helpers/delete-node-by-id';
 import { cleanAndSortColumns } from 'src/stores/view/reducers/document/state/helpers/clean-and-sort-columns';

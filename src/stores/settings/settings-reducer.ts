@@ -1,4 +1,4 @@
-import { Settings } from './settings-type';
+import { CustomHotkeys, Settings } from './settings-type';
 
 export type SettingsActions =
     | {
@@ -20,7 +20,13 @@ export type SettingsActions =
               newPath: string;
           };
       }
-    | { type: 'TOGGLE_THEME' };
+    | { type: 'TOGGLE_THEME' }
+    | {
+          type: 'SET_CUSTOM_HOTKEYS';
+          payload: {
+              customHotkeys: CustomHotkeys;
+          };
+      };
 
 const updateState = (store: Settings, action: SettingsActions) => {
     if (action.type === 'SET_DOCUMENT_TYPE_TO_MARKDOWN') {
@@ -32,6 +38,8 @@ const updateState = (store: Settings, action: SettingsActions) => {
         store.documents[action.payload.newPath] = true;
     } else if (action.type === 'TOGGLE_THEME') {
         store.ui.theme = store.ui.theme === 'light' ? 'dark' : 'light';
+    } else if (action.type === 'SET_CUSTOM_HOTKEYS') {
+        store.hotkeys.customHotkeys = action.payload.customHotkeys;
     }
 };
 export const settingsReducer = (

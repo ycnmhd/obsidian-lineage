@@ -1,17 +1,16 @@
 <script lang="ts">
-    import { hotkeysLang, PluginCommand } from 'src/view/actions/keyboard-shortcuts/helpers/create-commands';
-    import Hotkey from './hotkey.svelte';
+    import Hotkey from './hotkey/hotkey.svelte';
+    import { hotkeysLang } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
+    import { CommandHotkeys } from 'src/stores/hotkeys/hotkey-store';
 
-    export let key: keyof typeof hotkeysLang;
-    export let command: PluginCommand;
-    export let usedHotkeys: Map<string,string>
+    export let commandHotkeys: CommandHotkeys;
 </script>
 
 <div class="command">
-    <span class="label">{hotkeysLang[key]}</span>
+    <span class="label">{hotkeysLang[commandHotkeys.name]}</span>
     <div class="hotkeys">
-        {#each command.hotkeys as hotkey}
-           <Hotkey {hotkey} {usedHotkeys}/>
+        {#each commandHotkeys.hotkeys as hotkey, i}
+            <Hotkey {hotkey} commandName={commandHotkeys.name} isPrimary={i === 0} />
         {/each}
     </div>
 </div>
@@ -19,26 +18,23 @@
 <style>
     .command {
         padding: 8px;
-        cursor: pointer;
         display: flex;
         align-items: center;
-		justify-content: space-between;
+        justify-content: space-between;
         border-radius: 4px;
         gap: 8px;
-        background-color: var(--color-base-70);
+        background-color: var(--color-base-30);
     }
     .hotkeys {
         display: flex;
         flex-direction: column;
         align-items: end;
-        gap: 5px
+        gap: 5px;
     }
-
-
 
     .label {
         font-size: 14px;
-        color: var(--color-base-20);
+        color: var(--text-normal);
         display: block;
     }
 </style>

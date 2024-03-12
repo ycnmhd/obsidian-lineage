@@ -2,8 +2,9 @@ import { lang } from 'src/lang/lang';
 import { TFile, TFolder } from 'obsidian';
 import { fileViewTypeCache } from 'src/obsidian/patches/set-view-state';
 import Lineage from 'src/main';
-import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
 import { createNewFile } from 'src/obsidian/commands/helpers/create-new-file';
+import { openFile } from 'src/obsidian/commands/helpers/open-file';
+import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
 
 export const registerFileMenuEvent = (plugin: Lineage) => {
     plugin.registerEvent(
@@ -18,16 +19,29 @@ export const registerFileMenuEvent = (plugin: Lineage) => {
                         );
                         item.setIcon(isTree ? 'file' : 'list-tree');
 
-                        item.onClick(() =>
-                            toggleFileViewType(plugin, abstractFile, leaf),
-                        );
+                        item.onClick(async () => {
+                            toggleFileViewType(plugin, abstractFile, leaf);
+                        });
                     });
                 } else if (abstractFile instanceof TFolder) {
                     menu.addItem((item) => {
                         item.setTitle(lang.new_file);
                         item.setIcon('list-tree');
 
-                        item.onClick(() => createNewFile(plugin, abstractFile));
+                        item.onClick(async () => {
+                            const newFile = await createNewFile(
+                                plugin,
+                                abstractFile,
+                            );
+                            if (newFile) {
+                                await openFile(
+                                    plugin,
+                                    newFile,
+                                    'tab',
+                                    'lineage',
+                                );
+                            }
+                        });
                     });
                 }
             },

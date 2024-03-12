@@ -7,9 +7,8 @@ export const expandableTextareaAction = (el: HTMLTextAreaElement) => {
     };
     el.addEventListener('keydown', listener);
 
-    requestAnimationFrame(() => {
-        listener();
-    });
+    listener();
+
     return {
         destroy: () => {
             el.removeEventListener('keydown', listener);

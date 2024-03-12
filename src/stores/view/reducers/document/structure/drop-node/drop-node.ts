@@ -1,4 +1,4 @@
-import { Direction } from 'src/stores/view/view-reducer';
+import { Direction } from 'src/stores/view/view-store-actions';
 import { changeNodePosition } from 'src/stores/view/reducers/document/structure/helpers/change-node-position';
 import { Column, DocumentInstanceState } from 'src/stores/view/view-state-type';
 import { cleanAndSortColumns } from 'src/stores/view/reducers/document/state/helpers/clean-and-sort-columns';

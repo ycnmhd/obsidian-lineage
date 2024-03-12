@@ -1,4 +1,4 @@
-import { VerticalDirection } from 'src/stores/view/view-reducer';
+import { VerticalDirection } from 'src/stores/view/view-store-actions';
 import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
 import { Column, NodeId } from 'src/stores/view/view-state-type';
 

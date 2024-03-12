@@ -1,7 +1,7 @@
 import { insertChild } from 'src/stores/view/reducers/document/structure/insert-node/helpers/insert-child';
 import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
 import { createNode } from 'src/stores/view/helpers/create-node';
-import { Direction } from 'src/stores/view/view-reducer';
+import { Direction } from 'src/stores/view/view-store-actions';
 import { updateActiveNode } from 'src/stores/view/reducers/document/state/helpers/update-active-node';
 import { findGroupByNodeId } from 'src/stores/view/helpers/search/find-group-by-node-id';
 import {

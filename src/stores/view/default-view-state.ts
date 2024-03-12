@@ -26,6 +26,8 @@ export const defaultViewState = (): ViewState => ({
         },
         showHistorySidebar: false,
         showHelpSidebar: false,
+        zoomLevel: 1,
+        treeIndex: {},
     },
     file: {
         path: null,
@@ -46,5 +48,11 @@ export const defaultViewState = (): ViewState => ({
             canGoBack: false,
             canGoForward: false,
         },
+    },
+    search: {
+        query: '',
+        results: new Set(),
+        searching: false,
+        showInput: false,
     },
 });

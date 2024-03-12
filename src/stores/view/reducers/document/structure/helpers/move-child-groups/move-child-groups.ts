@@ -2,7 +2,7 @@ import { Columns, NodeId } from 'src/stores/view/view-state-type';
 import { moveChildGroupsNextToTheirParent } from 'src/stores/view/reducers/document/structure/helpers/move-child-groups/move-child-groups-next-to-their-parent';
 import { removeChildGroupsFromTheirColumns } from 'src/stores/view/reducers/document/structure/helpers/move-child-groups/remove-child-groups-from-their-columns';
 import { moveOrphanGroupsToANewParent } from 'src/stores/view/reducers/document/structure/helpers/move-child-groups/move-orphan-groups-to-a-new-parent';
-import { VerticalDirection } from 'src/stores/view/view-reducer';
+import { VerticalDirection } from 'src/stores/view/view-store-actions';
 
 type Action =
     | {
