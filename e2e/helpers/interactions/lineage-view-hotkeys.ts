@@ -11,7 +11,7 @@ export const createCardBelow = async (obsidian: Page) => {
     await delay(200);
 };
 
-export const saveCard = async (obsidian: Page) => {
+export const saveCardUsingHotkey = async (obsidian: Page) => {
     const textArea = await getTextArea(obsidian);
     await textArea.click();
     await obsidian.keyboard.press('Control+Shift+Enter');

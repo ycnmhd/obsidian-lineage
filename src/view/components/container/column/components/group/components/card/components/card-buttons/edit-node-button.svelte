@@ -8,7 +8,7 @@
 
     export let editing: boolean;
     const store = getStore();
-    const view = getView()
+    const view = getView();
     // eslint-disable-next-line no-undef
     const toggleEdit = (e: MouseEvent) => {
         e.stopPropagation();
@@ -22,7 +22,11 @@
     };
 </script>
 
-<FloatingButton on:click={toggleEdit} position={'down-right'}>
+<FloatingButton
+    label={editing ? 'Save' : 'Edit'}
+    on:click={toggleEdit}
+    position={'down-right'}
+>
     {#if editing}
         <SaveIcon class="svg-con" />
     {:else}

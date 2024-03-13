@@ -4,6 +4,7 @@
 
     export let classes = '';
     export let position: Direction | 'down-right' | 'up-right';
+    export let label: string
     const positionClasses = {
         up: 'position-top',
         right: 'position-right',
@@ -14,6 +15,7 @@
 </script>
 
 <button
+    aria-label={label}
     class={classNames(
         classes,
         positionClasses[position],

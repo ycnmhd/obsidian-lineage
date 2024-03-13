@@ -7,10 +7,10 @@ import {
     CMD_UNDO_CLOSE_TAB,
 } from '../helpers/consts/commands';
 import { LINEAGE_CARD, LINEAGE_VIEW } from '../helpers/consts/selectors';
-import { getCard, getCardText } from '../helpers/getters/lineage-view';
+import { getActiveCard, getCardText } from '../helpers/getters/lineage-view';
 import { closeObsidian, getObsidian } from '../helpers/getters/obsidian';
 
-test('should save card when view is closed', async ({ page }) => {
+test('should save card when view is closed', async () => {
     const obsidian = await getObsidian();
 
     // create file 1
@@ -33,7 +33,7 @@ test('should save card when view is closed', async ({ page }) => {
     await obsidian.focus(LINEAGE_VIEW);
 
     // test text
-    const f1_n1 = await getCard(obsidian);
+    const f1_n1 = await getActiveCard(obsidian);
     expect(await getCardText(f1_n1)).toEqual(f1_n1_text);
     await closeObsidian();
 });

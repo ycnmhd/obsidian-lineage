@@ -29,6 +29,7 @@
 
 <div
     class={clx('lineage__card', 'node', active && activeStatusClasses[active])}
+    data-active={active||"inactive"}
     id={nodeId}
     on:click={setActive}
     on:dblclick={() => {

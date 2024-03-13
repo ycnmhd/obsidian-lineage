@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { TrashIcon } from 'lucide-svelte';
-	import { getStore } from '../../../../../../../context';
-	import FloatingButton from './floating-button.svelte';
+        import { TrashIcon } from 'lucide-svelte';
+        import { getStore } from '../../../../../../../context';
+        import FloatingButton from './floating-button.svelte';
 
-	const store = getStore();
+        const store = getStore();
     // eslint-disable-next-line no-undef
     const deleteNode = (e: MouseEvent) => {
         e.stopPropagation();
@@ -13,6 +13,6 @@
     };
 </script>
 
-<FloatingButton on:click={deleteNode} position={'up-right'}>
+<FloatingButton label={"Delete"} on:click={deleteNode} position={'up-right'}>
         <TrashIcon class="svg-con" />
 </FloatingButton>

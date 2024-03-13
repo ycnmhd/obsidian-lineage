@@ -3,15 +3,15 @@
 import { expect, test } from '@playwright/test';
 import { closeObsidian, getObsidian } from '../helpers/getters/obsidian';
 import { LINEAGE_CARD, MI_NEW_LINEAGE_FILE } from '../helpers/consts/selectors';
-import { getCard, getCardText } from '../helpers/getters/lineage-view';
+import { getActiveCard, getCardText } from '../helpers/getters/lineage-view';
 import { closeThisTabGroup } from '../helpers/interactions/obsidian-commands';
 import {
     clickFolderMenuItem,
     createNewFolder,
 } from '../helpers/interactions/obsidian-ui';
-import { saveCard } from '../helpers/interactions/lineage-view-hotkeys';
+import { saveCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys';
 
-test('should create file from context menu', async ({ page }) => {
+test('should create file from context menu', async () => {
     const obsidian = await getObsidian();
 
     // close all tabs
@@ -26,10 +26,10 @@ test('should create file from context menu', async ({ page }) => {
     await obsidian.focus(LINEAGE_CARD);
     const f1_n1_text = 'file 1 card 1';
     await obsidian.keyboard.type(f1_n1_text);
-    await saveCard(obsidian);
+    await saveCardUsingHotkey(obsidian);
 
     // test text
-    const f1_n1 = await getCard(obsidian);
+    const f1_n1 = await getActiveCard(obsidian);
     expect(await getCardText(f1_n1)).toEqual(f1_n1_text);
     await closeObsidian();
 });

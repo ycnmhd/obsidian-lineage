@@ -7,11 +7,11 @@ import {
     CMD_GO_TO_PREVIOUS_TAB,
 } from '../helpers/consts/commands';
 import { LINEAGE_CARD, LINEAGE_VIEW } from '../helpers/consts/selectors';
-import { getCard, getCardText } from '../helpers/getters/lineage-view';
-import { saveCard } from '../helpers/interactions/lineage-view-hotkeys';
+import { getActiveCard, getCardText } from '../helpers/getters/lineage-view';
+import { saveCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys';
 import { closeObsidian, getObsidian } from '../helpers/getters/obsidian';
 
-test('should handle multiple text areas in parallel', async ({ page }) => {
+test('should handle multiple text areas in parallel', async () => {
     const obsidian = await getObsidian();
 
     // create file 1
@@ -40,7 +40,7 @@ test('should handle multiple text areas in parallel', async ({ page }) => {
 
     // save f1_n1
     await obsidian.focus(LINEAGE_CARD);
-    await saveCard(obsidian);
+    await saveCardUsingHotkey(obsidian);
 
     // go to f2
     await runCommand(obsidian, CMD_GO_TO_NEXT_TAB);
@@ -48,10 +48,10 @@ test('should handle multiple text areas in parallel', async ({ page }) => {
 
     // save f2_n1
     await obsidian.focus(LINEAGE_CARD);
-    await saveCard(obsidian);
+    await saveCardUsingHotkey(obsidian);
 
     // test f2_n1
-    const f2_n1 = await getCard(obsidian);
+    const f2_n1 = await getActiveCard(obsidian);
     expect(await getCardText(f2_n1)).toEqual(f2_n1_text);
 
     // go to f1
@@ -59,7 +59,7 @@ test('should handle multiple text areas in parallel', async ({ page }) => {
     await obsidian.focus(LINEAGE_VIEW);
 
     // test f1_n1
-    const f1_n1 = await getCard(obsidian);
+    const f1_n1 = await getActiveCard(obsidian);
     expect(await getCardText(f1_n1)).toEqual(f1_n1_text);
     await closeObsidian();
 });

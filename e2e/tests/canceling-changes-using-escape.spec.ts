@@ -1,11 +1,11 @@
 import { expect, test } from '@playwright/test';
 import { LINEAGE_CARD } from '../helpers/consts/selectors';
-import { getCard, getCardText } from '../helpers/getters/lineage-view';
+import { getActiveCard, getCardText } from '../helpers/getters/lineage-view';
 import { closeObsidian, getObsidian } from '../helpers/getters/obsidian';
 import { createNewLineageFile } from '../helpers/interactions/lineage-commands';
 import { closeOtherTabs } from '../helpers/interactions/obsidian-commands';
 
-test('should discard changes when user presses escape', async ({ page }) => {
+test('should discard changes when user presses escape', async () => {
     const obsidian = await getObsidian();
 
     // create file 1
@@ -21,7 +21,7 @@ test('should discard changes when user presses escape', async ({ page }) => {
     await obsidian.keyboard.press('Escape');
 
     // test text
-    const f1_n1 = await getCard(obsidian);
+    const f1_n1 = await getActiveCard(obsidian);
     expect(await getCardText(f1_n1)).toEqual('');
     await closeObsidian();
 });

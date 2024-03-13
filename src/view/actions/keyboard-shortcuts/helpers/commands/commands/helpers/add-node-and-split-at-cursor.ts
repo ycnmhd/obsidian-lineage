@@ -4,6 +4,7 @@ import { Direction } from 'src/stores/view/view-store-actions';
 import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/save-node-and-insert-node';
 import { getActiveLineageView } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-active-lineage-view';
 import { getTextAreaOfView } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-text-area-of-view';
+import invariant from 'tiny-invariant';
 
 export const addNodeAndSplitAtCursor = (
     plugin: Lineage,
@@ -12,6 +13,7 @@ export const addNodeAndSplitAtCursor = (
     let text: string = '';
     const view = getActiveLineageView(plugin);
     const textArea = getTextAreaOfView(view);
+    invariant(textArea, 'could not find textarea element');
     const cursor = textArea.selectionEnd;
     const value = textArea.value;
     if (cursor < value.length) {

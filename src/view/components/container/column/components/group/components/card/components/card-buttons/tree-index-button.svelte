@@ -51,6 +51,7 @@
 </script>
 
 <div
+    aria-label="Jump to section"
     class={'tree-index ' + (activeStatus ? classes[activeStatus] : '')}
     on:click={openFile}
 >

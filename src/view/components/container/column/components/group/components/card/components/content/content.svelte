@@ -36,7 +36,7 @@
 
 <div
     class={' content markdown-preview-view ' + (active?classes[active]:'')}
-    data-active={active||"inactive"}
+
     on:click={onClick}
 	use:markdownPreviewAction={content}
 ></div>
