@@ -1,8 +1,5 @@
 import { PluginCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
-import {
-    isActive,
-    isActiveAndNotEditing,
-} from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
+import { isActiveAndNotEditing } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
 
 export const navigateCommands = () => {
     const commands: PluginCommand[] = [];
@@ -73,7 +70,7 @@ export const navigateCommands = () => {
         },
         {
             name: 'go_to_beginning_of_group',
-            check: isActive,
+            check: isActiveAndNotEditing,
             callback: (store, e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -86,7 +83,7 @@ export const navigateCommands = () => {
         },
         {
             name: 'go_to_end_of_group',
-            check: isActive,
+            check: isActiveAndNotEditing,
             callback: (store, e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -99,7 +96,7 @@ export const navigateCommands = () => {
         },
         {
             name: 'go_to_beginning_of_column',
-            check: isActive,
+            check: isActiveAndNotEditing,
             callback: (store, e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -112,7 +109,7 @@ export const navigateCommands = () => {
         },
         {
             name: 'go_to_end_of_column',
-            check: isActive,
+            check: isActiveAndNotEditing,
             callback: (store, e) => {
                 e.preventDefault();
                 e.stopPropagation();

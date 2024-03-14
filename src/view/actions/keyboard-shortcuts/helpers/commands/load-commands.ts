@@ -8,8 +8,9 @@ import { moveCommands } from 'src/view/actions/keyboard-shortcuts/helpers/comman
 import { mergeCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/merge-commands';
 import {
     isActive,
-    isActiveAndHasFile,
+    isActiveAndNotEditing,
 } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
+import { historyCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/history-commands';
 
 export const pluginCommands: {
     current: PluginCommand[] | null;
@@ -24,40 +25,15 @@ export const loadCommands = (plugin: Lineage) => {
         ...createCommands(plugin),
         ...moveCommands(plugin),
         ...mergeCommands(plugin),
+        ...historyCommands(),
         {
             name: 'delete_card',
-            check: isActive,
+            check: isActiveAndNotEditing,
             callback: (store) => {
                 store.dispatch({ type: 'DOCUMENT/DELETE_NODE' });
             },
             hotkeys: [{ key: 'Backspace', modifiers: ['Ctrl'] }],
         },
-
-        {
-            name: 'undo_change',
-            check: isActiveAndHasFile,
-            callback: (store) => {
-                const path = store.getValue().file.path;
-                if (path)
-                    store.dispatch({
-                        type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
-                    });
-            },
-            hotkeys: [{ key: 'Z', modifiers: ['Ctrl', 'Shift'] }],
-        },
-        {
-            name: 'redo_change',
-            check: isActiveAndHasFile,
-            callback: (store) => {
-                const path = store.getValue().file.path;
-                if (path)
-                    store.dispatch({
-                        type: 'HISTORY/APPLY_NEXT_SNAPSHOT',
-                    });
-            },
-            hotkeys: [{ key: 'Y', modifiers: ['Ctrl', 'Shift'] }],
-        },
-
         {
             name: 'toggle_search_input',
             check: isActive,

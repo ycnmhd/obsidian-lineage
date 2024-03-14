@@ -9,6 +9,10 @@ export const isActive = (store: ViewStore) => {
 export const isActiveAndNotEditing = (store: ViewStore) => {
     return isActive(store) && !isEditing(store);
 };
-export const isActiveAndHasFile = (store: ViewStore) => {
-    return isActive(store) && !!store.getValue().file.path;
+
+export const isActiveAndEditing = (store: ViewStore) => {
+    return isActive(store) && isEditing(store);
+};
+export const isActiveAndNotEditingAndHasFile = (store: ViewStore) => {
+    return isActiveAndNotEditing(store) && !!store.getValue().file.path;
 };

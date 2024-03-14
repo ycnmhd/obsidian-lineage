@@ -98,10 +98,16 @@ const updateViewState = (state: ViewState, action: ViewAction) => {
     } else if (action.type === 'RESET_STORE') {
         resetDocument(state);
     } else if (action.type === 'HISTORY/SELECT_SNAPSHOT') {
+        if (state.ui.state.editing.activeNodeId)
+            throw new Error('cannot apply snapshot while editing');
         selectSnapshot(state.document, state.history, action);
     } else if (action.type === 'HISTORY/APPLY_PREVIOUS_SNAPSHOT') {
+        if (state.ui.state.editing.activeNodeId)
+            throw new Error('cannot undo while editing');
         undoAction(state.document, state.history);
     } else if (action.type === 'HISTORY/APPLY_NEXT_SNAPSHOT') {
+        if (state.ui.state.editing.activeNodeId)
+            throw new Error('cannot redo while editing');
         redoAction(state.document, state.history);
     } else if (action.type === 'FS/SET_FILE_PATH') {
         state.file.path = action.payload.path;

@@ -1,7 +1,16 @@
-import { ViewStore } from 'src/view/view';
+import { getTextAreaOfView } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-text-area-of-view';
+import Lineage from 'src/main';
+import { getActiveLineageView } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-active-lineage-view';
 
-export const cancelChanges = (store: ViewStore) => {
-    store.dispatch({
+export const discardChanges = (textArea: HTMLTextAreaElement) => {
+    textArea.setAttribute('data-discard', 'true');
+};
+
+export const cancelChanges = (plugin: Lineage) => {
+    const view = getActiveLineageView(plugin);
+    const textArea = getTextAreaOfView(view);
+    if (textArea) discardChanges(textArea);
+    view.store.dispatch({
         type: 'DOCUMENT/DISABLE_EDIT_MODE',
     });
 };

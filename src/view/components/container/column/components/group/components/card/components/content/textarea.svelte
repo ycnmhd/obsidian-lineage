@@ -1,11 +1,15 @@
 <script lang="ts">
-    import { saveNodeContentAction } from '../../actions/save-node-content-action';
+    import {
+        saveNodeContentAction
+    } from 'src/view/components/container/column/components/group/components/card/components/content/actions/textarea/save-node-content-action';
     import { getStore } from '../../../../../../../context';
     import { NodeId } from 'src/stores/view/view-state-type';
-    import { expandableTextareaAction } from '../../actions/expandable-textarea-action';
+    import {
+        expandableTextareaAction
+    } from 'src/view/components/container/column/components/group/components/card/components/content/actions/textarea/expandable-textarea-action';
     import {
         scrollTextAreaAction
-    } from 'src/view/components/container/column/components/group/components/card/actions/scroll-text-area-action';
+    } from 'src/view/components/container/column/components/group/components/card/components/content/actions/textarea/scroll-text-area-action';
 
     export let editing: boolean;
     export let node: NodeId;
@@ -19,7 +23,7 @@
         class="no-outline"
         data-node-id={node}
 		use:expandableTextareaAction
-        use:saveNodeContentAction="{{ editing, store, node }}"
+        use:saveNodeContentAction="{{ store, node }}"
         use:scrollTextAreaAction
     />
 </div>

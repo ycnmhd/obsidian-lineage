@@ -4,9 +4,8 @@ import { cancelChanges } from 'src/view/actions/keyboard-shortcuts/helpers/comma
 import { PluginCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
 import Lineage from 'src/main';
 import {
-    isActive,
+    isActiveAndEditing,
     isActiveAndNotEditing,
-    isEditing,
 } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
 
 export const editCommands = (plugin: Lineage) => {
@@ -24,21 +23,19 @@ export const editCommands = (plugin: Lineage) => {
         },
         {
             name: 'save_changes_and_exit_card',
-            check: isActive,
-            callback: (store) => {
-                if (isEditing(store)) {
-                    const view = getActiveLineageView(plugin);
-                    saveNodeContent(view);
-                }
+            check: isActiveAndEditing,
+            callback: () => {
+                const view = getActiveLineageView(plugin);
+                saveNodeContent(view);
             },
             hotkeys: [{ key: 'Enter', modifiers: ['Shift', 'Ctrl'] }],
         },
 
         {
             name: 'disable_edit_mode',
-            check: isActive,
-            callback: (store) => {
-                cancelChanges(store);
+            check: isActiveAndEditing,
+            callback: () => {
+                cancelChanges(plugin);
             },
             hotkeys: [{ key: 'Escape', modifiers: [] }],
         },

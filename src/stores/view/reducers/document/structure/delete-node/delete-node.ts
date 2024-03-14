@@ -21,7 +21,7 @@ export const deleteNode = (
 ) => {
     const activeNodeId = state.activeNode;
     if (!activeNodeId) throw new Error('no active node');
-    if (editingNode && activeNodeId === editingNode)
+    if (editingNode && activeNodeId !== editingNode)
         throw new Error('active node is not in edit mode');
     const lastNode = isLastRootNode(columns, activeNodeId);
     if (lastNode) throw new Error('cannot delete last node');
