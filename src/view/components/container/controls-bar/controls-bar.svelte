@@ -151,7 +151,7 @@
             <RotateCcw class="svg-icon" />
         </button>
         <button
-            aria-label="Restore zoom level"
+            aria-label="Zoom to fit"
             class="canvas-control-item"
             data-tooltip-position="left"
             on:click={fitToScale}

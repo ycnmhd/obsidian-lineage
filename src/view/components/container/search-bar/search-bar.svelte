@@ -18,7 +18,7 @@
 
 <div class="search-container">
     <button
-        aria-label={'Search'}
+        aria-label={'Toggle search input'}
         class={'search-toggle ' +
             ($store.search.showInput ? 'search-toggle-active' : '')}
         data-tooltip-position="bottom"
@@ -34,11 +34,12 @@
                 value={$store.search.query}
                 class="search-input search-input-element"
                 enterkeyhint="search"
-                placeholder={'Filter'}
+                placeholder={'search'}
                 spellcheck="false"
                 type="search"
                 autofocus={true}
                 on:input={onInput}
+                aria-label="Search document"
             />
             <div
                 style={$store.search.query ? '' : 'display: none'}

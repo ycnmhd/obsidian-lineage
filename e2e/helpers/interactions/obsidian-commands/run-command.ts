@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
-import { PROMPT_INPUT } from '../consts/selectors';
-import { delay } from '../general/delay';
+import { PROMPT_INPUT } from '../../consts/selectors';
+import { delay } from '../../general/helpers';
 import invariant from 'tiny-invariant';
 
 const SEL_PALETTE_RESULTS = '.prompt-results';
