@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { delay, SHORT } from '../../general/helpers';
+import { delay, MEDIUM } from '../../general/helpers';
 import { AllDirections } from 'src/stores/view/view-store-actions';
 import { JumpTarget } from 'src/stores/view/reducers/document/state/jump-to-node';
 
@@ -18,5 +18,5 @@ export const navigateUsingHotkey = async (
     direction: AllDirections | JumpTarget,
 ) => {
     await obsidian.keyboard.press(`${directionKeys[direction]}`);
-    await delay(SHORT);
+    await delay(MEDIUM);
 };

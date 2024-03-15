@@ -12,7 +12,7 @@ import { closeThisTabGroup } from '../helpers/interactions/obsidian-commands/clo
 import { getCardText } from '../helpers/getters/lineage-view/get-card-text';
 import { getCardsOfColumns } from '../helpers/getters/lineage-view/get-cards-of-columns';
 import { getTextsOfColumns } from '../helpers/getters/lineage-view/get-texts-of-columns';
-import { resetTextIndex } from '../helpers/general/helpers';
+import { resetTextIndex, text } from '../helpers/general/helpers';
 
 let obsidian: Page;
 
@@ -24,19 +24,20 @@ test.beforeEach(async () => {
     await createNewLineageFile(obsidian);
     resetTextIndex();
 });
+
 test.describe('card buttons', () => {
     test('create card above using card button', async () => {
-        const n1_text = 'file 1 text 1 ' + Date.now();
+        const n1_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n1_text);
 
         await createCardUsingButton(obsidian, 'above');
-        const n2_text = 'file 1 text 2 ' + Date.now();
+        const n2_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n2_text);
 
         await selectCard(obsidian, 0, 1);
 
         await createCardUsingButton(obsidian, 'above');
-        const n3_text = 'file 1 text 3 ' + Date.now();
+        const n3_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n3_text);
 
         const cs = await getTextsOfColumns(obsidian);
@@ -44,17 +45,17 @@ test.describe('card buttons', () => {
     });
 
     test('create card below using card button', async () => {
-        const n1_text = 'file 1 text 1 ' + Date.now();
+        const n1_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n1_text);
 
         await createCardUsingButton(obsidian, 'below');
-        const n2_text = 'file 1 text 2 ' + Date.now();
+        const n2_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n2_text);
 
         await selectCard(obsidian, 0, 0);
 
         await createCardUsingButton(obsidian, 'below');
-        const n3_text = 'file 1 text 3 ' + Date.now();
+        const n3_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n3_text);
 
         // verify structure
@@ -67,17 +68,17 @@ test.describe('card buttons', () => {
     });
 
     test('create child card using card button', async () => {
-        const n1_text = 'file 1 text 1 ' + Date.now();
+        const n1_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n1_text);
 
         await createCardUsingButton(obsidian, 'child');
-        const n2_text = 'file 1 text 2 ' + Date.now();
+        const n2_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n2_text);
 
         await selectCard(obsidian, 0, 0);
 
         await createCardUsingButton(obsidian, 'child');
-        const n3_text = 'file 1 text 3 ' + Date.now();
+        const n3_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n3_text);
 
         const cs = await getTextsOfColumns(obsidian);
@@ -85,21 +86,21 @@ test.describe('card buttons', () => {
     });
 
     test('delete card using card button', async () => {
-        const n1_text = 'n1 ' + Date.now();
+        const n1_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n1_text);
 
         await createCardUsingButton(obsidian, 'below');
-        const n2_text = 'n2 below n1 ' + Date.now();
+        const n2_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n2_text);
 
         await selectCard(obsidian, 0, 0);
 
         await createCardUsingButton(obsidian, 'child');
-        const n3_text = 'n3 child of n1 ' + Date.now();
+        const n3_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n3_text);
 
         await createCardUsingButton(obsidian, 'child');
-        const n4_text = 'n4 child of n3 ' + Date.now();
+        const n4_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n4_text);
 
         await selectCard(obsidian, 0, 0);
@@ -110,12 +111,12 @@ test.describe('card buttons', () => {
     });
 
     test('edit and save card using card buttons', async () => {
-        const n1_text = 'n1 ' + Date.now();
+        const n1_text = text();
         await typeTextAndSaveItUsingHotkey(obsidian, n1_text);
 
         await toggleCardEditUsingButton(obsidian);
 
-        const n1_text2 = 'n1 ' + Date.now();
+        const n1_text2 = text();
         await typeText(obsidian, n1_text2);
         await saveCardUsingButton(obsidian);
         const cs = await getTextsOfColumns(obsidian);

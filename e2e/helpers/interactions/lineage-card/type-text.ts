@@ -4,7 +4,7 @@ import { getTextArea } from '../../getters/lineage-view/get-text-area';
 
 export const typeText = async (obsidian: Page, text: string) => {
     const textArea = await getTextArea(obsidian);
-    await textArea.click();
+    await textArea.focus();
     await obsidian.keyboard.type(text);
     await delay(SHORT);
 };

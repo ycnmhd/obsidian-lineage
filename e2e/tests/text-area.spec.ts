@@ -1,16 +1,4 @@
 import { expect, Page, test } from '@playwright/test';
-import { runCommand } from '../helpers/interactions/obsidian-commands/run-command';
-import {
-    CMD_CLOSE_CURRENT_TAB,
-    CMD_GO_TO_NEXT_TAB,
-    CMD_GO_TO_PREVIOUS_TAB,
-    CMD_UNDO_CLOSE_TAB,
-} from '../helpers/consts/commands';
-import {
-    COLUMN,
-    LINEAGE_CARD_ANY,
-    LINEAGE_VIEW,
-} from '../helpers/consts/selectors';
 import { getObsidian } from '../helpers/getters/obsidian';
 import { addCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/add-card-using-hotkey';
 import { createNewLineageFile } from '../helpers/interactions/lineage-commands/create-new-lineage-file';
@@ -18,9 +6,18 @@ import { typeText } from '../helpers/interactions/lineage-card/type-text';
 import { moveCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/move-card-using-hotkey';
 import { saveCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/save-card-using-hotkey';
 import { closeThisTabGroup } from '../helpers/interactions/obsidian-commands/close-this-tab-group';
-import { getActiveCard } from '../helpers/getters/lineage-view/get-active-card';
-import { getCardText } from '../helpers/getters/lineage-view/get-card-text';
-import { resetTextIndex } from '../helpers/general/helpers';
+import { resetTextIndex, text } from '../helpers/general/helpers';
+import { getTextsOfColumns } from '../helpers/getters/lineage-view/get-texts-of-columns';
+import { closeThisTab } from '../helpers/interactions/obsidian-commands/close-this-tab';
+import { undoCloseTab } from '../helpers/interactions/obsidian-commands/undo-close-tab';
+import { goToTab } from '../helpers/interactions/obsidian-commands/go-to-tab';
+import { editCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/edit-card-using-hotkey';
+import { navigateUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/navigate-using-hotkey';
+import { undoChangeUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/undo-change-using-hotkey';
+import { redoChangeUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/redo-change-using-hotkey';
+import { selectCard } from '../helpers/interactions/lineage-card/select-card';
+import { deleteCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/delete-card-using-hotkey';
+import { discardChangesUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/discard-changes-using-hotkey';
 
 let obsidian: Page;
 
@@ -33,89 +30,209 @@ test.beforeEach(async () => {
     resetTextIndex();
 });
 
-test('should save card when view is closed', async () => {
-    // insert text into f1_n1
-    const f1_n1_text = 'file 1 card 1';
-    await typeText(obsidian, f1_n1_text);
+test.describe('text should be saved', () => {
+    test('should save card when view is closed', async () => {
+        const n1 = text();
+        await typeText(obsidian, n1);
 
-    // close
-    await runCommand(obsidian, CMD_CLOSE_CURRENT_TAB);
+        await closeThisTab(obsidian);
+        await undoCloseTab(obsidian);
 
-    // re-open
-    await runCommand(obsidian, CMD_UNDO_CLOSE_TAB);
+        expect(await getTextsOfColumns(obsidian)).toEqual([[n1]]);
+    });
 
-    // test text
-    const f1_n1 = await getActiveCard(obsidian);
-    expect(await getCardText(f1_n1)).toEqual(f1_n1_text);
+    test('should save node before moving it', async () => {
+        // create a card
+        const n1 = text();
+        await typeText(obsidian, n1);
+
+        await addCardUsingHotkey(obsidian, 'down');
+        const n2 = text();
+        await typeText(obsidian, n2);
+
+        // move card before saving
+        await moveCardUsingHotkey(obsidian, 'right');
+
+        expect(await getTextsOfColumns(obsidian)).toEqual([[n1], [n2]]);
+    });
+
+    test('should save node when a different node is selected', async () => {
+        const n1 = text();
+        await typeText(obsidian, n1);
+
+        await addCardUsingHotkey(obsidian, 'right');
+        const n2 = text();
+        await typeText(obsidian, n2);
+
+        // select a different card before saving
+        await selectCard(obsidian, 0, 0);
+
+        expect(await getTextsOfColumns(obsidian)).toEqual([[n1], [n2]]);
+    });
+});
+
+test.describe('some hotkeys should not work', () => {
+    test('deletion hotkeys should not work while editing', async () => {
+        const n1 = text();
+        await typeText(obsidian, n1);
+
+        await addCardUsingHotkey(obsidian, 'right');
+        const n2 = text();
+        await typeText(obsidian, n2);
+        await saveCardUsingHotkey(obsidian);
+
+        expect(await getTextsOfColumns(obsidian)).toEqual([[n1], [n2]]);
+
+        await editCardUsingHotkey(obsidian);
+        await deleteCardUsingHotkey(obsidian);
+
+        await discardChangesUsingHotkey(obsidian);
+
+        expect(await getTextsOfColumns(obsidian)).toEqual([[n1], [n2]]);
+
+        await deleteCardUsingHotkey(obsidian);
+        expect(await getTextsOfColumns(obsidian)).toEqual([[n1]]);
+    });
+
+    test('navigation hotkeys should not work while editing', async () => {
+        const n1 = text();
+        await typeText(obsidian, n1);
+
+        await addCardUsingHotkey(obsidian, 'down');
+        const n2 = text();
+        await typeText(obsidian, n2);
+
+        await addCardUsingHotkey(obsidian, 'right');
+        const n3 = text();
+        await typeText(obsidian, n3);
+
+        await addCardUsingHotkey(obsidian, 'down');
+        const n4 = text();
+        await typeText(obsidian, n4);
+
+        await saveCardUsingHotkey(obsidian);
+        expect(await getTextsOfColumns(obsidian)).toEqual([
+            [n1, n2],
+            [n3, n4],
+        ]);
+
+        await editCardUsingHotkey(obsidian);
+        await navigateUsingHotkey(obsidian, 'up');
+        await typeText(obsidian, '1');
+
+        await navigateUsingHotkey(obsidian, 'down');
+        await typeText(obsidian, '2');
+
+        await saveCardUsingHotkey(obsidian);
+        expect(await getTextsOfColumns(obsidian)).toEqual([
+            [n1, n2],
+            [n3, `1${n4}2`],
+        ]);
+
+        await editCardUsingHotkey(obsidian);
+        await navigateUsingHotkey(obsidian, 'left');
+        await typeText(obsidian, '3');
+
+        await navigateUsingHotkey(obsidian, 'right');
+        await typeText(obsidian, '4');
+
+        await saveCardUsingHotkey(obsidian);
+        expect(await getTextsOfColumns(obsidian)).toEqual([
+            [n1, n2],
+            [n3, `1${n4}324`],
+        ]);
+
+        await editCardUsingHotkey(obsidian);
+        await navigateUsingHotkey(obsidian, 'start-of-column');
+        await typeText(obsidian, '6');
+
+        await navigateUsingHotkey(obsidian, 'end-of-column');
+        await typeText(obsidian, '7');
+
+        await saveCardUsingHotkey(obsidian);
+        expect(await getTextsOfColumns(obsidian)).toEqual([
+            [n1, n2],
+            [n3, `61${n4}3247`],
+        ]);
+
+        await editCardUsingHotkey(obsidian);
+        await navigateUsingHotkey(obsidian, 'start-of-group');
+        await typeText(obsidian, '8');
+
+        await navigateUsingHotkey(obsidian, 'end-of-group');
+        await typeText(obsidian, '9');
+
+        await saveCardUsingHotkey(obsidian);
+        expect(await getTextsOfColumns(obsidian)).toEqual([
+            [n1, n2],
+            [n3, `861${n4}32479`],
+        ]);
+    });
+
+    test('history should not work while editing', async () => {
+        const n1 = text();
+        await typeText(obsidian, n1);
+
+        await addCardUsingHotkey(obsidian, 'down');
+        const n2 = text();
+        await typeText(obsidian, n2);
+
+        await addCardUsingHotkey(obsidian, 'right');
+        const n3 = text();
+        await typeText(obsidian, n3);
+
+        await addCardUsingHotkey(obsidian, 'down');
+        const n4 = text();
+        await typeText(obsidian, n4);
+
+        await saveCardUsingHotkey(obsidian);
+        expect(await getTextsOfColumns(obsidian)).toEqual([
+            [n1, n2],
+            [n3, n4],
+        ]);
+
+        await editCardUsingHotkey(obsidian);
+        await typeText(obsidian, '1');
+
+        // undo should not work
+        await undoChangeUsingHotkey(obsidian);
+        await saveCardUsingHotkey(obsidian);
+        expect(await getTextsOfColumns(obsidian)).toEqual([
+            [n1, n2],
+            [n3, n4 + '1'],
+        ]);
+
+        await undoChangeUsingHotkey(obsidian);
+        await editCardUsingHotkey(obsidian);
+        // redo should not work
+        await redoChangeUsingHotkey(obsidian);
+        await typeText(obsidian, '2');
+
+        await saveCardUsingHotkey(obsidian);
+        expect(await getTextsOfColumns(obsidian)).toEqual([
+            [n1, n2],
+            [n3, n4 + '2'],
+        ]);
+    });
 });
 
 test('should handle multiple text areas in parallel', async () => {
-    // insert text into f1_n1
-    await obsidian.focus(LINEAGE_CARD_ANY);
-    const f1_n1_text = 'file 1 card 1';
-    await obsidian.keyboard.type(f1_n1_text);
+    const n1 = text();
+    await typeText(obsidian, n1);
 
     // create file 2
     await createNewLineageFile(obsidian);
 
-    // insert text into f2_n1
-    await obsidian.focus(LINEAGE_CARD_ANY);
-    const f2_n1_text = 'file 2 card 1';
-    await obsidian.keyboard.type(f2_n1_text);
+    const n2 = text();
+    await typeText(obsidian, n2);
 
     // go to f1
-    await runCommand(obsidian, CMD_GO_TO_PREVIOUS_TAB);
-    await obsidian.focus(LINEAGE_VIEW);
-
-    // save f1_n1
-    await obsidian.focus(LINEAGE_CARD_ANY);
+    await goToTab(obsidian, 1);
     await saveCardUsingHotkey(obsidian);
+    expect(await getTextsOfColumns(obsidian)).toEqual([[n1]]);
 
     // go to f2
-    await runCommand(obsidian, CMD_GO_TO_NEXT_TAB);
-    await obsidian.focus(LINEAGE_VIEW);
-
-    // save f2_n1
-    await obsidian.focus(LINEAGE_CARD_ANY);
+    await goToTab(obsidian, 2);
     await saveCardUsingHotkey(obsidian);
-
-    // test f2_n1
-    const f2_n1 = await getActiveCard(obsidian);
-    expect(await getCardText(f2_n1)).toEqual(f2_n1_text);
-
-    // go to f1
-    await runCommand(obsidian, CMD_GO_TO_PREVIOUS_TAB);
-    await obsidian.focus(LINEAGE_VIEW);
-
-    // test f1_n1
-    const f1_n1 = await getActiveCard(obsidian);
-    expect(await getCardText(f1_n1)).toEqual(f1_n1_text);
-});
-test('should save node before moving it', async () => {
-    // create a card
-    await obsidian.focus(LINEAGE_CARD_ANY);
-    const n1_text = 'card 1';
-    await obsidian.keyboard.type(n1_text);
-
-    // create a card below
-    await addCardUsingHotkey(obsidian, 'down');
-    const n2_text = 'card 2';
-    await obsidian.keyboard.type(n2_text);
-
-    // move card 2 right without saving
-    await moveCardUsingHotkey(obsidian, 'right');
-
-    // assert that both cards are saved
-    const columns = await obsidian.$$(COLUMN);
-    expect(columns.length).toBe(2);
-
-    // assert n1 content
-    const c1_cards = await columns[0].$$(LINEAGE_CARD_ANY);
-    expect(c1_cards.length).toBe(1);
-    expect(await getCardText(c1_cards[0])).toEqual(n1_text);
-
-    // assert n2 content
-    const c2_cards = await columns[1].$$(LINEAGE_CARD_ANY);
-    expect(c2_cards.length).toBe(1);
-    expect(await getCardText(c2_cards[0])).toEqual(n2_text);
+    expect(await getTextsOfColumns(obsidian)).toEqual([[n2]]);
 });
