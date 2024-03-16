@@ -1,15 +1,19 @@
-import { Page } from '@playwright/test';
-import { delay, SHORT } from '../../general/helpers';
-import { SEL_DELETE_CARD } from '../../consts/selectors';
 import invariant from 'tiny-invariant';
-import { getActiveCard } from '../../getters/lineage-view/get-active-card';
+import {
+    getActiveCard,
+    LINEAGE_CARD_ACTIVE,
+} from '../../getters/lineage-view/get-active-card';
+import { delay, SHORT } from '../../general/delay';
+import { getActiveView } from '../../getters/lineage-view/get-active-view';
 
-export const deleteCardUsingButton = async (obsidian: Page) => {
-    const card = await getActiveCard(obsidian);
+export const SEL_DELETE_CARD = `${LINEAGE_CARD_ACTIVE} button[aria-label="Delete"]`;
+export const deleteCardUsingButton = async () => {
+    const card = await getActiveCard();
     await card.click();
     await card.hover();
     await delay(SHORT);
-    const button = await obsidian.$(SEL_DELETE_CARD);
+    const view = await getActiveView();
+    const button = await view.$(SEL_DELETE_CARD);
     invariant(button);
     await button.click();
     await delay(SHORT);

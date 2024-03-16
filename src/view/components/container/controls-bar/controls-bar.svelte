@@ -89,21 +89,21 @@
     };
 </script>
 
-<div class="canvas-controls">
-    <div class="canvas-control-group">
+<div class="lineage-view-controls">
+    <div class="lineage-view-control-group">
         <button
             aria-label={lang.open_in_editor}
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             on:click={openAsMarkdown}
         >
             <File class="svg-icon" />
         </button>
     </div>
-    <div class="canvas-control-group">
+    <div class="lineage-view-control-group">
         <button
             aria-label="History"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             disabled={documentHistory.items.length === 0}
             on:click={() => {
@@ -115,7 +115,7 @@
 
         <button
             aria-label="Undo"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             disabled={!documentHistory || !documentHistory.state.canGoBack}
             on:click={handlePreviousClick}
@@ -124,7 +124,7 @@
         </button>
         <button
             aria-label="Redo"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             disabled={!documentHistory || !documentHistory.state.canGoForward}
             on:click={handleNextClick}
@@ -132,10 +132,10 @@
             <RedoIcon class="svg-icon" />
         </button>
     </div>
-    <div class="canvas-control-group">
+    <div class="lineage-view-control-group">
         <button
             aria-label="zoom in"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             disabled={$store.ui.zoomLevel === maxZoomLevel}
             on:click={zoomIn}
@@ -144,7 +144,7 @@
         </button>
         <button
             aria-label="Restore zoom level"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             on:click={restoreZoom}
         >
@@ -152,7 +152,7 @@
         </button>
         <button
             aria-label="Zoom to fit"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             on:click={fitToScale}
         >
@@ -160,7 +160,7 @@
         </button>
         <button
             aria-label="Zoom out"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             disabled={$store.ui.zoomLevel === minZoomLevel}
             on:click={zoomOut}
@@ -168,10 +168,10 @@
             <ZoomOut class="svg-icon" />
         </button>
     </div>
-    <div class="canvas-control-group">
+    <div class="lineage-view-control-group">
         <button
             aria-label="Theme"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             on:click={toggleTheme}
         >
@@ -183,7 +183,7 @@
         </button>
         <button
             aria-label="Keyboard shortcuts"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             on:click={toggleHelp}
         >
@@ -196,15 +196,16 @@
     button:disabled {
         cursor: not-allowed;
     }
-    .canvas-controls {
+    .lineage-view-controls {
         right: var(--size-4-2);
         top: var(--size-4-2);
         gap: var(--size-4-2);
         display: flex;
         flex-direction: column;
         position: absolute;
+        z-index: 2;
     }
-    .canvas-control-group {
+    .lineage-view-control-group {
         border-radius: var(--radius-s);
         background-color: var(--background-primary);
         border: 1px solid var(--background-modifier-border);
@@ -213,7 +214,7 @@
         flex-direction: column;
         overflow: hidden;
     }
-    .canvas-control-item {
+    .control-item {
         border-radius: 0;
         box-shadow: none;
         height: auto;
@@ -230,7 +231,7 @@
         --icon-stroke: var(--icon-s-stroke-width);
         cursor: pointer;
     }
-    .canvas-control-item:last-child {
+    .control-item:last-child {
         border-bottom: none;
     }
 </style>

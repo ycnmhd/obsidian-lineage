@@ -1,5 +1,4 @@
-import { expect, Page, test } from '@playwright/test';
-import { getObsidian } from '../helpers/getters/obsidian';
+import { expect, test } from '@playwright/test';
 import { createNewLineageFile } from '../helpers/interactions/lineage-commands/create-new-lineage-file';
 import { typeText } from '../helpers/interactions/lineage-card/type-text';
 import { typeTextAndSaveItUsingHotkey } from '../helpers/interactions/lineage-card/type-text-and-save-it-using-hotkey';
@@ -12,114 +11,113 @@ import { closeThisTabGroup } from '../helpers/interactions/obsidian-commands/clo
 import { getCardText } from '../helpers/getters/lineage-view/get-card-text';
 import { getCardsOfColumns } from '../helpers/getters/lineage-view/get-cards-of-columns';
 import { getTextsOfColumns } from '../helpers/getters/lineage-view/get-texts-of-columns';
-import { resetTextIndex, text } from '../helpers/general/helpers';
-
-let obsidian: Page;
+import { resetTextIndex, text } from '../helpers/general/text';
+import { loadObsidian } from '../helpers/getters/obsidian/load-obsidian';
 
 test.beforeAll(async () => {
-    obsidian = await getObsidian();
+    await loadObsidian();
 });
 test.beforeEach(async () => {
-    await closeThisTabGroup(obsidian);
-    await createNewLineageFile(obsidian);
+    await closeThisTabGroup();
+    await createNewLineageFile();
     resetTextIndex();
 });
 
 test.describe('card buttons', () => {
     test('create card above using card button', async () => {
         const n1_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n1_text);
+        await typeTextAndSaveItUsingHotkey(n1_text);
 
-        await createCardUsingButton(obsidian, 'above');
+        await createCardUsingButton('above');
         const n2_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n2_text);
+        await typeTextAndSaveItUsingHotkey(n2_text);
 
-        await selectCard(obsidian, 0, 1);
+        await selectCard(0, 1);
 
-        await createCardUsingButton(obsidian, 'above');
+        await createCardUsingButton('above');
         const n3_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n3_text);
+        await typeTextAndSaveItUsingHotkey(n3_text);
 
-        const cs = await getTextsOfColumns(obsidian);
+        const cs = await getTextsOfColumns();
         expect(cs).toEqual([[n2_text, n3_text, n1_text]]);
     });
 
     test('create card below using card button', async () => {
         const n1_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n1_text);
+        await typeTextAndSaveItUsingHotkey(n1_text);
 
-        await createCardUsingButton(obsidian, 'below');
+        await createCardUsingButton('below');
         const n2_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n2_text);
+        await typeTextAndSaveItUsingHotkey(n2_text);
 
-        await selectCard(obsidian, 0, 0);
+        await selectCard(0, 0);
 
-        await createCardUsingButton(obsidian, 'below');
+        await createCardUsingButton('below');
         const n3_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n3_text);
+        await typeTextAndSaveItUsingHotkey(n3_text);
 
         // verify structure
-        const c1 = (await getCardsOfColumns(obsidian))[0];
+        const c1 = (await getCardsOfColumns())[0];
         expect(await getCardText(c1[0])).toBe(n1_text);
         expect(await getCardText(c1[1])).toBe(n3_text);
         expect(await getCardText(c1[2])).toBe(n2_text);
-        const cs = await getTextsOfColumns(obsidian);
+        const cs = await getTextsOfColumns();
         expect(cs).toEqual([[n1_text, n3_text, n2_text]]);
     });
 
     test('create child card using card button', async () => {
         const n1_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n1_text);
+        await typeTextAndSaveItUsingHotkey(n1_text);
 
-        await createCardUsingButton(obsidian, 'child');
+        await createCardUsingButton('child');
         const n2_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n2_text);
+        await typeTextAndSaveItUsingHotkey(n2_text);
 
-        await selectCard(obsidian, 0, 0);
+        await selectCard(0, 0);
 
-        await createCardUsingButton(obsidian, 'child');
+        await createCardUsingButton('child');
         const n3_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n3_text);
+        await typeTextAndSaveItUsingHotkey(n3_text);
 
-        const cs = await getTextsOfColumns(obsidian);
+        const cs = await getTextsOfColumns();
         expect(cs).toEqual([[n1_text], [n2_text, n3_text]]);
     });
 
     test('delete card using card button', async () => {
         const n1_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n1_text);
+        await typeTextAndSaveItUsingHotkey(n1_text);
 
-        await createCardUsingButton(obsidian, 'below');
+        await createCardUsingButton('below');
         const n2_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n2_text);
+        await typeTextAndSaveItUsingHotkey(n2_text);
 
-        await selectCard(obsidian, 0, 0);
+        await selectCard(0, 0);
 
-        await createCardUsingButton(obsidian, 'child');
+        await createCardUsingButton('child');
         const n3_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n3_text);
+        await typeTextAndSaveItUsingHotkey(n3_text);
 
-        await createCardUsingButton(obsidian, 'child');
+        await createCardUsingButton('child');
         const n4_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n4_text);
+        await typeTextAndSaveItUsingHotkey(n4_text);
 
-        await selectCard(obsidian, 0, 0);
-        await deleteCardUsingButton(obsidian);
+        await selectCard(0, 0);
+        await deleteCardUsingButton();
 
-        const cs = await getTextsOfColumns(obsidian);
+        const cs = await getTextsOfColumns();
         expect(cs).toEqual([[n2_text]]);
     });
 
     test('edit and save card using card buttons', async () => {
         const n1_text = text();
-        await typeTextAndSaveItUsingHotkey(obsidian, n1_text);
+        await typeTextAndSaveItUsingHotkey(n1_text);
 
-        await toggleCardEditUsingButton(obsidian);
+        await toggleCardEditUsingButton();
 
         const n1_text2 = text();
-        await typeText(obsidian, n1_text2);
-        await saveCardUsingButton(obsidian);
-        const cs = await getTextsOfColumns(obsidian);
+        await typeText(n1_text2);
+        await saveCardUsingButton();
+        const cs = await getTextsOfColumns();
         expect(cs).toEqual([[n1_text + n1_text2]]);
     });
 });

@@ -1,7 +1,7 @@
 import { ElementHandle } from '@playwright/test';
-import { MARKDOWN_PREVIEW } from '../../consts/selectors';
 import invariant from 'tiny-invariant';
 
+export const MARKDOWN_PREVIEW = '.content';
 export const getCardText = async (
     card: ElementHandle<HTMLElement | SVGElement>,
 ) => {

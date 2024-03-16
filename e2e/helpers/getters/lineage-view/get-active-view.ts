@@ -1,10 +1,9 @@
-import { Page } from '@playwright/test';
-import { getActiveLeaf } from '../obsidian';
-import { LINEAGE_VIEW } from '../../consts/selectors';
 import invariant from 'tiny-invariant';
+import { getActiveLeaf } from '../obsidian/get-active-leaf';
 
-export const getActiveView = async (obsidian: Page) => {
-    const leaf = await getActiveLeaf(obsidian);
+export const LINEAGE_VIEW = '.lineage__main';
+export const getActiveView = async () => {
+    const leaf = await getActiveLeaf();
     const view = await leaf.$(LINEAGE_VIEW);
     invariant(view);
     return view;

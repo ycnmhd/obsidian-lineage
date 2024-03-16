@@ -1,8 +1,8 @@
-import { Page } from '@playwright/test';
-import { delay, SHORT } from '../../general/helpers';
 import { Direction } from 'src/stores/view/view-store-actions';
 import { getActiveCard } from '../../getters/lineage-view/get-active-card';
 import { maybeGetTextArea } from '../../getters/lineage-view/maybe-get-text-area';
+import { delay, SHORT } from '../../general/delay';
+import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
 
 const directionKeys: Record<Direction, string> = {
     up: 'ArrowUp',
@@ -16,22 +16,21 @@ const splitAtCursorKeys: Record<Direction, string> = {
 };
 
 export const addCardUsingHotkey = async (
-    obsidian: Page,
     direction: Direction,
     splitAtCursor = false,
 ) => {
-    const textArea = await maybeGetTextArea(obsidian);
+    const textArea = await maybeGetTextArea();
     if (textArea) {
         await textArea.focus();
     } else {
         if (splitAtCursor) {
             throw new Error('could not find textarea');
         } else {
-            const card = await getActiveCard(obsidian);
-            await card.focus();
+            const card = await getActiveCard();
+            await card.click();
         }
     }
-    await obsidian.keyboard.press(
+    await __obsidian__.keyboard.press(
         `Control+${
             splitAtCursor
                 ? splitAtCursorKeys[direction]

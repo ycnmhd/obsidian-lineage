@@ -1,7 +1,5 @@
-import { runCommand } from './run-command';
-import { CMD_UNDO_CLOSE_TAB } from '../../consts/commands';
-import { Page } from '@playwright/test';
+import { CMD_UNDO_CLOSE_TAB, runCommand } from './run-command';
 
-export const undoCloseTab = async (obsidian: Page) => {
-    await runCommand(obsidian, CMD_UNDO_CLOSE_TAB);
+export const undoCloseTab = async () => {
+    await runCommand(CMD_UNDO_CLOSE_TAB);
 };

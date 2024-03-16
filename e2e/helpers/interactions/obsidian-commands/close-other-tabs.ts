@@ -1,9 +1,8 @@
-import { Page } from '@playwright/test';
-import { runCommand } from './run-command';
-import { CMD_CLOSE_OTHER_TABS } from '../../consts/commands';
-import { LINEAGE_VIEW } from '../../consts/selectors';
+import { CMD_CLOSE_OTHER_TABS, runCommand } from './run-command';
+import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
+import { LINEAGE_VIEW } from '../../getters/lineage-view/get-active-view';
 
-export const closeOtherTabs = async (obsidian: Page) => {
-    await runCommand(obsidian, CMD_CLOSE_OTHER_TABS, false);
-    await obsidian.focus(LINEAGE_VIEW);
+export const closeOtherTabs = async () => {
+    await runCommand(CMD_CLOSE_OTHER_TABS, false);
+    await __obsidian__.focus(LINEAGE_VIEW);
 };

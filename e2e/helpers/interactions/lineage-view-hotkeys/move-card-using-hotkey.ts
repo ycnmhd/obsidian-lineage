@@ -1,6 +1,6 @@
-import { Page } from '@playwright/test';
-import { delay, SHORT } from '../../general/helpers';
 import { AllDirections } from 'src/stores/view/view-store-actions';
+import { delay, SHORT } from '../../general/delay';
+import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
 
 const directionKeys: Record<AllDirections, string> = {
     up: 'ArrowUp',
@@ -8,10 +8,7 @@ const directionKeys: Record<AllDirections, string> = {
     right: 'ArrowRight',
     left: 'ArrowLeft',
 };
-export const moveCardUsingHotkey = async (
-    obsidian: Page,
-    direction: AllDirections,
-) => {
-    await obsidian.keyboard.press(`Shift+Alt+${directionKeys[direction]}`);
+export const moveCardUsingHotkey = async (direction: AllDirections) => {
+    await __obsidian__.keyboard.press(`Shift+Alt+${directionKeys[direction]}`);
     await delay(SHORT);
 };

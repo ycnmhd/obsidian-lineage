@@ -1,19 +1,18 @@
-import { Page } from '@playwright/test';
 import { rightClickFolder } from './right-click-folder';
 import invariant from 'tiny-invariant';
-import { delay, MEDIUM } from '../../general/helpers';
+import { delay, LONG } from '../../general/delay';
+import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
 
 export const clickFolderMenuItem = async (
-    obsidian: Page,
     folderName: string,
     itemName: string,
 ) => {
-    await rightClickFolder(obsidian, folderName);
+    await rightClickFolder(folderName);
 
     // press item div class="menu" > text "New lineage file"
-    const menu = await obsidian.$('div.menu');
+    const menu = await __obsidian__.$('div.menu');
     invariant(menu);
-    const item = obsidian.getByText(itemName);
+    const item = __obsidian__.getByText(itemName);
     await item.click();
-    await delay(MEDIUM);
+    await delay(LONG);
 };

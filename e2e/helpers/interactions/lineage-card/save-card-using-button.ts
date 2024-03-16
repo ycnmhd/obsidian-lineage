@@ -1,15 +1,19 @@
-import { Page } from '@playwright/test';
-import { delay, SHORT } from '../../general/helpers';
-import { SEL_SAVE_CARD } from '../../consts/selectors';
 import invariant from 'tiny-invariant';
-import { getActiveCard } from '../../getters/lineage-view/get-active-card';
+import {
+    getActiveCard,
+    LINEAGE_CARD_ACTIVE,
+} from '../../getters/lineage-view/get-active-card';
+import { delay, SHORT } from '../../general/delay';
+import { getActiveView } from '../../getters/lineage-view/get-active-view';
 
-export const saveCardUsingButton = async (obsidian: Page) => {
-    const card = await getActiveCard(obsidian);
+export const SEL_SAVE_CARD = `${LINEAGE_CARD_ACTIVE} button[aria-label="Save"]`;
+export const saveCardUsingButton = async () => {
+    const card = await getActiveCard();
     await card.click();
     await card.hover();
     await delay(SHORT);
-    const button = await obsidian.$(SEL_SAVE_CARD);
+    const view = await getActiveView();
+    const button = await view.$(SEL_SAVE_CARD);
     invariant(button);
     await button.click();
 };

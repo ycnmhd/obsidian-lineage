@@ -1,15 +1,16 @@
-import { Page } from '@playwright/test';
 import invariant from 'tiny-invariant';
-import { delay } from '../../general/helpers';
+
+import { delay } from '../../general/delay';
+import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
 
 const SEL_CREATE_FOLDER = 'div[aria-label="New folder"]';
-export const createNewFolder = async (obsidian: Page, name: string) => {
-    const button = await obsidian.$(SEL_CREATE_FOLDER);
+export const createNewFolder = async (name: string) => {
+    const button = await __obsidian__.$(SEL_CREATE_FOLDER);
     invariant(button);
     await button.click();
     await delay(100);
-    await obsidian.keyboard.type(name);
+    await __obsidian__.keyboard.type(name);
     await delay(100);
-    await obsidian.keyboard.press('Enter');
+    await __obsidian__.keyboard.press('Enter');
     await delay(100);
 };

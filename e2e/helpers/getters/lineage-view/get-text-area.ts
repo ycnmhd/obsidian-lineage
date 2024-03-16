@@ -1,10 +1,9 @@
-import { Page } from '@playwright/test';
 import { getActiveView } from './get-active-view';
-import { LINEAGE_TEXTAREA } from '../../consts/selectors';
 import invariant from 'tiny-invariant';
 
-export const getTextArea = async (obsidian: Page) => {
-    const view = await getActiveView(obsidian);
+export const LINEAGE_TEXTAREA = '.lineage__card textarea';
+export const getTextArea = async () => {
+    const view = await getActiveView();
     const textArea = await view.$(LINEAGE_TEXTAREA);
     invariant(textArea);
     return textArea;

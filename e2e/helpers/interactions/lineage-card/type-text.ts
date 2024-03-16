@@ -1,10 +1,10 @@
-import { Page } from '@playwright/test';
-import { delay, SHORT } from '../../general/helpers';
 import { getTextArea } from '../../getters/lineage-view/get-text-area';
+import { delay, SHORT } from '../../general/delay';
+import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
 
-export const typeText = async (obsidian: Page, text: string) => {
-    const textArea = await getTextArea(obsidian);
+export const typeText = async (text: string) => {
+    const textArea = await getTextArea();
     await textArea.focus();
-    await obsidian.keyboard.type(text);
+    await __obsidian__.keyboard.type(text);
     await delay(SHORT);
 };

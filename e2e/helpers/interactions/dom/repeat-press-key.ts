@@ -1,13 +1,9 @@
-import { Page } from '@playwright/test';
-import { delay, SHORT } from '../../general/helpers';
+import { delay, SHORT } from '../../general/delay';
+import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
 
-export const repeatPressKey = async (
-    obsidian: Page,
-    key: string,
-    n: number,
-) => {
+export const repeatPressKey = async (key: string, n: number) => {
     for (let i = 0; i < n; i++) {
-        await obsidian.keyboard.press(key, { delay: 10 });
+        await __obsidian__.keyboard.press(key, { delay: 10 });
         await delay(SHORT);
     }
 };

@@ -1,7 +1,7 @@
-import { Page } from '@playwright/test';
-import { delay, MEDIUM } from '../../general/helpers';
 import { AllDirections } from 'src/stores/view/view-store-actions';
 import { JumpTarget } from 'src/stores/view/reducers/document/state/jump-to-node';
+import { delay, MEDIUM } from '../../general/delay';
+import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
 
 const directionKeys: Record<AllDirections | JumpTarget, string> = {
     up: 'ArrowUp',
@@ -14,9 +14,8 @@ const directionKeys: Record<AllDirections | JumpTarget, string> = {
     'end-of-group': 'PageDown',
 };
 export const navigateUsingHotkey = async (
-    obsidian: Page,
     direction: AllDirections | JumpTarget,
 ) => {
-    await obsidian.keyboard.press(`${directionKeys[direction]}`);
+    await __obsidian__.keyboard.press(`${directionKeys[direction]}`);
     await delay(MEDIUM);
 };
