@@ -24,9 +24,10 @@ export const draggable = (node: HTMLElement, data: DraggableData) => {
     const handleDragstart = (event: DragEvent) => {
         if (!event.dataTransfer) return;
         const target = event.currentTarget as HTMLElement;
-        if (event.clientX - target.getBoundingClientRect().x > 12) {
-            event.preventDefault();
-        } else {
+        if (
+            event.clientX - target.getBoundingClientRect().x <= 12 ||
+            target.dataset['test'] === 'true'
+        ) {
             event.dataTransfer.setData('text/plain', data.id);
             setTimeout(() => {
                 data.store.dispatch({
@@ -35,11 +36,13 @@ export const draggable = (node: HTMLElement, data: DraggableData) => {
                 });
                 toggleDraggedNodeVisibility(node, data, false);
             }, 0);
+        } else {
+            event.preventDefault();
         }
     };
 
     node.addEventListener('dragstart', handleDragstart);
-    const handleDragEnd = (e: DragEvent) => {
+    const handleDragEnd = () => {
         data.store.dispatch({ type: 'DOCUMENT/SET_DRAG_STARTED' });
         toggleDraggedNodeVisibility(node, data, true);
     };
