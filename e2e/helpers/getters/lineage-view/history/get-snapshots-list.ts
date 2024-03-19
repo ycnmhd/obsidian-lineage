@@ -1,5 +1,5 @@
 import invariant from 'tiny-invariant';
-import { getActiveView } from '../get-active-view';
+import { getActiveView } from '../card/get-active-view';
 
 export const SEL_SNAPSHOTS_LIST = '.snapshots-list';
 export const getSnapshotsList = async () => {

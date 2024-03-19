@@ -1,5 +1,5 @@
 import invariant from 'tiny-invariant';
-import { getActiveView } from '../../getters/lineage-view/get-active-view';
+import { getActiveView } from '../../../getters/lineage-view/card/get-active-view';
 
 const SEL_SEARCH_TOGGLE = `button[aria-label${'Toggle search input'}]`;
 

@@ -1,5 +1,5 @@
 import invariant from 'tiny-invariant';
-import { getActiveLeaf } from '../obsidian/get-active-leaf';
+import { getActiveLeaf } from '../../obsidian/get-active-leaf';
 
 export const LINEAGE_VIEW = '.lineage__main';
 export const getActiveView = async () => {

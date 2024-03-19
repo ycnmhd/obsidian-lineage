@@ -4,25 +4,25 @@ import { createNewLineageFile } from '../helpers/interactions/lineage-commands/c
 import { resetTextIndex, text } from '../helpers/general/text';
 import { getUndoChangeButton } from '../helpers/getters/lineage-view/history/get-undo-change-button';
 import { getRedoChangeButton } from '../helpers/getters/lineage-view/history/get-redo-change-button';
-import { typeTextAndSaveItUsingHotkey } from '../helpers/interactions/lineage-card/type-text-and-save-it-using-hotkey';
+import { typeTextAndSaveItUsingHotkey } from '../helpers/interactions/lineage-view/card/type-text-and-save-it-using-hotkey';
 import { loadObsidian } from '../helpers/getters/obsidian/load-obsidian';
-import { undoChangeUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/undo-change-using-hotkey';
-import { getTextsOfColumns } from '../helpers/getters/lineage-view/get-texts-of-columns';
-import { redoChangeUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/redo-change-using-hotkey';
+import { undoChangeUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/undo-change-using-hotkey';
+import { getTextsOfColumns } from '../helpers/getters/lineage-view/card/get-texts-of-columns';
+import { redoChangeUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/redo-change-using-hotkey';
 import { getSnapshotsButton } from '../helpers/getters/lineage-view/history/get-snapshots-button';
 import { toggleSnapshotsList } from '../helpers/interactions/lineage-view/history/toggle-snapshots-list';
 import { getSnapshotsList } from '../helpers/getters/lineage-view/history/get-snapshots-list';
-import { addCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/add-card-using-hotkey';
+import { addCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/add-card-using-hotkey';
 import { getNavigateBackButton } from '../helpers/getters/lineage-view/navigation/get-navigate-back-button';
 import { getNavigateForwardButton } from '../helpers/getters/lineage-view/navigation/get-navigate-forward-button';
 import { navigateBackUsingButton } from '../helpers/interactions/lineage-view/navigation/navigate-back-using-button';
-import { editCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/edit-card-using-hotkey';
+import { editCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/edit-card-using-hotkey';
 import { navigateForwardUsingButton } from '../helpers/interactions/lineage-view/navigation/navigate-forward-using-button';
-import { deleteCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/delete-card-using-hotkey';
+import { deleteCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/delete-card-using-hotkey';
 import { getBreadcrumbs } from '../helpers/getters/lineage-view/breadcrumbs/get-breadcrumbs';
 import { getBreadcrumbsText } from '../helpers/getters/lineage-view/breadcrumbs/get-breadcrumbs-text';
 import { clickBreadcrumbsItem } from '../helpers/interactions/lineage-view/breadcrumbs/click-breadcrumbs-item';
-import { selectCard } from '../helpers/interactions/lineage-card/select-card';
+import { selectCard } from '../helpers/interactions/lineage-view/card/select-card';
 
 test.beforeAll(async () => {
     await loadObsidian();

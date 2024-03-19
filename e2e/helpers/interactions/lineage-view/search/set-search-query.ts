@@ -1,7 +1,7 @@
 import invariant from 'tiny-invariant';
-import { getActiveView } from '../../getters/lineage-view/get-active-view';
-import { delay, SHORT } from '../../general/delay';
-import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
+import { getActiveView } from '../../../getters/lineage-view/card/get-active-view';
+import { delay, SHORT } from '../../../general/delay';
+import { __obsidian__ } from '../../../getters/obsidian/load-obsidian';
 
 export const SEL_SEARCH_INPUT = `input[aria-label="Search document"]`;
 

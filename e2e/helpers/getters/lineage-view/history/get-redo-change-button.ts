@@ -1,4 +1,4 @@
-import { getActiveView } from '../get-active-view';
+import { getActiveView } from '../card/get-active-view';
 import invariant from 'tiny-invariant';
 
 export const SEL_CONTROLS_BAR = `.lineage-view-controls`;

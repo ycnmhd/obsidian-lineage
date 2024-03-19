@@ -3,12 +3,12 @@ import { loadObsidian } from '../helpers/getters/obsidian/load-obsidian';
 import { closeThisTabGroup } from '../helpers/interactions/obsidian-commands/close-this-tab-group';
 import { createNewLineageFile } from '../helpers/interactions/lineage-commands/create-new-lineage-file';
 import { resetTextIndex, text } from '../helpers/general/text';
-import { typeText } from '../helpers/interactions/lineage-card/type-text';
-import { addCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/add-card-using-hotkey';
-import { saveCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/save-card-using-hotkey';
-import { getTextsOfColumns } from '../helpers/getters/lineage-view/get-texts-of-columns';
-import { selectCard } from '../helpers/interactions/lineage-card/select-card';
-import { getCardId } from '../helpers/getters/lineage-view/get-card.id';
+import { typeText } from '../helpers/interactions/lineage-view/card/type-text';
+import { addCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/add-card-using-hotkey';
+import { saveCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/save-card-using-hotkey';
+import { getTextsOfColumns } from '../helpers/getters/lineage-view/card/get-texts-of-columns';
+import { selectCard } from '../helpers/interactions/lineage-view/card/select-card';
+import { getCardId } from '../helpers/getters/lineage-view/card/get-card.id';
 import { dragAndDropBelow } from '../helpers/interactions/dom/drag-and-drop-below';
 
 test.beforeAll(async () => {

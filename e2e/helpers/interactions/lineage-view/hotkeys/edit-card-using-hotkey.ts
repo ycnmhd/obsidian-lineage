@@ -1,9 +1,9 @@
-import { delay, MEDIUM } from '../../general/delay';
-import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
+import { delay, MEDIUM } from '../../../general/delay';
+import { __obsidian__ } from '../../../getters/obsidian/load-obsidian';
 import {
     getActiveCard,
     LINEAGE_CARD_ACTIVE,
-} from '../../getters/lineage-view/get-active-card';
+} from '../../../getters/lineage-view/card/get-active-card';
 
 export const editCardUsingHotkey = async () => {
     const card = await getActiveCard();

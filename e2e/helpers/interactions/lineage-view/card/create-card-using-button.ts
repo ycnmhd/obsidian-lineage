@@ -2,9 +2,9 @@ import invariant from 'tiny-invariant';
 import {
     getActiveCard,
     LINEAGE_CARD_ACTIVE,
-} from '../../getters/lineage-view/get-active-card';
-import { delay, SHORT } from '../../general/delay';
-import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
+} from '../../../getters/lineage-view/card/get-active-card';
+import { delay, SHORT } from '../../../general/delay';
+import { __obsidian__ } from '../../../getters/obsidian/load-obsidian';
 
 export const SEL_CREATE_CARD_BELOW = `${LINEAGE_CARD_ACTIVE} button[aria-label="Add card below"]`;
 export const SEL_CREATE_CARD_ABOVE = `${LINEAGE_CARD_ACTIVE} button[aria-label="Add card above"]`;

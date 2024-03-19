@@ -1,8 +1,8 @@
 import { Direction } from 'src/stores/view/view-store-actions';
-import { getActiveCard } from '../../getters/lineage-view/get-active-card';
-import { maybeGetTextArea } from '../../getters/lineage-view/maybe-get-text-area';
-import { delay, SHORT } from '../../general/delay';
-import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
+import { getActiveCard } from '../../../getters/lineage-view/card/get-active-card';
+import { maybeGetTextArea } from '../../../getters/lineage-view/card/maybe-get-text-area';
+import { delay, SHORT } from '../../../general/delay';
+import { __obsidian__ } from '../../../getters/obsidian/load-obsidian';
 
 const directionKeys: Record<Direction, string> = {
     up: 'ArrowUp',

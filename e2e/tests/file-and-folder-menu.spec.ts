@@ -2,12 +2,12 @@
 
 import { expect, test } from '@playwright/test';
 
-import { typeText } from '../helpers/interactions/lineage-card/type-text';
-import { saveCardUsingHotkey } from '../helpers/interactions/lineage-view-hotkeys/save-card-using-hotkey';
+import { typeText } from '../helpers/interactions/lineage-view/card/type-text';
+import { saveCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/save-card-using-hotkey';
 import { closeThisTabGroup } from '../helpers/interactions/obsidian-commands/close-this-tab-group';
 import { clickFolderMenuItem } from '../helpers/interactions/obsidian-ui/click-folder-menu-item';
 import { createNewFolder } from '../helpers/interactions/obsidian-ui/create-new-folder';
-import { getTextsOfColumns } from '../helpers/getters/lineage-view/get-texts-of-columns';
+import { getTextsOfColumns } from '../helpers/getters/lineage-view/card/get-texts-of-columns';
 import { loadObsidian } from '../helpers/getters/obsidian/load-obsidian';
 import { resetTextIndex, text } from '../helpers/general/text';
 

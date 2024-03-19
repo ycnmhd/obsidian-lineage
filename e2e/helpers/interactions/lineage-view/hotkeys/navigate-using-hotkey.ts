@@ -1,7 +1,7 @@
 import { AllDirections } from 'src/stores/view/view-store-actions';
 import { JumpTarget } from 'src/stores/view/reducers/document/state/jump-to-node';
-import { delay, MEDIUM } from '../../general/delay';
-import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
+import { delay, MEDIUM } from '../../../general/delay';
+import { __obsidian__ } from '../../../getters/obsidian/load-obsidian';
 
 const directionKeys: Record<AllDirections | JumpTarget, string> = {
     up: 'ArrowUp',

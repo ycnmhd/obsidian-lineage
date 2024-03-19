@@ -1,6 +1,6 @@
 import { AllDirections } from 'src/stores/view/view-store-actions';
-import { delay, SHORT } from '../../general/delay';
-import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
+import { delay, SHORT } from '../../../general/delay';
+import { __obsidian__ } from '../../../getters/obsidian/load-obsidian';
 
 const directionKeys: Record<AllDirections, string> = {
     up: 'ArrowUp',
