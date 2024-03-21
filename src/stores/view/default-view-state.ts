@@ -1,45 +1,34 @@
 import { ViewState } from 'src/stores/view/view-state-type';
+import { NodeId } from 'src/stores/document/document-state-type';
 
 export const defaultViewState = (): ViewState => ({
-    document: {
-        columns: [],
-        content: {},
-        state: {
-            activeNode: '',
-        },
+    search: {
+        query: '',
+        results: new Set(),
+        searching: false,
+        showInput: false,
     },
     ui: {
-        state: {
-            activeBranch: {
-                group: '',
-                childGroups: new Set<string>(),
-                sortedParentNodes: [],
-                column: '',
-            },
-            dnd: {
-                node: '',
-                childGroups: new Set<string>(),
-            },
-            editing: {
-                activeNodeId: '',
-            },
-        },
         showHistorySidebar: false,
         showHelpSidebar: false,
         zoomLevel: 1,
+    },
+    document: {
         treeIndex: {},
-    },
-    file: {
-        path: null,
-        frontmatter: '',
-    },
-    history: {
-        items: [],
-        state: {
-            activeIndex: -1,
-            canGoBack: false,
-            canGoForward: false,
+        editing: {
+            activeNodeId: '',
         },
+        activeBranch: {
+            group: '',
+            childGroups: new Set<string>(),
+            sortedParentNodes: [],
+            column: '',
+        },
+        dnd: {
+            node: '',
+            childGroups: new Set<string>(),
+        },
+        activeNode: '',
     },
     navigationHistory: {
         items: [],
@@ -48,11 +37,19 @@ export const defaultViewState = (): ViewState => ({
             canGoBack: false,
             canGoForward: false,
         },
-    },
-    search: {
-        query: '',
-        results: new Set(),
-        searching: false,
-        showInput: false,
+        context: undefined,
     },
 });
+export type ActiveBranch = {
+    childGroups: Set<string>;
+    sortedParentNodes: NodeId[];
+    group: string;
+    column: string;
+};
+export type DNDState = {
+    childGroups: Set<string>;
+    node: string;
+};
+export type EditingState = {
+    activeNodeId: string;
+};

@@ -5,7 +5,7 @@
     import {
         saveNodeAndInsertNode
     } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/save-node-and-insert-node';
-    import { Direction } from 'src/stores/view/view-store-actions';
+    import { Direction } from 'src/stores/document/document-store-actions';
 
     export let position: Direction;
     const plugin = getPlugin();

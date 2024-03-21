@@ -1,4 +1,8 @@
-import { Columns, NodeGroup, NodeId } from 'src/stores/view/view-state-type';
+import {
+    Columns,
+    NodeGroup,
+    NodeId,
+} from 'src/stores/document/document-state-type';
 
 export type NodePosition = {
     columnIndex: number;

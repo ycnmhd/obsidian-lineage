@@ -2,8 +2,8 @@
     import {
         saveNodeContentAction
     } from 'src/view/components/container/column/components/group/components/card/components/content/actions/textarea/save-node-content-action';
-    import { getStore } from '../../../../../../../context';
-    import { NodeId } from 'src/stores/view/view-state-type';
+    import { getView } from '../../../../../../../context';
+    import { NodeId } from 'src/stores/document/document-state-type';
     import {
         expandableTextareaAction
     } from 'src/view/components/container/column/components/group/components/card/components/content/actions/textarea/expandable-textarea-action';
@@ -13,7 +13,8 @@
 
     export let editing: boolean;
     export let node: NodeId;
-    const store = getStore();
+    const view = getView()
+    const store = view.documentStore
 </script>
 
 <!--the wrapper is used to hide the textarea outline-->

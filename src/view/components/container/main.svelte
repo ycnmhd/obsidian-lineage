@@ -2,7 +2,7 @@
     import ControlsBar from './controls-bar/controls-bar.svelte';
     import Hotkeys from './hotkeys/hotkeys.svelte';
     import FileHistory from './file-history/file-histoy.svelte';
-    import { LineageView, ViewStore } from '../../view';
+    import { LineageView } from '../../view';
     import Lineage from '../../../main';
     import { setContext } from 'svelte';
     import Container from './container.svelte';
@@ -10,11 +10,11 @@
     import NavigationHistory from './navigation-history/navigation-history.svelte';
     import SearchBar from './search-bar/search-bar.svelte';
 
-    export let store: ViewStore;
     export let plugin: Lineage;
     export let view: LineageView;
+    const documentStore = view.documentStore
+    const viewStore = view.viewStore;
     const settings = plugin.settings;
-    setContext('store', store);
     setContext('plugin', plugin);
     setContext('view', view);
 </script>
@@ -22,15 +22,15 @@
 <div
     class={`lineage__main ${
         $settings.ui.theme === 'dark' ? 'ash-theme-light' : 'ash-theme-dark'
-    } ${$store.search.searching ? "is-loading":""}`}
+    } ${$viewStore.search.searching ? "is-loading":""}`}
 >
     <Breadcrumbs />
     <NavigationHistory />
-    <ControlsBar documentHistory={$store.history} path={$store.file.path} />
+    <ControlsBar documentHistory={$documentStore.history} path={$documentStore.file.path} />
     <Container />
-    {#if $store.ui.showHistorySidebar && $store.file.path}
-        <FileHistory documentHistory={$store.history} path={$store.file.path} />
-    {:else if $store.ui.showHelpSidebar}
+    {#if $viewStore.ui.showHistorySidebar && $documentStore.file.path}
+        <FileHistory documentHistory={$documentStore.history} path={$documentStore.file.path} />
+    {:else if $viewStore.ui.showHelpSidebar}
         <Hotkeys />
     {/if}
     <SearchBar />

@@ -13,10 +13,13 @@ export const editCommands = (plugin: Lineage) => {
         {
             name: 'enable_edit_mode',
             check: isActiveAndNotEditing,
-            callback: (store, event) => {
+            callback: (view, event) => {
                 event.preventDefault();
-                store.dispatch({
+                view.viewStore.dispatch({
                     type: 'DOCUMENT/ENABLE_EDIT_MODE',
+                    payload: {
+                        nodeId: view.viewStore.getValue().document.activeNode,
+                    },
                 });
             },
             hotkeys: [{ key: 'Enter', modifiers: [] }],

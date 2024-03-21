@@ -1,8 +1,9 @@
 <script lang="ts">
-    import { getStore } from 'src/view/components/container/context';
+    import { getView } from 'src/view/components/container/context';
     import { ArrowLeft, ArrowRight } from 'lucide-svelte';
 
-    const store = getStore();
+    const view = getView();
+    const viewStore = view.viewStore;
 </script>
 
 <div class="navigation-history-container" >
@@ -11,9 +12,9 @@
             aria-label={'Navigate back'}
             class="navigation-button"
             data-tooltip-position="bottom"
-            disabled={!$store.navigationHistory.state.canGoBack}
+            disabled={!$viewStore.navigationHistory.state.canGoBack}
             on:click={() => {
-                store.dispatch({ type: 'NAVIGATION/NAVIGATE_BACK' });
+                viewStore.dispatch({ type: 'NAVIGATION/NAVIGATE_BACK' });
             }}
         >
             <ArrowLeft class="svg-icon" size="12" />
@@ -22,9 +23,9 @@
             aria-label={'Navigate forward'}
             class="navigation-button"
             data-tooltip-position="bottom"
-            disabled={!$store.navigationHistory.state.canGoForward}
+            disabled={!$viewStore.navigationHistory.state.canGoForward}
             on:click={() => {
-                store.dispatch({ type: 'NAVIGATION/NAVIGATE_FORWARD' });
+                viewStore.dispatch({ type: 'NAVIGATION/NAVIGATE_FORWARD' });
             }}
         >
             <ArrowRight class="svg-icon" size="12" />

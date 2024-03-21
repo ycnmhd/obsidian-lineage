@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getStore } from '../../../../../../../context';
+    import { getView } from '../../../../../../../context';
     import { droppable } from 'src/view/actions/dnd/droppable';
     import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
     import Bridges from '../bridges/bridges.svelte';
@@ -13,12 +13,14 @@
 
     const setActive = () => {
         if (!editing)
-            store.dispatch({
+            viewStore.dispatch({
                 type: 'DOCUMENT/SET_ACTIVE_NODE',
                 payload: { id: nodeId },
             });
     };
-    const store = getStore();
+    const view = getView();
+    const documentStore = view.documentStore;
+    const viewStore = view.viewStore;
     const activeStatusClasses = {
         [ActiveStatus.node]: 'active-node',
         [ActiveStatus.child]: 'active-child',
@@ -29,14 +31,19 @@
 
 <div
     class={clx('lineage__card', 'node', active && activeStatusClasses[active])}
-    data-active={active||"inactive"}
+    data-active={active || 'inactive'}
     id={nodeId}
     on:click={setActive}
     on:dblclick={() => {
         setActive();
-        store.dispatch({ type: 'DOCUMENT/ENABLE_EDIT_MODE' });
+        viewStore.dispatch({
+            type: 'DOCUMENT/ENABLE_EDIT_MODE',
+            payload: {
+                nodeId,
+            },
+        });
     }}
-    use:droppable={store}
+    use:droppable={{viewStore,documentStore}}
 >
     <slot />
     <Bridges {active} {editing} {hasChildren} {parentId} />

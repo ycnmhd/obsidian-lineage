@@ -1,4 +1,4 @@
-import { AllDirections } from 'src/stores/view/view-store-actions';
+import { AllDirections } from 'src/stores/document/document-store-actions';
 import { delay, SHORT } from '../../../general/delay';
 import { __obsidian__ } from '../../../getters/obsidian/load-obsidian';
 

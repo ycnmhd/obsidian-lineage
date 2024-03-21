@@ -1,5 +1,5 @@
 import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
-import { Columns, NodeId } from 'src/stores/view/view-state-type';
+import { Columns, NodeId } from 'src/stores/document/document-state-type';
 import { findGroupByNodeId } from 'src/stores/view/helpers/search/find-group-by-node-id';
 
 export const traverseUp = (columns: Columns, node: NodeId) => {

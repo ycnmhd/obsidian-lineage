@@ -17,8 +17,11 @@ import { redoChangeUsingHotkey } from '../helpers/interactions/lineage-view/hotk
 import { selectCard } from '../helpers/interactions/lineage-view/card/select-card';
 import { deleteCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/delete-card-using-hotkey';
 import { discardChangesUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/discard-changes-using-hotkey';
+import { loadObsidian } from '../helpers/getters/obsidian/load-obsidian';
 
-test.beforeAll(async () => {});
+test.beforeAll(async () => {
+    await loadObsidian();
+});
 test.beforeEach(async () => {
     await closeThisTabGroup();
     await createNewLineageFile();

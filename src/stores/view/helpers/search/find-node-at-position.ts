@@ -1,5 +1,9 @@
 import { NodePosition } from 'src/stores/view/helpers/search/find-node-position';
-import { Columns, NodeGroup, NodeId } from 'src/stores/view/view-state-type';
+import {
+    Columns,
+    NodeGroup,
+    NodeId,
+} from 'src/stores/document/document-state-type';
 
 export const findNodeAtPosition = (
     columns: Columns,

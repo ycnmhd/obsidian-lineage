@@ -1,7 +1,7 @@
-import { NodeId } from 'src/stores/view/view-state-type';
-import { ViewStore } from 'src/view/view';
+import { NodeId } from 'src/stores/document/document-state-type';
+import { DocumentStore } from 'src/view/view';
 
-type Props = { node: NodeId; store: ViewStore };
+type Props = { node: NodeId; store: DocumentStore };
 
 export const saveNodeContentAction = (
     element: HTMLTextAreaElement,

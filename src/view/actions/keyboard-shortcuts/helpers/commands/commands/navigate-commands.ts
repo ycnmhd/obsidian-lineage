@@ -7,11 +7,12 @@ export const navigateCommands = () => {
         {
             name: 'go_right',
             check: isActiveAndNotEditing,
-            callback: (store) => {
-                store.dispatch({
+            callback: (view) => {
+                view.viewStore.dispatch({
                     type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
                         direction: 'right',
+                        columns: view.documentStore.getValue().document.columns,
                     },
                 });
             },
@@ -23,11 +24,12 @@ export const navigateCommands = () => {
         {
             name: 'go_down',
             check: isActiveAndNotEditing,
-            callback: (store) => {
-                store.dispatch({
+            callback: (view) => {
+                view.viewStore.dispatch({
                     type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
                         direction: 'down',
+                        columns: view.documentStore.getValue().document.columns,
                     },
                 });
             },
@@ -39,11 +41,12 @@ export const navigateCommands = () => {
         {
             name: 'go_left',
             check: isActiveAndNotEditing,
-            callback: (store) => {
-                store.dispatch({
+            callback: (view) => {
+                view.viewStore.dispatch({
                     type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
                         direction: 'left',
+                        columns: view.documentStore.getValue().document.columns,
                     },
                 });
             },
@@ -55,11 +58,12 @@ export const navigateCommands = () => {
         {
             name: 'go_up',
             check: isActiveAndNotEditing,
-            callback: (store) => {
-                store.dispatch({
+            callback: (view) => {
+                view.viewStore.dispatch({
                     type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
                         direction: 'up',
+                        columns: view.documentStore.getValue().document.columns,
                     },
                 });
             },
@@ -71,12 +75,15 @@ export const navigateCommands = () => {
         {
             name: 'go_to_beginning_of_group',
             check: isActiveAndNotEditing,
-            callback: (store, e) => {
+            callback: (view, e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                store.dispatch({
+                view.viewStore.dispatch({
                     type: 'DOCUMENT/JUMP_TO_NODE',
-                    payload: { target: 'start-of-group' },
+                    payload: {
+                        target: 'start-of-group',
+                        columns: view.documentStore.getValue().document.columns,
+                    },
                 });
             },
             hotkeys: [{ key: 'PageUp', modifiers: [] }],
@@ -84,12 +91,15 @@ export const navigateCommands = () => {
         {
             name: 'go_to_end_of_group',
             check: isActiveAndNotEditing,
-            callback: (store, e) => {
+            callback: (view, e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                store.dispatch({
+                view.viewStore.dispatch({
                     type: 'DOCUMENT/JUMP_TO_NODE',
-                    payload: { target: 'end-of-group' },
+                    payload: {
+                        target: 'end-of-group',
+                        columns: view.documentStore.getValue().document.columns,
+                    },
                 });
             },
             hotkeys: [{ key: 'PageDown', modifiers: [] }],
@@ -97,12 +107,15 @@ export const navigateCommands = () => {
         {
             name: 'go_to_beginning_of_column',
             check: isActiveAndNotEditing,
-            callback: (store, e) => {
+            callback: (view, e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                store.dispatch({
+                view.viewStore.dispatch({
                     type: 'DOCUMENT/JUMP_TO_NODE',
-                    payload: { target: 'start-of-column' },
+                    payload: {
+                        target: 'start-of-column',
+                        columns: view.documentStore.getValue().document.columns,
+                    },
                 });
             },
             hotkeys: [{ key: 'Home', modifiers: [] }],
@@ -110,12 +123,15 @@ export const navigateCommands = () => {
         {
             name: 'go_to_end_of_column',
             check: isActiveAndNotEditing,
-            callback: (store, e) => {
+            callback: (view, e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                store.dispatch({
+                view.viewStore.dispatch({
                     type: 'DOCUMENT/JUMP_TO_NODE',
-                    payload: { target: 'end-of-column' },
+                    payload: {
+                        target: 'end-of-column',
+                        columns: view.documentStore.getValue().document.columns,
+                    },
                 });
             },
             hotkeys: [{ key: 'End', modifiers: [] }],

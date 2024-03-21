@@ -15,8 +15,8 @@
         <CreateCardButton position="up" />
         <CreateCardButton position="right" />
         <CreateCardButton position="down" />
-        <DeleteNodeButton />
+        <DeleteNodeButton {nodeId}/>
     {/if}
-    <EditNodeButton {editing} />
+    <EditNodeButton {editing} {nodeId} />
 {/if}
     <TreeIndex activeStatus={active} {nodeId}/>

@@ -2,32 +2,33 @@ import { IconName, Notice, TextFileView, WorkspaceLeaf } from 'obsidian';
 
 import Component from './components/container/main.svelte';
 import Lineage from '../main';
-import { viewReducer } from 'src/stores/view/view-reducer';
-import { alignBranchEffect } from 'src/stores/view/effects/view/align-branch-effect/align-branch-effect';
+import { documentReducer } from 'src/stores/document/document-reducer';
 import { Unsubscriber } from 'svelte/store';
-import { saveDocumentEffect } from 'src/stores/view/effects/file/save-document-effect';
 import { columnsToJsonTree } from 'src/stores/view/helpers/json-to-md/columns-to-json/columns-to-json-tree';
 import { jsonToMarkdown } from 'src/stores/view/helpers/json-to-md/json-to-makdown/json-to-markdown';
 import { OnError, Store } from 'src/helpers/store/store';
-import { defaultViewState } from 'src/stores/view/default-view-state';
-import { bringFocusToContainer } from 'src/stores/view/effects/view/bring-focus-to-container';
-import { ViewState } from 'src/stores/view/view-state-type';
+import { defaultDocumentState } from 'src/stores/document/default-document-state';
+import { DocumentState } from 'src/stores/document/document-state-type';
 import { stores } from 'src/view/helpers/stores-cache';
 import { clone } from 'src/helpers/clone';
 import { extractFrontmatter } from 'src/view/helpers/extract-frontmatter';
-import { ViewAction } from 'src/stores/view/view-store-actions';
-import { updateSearchResultsEffect } from 'src/stores/view/effects/file/update-search-results/update-search-results-effect';
-import { changeZoomLevelEffect } from 'src/stores/view/effects/view/change-zoom-level-effect';
-import { updateTreeIndexEffect } from 'src/stores/view/effects/file/update-tree-index/update-tree-index-effect';
+import { DocumentStoreAction } from 'src/stores/document/document-store-actions';
 import { setFileViewType } from 'src/obsidian/events/workspace/helpers/set-file-view-type';
+import { ViewState } from 'src/stores/view/view-state-type';
+import { ViewStoreAction } from 'src/stores/view/view-store-actions';
+import { defaultViewState } from 'src/stores/view/default-view-state';
+import { viewReducer } from 'src/stores/view/view-reducer';
+import { viewSubscriptions } from 'src/stores/view/subscriptions/view-subscriptions';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
-export type ViewStore = Store<ViewState, ViewAction>;
+export type DocumentStore = Store<DocumentState, DocumentStoreAction>;
+export type ViewStore = Store<ViewState, ViewStoreAction>;
 
 export class LineageView extends TextFileView {
     component: Component;
-    store: ViewStore;
+    documentStore: DocumentStore;
+    viewStore: ViewStore;
     private container: HTMLElement | null;
     private readonly onDestroyCallbacks: Set<Unsubscriber> = new Set();
     private activeFilePath: null | string;
@@ -36,10 +37,15 @@ export class LineageView extends TextFileView {
         private plugin: Lineage,
     ) {
         super(leaf);
-        this.store = new Store(
+        this.documentStore = new Store(
+            defaultDocumentState(),
+            documentReducer,
+            this.onViewStoreError as OnError<DocumentStoreAction>,
+        );
+        this.viewStore = new Store(
             defaultViewState(),
             viewReducer,
-            this.onViewStoreError,
+            this.onViewStoreError as OnError<ViewStoreAction>,
         );
     }
 
@@ -47,7 +53,7 @@ export class LineageView extends TextFileView {
         return this.data;
     }
 
-    setViewData(data: string, clear: boolean): void {
+    setViewData(data: string): void {
         if (!this.activeFilePath && this.file) {
             this.activeFilePath = this.file?.path;
             this.loadInitialData();
@@ -60,10 +66,10 @@ export class LineageView extends TextFileView {
         }
         this.activeFilePath = null;
         this.contentEl.empty();
-        this.store = new Store(
-            defaultViewState(),
-            viewReducer,
-            this.onViewStoreError,
+        this.documentStore = new Store(
+            defaultDocumentState(),
+            documentReducer,
+            this.onViewStoreError as OnError<DocumentStoreAction>,
         );
         for (const s of this.onDestroyCallbacks) {
             s();
@@ -106,7 +112,11 @@ export class LineageView extends TextFileView {
 	   }
    };*/
 
-    onViewStoreError: OnError<ViewAction> = (error, location, action) => {
+    onViewStoreError: OnError<DocumentStoreAction | ViewStoreAction> = (
+        error,
+        location,
+        action,
+    ) => {
         if (action && action.type === 'DOCUMENT/LOAD_FILE') {
             if (this.file) {
                 delete stores[this.file.path];
@@ -120,8 +130,8 @@ export class LineageView extends TextFileView {
         new Notice('Lineage plugin: ' + error.message);
     };
 
-    private requestSaveWrapper = async (actionType?: string) => {
-        const state = clone(this.store.getValue());
+    private requestSaveWrapper = async () => {
+        const state = clone(this.documentStore.getValue());
         const data: string =
             state.file.frontmatter +
             jsonToMarkdown(
@@ -131,7 +141,7 @@ export class LineageView extends TextFileView {
                 ),
             );
         if (data !== this.data) {
-            this.setViewData(data, false);
+            this.setViewData(data);
             this.requestSave();
         }
     };
@@ -150,7 +160,6 @@ export class LineageView extends TextFileView {
         this.component = new Component({
             target: this.contentEl,
             props: {
-                store: this.store,
                 plugin: this.plugin,
                 view: this,
             },
@@ -158,27 +167,21 @@ export class LineageView extends TextFileView {
         this.container = this.contentEl.querySelector('#columns-container');
         if (!this.container) throw new Error('could not find container');
         this.onDestroyCallbacks.add(
-            bringFocusToContainer(this.store, this.container),
+            viewSubscriptions(
+                this.documentStore,
+                this.viewStore,
+                this.container,
+                this.requestSaveWrapper,
+            ),
         );
-        this.onDestroyCallbacks.add(
-            alignBranchEffect(this.store, this.container),
-        );
-        this.onDestroyCallbacks.add(
-            changeZoomLevelEffect(this.store, this.container),
-        );
-        if (!fileHasAStore) {
-            saveDocumentEffect(this.store, this.requestSaveWrapper);
-            updateSearchResultsEffect(this.store);
-            updateTreeIndexEffect(this.store);
-        }
     };
 
     private createStore = () => {
         if (!this.file) {
             throw new Error('view does not have a file');
         }
-        stores[this.file.path] = this.store;
-        this.store.dispatch({
+        stores[this.file.path] = this.documentStore;
+        this.documentStore.dispatch({
             type: 'FS/SET_FILE_PATH',
             payload: {
                 path: this.file.path,
@@ -187,13 +190,13 @@ export class LineageView extends TextFileView {
     };
     private useExistingStore = () => {
         if (!this.file) return;
-        this.store = stores[this.file.path];
+        this.documentStore = stores[this.file.path];
     };
 
     private loadDocumentToStore = () => {
         const { data, frontmatter } = extractFrontmatter(this.data);
 
-        this.store.dispatch({
+        this.documentStore.dispatch({
             payload: {
                 document: { data: data, frontmatter, position: null },
             },

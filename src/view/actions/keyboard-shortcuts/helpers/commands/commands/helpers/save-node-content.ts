@@ -10,15 +10,15 @@ export const saveNodeContent = (view: LineageView) => {
         const nodeId = textArea.dataset.nodeId;
         invariant(nodeId, 'textarea does not have a node id');
         discardChanges(textArea);
-        view.store.dispatch({
+        view.viewStore.dispatch({
+            type: 'DOCUMENT/DISABLE_EDIT_MODE',
+        });
+        view.documentStore.dispatch({
             type: 'DOCUMENT/SET_NODE_CONTENT',
             payload: {
                 nodeId: nodeId,
                 content: content,
             },
-        });
-        view.store.dispatch({
-            type: 'DOCUMENT/DISABLE_EDIT_MODE',
         });
     }
 };

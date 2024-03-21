@@ -1,18 +1,19 @@
 <script lang="ts">
-	import { getPlugin, getStore } from 'src/view/components/container/context';
-	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
-	import {
-		markdownPreviewAction
-	} from 'src/view/components/container/column/components/group/components/card/components/content/actions/markdown-preview-action';
+    import { getPlugin, getView } from 'src/view/components/container/context';
+    import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
+    import {
+        markdownPreviewAction
+    } from 'src/view/components/container/column/components/group/components/card/components/content/actions/markdown-preview-action';
 
-	export let active: ActiveStatus | null;
+    export let active: ActiveStatus | null;
 
     export let content: string;
     // eslint-disable-next-line no-undef
 
 
 	const plugin = getPlugin();
-	const store = getStore();
+	const view = getView()
+	const store = view.documentStore
     // eslint-disable-next-line no-undef
     const onClick = (e: MouseEvent) => {
         // eslint-disable-next-line no-undef

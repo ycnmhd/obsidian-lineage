@@ -29,18 +29,24 @@ export const loadCommands = (plugin: Lineage) => {
         {
             name: 'delete_card',
             check: isActiveAndNotEditing,
-            callback: (store) => {
-                store.dispatch({ type: 'DOCUMENT/DELETE_NODE' });
+            callback: (view) => {
+                view.documentStore.dispatch({
+                    type: 'DOCUMENT/DELETE_NODE',
+                    payload: {
+                        activeNodeId:
+                            view.viewStore.getValue().document.activeNode,
+                    },
+                });
             },
             hotkeys: [{ key: 'Backspace', modifiers: ['Ctrl'] }],
         },
         {
             name: 'toggle_search_input',
             check: isActive,
-            callback: (store, e) => {
+            callback: (view, e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                store.dispatch({ type: 'SEARCH/TOGGLE_INPUT' });
+                view.viewStore.dispatch({ type: 'SEARCH/TOGGLE_INPUT' });
             },
             hotkeys: [{ key: '/', modifiers: [] }],
         },

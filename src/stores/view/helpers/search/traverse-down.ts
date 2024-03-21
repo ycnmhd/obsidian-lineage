@@ -1,4 +1,4 @@
-import { Columns, NodeId } from 'src/stores/view/view-state-type';
+import { Columns, NodeId } from 'src/stores/document/document-state-type';
 
 export type StringSet = Set<string>;
 export const traverseDown = (

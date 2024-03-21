@@ -6,10 +6,10 @@ export const historyCommands = () => {
         {
             name: 'undo_change',
             check: isActiveAndNotEditingAndHasFile,
-            callback: (store) => {
-                const path = store.getValue().file.path;
+            callback: (view) => {
+                const path = view.documentStore.getValue().file.path;
                 if (path)
-                    store.dispatch({
+                    view.documentStore.dispatch({
                         type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
                     });
             },
@@ -18,10 +18,10 @@ export const historyCommands = () => {
         {
             name: 'redo_change',
             check: isActiveAndNotEditingAndHasFile,
-            callback: (store) => {
-                const path = store.getValue().file.path;
+            callback: (view) => {
+                const path = view.documentStore.getValue().file.path;
                 if (path)
-                    store.dispatch({
+                    view.documentStore.dispatch({
                         type: 'HISTORY/APPLY_NEXT_SNAPSHOT',
                     });
             },

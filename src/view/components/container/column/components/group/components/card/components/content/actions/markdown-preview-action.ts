@@ -1,17 +1,13 @@
 import { MarkdownRenderer } from 'obsidian';
-import {
-    getPlugin,
-    getStore,
-    getView,
-} from 'src/view/components/container/context';
+import { getPlugin, getView } from 'src/view/components/container/context';
 
 export const markdownPreviewAction = (
     element: HTMLElement,
     content: string,
 ) => {
-    const view = getView();
     const plugin = getPlugin();
-    const store = getStore();
+    const view = getView();
+    const store = view.documentStore;
 
     const render = (content: string) => {
         if (view && element) {

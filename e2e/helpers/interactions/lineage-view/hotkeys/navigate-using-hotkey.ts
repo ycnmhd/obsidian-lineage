@@ -1,5 +1,5 @@
-import { AllDirections } from 'src/stores/view/view-store-actions';
-import { JumpTarget } from 'src/stores/view/reducers/document/state/jump-to-node';
+import { AllDirections } from 'src/stores/document/document-store-actions';
+import { JumpTarget } from 'src/stores/view/reducers/document/jump-to-node';
 import { delay, MEDIUM } from '../../../general/delay';
 import { __obsidian__ } from '../../../getters/obsidian/load-obsidian';
 

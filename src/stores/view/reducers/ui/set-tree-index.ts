@@ -1,4 +1,4 @@
-import { TreeIndexDict } from 'src/stores/view/effects/file/update-tree-index/calculate-tree-index';
+import { TreeIndexDict } from 'src/stores/view/subscriptions/helpers/calculate-tree-index';
 import { ViewState } from 'src/stores/view/view-state-type';
 
 export type SetTreeIndex = {
@@ -8,6 +8,9 @@ export type SetTreeIndex = {
     };
 };
 
-export const setTreeIndex = (ui: ViewState['ui'], treeIndex: TreeIndexDict) => {
-    ui.treeIndex = treeIndex;
+export const setTreeIndex = (
+    document: ViewState['document'],
+    treeIndex: TreeIndexDict,
+) => {
+    document.treeIndex = treeIndex;
 };

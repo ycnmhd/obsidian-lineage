@@ -12,30 +12,40 @@
         ZoomIn,
         ZoomOut
     } from 'lucide-svelte';
-    import { getPlugin, getStore, getView } from 'src/view/components/container/context';
+    import { getPlugin, getView } from 'src/view/components/container/context';
     import { LineageView } from 'src/view/view';
     import { lang } from 'src/lang/lang';
-    import { DocumentHistory } from 'src/stores/view/view-state-type';
+    import { DocumentHistory } from 'src/stores/document/document-state-type';
     import { maxZoomLevel, minZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
     import { setFileViewType } from 'src/obsidian/events/workspace/helpers/set-file-view-type';
+    import { Notice } from 'obsidian';
 
     const view = getView();
-    const store = getStore();
+    const viewStore = view.viewStore;
+    const documentStore = view.documentStore;
     export let documentHistory: DocumentHistory;
     export let path: string | null;
 
     const handleNextClick = () => {
-        if (path)
-            store.dispatch({
+        if (path){
+            if (viewStore.getValue().document.editing.activeNodeId)
+                new Notice('cannot apply snapshot while editing');
+            else
+            documentStore.dispatch({
                 type: 'HISTORY/APPLY_NEXT_SNAPSHOT',
             });
+        }
     };
 
     const handlePreviousClick = () => {
-        if (path)
-            store.dispatch({
-                type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
-            });
+        if (path) {
+            if (viewStore.getValue().document.editing.activeNodeId)
+                new Notice('cannot apply snapshot while editing');
+            else
+                documentStore.dispatch({
+                    type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
+                });
+        }
     };
     const plugin = getPlugin();
     const settings = plugin.settings;
@@ -43,29 +53,29 @@
         settings.dispatch({ type: 'TOGGLE_THEME' });
     };
     const toggleHelp = () => {
-        store.dispatch({ type: 'UI/TOGGLE_HELP_SIDEBAR' });
+        viewStore.dispatch({ type: 'UI/TOGGLE_HELP_SIDEBAR' });
     };
 
     const openAsMarkdown = () => {
         const file =
             plugin.app.workspace.getActiveViewOfType(LineageView)?.file;
-        if (file) setFileViewType(plugin, file, view.leaf,"markdown");
+        if (file) setFileViewType(plugin, file, view.leaf, 'markdown');
     };
     const zoomIn = () => {
-        store.dispatch({
+        viewStore.dispatch({
             type: 'UI/CHANGE_ZOOM_LEVEL',
             payload: { direction: 'in' },
         });
     };
     const zoomOut = () => {
-        store.dispatch({
+        viewStore.dispatch({
             type: 'UI/CHANGE_ZOOM_LEVEL',
             payload: { direction: 'out' },
         });
     };
 
     const restoreZoom = () => {
-        store.dispatch({
+        viewStore.dispatch({
             type: 'UI/CHANGE_ZOOM_LEVEL',
             payload: { value: 1 },
         });
@@ -81,7 +91,7 @@
             const biggest = scrolls[scrolls.length - 1];
             // eslint-disable-next-line no-undef
             const scale = window.innerHeight / biggest;
-            store.dispatch({
+            viewStore.dispatch({
                 type: 'UI/CHANGE_ZOOM_LEVEL',
                 payload: { value: scale },
             });
@@ -107,7 +117,7 @@
             data-tooltip-position="left"
             disabled={documentHistory.items.length === 0}
             on:click={() => {
-                store.dispatch({ type: 'UI/TOGGLE_HISTORY_SIDEBAR' });
+                viewStore.dispatch({ type: 'UI/TOGGLE_HISTORY_SIDEBAR' });
             }}
         >
             <HistoryIcon class="svg-icon" />
@@ -137,7 +147,7 @@
             aria-label="zoom in"
             class="control-item"
             data-tooltip-position="left"
-            disabled={$store.ui.zoomLevel === maxZoomLevel}
+            disabled={$viewStore.ui.zoomLevel === maxZoomLevel}
             on:click={zoomIn}
         >
             <ZoomIn class="svg-icon" />
@@ -162,7 +172,7 @@
             aria-label="Zoom out"
             class="control-item"
             data-tooltip-position="left"
-            disabled={$store.ui.zoomLevel === minZoomLevel}
+            disabled={$viewStore.ui.zoomLevel === minZoomLevel}
             on:click={zoomOut}
         >
             <ZoomOut class="svg-icon" />
@@ -195,6 +205,7 @@
 <style>
     button:disabled {
         cursor: not-allowed;
+        color: var(--color-base-40);
     }
     .lineage-view-controls {
         right: var(--size-4-2);

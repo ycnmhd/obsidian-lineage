@@ -1,45 +1,46 @@
 <script lang="ts">
-    import { NodeGroup, NodeId } from 'src/stores/view/view-state-type';
+    import { NodeGroup, NodeId } from 'src/stores/document/document-state-type';
     import Node from './components/card/card.svelte';
     import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
-    import { getStore } from 'src/view/components/container/context';
+    import { getView } from 'src/view/components/container/context';
     import clx from 'classnames';
 
-    const store = getStore();
+    const view = getView();
+    const viewStore = view.viewStore
     export let group: NodeGroup;
     let parentNodes: Set<NodeId> = new Set<NodeId>();
-    $: parentNodes = new Set($store.ui.state.activeBranch.sortedParentNodes);
+    $: parentNodes = new Set($viewStore.document.activeBranch.sortedParentNodes);
 </script>
 
-{#if group.nodes.length > 0 && ($store.search.query.length === 0 || group.nodes.some( (n) => $store.search.results.has(n), ))}
+{#if group.nodes.length > 0 && ($viewStore.search.query.length === 0 || group.nodes.some( (n) => $viewStore.search.results.has(n), ))}
     <div
         class={clx(
             'group',
-            $store.ui.state.activeBranch.childGroups.has(group.parentId) &&
+            $viewStore.document.activeBranch.childGroups.has(group.parentId) &&
                 'group-has-active-parent',
-            $store.ui.state.activeBranch.group === group.parentId &&
+            $viewStore.document.activeBranch.group === group.parentId &&
                 'group-has-active-node',
         )}
         id={'group-' + group.parentId}
     >
         {#each group.nodes as node (node)}
-            {#if $store.search.query.length === 0 || (!$store.search.searching && $store.search.results.has(node))}
+            {#if $viewStore.search.query.length === 0 || (!$viewStore.search.searching && $viewStore.search.results.has(node))}
                 <Node
                     {node}
-                    active={node === $store.document.state.activeNode
+                    active={node === $viewStore.document.activeNode
                         ? ActiveStatus.node
                         : parentNodes.has(node)
                           ? ActiveStatus.parent
-                          : $store.ui.state.activeBranch.childGroups.has(
+                          : $viewStore.document.activeBranch.childGroups.has(
                                   group.parentId,
                               )
                             ? ActiveStatus.child
-                            : $store.ui.state.activeBranch.group ===
+                            : $viewStore.document.activeBranch.group ===
                                 group.parentId
                               ? ActiveStatus.sibling
                               : null}
-                    editing={$store.ui.state.editing.activeNodeId === node}
-                    hasChildren={$store.ui.state.activeBranch.childGroups.size >
+                    editing={$viewStore.document.editing.activeNodeId === node}
+                    hasChildren={$viewStore.document.activeBranch.childGroups.size >
                         0}
                     parentId={group.parentId}
                 />

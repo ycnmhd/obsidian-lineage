@@ -1,4 +1,4 @@
-import { Direction } from 'src/stores/view/view-store-actions';
+import { Direction } from 'src/stores/document/document-store-actions';
 import { addCardUsingHotkey } from './add-card-using-hotkey';
 
 export const addCardAndSplitAtCursorUsingHotkey = async (

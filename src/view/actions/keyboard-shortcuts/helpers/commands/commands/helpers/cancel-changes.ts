@@ -10,7 +10,7 @@ export const cancelChanges = (plugin: Lineage) => {
     const view = getActiveLineageView(plugin);
     const textArea = getTextAreaOfView(view);
     if (textArea) discardChanges(textArea);
-    view.store.dispatch({
+    view.viewStore.dispatch({
         type: 'DOCUMENT/DISABLE_EDIT_MODE',
     });
 };

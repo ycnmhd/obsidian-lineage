@@ -1,16 +1,17 @@
 <script lang="ts">
-    import { Column } from 'src/stores/view/view-state-type';
+    import { Column } from 'src/stores/document/document-state-type';
     import Group from './components/group/group.svelte';
-    import { getStore } from 'src/view/components/container/context';
+    import { getView } from 'src/view/components/container/context';
 
-    const store = getStore();
+    const view = getView();
+    const viewStore = view.viewStore;
     export let column: Column;
 </script>
 
 <div class="column" id={column.id}>
     <div class="column-buffer" />
     {#each column.groups as group (group.parentId)}
-        {#if !$store.ui.state.dnd.childGroups.has(group.parentId)}
+        {#if !$viewStore.document.dnd.childGroups.has(group.parentId)}
             <Group {group} />
         {/if}
     {/each}

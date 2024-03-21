@@ -1,4 +1,4 @@
-import { Columns } from 'src/stores/view/view-state-type';
+import { Columns } from 'src/stores/document/document-state-type';
 
 export const findGroupByNodeId = (columns: Columns, nodeId: string) => {
     for (const column of columns) {

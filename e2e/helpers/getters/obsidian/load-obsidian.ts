@@ -5,6 +5,7 @@ import { delay } from '../../general/delay';
 export let __obsidian__: Page;
 export const loadObsidian = async () => {
     if (!__obsidian__) {
+        // works with 1.4.16 Obsidian instaler
         const electronApp = await electron.launch({
             executablePath: process.env.OBSIDIAN_EXECUTABLE_PATH,
         });

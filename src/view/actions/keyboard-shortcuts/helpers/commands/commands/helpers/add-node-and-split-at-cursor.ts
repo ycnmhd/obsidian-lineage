@@ -1,5 +1,5 @@
 import Lineage from 'src/main';
-import { Direction } from 'src/stores/view/view-store-actions';
+import { Direction } from 'src/stores/document/document-store-actions';
 
 import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/save-node-and-insert-node';
 import { getActiveLineageView } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-active-lineage-view';

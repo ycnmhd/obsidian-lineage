@@ -13,7 +13,7 @@ export const relativeTime = (updated: number) => {
     } else if (minutes > 0) {
         relativeTime = rtf1.format(-minutes, 'minute');
     } else {
-        relativeTime = 'Less than a minute ago';
+        relativeTime = 'Just now';
     }
     return relativeTime;
 };

@@ -1,5 +1,4 @@
-import { ViewStore } from 'src/view/view';
-import Lineage from 'src/main';
+import { LineageView } from 'src/view/view';
 import { eventToString } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/event-to-string';
 import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
 import {
@@ -14,11 +13,9 @@ import { Notice } from 'obsidian';
 export const keyboardShortcuts = (
     target: HTMLElement,
     {
-        store,
-        plugin,
+        view,
     }: {
-        store: ViewStore;
-        plugin: Lineage;
+        view: LineageView;
     },
 ) => {
     const event = 'keydown';
@@ -37,9 +34,9 @@ export const keyboardShortcuts = (
         if (!(event instanceof KeyboardEvent)) return;
         const command = commandsDictionary.current[eventToString(event)];
         if (command) {
-            if (command.check(store)) {
+            if (command.check(view)) {
                 try {
-                    command.callback(store, event);
+                    command.callback(view, event);
                 } catch (error) {
                     // eslint-disable-next-line no-console
                     console.error(`[hotkey] command: `, command.name);

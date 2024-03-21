@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { findNodeAtPosition } from 'src/stores/view/helpers/search/find-node-at-position';
-import { Column } from 'src/stores/view/view-state-type';
+import { Column } from 'src/stores/document/document-state-type';
 
 describe('find node at position', () => {
     it('should find node', () => {
