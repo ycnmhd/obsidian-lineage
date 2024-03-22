@@ -44,7 +44,7 @@ export const addSnapshot = (
             history.items.splice(history.state.activeIndex, 1);
         }
     }
-    if (activeSnapshot) {
+    if (action.type === 'DOCUMENT/DROP_NODE' && activeSnapshot) {
         activeSnapshot.data.activeNodeId = activeNodeId;
     }
     const snapshot = createSnapshot(document, action, activeNodeId);

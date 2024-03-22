@@ -1,8 +1,5 @@
-import { expect, test } from '@playwright/test';
-import { loadObsidian } from '../helpers/getters/obsidian/load-obsidian';
-import { closeThisTabGroup } from '../helpers/interactions/obsidian-commands/close-this-tab-group';
-import { createNewLineageFile } from '../helpers/interactions/lineage-commands/create-new-lineage-file';
-import { resetTextIndex, text } from '../helpers/general/text';
+import { expect, test } from '../helpers/base-test';
+import { text } from '../helpers/general/text';
 import { typeText } from '../helpers/interactions/lineage-view/card/type-text';
 import { addCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/add-card-using-hotkey';
 import { saveCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/save-card-using-hotkey';
@@ -10,15 +7,6 @@ import { getTextsOfColumns } from '../helpers/getters/lineage-view/card/get-text
 import { selectCard } from '../helpers/interactions/lineage-view/card/select-card';
 import { getCardId } from '../helpers/getters/lineage-view/card/get-card.id';
 import { dragAndDropBelow } from '../helpers/interactions/dom/drag-and-drop-below';
-
-test.beforeAll(async () => {
-    await loadObsidian();
-});
-test.beforeEach(async () => {
-    await closeThisTabGroup();
-    await createNewLineageFile();
-    resetTextIndex();
-});
 
 test('drag and drop', async () => {
     const n1 = text();

@@ -1,5 +1,4 @@
-import { expect, test } from '@playwright/test';
-import { createNewLineageFile } from '../helpers/interactions/lineage-commands/create-new-lineage-file';
+import { expect, test } from '../helpers/base-test';
 import { typeText } from '../helpers/interactions/lineage-view/card/type-text';
 import { typeTextAndSaveItUsingHotkey } from '../helpers/interactions/lineage-view/card/type-text-and-save-it-using-hotkey';
 import { createCardUsingButton } from '../helpers/interactions/lineage-view/card/create-card-using-button';
@@ -7,21 +6,10 @@ import { deleteCardUsingButton } from '../helpers/interactions/lineage-view/card
 import { selectCard } from '../helpers/interactions/lineage-view/card/select-card';
 import { toggleCardEditUsingButton } from '../helpers/interactions/lineage-view/card/toggle-card-edit-using-button';
 import { saveCardUsingButton } from '../helpers/interactions/lineage-view/card/save-card-using-button';
-import { closeThisTabGroup } from '../helpers/interactions/obsidian-commands/close-this-tab-group';
 import { getCardText } from '../helpers/getters/lineage-view/card/get-card-text';
 import { getCardsOfColumns } from '../helpers/getters/lineage-view/card/get-cards-of-columns';
 import { getTextsOfColumns } from '../helpers/getters/lineage-view/card/get-texts-of-columns';
-import { resetTextIndex, text } from '../helpers/general/text';
-import { loadObsidian } from '../helpers/getters/obsidian/load-obsidian';
-
-test.beforeAll(async () => {
-    await loadObsidian();
-});
-test.beforeEach(async () => {
-    await closeThisTabGroup();
-    await createNewLineageFile();
-    resetTextIndex();
-});
+import { text } from '../helpers/general/text';
 
 test.describe('card buttons', () => {
     test('create card above using card button', async () => {

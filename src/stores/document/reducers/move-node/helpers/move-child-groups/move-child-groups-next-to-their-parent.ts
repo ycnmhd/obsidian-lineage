@@ -1,16 +1,16 @@
-import {
-    Columns,
-    NodeGroup,
-    NodeId,
-} from 'src/stores/document/document-state-type';
+import { Columns, NodeId } from 'src/stores/document/document-state-type';
 import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
 import { id } from 'src/helpers/id';
+import { removeChildGroupsFromTheirColumns } from 'src/stores/document/reducers/move-node/helpers/move-child-groups/remove-child-groups-from-their-columns';
 
 export const moveChildGroupsNextToTheirParent = (
     columns: Columns,
     parentNode: NodeId,
-    sortedChildGroups: NodeGroup[][],
 ) => {
+    const sortedChildGroups = removeChildGroupsFromTheirColumns(
+        columns,
+        parentNode,
+    );
     // insert child groups into their new columns
     const parentColumnIndex = findNodeColumn(columns, parentNode);
     for (let i = 0; i < sortedChildGroups.length; i++) {

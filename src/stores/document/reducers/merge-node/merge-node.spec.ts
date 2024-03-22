@@ -182,46 +182,38 @@ describe('merge node', () => {
         expect(input.content).toEqual(output.content);
     });
     test('case: two parents with children and grandchildren, up', () => {
-        const mergedNode = 'nBAt';
-        const targetNode = 'nZmk';
-        const childOfTargetNode = 'nQnn';
-        const childOfMergedNode = 'n_lG';
-        const grandChild1OfTargetNode = 'nYQz';
-        const grandChild2OfTargetNode = 'nfXF';
-        const grandChild1OfMergedNode = 'nXlL';
-        const grandChild2OfMergedNode = 'nX1f';
+        const n2 = 'nBAt';
+        const n1 = 'nZmk';
+        const n1_1 = 'nQnn';
+        const n2_1 = 'n_lG';
+        const n1_1_1 = 'nYQz';
+        const n1_1_2 = 'nfXF';
+        const n2_1_1 = 'nXlL';
+        const n2_1_2 = 'nX1f';
         const rootNode = 'rk1k';
         const input = {
             columns: [
                 {
                     id: 'cGKb',
-                    groups: [
-                        { nodes: [targetNode, mergedNode], parentId: rootNode },
-                    ],
+                    groups: [{ nodes: [n1, n2], parentId: rootNode }],
                 },
                 {
                     id: 'c406',
                     groups: [
-                        { nodes: [childOfTargetNode], parentId: targetNode },
-                        { nodes: [childOfMergedNode], parentId: mergedNode },
+                        { nodes: [n1_1], parentId: n1 },
+                        { nodes: [n2_1], parentId: n2 },
                     ],
                 },
                 {
                     id: 'cvC7',
                     groups: [
                         {
-                            nodes: [
-                                grandChild1OfTargetNode,
-                                grandChild2OfTargetNode,
-                            ],
-                            parentId: childOfTargetNode,
+                            nodes: [n1_1_1, n1_1_2],
+                            parentId: n1_1,
                         },
                         {
-                            nodes: [
-                                grandChild1OfMergedNode,
-                                grandChild2OfMergedNode,
-                            ],
-                            parentId: childOfMergedNode,
+                            nodes: [n2_1_1, n2_1_2],
+                            parentId: n2_1,
                         },
                     ],
                 },
@@ -239,21 +231,21 @@ describe('merge node', () => {
             },
             action: {
                 type: 'DOCUMENT/MERGE_NODE',
-                payload: { direction: 'up', activeNodeId: mergedNode },
+                payload: { direction: 'up', activeNodeId: n2 },
             },
         } as Input;
         const output = {
             columns: [
                 {
                     id: 'cGKb',
-                    groups: [{ nodes: [targetNode], parentId: rootNode }],
+                    groups: [{ nodes: [n1], parentId: rootNode }],
                 },
                 {
                     id: 'c406',
                     groups: [
                         {
-                            nodes: [childOfTargetNode, childOfMergedNode],
-                            parentId: targetNode,
+                            nodes: [n1_1, n2_1],
+                            parentId: n1,
                         },
                     ],
                 },
@@ -261,19 +253,18 @@ describe('merge node', () => {
                     id: 'cvC7',
                     groups: [
                         {
-                            nodes: [
-                                grandChild1OfTargetNode,
-                                grandChild2OfTargetNode,
-                                grandChild1OfMergedNode,
-                                grandChild2OfMergedNode,
-                            ],
-                            parentId: childOfTargetNode,
+                            nodes: [n1_1_1, n1_1_2],
+                            parentId: n1_1,
+                        },
+                        {
+                            nodes: [n2_1_1, n2_1_2],
+                            parentId: n2_1,
                         },
                     ],
                 },
             ],
             state: {
-                activeNode: targetNode,
+                activeNode: n1,
             },
             content: {
                 nZmk: { content: '1 2' },
@@ -290,46 +281,38 @@ describe('merge node', () => {
         expect(input.content).toEqual(output.content);
     });
     test('case: two parents with children and grand children, down', () => {
-        const mergedNode = 'nZmk';
-        const targetNode = 'nBAt';
-        const childOfMergedNode = 'n_lG';
-        const childOfTargetNode = 'nQnn';
-        const grandChild1OfMergedNode = 'nYQz';
-        const grandChild2OfMergedNode = 'nfXF';
-        const grandChild1OfTargetNode = 'nXlL';
-        const grandChild2OfTargetNode = 'nX1f';
+        const n1 = 'nZmk';
+        const n2 = 'nBAt';
+        const n1_1 = 'n_lG';
+        const n2_1 = 'nQnn';
+        const n1_1_1 = 'nYQz';
+        const n1_1_2 = 'nfXF';
+        const n2_1_1 = 'nXlL';
+        const n2_1_2 = 'nX1f';
         const rootNode = 'rk1k';
         const input = {
             columns: [
                 {
                     id: 'cGKb',
-                    groups: [
-                        { nodes: [mergedNode, targetNode], parentId: rootNode },
-                    ],
+                    groups: [{ nodes: [n1, n2], parentId: rootNode }],
                 },
                 {
                     id: 'c406',
                     groups: [
-                        { nodes: [childOfMergedNode], parentId: mergedNode },
-                        { nodes: [childOfTargetNode], parentId: targetNode },
+                        { nodes: [n1_1], parentId: n1 },
+                        { nodes: [n2_1], parentId: n2 },
                     ],
                 },
                 {
                     id: 'cvC7',
                     groups: [
                         {
-                            nodes: [
-                                grandChild1OfMergedNode,
-                                grandChild2OfMergedNode,
-                            ],
-                            parentId: childOfMergedNode,
+                            nodes: [n1_1_1, n1_1_2],
+                            parentId: n1_1,
                         },
                         {
-                            nodes: [
-                                grandChild1OfTargetNode,
-                                grandChild2OfTargetNode,
-                            ],
-                            parentId: childOfTargetNode,
+                            nodes: [n2_1_1, n2_1_2],
+                            parentId: n2_1,
                         },
                     ],
                 },
@@ -347,21 +330,21 @@ describe('merge node', () => {
             },
             action: {
                 type: 'DOCUMENT/MERGE_NODE',
-                payload: { direction: 'down', activeNodeId: mergedNode },
+                payload: { direction: 'down', activeNodeId: n1 },
             },
         } as Input;
         const output = {
             columns: [
                 {
                     id: 'cGKb',
-                    groups: [{ nodes: [targetNode], parentId: rootNode }],
+                    groups: [{ nodes: [n2], parentId: rootNode }],
                 },
                 {
                     id: 'c406',
                     groups: [
                         {
-                            nodes: [childOfMergedNode, childOfTargetNode],
-                            parentId: targetNode,
+                            nodes: [n1_1, n2_1],
+                            parentId: n2,
                         },
                     ],
                 },
@@ -369,19 +352,18 @@ describe('merge node', () => {
                     id: 'cvC7',
                     groups: [
                         {
-                            nodes: [
-                                grandChild1OfMergedNode,
-                                grandChild2OfMergedNode,
-                                grandChild1OfTargetNode,
-                                grandChild2OfTargetNode,
-                            ],
-                            parentId: childOfTargetNode,
+                            nodes: [n1_1_1, n1_1_2],
+                            parentId: n1_1,
+                        },
+                        {
+                            nodes: [n2_1_1, n2_1_2],
+                            parentId: n2_1,
                         },
                     ],
                 },
             ],
             state: {
-                activeNode: targetNode,
+                activeNode: n2,
             },
             content: {
                 nBAt: { content: '1 2' },
@@ -1072,6 +1054,78 @@ describe('merge node', () => {
             },
             state: {
                 activeNode: target,
+            },
+        };
+        mergeNode(input.columns, input.content, action);
+        expect(input.columns).toEqual(output.columns);
+        expect(input.content).toEqual(output.content);
+    });
+    test('bug: child groups are also merged', () => {
+        const c0 = 'cDlw';
+        const c1 = 'cJiB';
+        const c2 = 'cs-i';
+        const root = 'rpFV';
+        const n1 = 'nsw-';
+        const n1_1 = 'nXjA';
+        const n1_1_1 = 'nQ56';
+        const n2 = 'nVWc';
+        const n2_1 = 'nHii';
+        const n2_1_1 = 'nDCl';
+        const n2_1_2 = 'nekl';
+
+        const action = {
+            type: 'DOCUMENT/MERGE_NODE',
+            payload: { direction: 'up', activeNodeId: 'nVWc' },
+        } as const;
+
+        const input = {
+            columns: [
+                { id: c0, groups: [{ nodes: [n1, n2], parentId: root }] },
+                {
+                    id: c1,
+                    groups: [
+                        { nodes: [n1_1], parentId: n1 },
+                        { nodes: [n2_1], parentId: n2 },
+                    ],
+                },
+                {
+                    id: c2,
+                    groups: [
+                        { nodes: [n1_1_1], parentId: n1_1 },
+                        { nodes: [n2_1_1, n2_1_2], parentId: n2_1 },
+                    ],
+                },
+            ],
+            content: {
+                [n1]: { content: '1' },
+                [n1_1]: { content: '1.1' },
+                [n1_1_1]: { content: '1.1.1' },
+                [n2]: { content: '2' },
+                [n2_1]: { content: '2.1' },
+                [n2_1_1]: { content: '2.1.1' },
+                [n2_1_2]: { content: '2.1.2' },
+            },
+        };
+
+        const output = {
+            columns: [
+                { id: c0, groups: [{ nodes: [n1], parentId: root }] },
+                { id: c1, groups: [{ nodes: [n1_1, n2_1], parentId: n1 }] },
+                {
+                    id: c2,
+                    groups: [
+                        { nodes: [n1_1_1], parentId: n1_1 },
+                        { nodes: [n2_1_1, n2_1_2], parentId: n2_1 },
+                    ],
+                },
+            ],
+            content: {
+                [n1]: { content: '1 2' },
+                [n1_1]: { content: '1.1' },
+                [n1_1_1]: { content: '1.1.1' },
+                [n2_1]: { content: '2.1' },
+                [n2_1_1]: { content: '2.1.1' },
+                [n2_1_2]: { content: '2.1.2' },
             },
         };
         mergeNode(input.columns, input.content, action);

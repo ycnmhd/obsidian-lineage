@@ -1,4 +1,4 @@
-import { DocumentStore, ViewStore } from 'src/view/view';
+import { LineageView } from 'src/view/view';
 import {
     DocumentEventType,
     getDocumentEventType,
@@ -22,26 +22,27 @@ import { ViewStoreAction } from 'src/stores/view/view-store-actions';
 import { isEmptyDocument } from 'src/stores/view/subscriptions/helpers/is-empty-document';
 
 const viewEffectsAndActions = (
-    documentStore: DocumentStore,
-    viewStore: ViewStore,
+    view: LineageView,
     action: DocumentStoreAction | ViewStoreAction | undefined,
     initialRun: boolean | undefined,
     fromDocument: boolean,
-    container: HTMLElement,
-    save: () => void,
 ) => {
+    const documentStore = view.documentStore;
     const documentState = documentStore.getValue();
+    const viewStore = view.viewStore;
     const viewState = viewStore.getValue();
+    const container = view.container;
     if (initialRun) {
         // actions
         setTreeIndex(viewStore, documentState);
         setActiveNode(viewStore, documentState);
         updateActiveBranch(viewStore, documentState);
-        if (isEmptyDocument(documentState.document.content)) {
+        if (view.isActive && isEmptyDocument(documentState.document.content)) {
             enableEditMode(viewStore, documentState);
         }
         // effects
-        alignBranchDebounced(documentState, viewState, container);
+        if (view.isActive && container)
+            alignBranchDebounced(documentState, viewState, container);
     } else if (action) {
         const type = action.type;
 
@@ -56,7 +57,7 @@ const viewEffectsAndActions = (
             setActiveNode(viewStore, documentState);
         }
 
-        if (type === 'DOCUMENT/INSERT_NODE') {
+        if (type === 'DOCUMENT/INSERT_NODE' && view.isActive) {
             enableEditMode(viewStore, documentState);
         }
 
@@ -79,17 +80,18 @@ const viewEffectsAndActions = (
         }
 
         // effects
+        if (!container || !view.isActive) return;
+        if (e.zoom) {
+            applyZoom(container, viewState);
+        }
         if (e.changeHistory || e.content || e.creationAndDeletion || e.shape) {
             resetSearchFuse(documentStore);
-            save();
+            view.saveDocument();
         }
         if (action.type === 'DOCUMENT/DISABLE_EDIT_MODE') {
             focusContainer(container);
         }
 
-        if (e.zoom) {
-            applyZoom(container, viewState);
-        }
         if (type === 'DOCUMENT/MOVE_NODE') {
             focusContainer(container);
         }
@@ -111,37 +113,16 @@ const viewEffectsAndActions = (
     }
 };
 
-export const viewSubscriptions = (
-    documentStore: DocumentStore,
-    viewStore: ViewStore,
-    container: HTMLElement,
-    save: () => void,
-) => {
-    const unsubFromDocument = documentStore.subscribe(
+export const viewSubscriptions = (view: LineageView) => {
+    const unsubFromDocument = view.documentStore.subscribe(
         (documentState, action) => {
-            viewEffectsAndActions(
-                documentStore,
-                viewStore,
-                action,
-                false,
-                true,
-                container,
-                save,
-            );
+            viewEffectsAndActions(view, action, false, true);
         },
     );
 
-    const unsubFromView = viewStore.subscribe(
+    const unsubFromView = view.viewStore.subscribe(
         (viewState, action, initialRun) => {
-            viewEffectsAndActions(
-                documentStore,
-                viewStore,
-                action,
-                initialRun,
-                false,
-                container,
-                save,
-            );
+            viewEffectsAndActions(view, action, initialRun, false);
         },
     );
 

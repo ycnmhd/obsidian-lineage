@@ -1,13 +1,11 @@
-import { expect, test } from '@playwright/test';
-import { createNewLineageFile } from '../helpers/interactions/lineage-commands/create-new-lineage-file';
+import { expect, test } from '../helpers/base-test';
 import { addCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/add-card-using-hotkey';
-import { resetTextIndex, text } from '../helpers/general/text';
+import { text } from '../helpers/general/text';
 import { typeText } from '../helpers/interactions/lineage-view/card/type-text';
 import { editCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/edit-card-using-hotkey';
 import { discardChangesUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/discard-changes-using-hotkey';
 import { saveCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/save-card-using-hotkey';
 import { addCardAndSplitAtCursorUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/add-card-and-split-at-cursor-using-hotkey';
-import { closeThisTabGroup } from '../helpers/interactions/obsidian-commands/close-this-tab-group';
 import { repeatPressKey } from '../helpers/interactions/dom/repeat-press-key';
 import { selectCard } from '../helpers/interactions/lineage-view/card/select-card';
 import { moveCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/move-card-using-hotkey';
@@ -20,17 +18,7 @@ import { redoChangeUsingHotkey } from '../helpers/interactions/lineage-view/hotk
 import { toggleSearchUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/toggle-search-using-hotkey';
 import { setSearchQuery } from '../helpers/interactions/lineage-view/search/set-search-query';
 import { getTextsOfColumns } from '../helpers/getters/lineage-view/card/get-texts-of-columns';
-import { loadObsidian } from '../helpers/getters/obsidian/load-obsidian';
 import { discardInputChanges } from '../helpers/interactions/lineage-view/hotkeys/discard-input-changes';
-
-test.beforeAll(async () => {
-    await loadObsidian();
-});
-test.beforeEach(async () => {
-    await closeThisTabGroup();
-    await createNewLineageFile();
-    resetTextIndex();
-});
 
 test.describe('card hotkeys', () => {
     test('save card, edit card and discard changes using hotkey', async () => {

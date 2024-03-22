@@ -4,6 +4,7 @@ import { changeNodePosition } from 'src/stores/document/reducers/move-node/helpe
 import { findAdjacentNode } from 'src/stores/document/reducers/move-node/helpers/find-adjacent-node';
 import { cleanAndSortColumns } from 'src/stores/document/reducers/move-node/helpers/clean-and-sort-columns';
 import invariant from 'tiny-invariant';
+import { SilentError } from 'src/stores/view/helpers/errors';
 
 export type MoveNodeAction = {
     type: 'DOCUMENT/MOVE_NODE';
@@ -22,7 +23,7 @@ export const moveNode = (columns: Column[], action: MoveNodeAction) => {
         nodeToMove,
         action.payload.direction,
     );
-    if (!targetNode) return true;
+    if (!targetNode) throw new SilentError('could not find adjacent node');
     changeNodePosition(
         columns,
         nodeToMove,

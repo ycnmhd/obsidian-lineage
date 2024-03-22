@@ -22,10 +22,9 @@ const updateDocumentState = (
     state: DocumentState,
     action: DocumentStoreAction,
 ) => {
-    let skipSnapshot: boolean | undefined = false;
     let activeNodeId: null | string = null;
     if (action.type === 'DOCUMENT/SET_NODE_CONTENT') {
-        skipSnapshot = setNodeContent(state.document.content, action);
+        setNodeContent(state.document.content, action);
         activeNodeId = action.payload.nodeId;
     } else if (action.type === 'DOCUMENT/INSERT_NODE') {
         activeNodeId = insertNode(
@@ -43,7 +42,7 @@ const updateDocumentState = (
         dropNode(state.document.columns, action);
         activeNodeId = action.payload.droppedNodeId;
     } else if (action.type === 'DOCUMENT/MOVE_NODE') {
-        skipSnapshot = moveNode(state.document.columns, action);
+        moveNode(state.document.columns, action);
         activeNodeId = action.payload.activeNodeId;
     } else if (action.type === 'DOCUMENT/MERGE_NODE') {
         activeNodeId = mergeNode(
@@ -71,7 +70,7 @@ const updateDocumentState = (
     const eventType = getDocumentEventType(action.type);
     const contentShapeCreation =
         eventType.content || eventType.shape || eventType.creationAndDeletion;
-    if (!skipSnapshot && activeNodeId && contentShapeCreation) {
+    if (activeNodeId && contentShapeCreation) {
         addSnapshot(
             state.document,
             state.history,

@@ -1,11 +1,8 @@
-import { expect, test } from '@playwright/test';
-import { closeThisTabGroup } from '../helpers/interactions/obsidian-commands/close-this-tab-group';
-import { createNewLineageFile } from '../helpers/interactions/lineage-commands/create-new-lineage-file';
-import { resetTextIndex, text } from '../helpers/general/text';
+import { expect, test } from '../helpers/base-test';
+import { text } from '../helpers/general/text';
 import { getUndoChangeButton } from '../helpers/getters/lineage-view/history/get-undo-change-button';
 import { getRedoChangeButton } from '../helpers/getters/lineage-view/history/get-redo-change-button';
 import { typeTextAndSaveItUsingHotkey } from '../helpers/interactions/lineage-view/card/type-text-and-save-it-using-hotkey';
-import { loadObsidian } from '../helpers/getters/obsidian/load-obsidian';
 import { undoChangeUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/undo-change-using-hotkey';
 import { getTextsOfColumns } from '../helpers/getters/lineage-view/card/get-texts-of-columns';
 import { redoChangeUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/redo-change-using-hotkey';
@@ -24,14 +21,6 @@ import { getBreadcrumbsText } from '../helpers/getters/lineage-view/breadcrumbs/
 import { clickBreadcrumbsItem } from '../helpers/interactions/lineage-view/breadcrumbs/click-breadcrumbs-item';
 import { selectCard } from '../helpers/interactions/lineage-view/card/select-card';
 
-test.beforeAll(async () => {
-    await loadObsidian();
-});
-test.beforeEach(async () => {
-    await closeThisTabGroup();
-    await createNewLineageFile();
-    resetTextIndex();
-});
 test.describe('history', () => {
     test('undo and redo buttons should be disabled', async () => {
         expect(await (await getUndoChangeButton()).isDisabled()).toBe(true);

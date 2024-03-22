@@ -3,8 +3,9 @@ import { VerticalDirection } from 'src/stores/document/document-store-actions';
 import { findAdjacentSiblingNode } from 'src/stores/document/reducers/move-node/helpers/find-adjacent-sibling-node';
 import { deleteNodeById } from 'src/stores/document/reducers/delete-node/helpers/delete-node-by-id';
 import { cleanAndSortColumns } from 'src/stores/document/reducers/move-node/helpers/clean-and-sort-columns';
-import { moveChildGroups } from 'src/stores/document/reducers/move-node/helpers/move-child-groups/move-child-groups';
+import { moveOrphanGroupsToANewParent } from 'src/stores/document/reducers/move-node/helpers/move-child-groups/move-orphan-groups-to-a-new-parent';
 import invariant from 'tiny-invariant';
+import { SilentError } from 'src/stores/view/helpers/errors';
 
 export type MergeNodeAction = {
     type: 'DOCUMENT/MERGE_NODE';
@@ -24,11 +25,11 @@ export const mergeNode = (
         mergedNode,
         action.payload.direction,
     );
-    invariant(mergedNode);
-    invariant(adjacentNode, 'could not find adjacent node');
+    invariant(mergedNode, 'merged node is undefined');
+    if (!adjacentNode) throw new SilentError('could not find adjacent node');
     const mergedNodeContent = content[mergedNode] || { content: '' };
     const adjacentNodeContent = content[adjacentNode] || { content: '' };
-    deleteNodeById(columns, content, mergedNode);
+
     let newContent = '';
     if (action.payload.direction === 'up') {
         newContent = (
@@ -51,14 +52,14 @@ export const mergeNode = (
             content[adjacentNode] = { content: newContent };
         }
     }
-    moveChildGroups(columns, {
-        type: 'MERGE_PARENT',
-        payload: {
-            currentParent: mergedNode,
-            newParent: adjacentNode,
-            direction: action.payload.direction,
-        },
-    });
+
+    moveOrphanGroupsToANewParent(
+        columns,
+        mergedNode,
+        adjacentNode,
+        action.payload.direction,
+    );
+    deleteNodeById(columns, content, mergedNode);
     cleanAndSortColumns(columns);
     return adjacentNode;
 };

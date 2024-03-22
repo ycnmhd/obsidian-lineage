@@ -19,6 +19,7 @@ import { ViewStoreAction } from 'src/stores/view/view-store-actions';
 import { defaultViewState } from 'src/stores/view/default-view-state';
 import { viewReducer } from 'src/stores/view/view-reducer';
 import { viewSubscriptions } from 'src/stores/view/subscriptions/view-subscriptions';
+import { SilentError } from 'src/stores/view/helpers/errors';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -29,12 +30,12 @@ export class LineageView extends TextFileView {
     component: Component;
     documentStore: DocumentStore;
     viewStore: ViewStore;
-    private container: HTMLElement | null;
+    container: HTMLElement | null;
     private readonly onDestroyCallbacks: Set<Unsubscriber> = new Set();
     private activeFilePath: null | string;
     constructor(
         leaf: WorkspaceLeaf,
-        private plugin: Lineage,
+        public plugin: Lineage,
     ) {
         super(leaf);
         this.documentStore = new Store(
@@ -46,6 +47,12 @@ export class LineageView extends TextFileView {
             defaultViewState(),
             viewReducer,
             this.onViewStoreError as OnError<ViewStoreAction>,
+        );
+    }
+
+    get isActive() {
+        return (
+            this === this.plugin.app.workspace.getActiveViewOfType(LineageView)
         );
     }
 
@@ -83,6 +90,7 @@ export class LineageView extends TextFileView {
     getViewType() {
         return FILE_VIEW_TYPE;
     }
+
     getIcon(): IconName {
         return 'list-tree';
     }
@@ -92,10 +100,6 @@ export class LineageView extends TextFileView {
     }
 
     async onOpen() {}
-
-    async onClose() {
-        return this.onUnloadFile();
-    }
 
     /*private destroyStore = () => {
 	   const leavesOfType = this.plugin.app.workspace
@@ -112,6 +116,10 @@ export class LineageView extends TextFileView {
 	   }
    };*/
 
+    async onClose() {
+        return this.onUnloadFile();
+    }
+
     onViewStoreError: OnError<DocumentStoreAction | ViewStoreAction> = (
         error,
         location,
@@ -123,14 +131,17 @@ export class LineageView extends TextFileView {
                 setFileViewType(this.plugin, this.file, this.leaf, 'markdown');
             }
         }
+        const verb = error instanceof SilentError ? 'warn' : 'error';
         // eslint-disable-next-line no-console
-        console.error(`[${location}] action: `, action);
+        console[verb](`[${location}] action: `, action);
         // eslint-disable-next-line no-console
-        console.error(`[${location}] `, error);
-        new Notice('Lineage plugin: ' + error.message);
+        console[verb](`[${location}]`, error);
+        if (!(error instanceof SilentError)) {
+            new Notice('Lineage plugin: ' + error.message);
+        }
     };
 
-    private requestSaveWrapper = async () => {
+    saveDocument = async () => {
         const state = clone(this.documentStore.getValue());
         const data: string =
             state.file.frontmatter +
@@ -145,6 +156,7 @@ export class LineageView extends TextFileView {
             this.requestSave();
         }
     };
+
     private loadInitialData = () => {
         if (!this.file) {
             throw new Error('view does not have a file');
@@ -166,14 +178,7 @@ export class LineageView extends TextFileView {
         });
         this.container = this.contentEl.querySelector('#columns-container');
         if (!this.container) throw new Error('could not find container');
-        this.onDestroyCallbacks.add(
-            viewSubscriptions(
-                this.documentStore,
-                this.viewStore,
-                this.container,
-                this.requestSaveWrapper,
-            ),
-        );
+        this.onDestroyCallbacks.add(viewSubscriptions(this));
     };
 
     private createStore = () => {
@@ -188,6 +193,7 @@ export class LineageView extends TextFileView {
             },
         });
     };
+
     private useExistingStore = () => {
         if (!this.file) return;
         this.documentStore = stores[this.file.path];

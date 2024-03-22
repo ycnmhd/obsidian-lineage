@@ -14,7 +14,7 @@ export const findGroupByParentId = (columns: Columns, parentId: string) => {
     for (const column of columns) {
         for (const group of column.groups) {
             if (group.parentId === parentId) {
-                return group;
+                return { group, column };
             }
         }
     }

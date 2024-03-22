@@ -1,11 +1,10 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../helpers/base-test';
 import { addCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/add-card-using-hotkey';
 import { createNewLineageFile } from '../helpers/interactions/lineage-commands/create-new-lineage-file';
 import { typeText } from '../helpers/interactions/lineage-view/card/type-text';
 import { moveCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/move-card-using-hotkey';
 import { saveCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/save-card-using-hotkey';
-import { closeThisTabGroup } from '../helpers/interactions/obsidian-commands/close-this-tab-group';
-import { resetTextIndex, text } from '../helpers/general/text';
+import { text } from '../helpers/general/text';
 import { getTextsOfColumns } from '../helpers/getters/lineage-view/card/get-texts-of-columns';
 import { closeThisTab } from '../helpers/interactions/obsidian-commands/close-this-tab';
 import { undoCloseTab } from '../helpers/interactions/obsidian-commands/undo-close-tab';
@@ -17,16 +16,6 @@ import { redoChangeUsingHotkey } from '../helpers/interactions/lineage-view/hotk
 import { selectCard } from '../helpers/interactions/lineage-view/card/select-card';
 import { deleteCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/delete-card-using-hotkey';
 import { discardChangesUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/discard-changes-using-hotkey';
-import { loadObsidian } from '../helpers/getters/obsidian/load-obsidian';
-
-test.beforeAll(async () => {
-    await loadObsidian();
-});
-test.beforeEach(async () => {
-    await closeThisTabGroup();
-    await createNewLineageFile();
-    resetTextIndex();
-});
 
 test.describe('text should be saved', () => {
     test('should save card when view is closed', async () => {
