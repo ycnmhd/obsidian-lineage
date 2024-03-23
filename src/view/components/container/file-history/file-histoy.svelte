@@ -1,6 +1,6 @@
 <script lang="ts">
     import SnapshotButton from './components/snapshot-button.svelte';
-    import { updateRelativeTime } from 'src/view/components/container/file-history/actions/update-relative-time';
+    import { updateRelativeTime } from 'src/view/actions/update-relative-time';
     import { DocumentHistory } from 'src/stores/document/document-state-type';
 
     export let documentHistory: DocumentHistory;

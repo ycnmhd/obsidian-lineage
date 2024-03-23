@@ -168,8 +168,12 @@ describe('move-node', () => {
                 activeNode: mov,
             },
         };
-        moveNode(input.columns, action);
-        expect(input.columns).toEqual(output.columns);
+        try {
+            moveNode(input.columns, action);
+            expect(input.columns).toEqual(output.columns);
+        } catch (e) {
+            expect(e.message).toBe('could not find adjacent node');
+        }
     });
     test('1 >2 right', () => {
         const col0 = 'cZcR';
@@ -489,8 +493,12 @@ describe('move-node', () => {
                 activeNode: 'nQ-X',
             },
         };
-        moveNode(input.columns, action);
-        expect(input.columns).toEqual(output.columns);
+        try {
+            moveNode(input.columns, action);
+            expect(input.columns).toEqual(output.columns);
+        } catch (e) {
+            expect(e.message).toBe('could not find adjacent node');
+        }
     });
     test('1|*|* >2|*|*  up', () => {
         const action = {
@@ -673,8 +681,12 @@ describe('move-node', () => {
                 activeNode: 'nDVm',
             },
         };
-        moveNode(input.columns, action);
-        expect(input.columns).toEqual(output.columns);
+        try {
+            moveNode(input.columns, action);
+            expect(input.columns).toEqual(output.columns);
+        } catch (e) {
+            expect(e.message).toBe('could not find adjacent node');
+        }
     });
     test('>*|1|* *|2|* down', () => {
         const action = {

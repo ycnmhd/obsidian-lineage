@@ -1,15 +1,14 @@
 import { moveNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/move-node';
-import Lineage from 'src/main';
 import { PluginCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
 import { isActive } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
 
-export const moveCommands = (plugin: Lineage) => {
+export const moveCommands = () => {
     return [
         {
             name: 'move_node_up',
             check: isActive,
-            callback: () => {
-                moveNode(plugin, 'up');
+            callback: (view) => {
+                moveNode(view, 'up');
             },
             hotkeys: [
                 { key: 'K', modifiers: ['Alt', 'Shift'] },
@@ -19,8 +18,8 @@ export const moveCommands = (plugin: Lineage) => {
         {
             name: 'move_node_down',
             check: isActive,
-            callback: () => {
-                moveNode(plugin, 'down');
+            callback: (view) => {
+                moveNode(view, 'down');
             },
             hotkeys: [
                 { key: 'J', modifiers: ['Alt', 'Shift'] },
@@ -30,8 +29,8 @@ export const moveCommands = (plugin: Lineage) => {
         {
             name: 'move_node_right',
             check: isActive,
-            callback: () => {
-                moveNode(plugin, 'right');
+            callback: (view) => {
+                moveNode(view, 'right');
             },
             hotkeys: [
                 { key: 'L', modifiers: ['Alt', 'Shift'] },
@@ -41,8 +40,8 @@ export const moveCommands = (plugin: Lineage) => {
         {
             name: 'move_node_left',
             check: isActive,
-            callback: () => {
-                moveNode(plugin, 'left');
+            callback: (view) => {
+                moveNode(view, 'left');
             },
             hotkeys: [
                 { key: 'H', modifiers: ['Alt', 'Shift'] },

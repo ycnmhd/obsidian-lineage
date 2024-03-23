@@ -1,6 +1,6 @@
 import { Direction } from 'src/stores/document/document-store-actions';
 import { getActiveCard } from '../../../getters/lineage-view/card/get-active-card';
-import { maybeGetTextArea } from '../../../getters/lineage-view/card/maybe-get-text-area';
+import { maybeGetInlineEditor } from '../../../getters/lineage-view/card/maybe-get-inline-editor';
 import { delay, SHORT } from '../../../general/delay';
 import { __obsidian__ } from '../../../getters/obsidian/load-obsidian';
 
@@ -19,9 +19,9 @@ export const addCardUsingHotkey = async (
     direction: Direction,
     splitAtCursor = false,
 ) => {
-    const textArea = await maybeGetTextArea();
-    if (textArea) {
-        await textArea.focus();
+    const inlineEditor = await maybeGetInlineEditor();
+    if (inlineEditor) {
+        await inlineEditor.focus();
     } else {
         if (splitAtCursor) {
             throw new Error('could not find textarea');

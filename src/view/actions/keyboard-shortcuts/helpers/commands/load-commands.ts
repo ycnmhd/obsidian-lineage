@@ -21,10 +21,10 @@ export const pluginCommands: {
 export const loadCommands = (plugin: Lineage) => {
     pluginCommands.current = [
         ...navigateCommands(),
-        ...editCommands(plugin),
-        ...createCommands(plugin),
-        ...moveCommands(plugin),
-        ...mergeCommands(plugin),
+        ...editCommands(),
+        ...createCommands(),
+        ...moveCommands(),
+        ...mergeCommands(),
         ...historyCommands(),
         {
             name: 'delete_card',

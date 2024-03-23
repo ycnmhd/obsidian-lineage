@@ -10,4 +10,6 @@ export const updateActiveNode = (
     state.activeNode = nodeId;
     if (navigationHistory)
         addNavigationHistoryItem(navigationHistory, state.activeNode);
+    if (state.editing.activeNodeId && state.editing.activeNodeId !== nodeId)
+        state.editing.activeNodeId = '';
 };

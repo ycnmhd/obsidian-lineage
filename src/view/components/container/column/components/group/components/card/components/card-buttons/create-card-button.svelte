@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getPlugin } from '../../../../../../../context';
+    import { getView } from '../../../../../../../context';
     import FloatingButton from './floating-button.svelte';
     import { ChevronDown, ChevronRight, ChevronUp } from 'lucide-svelte';
     import {
@@ -8,11 +8,11 @@
     import { Direction } from 'src/stores/document/document-store-actions';
 
     export let position: Direction;
-    const plugin = getPlugin();
+    const view = getView();
     // eslint-disable-next-line no-undef
     const createCard = (e: MouseEvent) => {
         e.stopPropagation();
-        saveNodeAndInsertNode(plugin, position);
+        saveNodeAndInsertNode(view, position);
     };
     const chevrons = {
         right: ChevronRight,
