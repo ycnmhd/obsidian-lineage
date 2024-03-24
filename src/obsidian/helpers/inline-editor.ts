@@ -19,10 +19,7 @@ export class InlineEditor {
         this.rootSplit.getRoot = () => workspace.rootSplit;
         this.rootSplit.getContainer = () => workspace.rootSplit;
         this.container.append(this.rootSplit.containerEl);
-        this.rootSplit.containerEl.addClasses([
-            'lineage__inline-editor',
-            'native-scrollbars',
-        ]);
+        this.rootSplit.containerEl.addClasses(['lineage-inline-editor']);
         this.leaf = workspace.createLeafInParent(this.rootSplit, 0);
     }
 }

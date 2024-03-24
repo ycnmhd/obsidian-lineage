@@ -21,6 +21,8 @@
     const view = getView();
     const documentStore = view.documentStore;
     const viewStore = view.viewStore;
+    const settings = view.plugin.settings;
+
     const activeStatusClasses = {
         [ActiveStatus.node]: 'active-node',
         [ActiveStatus.child]: 'active-child',
@@ -30,7 +32,16 @@
 </script>
 
 <div
-    class={clx('lineage__card', 'node', active && activeStatusClasses[active])}
+    class={clx(
+        'obsidian-theme-variables',
+        'lineage-card',
+        'node',
+        active ? activeStatusClasses[active] : ' inactive-node',
+        active &&
+            (active === ActiveStatus.node || active === ActiveStatus.child)
+            ? 'obsidian-theme-light'
+            : `obsidian-theme-${$settings.ui.theme === 'dark' ? 'light' : 'dark'}`,
+    )}
     data-active={active || 'inactive'}
     id={nodeId}
     on:click={setActive}
@@ -43,7 +54,7 @@
             },
         });
     }}
-    use:droppable={{viewStore,documentStore}}
+    use:droppable={{ viewStore, documentStore }}
 >
     <slot />
     <Bridges {active} {editing} {hasChildren} {parentId} />
@@ -55,27 +66,7 @@
         height: fit-content;
         display: flex;
         position: relative;
-        background-color: var(--background-color-inactive-node);
-        color: var(--color-inactive-node);
+
         font-size: 16px;
-    }
-
-    .active-node,
-    .active-child {
-        color: var(--color-active-node);
-        background-color: var(--background-active-node);
-    }
-
-    .active-node {
-        border-left: 5px var(--lineage-accent) solid;
-    }
-    .active-child:hover {
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .active-parent,
-    .active-sibling {
-        color: var(--color-active-child);
-        background-color: var(--background-active-parent);
     }
 </style>

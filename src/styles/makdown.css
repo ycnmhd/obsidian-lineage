@@ -1,0 +1,46 @@
+.active-node,
+.active-child,
+.active-sibling,
+.active-parent,
+.inactive-node {
+    & h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    em,
+    strong,
+    p,
+    div,
+    svg {
+        color: var(--text-normal) !important;
+        -webkit-text-fill-color: initial !important;
+    }
+    & a {
+        color: var(--link-color) !important;
+    }
+    & a.tag {
+    }
+    & .callout {
+        mix-blend-mode: initial;
+    }
+}
+
+.inactive-node,
+.active-sibling,
+.active-parent {
+    & mark {
+        filter: grayscale(1);
+    }
+}
+
+.lineage-card p {
+    margin: 0;
+}
+
+.lineage-card {
+    & .callout {
+        mix-blend-mode: initial;
+    }
+}

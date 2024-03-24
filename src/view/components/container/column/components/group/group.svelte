@@ -55,7 +55,7 @@
         flex-direction: column;
         width: fit-content;
         background-color: var(--background-color-inactive-node);
-        gap: var(--node-gap);
+        gap: 4px;
         padding: 8px;
     }
     .group:last-child {

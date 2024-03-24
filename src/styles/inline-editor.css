@@ -1,0 +1,27 @@
+
+.lineage-inline-editor {
+    --scrollbar-active-thumb-bg: rgba(88, 88, 88, 0.52);
+    --scrollbar-thumb-bg: rgba(136, 136, 136, 0.52);
+    --scrollbar-bg: rgba(189, 189, 189, 0.61);
+    width: 100%;
+    height: auto;
+    min-height: 100px;
+    max-height: 80vh;
+    & .view-header,
+    & .inline-title,
+    & .embedded-backlinks,
+    & .cm-gutters {
+        display: none;
+    }
+    & .cm-editor {
+        background-color: var(--background-active-node);
+    }
+    & .cm-editor .cm-scroller {
+        padding: 6px !important;
+        padding-left: 12px !important;
+    }
+    & .cm-contentContainer div {
+        caret-color: black;
+        padding-bottom: 0 !important;
+    }
+}

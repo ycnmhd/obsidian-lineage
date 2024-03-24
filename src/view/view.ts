@@ -131,12 +131,11 @@ export class LineageView extends TextFileView {
                 setFileViewType(this.plugin, this.file, this.leaf, 'markdown');
             }
         }
-        const verb = error instanceof SilentError ? 'warn' : 'error';
-        // eslint-disable-next-line no-console
-        console[verb](`[${location}] action: `, action);
-        // eslint-disable-next-line no-console
-        console[verb](`[${location}]`, error);
         if (!(error instanceof SilentError)) {
+            // eslint-disable-next-line no-console
+            console.error(`[${location}] action: `, action);
+            // eslint-disable-next-line no-console
+            console.error(`[${location}]`, error);
             new Notice('Lineage plugin: ' + error.message);
         }
     };

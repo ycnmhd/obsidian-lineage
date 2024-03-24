@@ -1,0 +1,38 @@
+.lineage-theme-dark {
+    --background-color-container: #0f172a;
+    --background-color-inactive-node: #2b3747;
+    --background-active-node: #c6d1dc;
+    --background-active-parent: #5f718e;
+}
+.lineage-theme-light {
+    --background-color-container: #7b92a1;
+    --background-color-inactive-node: #8ba5b6;
+    --background-active-node: #ffffff;
+    --background-active-parent: #c8dcea;
+}
+
+.active-node,
+.active-child{
+    background-color: var(--background-active-node);
+    color: var(--text-normal);
+}
+
+
+.active-node {
+    border-left: 5px var(--lineage-accent) solid;
+}
+.active-child:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.active-parent,
+.active-sibling {
+    background-color: var(--background-active-parent);
+}
+.active-sibling {
+    filter: opacity(0.8);
+}
+.inactive-node {
+    filter: opacity(0.25);
+    background-color: var(--background-color-inactive-node);
+}

@@ -6,8 +6,6 @@
 	export let active: ActiveStatus | null;
 
     export let content: string;
-    // eslint-disable-next-line no-undef
-
 
 	const plugin = getPlugin();
 	const view = getView()
@@ -25,17 +23,10 @@
             }
         }
     };
-    const classes: Record<ActiveStatus, string> = {
-        [ActiveStatus.node]: 'active',
-        [ActiveStatus.parent]: 'parent',
-        [ActiveStatus.sibling]: 'parent',
-        [ActiveStatus.child]: 'active',
-    };
 </script>
 
 <div
-    class={' content markdown-preview-view ' + (active?classes[active]:'')}
-
+    class={'content markdown-preview-view'}
     on:click={onClick}
 	use:markdownPreviewAction={content}
 ></div>
@@ -44,16 +35,8 @@
     .content {
         width: 100%;
         min-height: 100px;
-        padding: 6px;
-        font-size: 16px;
-		padding-left: 12px
+		font-size: 16px;
+		padding: 6px 6px 6px 12px;
+		color-scheme: light
     }
-    .active {
-        color: var(--color-active-node);
-    }
-    .parent {
-        color: var(--color-active-child);
-    }
-
-
 </style>

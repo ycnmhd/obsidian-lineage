@@ -59,7 +59,7 @@ const context = await esbuild.context({
 });
 
 const cssContext = await esbuild.context({
-	entryPoints: ["src/styles.css"],
+	entryPoints: ["src/styles/styles.css",],
 	bundle: true,
 	outfile: "temp/vault/.obsidian/plugins/lineage-dev/styles.css"
 });
