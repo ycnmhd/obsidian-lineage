@@ -26,13 +26,13 @@
 </script>
 
 <div
-    class={'content markdown-preview-view'}
+    class={'preview-container markdown-preview-view'}
     on:click={onClick}
 	use:markdownPreviewAction={content}
 ></div>
 
 <style>
-    .content {
+    .preview-container {
         width: 100%;
         min-height: 100px;
 		font-size: 16px;

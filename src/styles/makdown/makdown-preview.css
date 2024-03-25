@@ -1,0 +1,18 @@
+.inactive-node,
+.active-sibling,
+.active-parent,
+.active-child {
+    & mark {
+        filter: grayscale(1);
+    }
+}
+
+.lineage-card p {
+    margin: 0;
+}
+
+.lineage-card {
+    & .callout {
+        mix-blend-mode: initial;
+    }
+}

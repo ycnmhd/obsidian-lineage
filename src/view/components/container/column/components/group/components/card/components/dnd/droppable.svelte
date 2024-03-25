@@ -21,7 +21,6 @@
     const view = getView();
     const documentStore = view.documentStore;
     const viewStore = view.viewStore;
-    const settings = view.plugin.settings;
 
     const activeStatusClasses = {
         [ActiveStatus.node]: 'active-node',
@@ -33,16 +32,9 @@
 
 <div
     class={clx(
-        'obsidian-theme-variables',
         'lineage-card',
-        'node',
         active ? activeStatusClasses[active] : ' inactive-node',
-        active &&
-            (active === ActiveStatus.node || active === ActiveStatus.child)
-            ? 'obsidian-theme-light'
-            : `obsidian-theme-${$settings.ui.theme === 'dark' ? 'light' : 'dark'}`,
     )}
-    data-active={active || 'inactive'}
     id={nodeId}
     on:click={setActive}
     on:dblclick={() => {
@@ -61,12 +53,11 @@
 </div>
 
 <style>
-    .node {
+    .lineage-card {
         width: var(--node-width);
         height: fit-content;
         display: flex;
         position: relative;
-
         font-size: 16px;
     }
 </style>

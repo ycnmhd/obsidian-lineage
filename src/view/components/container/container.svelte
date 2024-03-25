@@ -8,7 +8,7 @@
 </script>
 
 <div
-    class="container"
+    class="columns-container"
     id="columns-container"
     tabindex="0"
     use:keyboardShortcuts={{ view }}
@@ -21,7 +21,7 @@
 </div>
 
 <style>
-    .container {
+    .columns-container {
         position: relative;
         flex: 1;
         height: 100%;

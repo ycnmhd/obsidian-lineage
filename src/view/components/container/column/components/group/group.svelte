@@ -54,7 +54,6 @@
         display: flex;
         flex-direction: column;
         width: fit-content;
-        background-color: var(--background-color-inactive-node);
         gap: 4px;
         padding: 8px;
     }
@@ -62,10 +61,8 @@
         margin-bottom: 0;
     }
     .group-has-active-node {
-        background-color: var(--background-active-parent);
     }
     .group-has-active-parent {
-        background-color: var(--background-active-node);
         border-bottom-left-radius: 6px;
         border-top-left-radius: 6px;
     }

@@ -1,5 +1,4 @@
 :root {
-    --lineage-accent: #55b1ae;
     --border-shadow-color: var(--lineage-accent);
     --border-shadow-top: inset 2px 51px 19px -28px var(--border-shadow-color);
     --border-shadow-right: inset -51px 2px 19px -28px var(--border-shadow-color);

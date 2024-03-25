@@ -14,15 +14,12 @@
     export let view: LineageView;
     const documentStore = view.documentStore
     const viewStore = view.viewStore;
-    const settings = plugin.settings;
     setContext('plugin', plugin);
     setContext('view', view);
 </script>
 
 <div
-    class={` lineage-main ${
-        $settings.ui.theme === 'dark' ? 'lineage-theme-light' : 'lineage-theme-dark'
-    } ${$viewStore.search.searching ? "is-loading":""}`}
+    class={`lineage-main ${$viewStore.search.searching ? "is-loading":""}`}
 >
     <Breadcrumbs />
     <NavigationHistory />
@@ -40,7 +37,7 @@
     .lineage-main {
         --sidebar-right: 50px;
         --z-index-breadcrumbs: 10;
-        background-color: var(--background-color-container);
+        background-color: var(--background-container);
         display: flex;
         height: 100%;
         width: 100%;

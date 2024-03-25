@@ -4,10 +4,8 @@
         HistoryIcon,
         Keyboard,
         Maximize,
-        Moon,
         RedoIcon,
         RotateCcw,
-        Sun,
         UndoIcon,
         ZoomIn,
         ZoomOut
@@ -48,10 +46,7 @@
         }
     };
     const plugin = getPlugin();
-    const settings = plugin.settings;
-    const toggleTheme = () => {
-        settings.dispatch({ type: 'TOGGLE_THEME' });
-    };
+
     const toggleHelp = () => {
         viewStore.dispatch({ type: 'UI/TOGGLE_HELP_SIDEBAR' });
     };
@@ -99,7 +94,7 @@
     };
 </script>
 
-<div class="lineage-view-controls">
+<div class="controls-container">
     <div class="lineage-view-control-group">
         <button
             aria-label={lang.open_in_editor}
@@ -108,6 +103,14 @@
             on:click={openAsMarkdown}
         >
             <File class="svg-icon" />
+        </button>
+        <button
+            aria-label="Keyboard shortcuts"
+            class="control-item"
+            data-tooltip-position="left"
+            on:click={toggleHelp}
+        >
+            <Keyboard class="svg-icon" />
         </button>
     </div>
     <div class="lineage-view-control-group">
@@ -178,28 +181,6 @@
             <ZoomOut class="svg-icon" />
         </button>
     </div>
-    <div class="lineage-view-control-group">
-        <button
-            aria-label="Theme"
-            class="control-item"
-            data-tooltip-position="left"
-            on:click={toggleTheme}
-        >
-            {#if $settings.ui.theme === 'dark'}
-                <Sun class="svg-icon" />
-            {:else}
-                <Moon class="svg-icon" />
-            {/if}
-        </button>
-        <button
-            aria-label="Keyboard shortcuts"
-            class="control-item"
-            data-tooltip-position="left"
-            on:click={toggleHelp}
-        >
-            <Keyboard class="svg-icon" />
-        </button>
-    </div>
 </div>
 
 <style>
@@ -207,7 +188,7 @@
         cursor: not-allowed;
         color: var(--color-base-40);
     }
-    .lineage-view-controls {
+    .controls-container {
         right: var(--size-4-2);
         top: var(--size-4-2);
         gap: var(--size-4-2);

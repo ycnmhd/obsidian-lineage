@@ -8,12 +8,12 @@
     const view = getView()
 </script>
 
-<div class="wrapper" use:expandableTextareaAction use:loadInlineEditor={{nodeId,view}}>
+<div class="editor-container" use:expandableTextareaAction use:loadInlineEditor={{nodeId,view}}>
 
 </div>
 
 <style>
-    .wrapper {
+    .editor-container {
         width: 100%;
         min-height: 100px;
         max-height: 80vh;

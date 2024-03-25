@@ -1,6 +1,5 @@
-@import url('./obsidian-theme.css');
-@import url('./inline-editor.css');
-@import url('./view-theme.css');
-@import url('./dnd.css');
-@import url('./makdown.css');
-@import url('./card-buttons.css');
+@import url('theme.css');
+@import url('makdown/inline-editor.css');
+@import url('makdown/makdown-preview.css');
+@import url('card/dnd.css');
+@import url('card/card-buttons.css');
