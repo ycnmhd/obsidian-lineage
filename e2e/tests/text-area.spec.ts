@@ -1,7 +1,10 @@
 import { expect, test } from '../helpers/base-test';
 import { addCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/add-card-using-hotkey';
 import { createNewLineageFile } from '../helpers/interactions/lineage-commands/create-new-lineage-file';
-import { typeText } from '../helpers/interactions/lineage-view/card/type-text';
+import {
+    typeText,
+    typeTextWithoutClick,
+} from '../helpers/interactions/lineage-view/card/type-text';
 import { moveCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/move-card-using-hotkey';
 import { saveCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/save-card-using-hotkey';
 import { text } from '../helpers/general/text';
@@ -83,19 +86,19 @@ test.describe('some hotkeys should not work', () => {
 
     test('navigation hotkeys should not work while editing', async () => {
         const n1 = text();
-        await typeText(n1);
+        await typeTextWithoutClick(n1);
 
         await addCardUsingHotkey('down');
         const n2 = text();
-        await typeText(n2);
+        await typeTextWithoutClick(n2);
 
         await addCardUsingHotkey('right');
         const n3 = text();
-        await typeText(n3);
+        await typeTextWithoutClick(n3);
 
         await addCardUsingHotkey('down');
         const n4 = text();
-        await typeText(n4);
+        await typeTextWithoutClick(n4);
 
         await saveCardUsingHotkey();
         expect(await getTextsOfColumns()).toEqual([
@@ -105,10 +108,10 @@ test.describe('some hotkeys should not work', () => {
 
         await editCardUsingHotkey();
         await navigateUsingHotkey('up');
-        await typeText('1');
+        await typeTextWithoutClick('1');
 
         await navigateUsingHotkey('down');
-        await typeText('2');
+        await typeTextWithoutClick('2');
 
         await saveCardUsingHotkey();
         expect(await getTextsOfColumns()).toEqual([
@@ -118,10 +121,10 @@ test.describe('some hotkeys should not work', () => {
 
         await editCardUsingHotkey();
         await navigateUsingHotkey('left');
-        await typeText('3');
+        await typeTextWithoutClick('3');
 
         await navigateUsingHotkey('right');
-        await typeText('4');
+        await typeTextWithoutClick('4');
 
         await saveCardUsingHotkey();
         expect(await getTextsOfColumns()).toEqual([
@@ -131,10 +134,10 @@ test.describe('some hotkeys should not work', () => {
 
         await editCardUsingHotkey();
         await navigateUsingHotkey('start-of-column');
-        await typeText('6');
+        await typeTextWithoutClick('6');
 
         await navigateUsingHotkey('end-of-column');
-        await typeText('7');
+        await typeTextWithoutClick('7');
 
         await saveCardUsingHotkey();
         expect(await getTextsOfColumns()).toEqual([
@@ -144,10 +147,10 @@ test.describe('some hotkeys should not work', () => {
 
         await editCardUsingHotkey();
         await navigateUsingHotkey('start-of-group');
-        await typeText('8');
+        await typeTextWithoutClick('8');
 
         await navigateUsingHotkey('end-of-group');
-        await typeText('9');
+        await typeTextWithoutClick('9');
 
         await saveCardUsingHotkey();
         expect(await getTextsOfColumns()).toEqual([

@@ -1,8 +1,7 @@
 import { LineageView } from 'src/view/view';
-import { inlineEditorViews } from 'src/view/actions/inline-editor/load-inline-editor';
 
 export const discardChanges = (view: LineageView) => {
-    inlineEditorViews.delete(view);
+    view.inlineEditor.unloadNode();
 };
 
 export const cancelChanges = (view: LineageView) => {

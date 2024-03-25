@@ -20,6 +20,7 @@ import { defaultViewState } from 'src/stores/view/default-view-state';
 import { viewReducer } from 'src/stores/view/view-reducer';
 import { viewSubscriptions } from 'src/stores/view/subscriptions/view-subscriptions';
 import { SilentError } from 'src/stores/view/helpers/errors';
+import { InlineEditor } from 'src/obsidian/helpers/inline-editor';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -31,6 +32,7 @@ export class LineageView extends TextFileView {
     documentStore: DocumentStore;
     viewStore: ViewStore;
     container: HTMLElement | null;
+    inlineEditor: InlineEditor;
     private readonly onDestroyCallbacks: Set<Unsubscriber> = new Set();
     private activeFilePath: null | string;
     constructor(
@@ -48,6 +50,7 @@ export class LineageView extends TextFileView {
             viewReducer,
             this.onViewStoreError as OnError<ViewStoreAction>,
         );
+        this.inlineEditor = new InlineEditor(this);
     }
 
     get isActive() {
@@ -156,7 +159,7 @@ export class LineageView extends TextFileView {
         }
     };
 
-    private loadInitialData = () => {
+    private loadInitialData = async () => {
         if (!this.file) {
             throw new Error('view does not have a file');
         }
@@ -168,6 +171,7 @@ export class LineageView extends TextFileView {
             this.createStore();
         }
         this.loadDocumentToStore();
+        await this.inlineEditor.loadFile(this.file);
         this.component = new Component({
             target: this.contentEl,
             props: {

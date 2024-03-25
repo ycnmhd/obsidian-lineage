@@ -1,8 +1,6 @@
 import { Direction } from 'src/stores/document/document-store-actions';
 
 import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/save-node-and-insert-node';
-import invariant from 'tiny-invariant';
-import { inlineEditorViews } from 'src/view/actions/inline-editor/load-inline-editor';
 import { LineageView } from 'src/view/view';
 import { EditorPosition } from 'obsidian';
 
@@ -26,23 +24,18 @@ export const addNodeAndSplitAtCursor = (
     let text: string = '';
     let firstHalf = '',
         secondHalf = '';
-    const inlineEditor = inlineEditorViews.get(view);
 
-    invariant(inlineEditor, 'could not find textarea element');
-    const value = inlineEditor.view.editor.getValue();
-    const cursor = flattenEditorPosition(
-        value,
-        inlineEditor.view.editor.getCursor(),
-    );
+    const value = view.inlineEditor.getContent();
+    const cursor = flattenEditorPosition(value, view.inlineEditor.getCursor());
 
     if (cursor < value.length) {
         firstHalf = value.substring(0, cursor);
         secondHalf = value.substring(cursor);
         if (direction === 'up') {
-            inlineEditor.view.__setViewData__(secondHalf, true);
+            view.inlineEditor.setContent(secondHalf);
             text = firstHalf;
         } else {
-            inlineEditor.view.__setViewData__(firstHalf, true);
+            view.inlineEditor.setContent(firstHalf);
             text = secondHalf;
         }
     }
