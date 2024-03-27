@@ -34,7 +34,7 @@ describe('merge node', () => {
                     groups: [{ nodes: [targetNode], parentId: 'r60v' }],
                 },
             ],
-            content: { n8Nd: { content: '1 2' } },
+            content: { n8Nd: { content: '1\n2' } },
             state: {
                 activeNode: targetNode,
             },
@@ -69,7 +69,7 @@ describe('merge node', () => {
             state: {
                 activeNode: 'nc8J',
             },
-            content: { nc8J: { content: '1 2' } },
+            content: { nc8J: { content: '1\n2' } },
         } satisfies Output;
         mergeNode(input.columns, input.content, input.action);
         expect(input.columns).toEqual(output.columns);
@@ -121,7 +121,7 @@ describe('merge node', () => {
             content: {
                 nBe1: { content: '1' },
                 nGQX: { content: '2' },
-                nsPj: { content: '1.1 2.1' },
+                nsPj: { content: '1.1\n2.1' },
             },
         } satisfies Output;
         mergeNode(input.columns, input.content, input.action);
@@ -174,7 +174,7 @@ describe('merge node', () => {
             content: {
                 nPUy: { content: '1' },
                 nfIb: { content: '2' },
-                ngoB: { content: '1.1 2.1' },
+                ngoB: { content: '1.1\n2.1' },
             },
         } satisfies Output;
         mergeNode(input.columns, input.content, input.action);
@@ -267,7 +267,7 @@ describe('merge node', () => {
                 activeNode: n1,
             },
             content: {
-                nZmk: { content: '1 2' },
+                nZmk: { content: '1\n2' },
                 nQnn: { content: '1.1' },
                 nYQz: { content: '1.1.1' },
                 nfXF: { content: '1.1.2' },
@@ -366,7 +366,7 @@ describe('merge node', () => {
                 activeNode: n2,
             },
             content: {
-                nBAt: { content: '1 2' },
+                nBAt: { content: '1\n2' },
                 nQnn: { content: '1.1' },
                 nYQz: { content: '1.1.1' },
                 nfXF: { content: '1.1.2' },
@@ -474,7 +474,7 @@ describe('merge node', () => {
             },
             content: {
                 n_2t: { content: '1' },
-                ny5H: { content: '1.1 2.1' },
+                ny5H: { content: '1.1\n2.1' },
                 n4Zp: { content: '1.1.1' },
                 ng3i: { content: '1.1.2' },
                 nzjB: { content: '2' },
@@ -585,7 +585,7 @@ describe('merge node', () => {
                 n_4B: { content: '1.1.1' },
                 nltq: { content: '1.1.2' },
                 naP1: { content: '2' },
-                nXCc: { content: '1.1 2.1' },
+                nXCc: { content: '1.1\n2.1' },
                 n8TT: { content: '2.1.1' },
                 ncc7: { content: '2.1.2' },
             },
@@ -703,7 +703,7 @@ describe('merge node', () => {
                 n74i: { content: '1.1' },
                 nULs: { content: '1.1.1' },
                 neN5: { content: '1.1.2' },
-                nI7O: { content: '1 middle' },
+                nI7O: { content: '1\nmiddle' },
                 nKk_: { content: '2' },
                 nPb3: { content: '2.1' },
                 nuPi: { content: '2.1.1' },
@@ -823,7 +823,7 @@ describe('merge node', () => {
                 nGx6: { content: '1.1' },
                 nyFL: { content: '1.1.1' },
                 n5HG: { content: '1.1.2' },
-                nwzu: { content: 'middle 2' },
+                nwzu: { content: 'middle\n2' },
                 nSWY: { content: '2.1' },
                 nwQt: { content: '2.1.1' },
                 ndoV: { content: '2.1.2' },
@@ -945,7 +945,7 @@ describe('merge node', () => {
                 nxds: { content: '2.1' },
                 nZss: { content: '2.1.1' },
                 nIgL: { content: '2.1.2' },
-                nBBa: { content: '1.1 middle' },
+                nBBa: { content: '1.1\nmiddle' },
             },
             state: {
                 activeNode: target,
@@ -1050,7 +1050,7 @@ describe('merge node', () => {
                 nlfk: { content: '2' },
                 nquj: { content: '2.1.1' },
                 naR2: { content: '2.1.2' },
-                nqZO: { content: 'middle 2.1' },
+                nqZO: { content: 'middle\n2.1' },
             },
             state: {
                 activeNode: target,
@@ -1120,7 +1120,7 @@ describe('merge node', () => {
                 },
             ],
             content: {
-                [n1]: { content: '1 2' },
+                [n1]: { content: '1\n2' },
                 [n1_1]: { content: '1.1' },
                 [n1_1_1]: { content: '1.1.1' },
                 [n2_1]: { content: '2.1' },

@@ -26,12 +26,12 @@ test.describe('card hotkeys', () => {
         await typeText(n1);
         await saveCardUsingHotkey();
 
-        const n1_b = text();
+        const n1_b = text(1);
         await editCardUsingHotkey();
         await typeText(n1_b);
         await saveCardUsingHotkey();
 
-        const n1_c = text();
+        const n1_c = text(1);
         await editCardUsingHotkey();
         await typeText(n1_c);
         await discardChangesUsingHotkey();
@@ -41,20 +41,19 @@ test.describe('card hotkeys', () => {
 
     test('create cards using hotkeys', async () => {
         const n1 = text();
-        await typeText(n1);
+        await typeTextAndSaveItUsingHotkey(n1);
 
         await addCardUsingHotkey('up');
         const n2 = text();
-        await typeText(n2);
+        await typeTextAndSaveItUsingHotkey(n2);
 
         await addCardUsingHotkey('down');
         const n3 = text();
-        await typeText(n3);
+        await typeTextAndSaveItUsingHotkey(n3);
 
         await addCardUsingHotkey('right');
         const n4 = text();
-        await typeText(n4);
-        await saveCardUsingHotkey();
+        await typeTextAndSaveItUsingHotkey(n4);
 
         const cs = await getTextsOfColumns();
         expect(cs).toEqual([[n2, n3, n1], [n4]]);
@@ -86,20 +85,19 @@ test.describe('card hotkeys', () => {
 
     test('move card', async () => {
         const n1 = text();
-        await typeText(n1);
+        await typeTextAndSaveItUsingHotkey(n1);
 
         const n2 = text();
         await addCardUsingHotkey('up');
-        await typeText(n2);
+        await typeTextAndSaveItUsingHotkey(n2);
 
         const n3 = text();
         await addCardUsingHotkey('up');
-        await typeText(n3);
+        await typeTextAndSaveItUsingHotkey(n3);
 
         const n4 = text();
         await addCardUsingHotkey('up');
-        await typeText(n4);
-        await saveCardUsingHotkey();
+        await typeTextAndSaveItUsingHotkey(n4);
 
         expect(await getTextsOfColumns()).toEqual([[n4, n3, n2, n1]]);
 
@@ -137,20 +135,19 @@ test.describe('card hotkeys', () => {
 
     test('merge node', async () => {
         const n1 = text();
-        await typeText(n1);
+        await typeTextAndSaveItUsingHotkey(n1);
 
         const n2 = text();
         await addCardUsingHotkey('up');
-        await typeText(n2);
+        await typeTextAndSaveItUsingHotkey(n2);
 
         const n3 = text();
         await addCardUsingHotkey('up');
-        await typeText(n3);
+        await typeTextAndSaveItUsingHotkey(n3);
 
         const n4 = text();
         await addCardUsingHotkey('up');
-        await typeText(n4);
-        await saveCardUsingHotkey();
+        await typeTextAndSaveItUsingHotkey(n4);
 
         expect(await getTextsOfColumns()).toEqual([[n4, n3, n2, n1]]);
 
@@ -158,7 +155,7 @@ test.describe('card hotkeys', () => {
         expect(await getTextsOfColumns()).toEqual([[n4, n3, n2, n1]]);
 
         await mergeCardUsingHotkey('down');
-        const n4_n3 = `${n4} ${n3}`;
+        const n4_n3 = `${n4}\n${n3}`;
         expect(await getTextsOfColumns()).toEqual([[n4_n3, n2, n1]]);
 
         await selectCard(0, 2);
@@ -166,26 +163,25 @@ test.describe('card hotkeys', () => {
         expect(await getTextsOfColumns()).toEqual([[n4_n3, n2, n1]]);
 
         await mergeCardUsingHotkey('up');
-        const n2_n1 = `${n2} ${n1}`;
+        const n2_n1 = `${n2}\n${n1}`;
         expect(await getTextsOfColumns()).toEqual([[n4_n3, n2_n1]]);
     });
 
     test('delete cards using hotkey', async () => {
         const n1 = text();
-        await typeText(n1);
+        await typeTextAndSaveItUsingHotkey(n1);
 
         await addCardUsingHotkey('up');
         const n2 = text();
-        await typeText(n2);
+        await typeTextAndSaveItUsingHotkey(n2);
 
         await addCardUsingHotkey('down');
         const n3 = text();
-        await typeText(n3);
+        await typeTextAndSaveItUsingHotkey(n3);
 
         await addCardUsingHotkey('right');
         const n4 = text();
-        await typeText(n4);
-        await saveCardUsingHotkey();
+        await typeTextAndSaveItUsingHotkey(n4);
 
         expect(await getTextsOfColumns()).toEqual([[n2, n3, n1], [n4]]);
 
@@ -202,31 +198,29 @@ test.describe('card hotkeys', () => {
 
     test('navigation hotkeys', async () => {
         const n1 = text();
-        await typeText(n1);
+        await typeTextAndSaveItUsingHotkey(n1);
 
         await addCardUsingHotkey('up');
         const n2 = text();
-        await typeText(n2);
+        await typeTextAndSaveItUsingHotkey(n2);
 
         await addCardUsingHotkey('up');
         const n3 = text();
-        await typeText(n3);
+        await typeTextAndSaveItUsingHotkey(n3);
 
         await addCardUsingHotkey('up');
         const n4 = text();
-        await typeText(n4);
-        await saveCardUsingHotkey();
+        await typeTextAndSaveItUsingHotkey(n4);
 
         expect(await getTextsOfColumns()).toEqual([[n4, n3, n2, n1]]);
 
         await addCardUsingHotkey('right');
         const n5 = text();
-        await typeText(n5);
+        await typeTextAndSaveItUsingHotkey(n5);
 
         await addCardUsingHotkey('up');
         const n6 = text();
-        await typeText(n6);
-        await saveCardUsingHotkey();
+        await typeTextAndSaveItUsingHotkey(n6);
 
         expect(await getTextsOfColumns()).toEqual([
             [n4, n3, n2, n1],
@@ -236,12 +230,11 @@ test.describe('card hotkeys', () => {
         await selectCard(0, 3);
         await addCardUsingHotkey('right');
         const n7 = text();
-        await typeText(n7);
+        await typeTextAndSaveItUsingHotkey(n7);
 
         await addCardUsingHotkey('down');
         const n8 = text();
-        await typeText(n8);
-        await saveCardUsingHotkey();
+        await typeTextAndSaveItUsingHotkey(n8);
         expect(await getTextsOfColumns()).toEqual([
             [n4, n3, n2, n1],
             [n6, n5, n7, n8],
@@ -318,20 +311,19 @@ test.describe('card hotkeys', () => {
 
     test('undo redo history', async () => {
         const n1 = text();
-        await typeText(n1);
+        await typeTextAndSaveItUsingHotkey(n1);
 
         await addCardUsingHotkey('up');
         const n2 = text();
-        await typeText(n2);
+        await typeTextAndSaveItUsingHotkey(n2);
 
         await addCardUsingHotkey('up');
         const n3 = text();
-        await typeText(n3);
+        await typeTextAndSaveItUsingHotkey(n3);
 
         await addCardUsingHotkey('up');
         const n4 = text();
-        await typeText(n4);
-        await saveCardUsingHotkey();
+        await typeTextAndSaveItUsingHotkey(n4);
 
         expect(await getTextsOfColumns()).toEqual([[n4, n3, n2, n1]]);
 
@@ -347,20 +339,19 @@ test.describe('card hotkeys', () => {
 
     test('search', async () => {
         const n1 = text();
-        await typeText(n1);
+        await typeTextAndSaveItUsingHotkey(n1);
 
         await addCardUsingHotkey('up');
         const n2 = text();
-        await typeText(n2);
+        await typeTextAndSaveItUsingHotkey(n2);
 
         await addCardUsingHotkey('right');
         const n3 = text();
-        await typeText(n3);
+        await typeTextAndSaveItUsingHotkey(n3);
 
         await addCardUsingHotkey('right');
         const n4 = text();
-        await typeText(n4);
-        await saveCardUsingHotkey();
+        await typeTextAndSaveItUsingHotkey(n4);
 
         expect(await getTextsOfColumns()).toEqual([[n2, n1], [n3], [n4]]);
 

@@ -35,7 +35,7 @@
     .preview-container {
         width: 100%;
         min-height: 100px;
-		font-size: 16px;
+		font-size: var(--font-text-size);
 		padding: 6px 6px 6px 12px;
 		color-scheme: light
     }

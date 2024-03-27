@@ -31,6 +31,7 @@ export const droppable = (
     function HandleDragLeave(event: DragEvent) {
         if (!(event.currentTarget instanceof HTMLElement)) return;
         event.currentTarget.removeClasses(classesList);
+        event.currentTarget.removeClass('inactive-node-hover');
     }
 
     const handleDragOver = (event: DragEvent) => {
@@ -44,6 +45,8 @@ export const droppable = (
         targetCard.removeClasses(classesList);
         if (position) {
             targetCard.addClass(dropClasses[position]);
+            if (targetCard.hasClass('inactive-node'))
+                targetCard.addClass('inactive-node-hover');
         }
     };
 
@@ -55,6 +58,7 @@ export const droppable = (
         const targetCard = event.currentTarget as HTMLElement;
         if (!targetCard.id.startsWith('n')) return;
         targetCard.removeClasses(classesList);
+        targetCard.removeClass('inactive-node-hover');
         if (!data) throw new Error(`droppedNodeId is missing`);
         if (!targetCard.id) throw new Error(`targetCard.id is missing`);
         documentStore.dispatch({

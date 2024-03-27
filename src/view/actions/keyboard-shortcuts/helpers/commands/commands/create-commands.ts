@@ -3,6 +3,7 @@ import { addNodeAndSplitAtCursor } from 'src/view/actions/keyboard-shortcuts/hel
 import { PluginCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
 import {
     isActive,
+    isActiveAndNotEditing,
     isEditing,
 } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
 
@@ -10,7 +11,7 @@ export const createCommands = () => {
     return [
         {
             name: 'add_above',
-            check: isActive,
+            check: isActiveAndNotEditing,
             callback: (view) => {
                 saveNodeAndInsertNode(view, 'up');
             },
@@ -24,7 +25,7 @@ export const createCommands = () => {
 
         {
             name: 'add_below',
-            check: isActive,
+            check: isActiveAndNotEditing,
             callback: (view) => {
                 saveNodeAndInsertNode(view, 'down');
             },
@@ -37,7 +38,7 @@ export const createCommands = () => {
         },
         {
             name: 'add_child',
-            check: isActive,
+            check: isActiveAndNotEditing,
             callback: (view) => {
                 saveNodeAndInsertNode(view, 'right');
             },

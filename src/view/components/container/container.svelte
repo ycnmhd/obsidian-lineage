@@ -30,6 +30,7 @@
         align-items: center;
         justify-content: start;
         padding-left: 100px;
+        margin-right: 50px;
         overflow-y: hidden;
         overflow-x: auto;
     }

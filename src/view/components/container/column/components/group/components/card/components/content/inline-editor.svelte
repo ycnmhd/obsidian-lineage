@@ -16,7 +16,7 @@
     .editor-container {
         width: 100%;
         min-height: 100px;
-        max-height: 80vh;
+        max-height: 65vh;
         height: fit-content;
         overflow: hidden;
         display: flex;

@@ -1,20 +1,22 @@
-.theme-dark{
+.theme-dark {
     --lineage-accent: #55b1ae;
-    --background-container: #363c4c;
-    --background-active-node: var(--color-base-00);
-    --background-active-parent: #4f5566;
-    --background-inactive-node: #2b2f3a;
+    --background-container: #373d4c;
+    --background-active-node: var(--background-primary);
+    --background-active-parent: #5b637a;
+    --background-inactive-node: var(--background-container);
 }
-.theme-light{
+.theme-light {
     --lineage-accent: #55b1ae;
     --background-container: #899cb3;
-    --background-active-node: var(--color-base-00);
+    --background-active-node: var(--background-primary);
     --background-active-parent: #cedbeb;
-    --background-inactive-node: #a1b0c5;
+    --background-inactive-node: var(--background-container);
 }
 
+/* node */
+
 .active-node,
-.active-child{
+.active-child {
     background-color: var(--background-active-node);
     color: var(--text-normal);
 }
@@ -35,9 +37,22 @@
     filter: opacity(0.8);
 }
 .inactive-node {
-    opacity: 0.2;
+    filter: opacity(0.2);
     background-color: var(--background-inactive-node);
 }
+.inactive-node:hover {
+    background-color: var(--background-active-parent);
+    filter: opacity(0.5);
+}
+
+
+
+.theme-light {
+    & .inactive-node {
+        filter: opacity(0.4);
+    }
+}
+/* group */
 .group {
     background-color: var(--background-inactive-node);
 }

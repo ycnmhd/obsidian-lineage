@@ -88,11 +88,13 @@ const viewEffectsAndActions = (
             resetSearchFuse(documentStore);
             view.saveDocument();
         }
-        if (action.type === 'DOCUMENT/DISABLE_EDIT_MODE') {
-            focusContainer(container);
-        }
-
-        if (type === 'DOCUMENT/MOVE_NODE') {
+        if (
+            action.type === 'DOCUMENT/DISABLE_EDIT_MODE' ||
+            e.changeHistory ||
+            e.content ||
+            e.creationAndDeletion ||
+            e.shape
+        ) {
             focusContainer(container);
         }
         if (

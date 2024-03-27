@@ -34,13 +34,13 @@ export const mergeNode = (
     if (action.payload.direction === 'up') {
         newContent = (
             adjacentNodeContent.content +
-            ' ' +
+            '\n' +
             mergedNodeContent.content
         ).trim();
     } else if (action.payload.direction === 'down') {
         newContent = (
             mergedNodeContent.content +
-            ' ' +
+            '\n' +
             adjacentNodeContent.content
         ).trim();
     }

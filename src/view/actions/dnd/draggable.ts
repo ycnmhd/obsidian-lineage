@@ -28,7 +28,7 @@ export const draggable = (node: HTMLElement, data: DraggableData) => {
         if (!event.dataTransfer) return;
         const target = event.currentTarget as HTMLElement;
         if (
-            event.clientX - target.getBoundingClientRect().x <= 12 ||
+            event.clientX - target.getBoundingClientRect().x <= 5 ||
             target.dataset['test'] === 'true'
         ) {
             event.dataTransfer.setData('text/plain', data.id);
