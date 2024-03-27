@@ -1,19 +1,19 @@
 import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/save-node-and-insert-node';
 import { addNodeAndSplitAtCursor } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/add-node-and-split-at-cursor';
-import Lineage from 'src/main';
 import { PluginCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
 import {
     isActive,
+    isActiveAndNotEditing,
     isEditing,
 } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
 
-export const createCommands = (plugin: Lineage) => {
+export const createCommands = () => {
     return [
         {
             name: 'add_above',
-            check: isActive,
-            callback: () => {
-                saveNodeAndInsertNode(plugin, 'up');
+            check: isActiveAndNotEditing,
+            callback: (view) => {
+                saveNodeAndInsertNode(view, 'up');
             },
             hotkeys: [
                 {
@@ -25,9 +25,9 @@ export const createCommands = (plugin: Lineage) => {
 
         {
             name: 'add_below',
-            check: isActive,
-            callback: () => {
-                saveNodeAndInsertNode(plugin, 'down');
+            check: isActiveAndNotEditing,
+            callback: (view) => {
+                saveNodeAndInsertNode(view, 'down');
             },
             hotkeys: [
                 {
@@ -38,9 +38,9 @@ export const createCommands = (plugin: Lineage) => {
         },
         {
             name: 'add_child',
-            check: isActive,
-            callback: () => {
-                saveNodeAndInsertNode(plugin, 'right');
+            check: isActiveAndNotEditing,
+            callback: (view) => {
+                saveNodeAndInsertNode(view, 'right');
             },
             hotkeys: [
                 {
@@ -52,27 +52,27 @@ export const createCommands = (plugin: Lineage) => {
         {
             name: 'add_above_and_split',
             check: isActive,
-            callback: (store) => {
-                if (isEditing(store)) addNodeAndSplitAtCursor(plugin, 'up');
-                else saveNodeAndInsertNode(plugin, 'up');
+            callback: (view) => {
+                if (isEditing(view)) addNodeAndSplitAtCursor(view, 'up');
+                else saveNodeAndInsertNode(view, 'up');
             },
             hotkeys: [{ key: 'K', modifiers: ['Ctrl'] }],
         },
         {
             name: 'add_below_and_split',
             check: isActive,
-            callback: (store) => {
-                if (isEditing(store)) addNodeAndSplitAtCursor(plugin, 'down');
-                else saveNodeAndInsertNode(plugin, 'down');
+            callback: (view) => {
+                if (isEditing(view)) addNodeAndSplitAtCursor(view, 'down');
+                else saveNodeAndInsertNode(view, 'down');
             },
             hotkeys: [{ key: 'J', modifiers: ['Ctrl'] }],
         },
         {
             name: 'add_child_and_split',
             check: isActive,
-            callback: (store) => {
-                if (isEditing(store)) addNodeAndSplitAtCursor(plugin, 'right');
-                else saveNodeAndInsertNode(plugin, 'right');
+            callback: (view) => {
+                if (isEditing(view)) addNodeAndSplitAtCursor(view, 'right');
+                else saveNodeAndInsertNode(view, 'right');
             },
             hotkeys: [{ key: 'L', modifiers: ['Ctrl'] }],
         },

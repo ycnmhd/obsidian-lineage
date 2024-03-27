@@ -4,68 +4,73 @@
         HistoryIcon,
         Keyboard,
         Maximize,
-        Moon,
         RedoIcon,
         RotateCcw,
-        Sun,
         UndoIcon,
         ZoomIn,
         ZoomOut
     } from 'lucide-svelte';
-    import { getPlugin, getStore, getView } from 'src/view/components/container/context';
+    import { getPlugin, getView } from 'src/view/components/container/context';
     import { LineageView } from 'src/view/view';
     import { lang } from 'src/lang/lang';
-    import { DocumentHistory } from 'src/stores/view/view-state-type';
+    import { DocumentHistory } from 'src/stores/document/document-state-type';
     import { maxZoomLevel, minZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
     import { setFileViewType } from 'src/obsidian/events/workspace/helpers/set-file-view-type';
+    import { Notice } from 'obsidian';
 
     const view = getView();
-    const store = getStore();
+    const viewStore = view.viewStore;
+    const documentStore = view.documentStore;
     export let documentHistory: DocumentHistory;
     export let path: string | null;
 
     const handleNextClick = () => {
-        if (path)
-            store.dispatch({
+        if (path){
+            if (viewStore.getValue().document.editing.activeNodeId)
+                new Notice('cannot apply snapshot while editing');
+            else
+            documentStore.dispatch({
                 type: 'HISTORY/APPLY_NEXT_SNAPSHOT',
             });
+        }
     };
 
     const handlePreviousClick = () => {
-        if (path)
-            store.dispatch({
-                type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
-            });
+        if (path) {
+            if (viewStore.getValue().document.editing.activeNodeId)
+                new Notice('cannot apply snapshot while editing');
+            else
+                documentStore.dispatch({
+                    type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
+                });
+        }
     };
     const plugin = getPlugin();
-    const settings = plugin.settings;
-    const toggleTheme = () => {
-        settings.dispatch({ type: 'TOGGLE_THEME' });
-    };
+
     const toggleHelp = () => {
-        store.dispatch({ type: 'UI/TOGGLE_HELP_SIDEBAR' });
+        viewStore.dispatch({ type: 'UI/TOGGLE_HELP_SIDEBAR' });
     };
 
     const openAsMarkdown = () => {
         const file =
             plugin.app.workspace.getActiveViewOfType(LineageView)?.file;
-        if (file) setFileViewType(plugin, file, view.leaf,"markdown");
+        if (file) setFileViewType(plugin, file, view.leaf, 'markdown');
     };
     const zoomIn = () => {
-        store.dispatch({
+        viewStore.dispatch({
             type: 'UI/CHANGE_ZOOM_LEVEL',
             payload: { direction: 'in' },
         });
     };
     const zoomOut = () => {
-        store.dispatch({
+        viewStore.dispatch({
             type: 'UI/CHANGE_ZOOM_LEVEL',
             payload: { direction: 'out' },
         });
     };
 
     const restoreZoom = () => {
-        store.dispatch({
+        viewStore.dispatch({
             type: 'UI/CHANGE_ZOOM_LEVEL',
             payload: { value: 1 },
         });
@@ -81,7 +86,7 @@
             const biggest = scrolls[scrolls.length - 1];
             // eslint-disable-next-line no-undef
             const scale = window.innerHeight / biggest;
-            store.dispatch({
+            viewStore.dispatch({
                 type: 'UI/CHANGE_ZOOM_LEVEL',
                 payload: { value: scale },
             });
@@ -89,25 +94,33 @@
     };
 </script>
 
-<div class="canvas-controls">
-    <div class="canvas-control-group">
+<div class="controls-container">
+    <div class="lineage-view-control-group">
         <button
             aria-label={lang.open_in_editor}
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             on:click={openAsMarkdown}
         >
             <File class="svg-icon" />
         </button>
+        <button
+            aria-label="Keyboard shortcuts"
+            class="control-item"
+            data-tooltip-position="left"
+            on:click={toggleHelp}
+        >
+            <Keyboard class="svg-icon" />
+        </button>
     </div>
-    <div class="canvas-control-group">
+    <div class="lineage-view-control-group">
         <button
             aria-label="History"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             disabled={documentHistory.items.length === 0}
             on:click={() => {
-                store.dispatch({ type: 'UI/TOGGLE_HISTORY_SIDEBAR' });
+                viewStore.dispatch({ type: 'UI/TOGGLE_HISTORY_SIDEBAR' });
             }}
         >
             <HistoryIcon class="svg-icon" />
@@ -115,7 +128,7 @@
 
         <button
             aria-label="Undo"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             disabled={!documentHistory || !documentHistory.state.canGoBack}
             on:click={handlePreviousClick}
@@ -124,7 +137,7 @@
         </button>
         <button
             aria-label="Redo"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             disabled={!documentHistory || !documentHistory.state.canGoForward}
             on:click={handleNextClick}
@@ -132,27 +145,27 @@
             <RedoIcon class="svg-icon" />
         </button>
     </div>
-    <div class="canvas-control-group">
+    <div class="lineage-view-control-group">
         <button
             aria-label="zoom in"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
-            disabled={$store.ui.zoomLevel === maxZoomLevel}
+            disabled={$viewStore.ui.zoomLevel === maxZoomLevel}
             on:click={zoomIn}
         >
             <ZoomIn class="svg-icon" />
         </button>
         <button
             aria-label="Restore zoom level"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
             on:click={restoreZoom}
         >
             <RotateCcw class="svg-icon" />
         </button>
         <button
-            aria-label="Restore zoom level"
-            class="canvas-control-item"
+            aria-label="Zoom to fit"
+            class="control-item"
             data-tooltip-position="left"
             on:click={fitToScale}
         >
@@ -160,34 +173,12 @@
         </button>
         <button
             aria-label="Zoom out"
-            class="canvas-control-item"
+            class="control-item"
             data-tooltip-position="left"
-            disabled={$store.ui.zoomLevel === minZoomLevel}
+            disabled={$viewStore.ui.zoomLevel === minZoomLevel}
             on:click={zoomOut}
         >
             <ZoomOut class="svg-icon" />
-        </button>
-    </div>
-    <div class="canvas-control-group">
-        <button
-            aria-label="Theme"
-            class="canvas-control-item"
-            data-tooltip-position="left"
-            on:click={toggleTheme}
-        >
-            {#if $settings.ui.theme === 'dark'}
-                <Sun class="svg-icon" />
-            {:else}
-                <Moon class="svg-icon" />
-            {/if}
-        </button>
-        <button
-            aria-label="Keyboard shortcuts"
-            class="canvas-control-item"
-            data-tooltip-position="left"
-            on:click={toggleHelp}
-        >
-            <Keyboard class="svg-icon" />
         </button>
     </div>
 </div>
@@ -195,16 +186,18 @@
 <style>
     button:disabled {
         cursor: not-allowed;
+        color: var(--color-base-40);
     }
-    .canvas-controls {
+    .controls-container {
         right: var(--size-4-2);
         top: var(--size-4-2);
         gap: var(--size-4-2);
         display: flex;
         flex-direction: column;
         position: absolute;
+        z-index: 2;
     }
-    .canvas-control-group {
+    .lineage-view-control-group {
         border-radius: var(--radius-s);
         background-color: var(--background-primary);
         border: 1px solid var(--background-modifier-border);
@@ -213,7 +206,7 @@
         flex-direction: column;
         overflow: hidden;
     }
-    .canvas-control-item {
+    .control-item {
         border-radius: 0;
         box-shadow: none;
         height: auto;
@@ -230,7 +223,7 @@
         --icon-stroke: var(--icon-s-stroke-width);
         cursor: pointer;
     }
-    .canvas-control-item:last-child {
+    .control-item:last-child {
         border-bottom: none;
     }
 </style>

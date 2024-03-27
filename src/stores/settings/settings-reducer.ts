@@ -36,8 +36,6 @@ const updateState = (store: Settings, action: SettingsActions) => {
     } else if (action.type === 'HISTORY/UPDATE_DOCUMENT_PATH') {
         delete store.documents[action.payload.oldPath];
         store.documents[action.payload.newPath] = true;
-    } else if (action.type === 'TOGGLE_THEME') {
-        store.ui.theme = store.ui.theme === 'light' ? 'dark' : 'light';
     } else if (action.type === 'SET_CUSTOM_HOTKEYS') {
         store.hotkeys.customHotkeys = action.payload.customHotkeys;
     }

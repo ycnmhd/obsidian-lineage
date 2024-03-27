@@ -1,14 +1,20 @@
-import { ViewStore } from 'src/view/view';
+import { LineageView } from 'src/view/view';
 
-export const isEditing = (store: ViewStore) => {
-    return !!store.getValue().ui.state.editing.activeNodeId;
+export const isEditing = (view: LineageView) => {
+    return !!view.viewStore.getValue().document.editing.activeNodeId;
 };
-export const isActive = (store: ViewStore) => {
-    return !!store.getValue().document.state.activeNode;
+export const isActive = (view: LineageView) => {
+    return !!view.viewStore.getValue().document.activeNode;
 };
-export const isActiveAndNotEditing = (store: ViewStore) => {
-    return isActive(store) && !isEditing(store);
+export const isActiveAndNotEditing = (view: LineageView) => {
+    return isActive(view) && !isEditing(view);
 };
-export const isActiveAndHasFile = (store: ViewStore) => {
-    return isActive(store) && !!store.getValue().file.path;
+
+export const isActiveAndEditing = (view: LineageView) => {
+    return isActive(view) && isEditing(view);
+};
+export const isActiveAndNotEditingAndHasFile = (view: LineageView) => {
+    return (
+        isActiveAndNotEditing(view) && !!view.documentStore.getValue().file.path
+    );
 };

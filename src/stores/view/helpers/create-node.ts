@@ -1,5 +1,9 @@
 import { id } from 'src/helpers/id';
-import { Column, NodeGroup, NodeId } from 'src/stores/view/view-state-type';
+import {
+    Column,
+    NodeGroup,
+    NodeId,
+} from 'src/stores/document/document-state-type';
 
 export const createNode = (__nodeId__?: string): NodeId =>
     __nodeId__ || id.node();

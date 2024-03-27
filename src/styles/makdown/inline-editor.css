@@ -1,0 +1,20 @@
+
+.lineage-inline-editor {
+    width: 100%;
+    height: auto;
+    min-height: 100px;
+    max-height: 80vh;
+    & .view-header,
+    & .inline-title,
+    & .embedded-backlinks,
+    & .cm-gutters {
+        display: none;
+    }
+    & .cm-editor .cm-scroller {
+        padding: 6px !important;
+        padding-left: 12px !important;
+    }
+    & .cm-contentContainer div {
+        padding-bottom: 0 !important;
+    }
+}

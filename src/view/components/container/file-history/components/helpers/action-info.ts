@@ -6,7 +6,7 @@ import {
     FileUp,
     Merge,
 } from 'lucide-svelte';
-import { UndoableAction } from 'src/stores/view/view-store-actions';
+import { UndoableAction } from 'src/stores/document/document-store-actions';
 
 type Key = UndoableAction['type'];
 export const actionInfo: Partial<

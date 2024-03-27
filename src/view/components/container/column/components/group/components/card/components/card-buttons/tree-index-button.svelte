@@ -1,13 +1,13 @@
 <script lang="ts">
-    import { getPlugin, getStore, getView } from '../../../../../../../context';
+    import { getPlugin, getView } from '../../../../../../../context';
     import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
     import { parseDelimiter } from 'src/stores/view/helpers/json-to-md/markdown-to-json/helpers/delimiter';
     import { get } from 'svelte/store';
     import { MarkdownView, TFile } from 'obsidian';
 
     const plugin = getPlugin();
-    const store = getStore();
     const view = getView();
+    const viewStore = view.viewStore;
     export let nodeId: string;
     export let activeStatus: ActiveStatus | null;
 
@@ -26,9 +26,9 @@
         });
     };
     // eslint-disable-next-line no-undef
-    const openFile = async (e: MouseEvent) => {
+    const openFile = async () => {
         if (!view.file) return;
-        const treeIndex = get(store).ui.treeIndex[nodeId];
+        const treeIndex = get(viewStore).document.treeIndex[nodeId];
         const lines = view.data.split('\n');
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
@@ -51,10 +51,11 @@
 </script>
 
 <div
+    aria-label="Jump to section"
     class={'tree-index ' + (activeStatus ? classes[activeStatus] : '')}
     on:click={openFile}
 >
-    {$store.ui.treeIndex[nodeId]}
+    {$viewStore.document.treeIndex[nodeId]}
 </div>
 
 <style>

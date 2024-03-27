@@ -1,18 +1,15 @@
 <script lang="ts">
-	import { getPlugin, getStore } from 'src/view/components/container/context';
+	import { getPlugin, getView } from 'src/view/components/container/context';
 	import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
-	import {
-		markdownPreviewAction
-	} from 'src/view/components/container/column/components/group/components/card/components/content/actions/markdown-preview-action';
+	import { markdownPreviewAction } from 'src/view/actions/markdown-preview-action';
 
 	export let active: ActiveStatus | null;
 
     export let content: string;
-    // eslint-disable-next-line no-undef
-
 
 	const plugin = getPlugin();
-	const store = getStore();
+	const view = getView()
+	const store = view.documentStore
     // eslint-disable-next-line no-undef
     const onClick = (e: MouseEvent) => {
         // eslint-disable-next-line no-undef
@@ -26,35 +23,20 @@
             }
         }
     };
-    const classes: Record<ActiveStatus, string> = {
-        [ActiveStatus.node]: 'active',
-        [ActiveStatus.parent]: 'parent',
-        [ActiveStatus.sibling]: 'parent',
-        [ActiveStatus.child]: 'active',
-    };
 </script>
 
 <div
-    class={' content markdown-preview-view ' + (active?classes[active]:'')}
-    data-active={active||"inactive"}
+    class={'preview-container markdown-preview-view'}
     on:click={onClick}
 	use:markdownPreviewAction={content}
 ></div>
 
 <style>
-    .content {
+    .preview-container {
         width: 100%;
         min-height: 100px;
-        padding: 6px;
-        font-size: 16px;
-		padding-left: 12px
+		font-size: var(--font-text-size);
+		padding: 6px 6px 6px 12px;
+		color-scheme: light
     }
-    .active {
-        color: var(--color-active-node);
-    }
-    .parent {
-        color: var(--color-active-child);
-    }
-
-
 </style>

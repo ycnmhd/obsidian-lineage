@@ -1,28 +1,44 @@
-import Lineage from 'src/main';
-import { Direction } from 'src/stores/view/view-store-actions';
+import { Direction } from 'src/stores/document/document-store-actions';
 
 import { saveNodeAndInsertNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/save-node-and-insert-node';
-import { getActiveLineageView } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-active-lineage-view';
-import { getTextAreaOfView } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-text-area-of-view';
+import { LineageView } from 'src/view/view';
+import { EditorPosition } from 'obsidian';
+
+const flattenEditorPosition = (value: string, cursor: EditorPosition) => {
+    const lines = value.split('\n');
+    let total = 0;
+    for (let i = 0; i < lines.length; i++) {
+        if (cursor.line === i) {
+            return total + cursor.ch;
+        } else {
+            total += lines[i].length;
+        }
+    }
+    throw new Error(`invalid cursor line: ${cursor.line} ch: ${cursor.ch}`);
+};
 
 export const addNodeAndSplitAtCursor = (
-    plugin: Lineage,
+    view: LineageView,
     direction: Direction,
 ) => {
     let text: string = '';
-    const view = getActiveLineageView(plugin);
-    const textArea = getTextAreaOfView(view);
-    const cursor = textArea.selectionEnd;
-    const value = textArea.value;
+    let firstHalf = '',
+        secondHalf = '';
+
+    const value = view.inlineEditor.getContent();
+    const cursor = flattenEditorPosition(value, view.inlineEditor.getCursor());
+
     if (cursor < value.length) {
-        textArea.value = value.substring(0, cursor);
-        text = value.substring(cursor);
-    }
-    if (direction === 'up') {
-        const temp = text;
-        text = textArea.value;
-        textArea.value = temp;
+        firstHalf = value.substring(0, cursor);
+        secondHalf = value.substring(cursor);
+        if (direction === 'up') {
+            view.inlineEditor.setContent(secondHalf);
+            text = firstHalf;
+        } else {
+            view.inlineEditor.setContent(firstHalf);
+            text = secondHalf;
+        }
     }
 
-    saveNodeAndInsertNode(plugin, direction, text);
+    saveNodeAndInsertNode(view, direction, text);
 };

@@ -1,4 +1,4 @@
-import { ViewStore } from 'src/view/view';
+import { LineageView } from 'src/view/view';
 import { Hotkey } from 'obsidian';
 
 export const hotkeysLang = {
@@ -32,8 +32,8 @@ export const hotkeysLang = {
     go_to_end_of_column: 'Go to end of column',
 };
 export type PluginCommand = {
-    check: (store: ViewStore) => boolean;
-    callback: (store: ViewStore, event: KeyboardEvent) => void;
+    check: (view: LineageView) => boolean;
+    callback: (view: LineageView, event: KeyboardEvent) => void;
     hotkeys: Hotkey[];
     name: CommandName;
 };

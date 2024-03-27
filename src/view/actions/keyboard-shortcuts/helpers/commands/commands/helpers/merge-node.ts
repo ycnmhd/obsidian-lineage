@@ -1,13 +1,14 @@
-import { VerticalDirection } from 'src/stores/view/view-store-actions';
+import { VerticalDirection } from 'src/stores/document/document-store-actions';
 import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/save-node-content';
-import { getActiveLineageView } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-active-lineage-view';
-import Lineage from 'src/main';
+import { LineageView } from 'src/view/view';
 
-export const mergeNode = (plugin: Lineage, direction: VerticalDirection) => {
-    const view = getActiveLineageView(plugin);
+export const mergeNode = (view: LineageView, direction: VerticalDirection) => {
     saveNodeContent(view);
-    view.store.dispatch({
+    view.documentStore.dispatch({
         type: 'DOCUMENT/MERGE_NODE',
-        payload: { direction },
+        payload: {
+            direction,
+            activeNodeId: view.viewStore.getValue().document.activeNode,
+        },
     });
 };

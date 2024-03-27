@@ -1,29 +1,31 @@
 <script lang="ts">
-    import { getStore } from 'src/view/components/container/context';
     import { ChevronRight } from 'lucide-svelte';
+    import { getView } from 'src/view/components/container/context';
 
-    const store = getStore();
+    const view = getView();
+    const viewStore = view.viewStore;
+    const documentStore = view.documentStore
 </script>
 
 <div class="breadcrumbs-container">
     <div class="breadcrumbs">
-        {#each $store.ui.state.activeBranch.sortedParentNodes as parent, i}
+        {#each $viewStore.document.activeBranch.sortedParentNodes as parent, i}
             {#if i > 0}
                 <ChevronRight class="svg-icon chevron" size="12"  />
             {/if}
             <button
-                aria-label={$store.document.content[parent]?.content || 'Empty parent'}
+                aria-label={$documentStore.document.content[parent]?.content || 'Empty parent'}
                 class="breadcrumbs-item"
                 data-tooltip-position="up"
                 on:click={() => {
-                    store.dispatch({
+                    viewStore.dispatch({
                         type: 'DOCUMENT/SET_ACTIVE_NODE',
                         payload: { id: parent },
                     });
                 }}
             >
                 <span class="breadcrumbs-item-text">
-                    {$store.document.content[parent]?.content || '(empty)'}
+                    {$documentStore.document.content[parent]?.content || '(empty)'}
                 </span>
             </button>
         {/each}

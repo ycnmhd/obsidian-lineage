@@ -27,7 +27,8 @@
       "allowSyntheticDefaultImports": true
     },
 	"include": [
-		"src/**/*.ts"
+		"src/**/*.ts",
+		"e2e/**/*.ts"
 	],
 	"exclude": ["temp","node_modules"]
 }

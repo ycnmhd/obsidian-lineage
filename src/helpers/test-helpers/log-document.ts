@@ -1,8 +1,8 @@
 import {
     Column,
     Content,
-    DocumentState,
-} from 'src/stores/view/view-state-type';
+    LineageDocument,
+} from 'src/stores/document/document-state-type';
 
 import { __stringifySets } from 'src/helpers/test-helpers/stringify-sets';
 import { generateContent } from 'src/helpers/test-helpers/generate-content';
@@ -37,14 +37,9 @@ const createIDsMap = (content: Content, columns: Column[]) => {
     return IDsMap;
 };
 
-const replaceIDs = (
-    IDsMap: Map<string, string>,
-    columns: Column[],
-    state: Record<string, unknown>,
-) => {
+const replaceIDs = (IDsMap: Map<string, string>, columns: Column[]) => {
     let inputString = __stringifySets({
         columns: columns,
-        state: state,
     });
     for (const [id, oldId] of IDsMap.entries()) {
         inputString = inputString.replace(
@@ -71,7 +66,7 @@ const insertVariableName = (input: string, name: string) => {
     return `const ${name} = ${input}`;
 };
 export const __logDocument__ = (
-    input: Partial<DocumentState> & { columns: Column[] },
+    input: Partial<LineageDocument> & { columns: Column[] },
     name: string,
     variables = true,
 ) => {
@@ -79,7 +74,7 @@ export const __logDocument__ = (
 
     const IDsMap = createIDsMap(content, input.columns);
 
-    let output = replaceIDs(IDsMap, input.columns, input.state || {});
+    let output = replaceIDs(IDsMap, input.columns);
 
     if (input.content) {
         const content = refactorContent(IDsMap, input.content);
@@ -91,6 +86,7 @@ export const __logDocument__ = (
         output = variableDeclarations + output;
     }
 
+    // eslint-disable-next-line no-console
     console.log(output);
     return output;
 };

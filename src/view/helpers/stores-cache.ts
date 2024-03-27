@@ -1,4 +1,4 @@
-import { ViewStore } from 'src/view/view';
+import { DocumentStore } from 'src/view/view';
 
 export const deletePath = (oldPath: string) => {
     if (oldPath in stores) {
@@ -23,5 +23,5 @@ export const updatePath = (oldPath: string, newPath: string) => {
     }
 };
 export const stores: {
-    [path: string]: ViewStore;
+    [path: string]: DocumentStore;
 } = {};

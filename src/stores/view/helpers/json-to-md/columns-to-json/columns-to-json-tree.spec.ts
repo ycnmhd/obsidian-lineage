@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Column } from 'src/stores/view/view-state-type';
+import { Column } from 'src/stores/document/document-state-type';
 import {
     columnsToJsonTree,
     TreeNode,

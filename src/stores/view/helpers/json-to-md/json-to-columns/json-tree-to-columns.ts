@@ -5,7 +5,7 @@ import {
     Content,
     NodeGroup,
     NodeId,
-} from 'src/stores/view/view-state-type';
+} from 'src/stores/document/document-state-type';
 import { id } from 'src/helpers/id';
 
 const groupsCache: Record<string, NodeGroup | undefined> = {};

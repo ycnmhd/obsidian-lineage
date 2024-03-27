@@ -1,4 +1,4 @@
-import { Columns } from 'src/stores/view/view-state-type';
+import { Columns } from 'src/stores/document/document-state-type';
 
 export const findGroupByNodeId = (columns: Columns, nodeId: string) => {
     for (const column of columns) {
@@ -14,7 +14,7 @@ export const findGroupByParentId = (columns: Columns, parentId: string) => {
     for (const column of columns) {
         for (const group of column.groups) {
             if (group.parentId === parentId) {
-                return group;
+                return { group, column };
             }
         }
     }

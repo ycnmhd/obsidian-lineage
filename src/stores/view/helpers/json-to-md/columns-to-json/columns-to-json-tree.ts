@@ -1,4 +1,4 @@
-import { Columns, Content } from 'src/stores/view/view-state-type';
+import { Columns, Content } from 'src/stores/document/document-state-type';
 
 const createTreeNode = (content = ''): TreeNode => {
     return {

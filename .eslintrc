@@ -31,17 +31,11 @@
         "plugin:svelte/recommended"
     ],
     "rules": {
-        "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": [
-            "error",
-            {
-                "args": "none"
-            }
-        ],
         "svelte/valid-compile": ["error", { "ignoreWarnings": true }],
         "@typescript-eslint/ban-ts-comment": "off",
         "no-prototype-builtins": "off",
         "@typescript-eslint/no-empty-function": "off",
-        "no-console": "error"
+        "no-console": "error",
+        "@typescript-eslint/no-unused-vars": ["error"]
     }
 }

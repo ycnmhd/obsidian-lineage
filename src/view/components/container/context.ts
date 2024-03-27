@@ -1,10 +1,6 @@
 import { getContext } from 'svelte';
-import { LineageView, ViewStore } from 'src/view/view';
+import { LineageView } from 'src/view/view';
 import Lineage from 'src/main';
-
-export const getStore = () => {
-    return getContext('store') as ViewStore;
-};
 
 export const getPlugin = () => {
     return getContext('plugin') as Lineage;

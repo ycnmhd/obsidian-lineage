@@ -1,15 +1,14 @@
 import { mergeNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/merge-node';
 import { PluginCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
-import Lineage from 'src/main';
 import { isActive } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
 
-export const mergeCommands = (plugin: Lineage) => {
+export const mergeCommands = () => {
     return [
         {
             name: 'merge_with_node_above',
             check: isActive,
-            callback: () => {
-                mergeNode(plugin, 'up');
+            callback: (view) => {
+                mergeNode(view, 'up');
             },
             hotkeys: [
                 { key: 'K', modifiers: ['Ctrl', 'Shift'] },
@@ -19,8 +18,8 @@ export const mergeCommands = (plugin: Lineage) => {
         {
             name: 'merge_with_node_below',
             check: isActive,
-            callback: () => {
-                mergeNode(plugin, 'down');
+            callback: (view) => {
+                mergeNode(view, 'down');
             },
             hotkeys: [
                 { key: 'J', modifiers: ['Ctrl', 'Shift'] },

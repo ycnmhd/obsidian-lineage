@@ -1,0 +1,14 @@
+.lineage__drop-node-above {
+    box-shadow: inset 2px 51px 19px -28px var(--lineage-accent);
+}
+.lineage__drop-node-below {
+    box-shadow: inset 2px -51px 19px -28px var(--lineage-accent);
+}
+.lineage__drop-node-under {
+    box-shadow: inset -51px 2px 19px -28px var(--lineage-accent);
+}
+
+.inactive-node-hover {
+    filter: opacity(0.8);
+    background-color: var(--background-active-parent);
+}

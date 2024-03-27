@@ -1,0 +1,68 @@
+.theme-dark {
+    --lineage-accent: #55b1ae;
+    --background-container: #373d4c;
+    --background-active-node: var(--background-primary);
+    --background-active-parent: #5b637a;
+    --background-inactive-node: var(--background-container);
+}
+.theme-light {
+    --lineage-accent: #55b1ae;
+    --background-container: #899cb3;
+    --background-active-node: var(--background-primary);
+    --background-active-parent: #cedbeb;
+    --background-inactive-node: var(--background-container);
+}
+
+/* node */
+
+.active-node,
+.active-child {
+    background-color: var(--background-active-node);
+    color: var(--text-normal);
+}
+
+.active-node {
+    border-left: 5px var(--lineage-accent) solid;
+}
+.active-child:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.active-parent {
+    background-color: var(--background-active-parent);
+    filter: opacity(0.8);
+}
+.active-sibling {
+    background-color: var(--background-active-parent);
+    filter: opacity(0.8);
+}
+.inactive-node {
+    filter: opacity(0.2);
+    background-color: var(--background-inactive-node);
+}
+.inactive-node:hover {
+    background-color: var(--background-active-parent);
+    filter: opacity(0.5);
+}
+
+
+
+.theme-light {
+    & .inactive-node {
+        filter: opacity(0.4);
+    }
+}
+/* group */
+.group {
+    background-color: var(--background-inactive-node);
+}
+
+.group-has-active-node {
+    background-color: var(--background-active-parent);
+}
+.group-has-active-parent {
+    background-color: var(--background-active-node);
+}
+
+
+

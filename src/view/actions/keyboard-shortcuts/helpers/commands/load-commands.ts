@@ -8,8 +8,9 @@ import { moveCommands } from 'src/view/actions/keyboard-shortcuts/helpers/comman
 import { mergeCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/merge-commands';
 import {
     isActive,
-    isActiveAndHasFile,
+    isActiveAndNotEditing,
 } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
+import { historyCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/history-commands';
 
 export const pluginCommands: {
     current: PluginCommand[] | null;
@@ -20,51 +21,32 @@ export const pluginCommands: {
 export const loadCommands = (plugin: Lineage) => {
     pluginCommands.current = [
         ...navigateCommands(),
-        ...editCommands(plugin),
-        ...createCommands(plugin),
-        ...moveCommands(plugin),
-        ...mergeCommands(plugin),
+        ...editCommands(),
+        ...createCommands(),
+        ...moveCommands(),
+        ...mergeCommands(),
+        ...historyCommands(),
         {
             name: 'delete_card',
-            check: isActive,
-            callback: (store) => {
-                store.dispatch({ type: 'DOCUMENT/DELETE_NODE' });
+            check: isActiveAndNotEditing,
+            callback: (view) => {
+                view.documentStore.dispatch({
+                    type: 'DOCUMENT/DELETE_NODE',
+                    payload: {
+                        activeNodeId:
+                            view.viewStore.getValue().document.activeNode,
+                    },
+                });
             },
             hotkeys: [{ key: 'Backspace', modifiers: ['Ctrl'] }],
         },
-
-        {
-            name: 'undo_change',
-            check: isActiveAndHasFile,
-            callback: (store) => {
-                const path = store.getValue().file.path;
-                if (path)
-                    store.dispatch({
-                        type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
-                    });
-            },
-            hotkeys: [{ key: 'Z', modifiers: ['Ctrl', 'Shift'] }],
-        },
-        {
-            name: 'redo_change',
-            check: isActiveAndHasFile,
-            callback: (store) => {
-                const path = store.getValue().file.path;
-                if (path)
-                    store.dispatch({
-                        type: 'HISTORY/APPLY_NEXT_SNAPSHOT',
-                    });
-            },
-            hotkeys: [{ key: 'Y', modifiers: ['Ctrl', 'Shift'] }],
-        },
-
         {
             name: 'toggle_search_input',
             check: isActive,
-            callback: (store, e) => {
+            callback: (view, e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                store.dispatch({ type: 'SEARCH/TOGGLE_INPUT' });
+                view.viewStore.dispatch({ type: 'SEARCH/TOGGLE_INPUT' });
             },
             hotkeys: [{ key: '/', modifiers: [] }],
         },

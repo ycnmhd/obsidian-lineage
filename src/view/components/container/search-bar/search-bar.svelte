@@ -1,16 +1,17 @@
 <script lang="ts">
     import { Search } from 'lucide-svelte';
-    import { getStore } from 'src/view/components/container/context';
+    import { getView } from 'src/view/components/container/context';
 
-    const store = getStore();
+    const view = getView();
+    const viewStore = view.viewStore;
     const onInput = (
         // eslint-disable-next-line no-undef
         e: Event & { currentTarget: EventTarget & HTMLInputElement },
     ) => {
-        store.dispatch({
+        viewStore.dispatch({
             type: 'SEARCH/SET_QUERY',
             payload: {
-                query: (e.currentTarget).value,
+                query: e.currentTarget.value,
             },
         });
     };
@@ -18,34 +19,35 @@
 
 <div class="search-container">
     <button
-        aria-label={'Search'}
+        aria-label={'Toggle search input'}
         class={'search-toggle ' +
-            ($store.search.showInput ? 'search-toggle-active' : '')}
+            ($viewStore.search.showInput ? 'search-toggle-active' : '')}
         data-tooltip-position="bottom"
         on:click={() => {
-            store.dispatch({ type: 'SEARCH/TOGGLE_INPUT' });
+            viewStore.dispatch({ type: 'SEARCH/TOGGLE_INPUT' });
         }}
     >
         <Search class="svg-icon" size="12" />
     </button>
-    {#if $store.search.showInput}
+    {#if $viewStore.search.showInput}
         <div class="">
             <input
-                value={$store.search.query}
+                value={$viewStore.search.query}
                 class="search-input search-input-element"
                 enterkeyhint="search"
-                placeholder={'Filter'}
+                placeholder={'search'}
                 spellcheck="false"
                 type="search"
                 autofocus={true}
                 on:input={onInput}
+                aria-label="Search document"
             />
             <div
-                style={$store.search.query ? '' : 'display: none'}
+                style={$viewStore.search.query ? '' : 'display: none'}
                 aria-label={'Clear'}
                 class="search-input-clear-button"
                 on:click={() => {
-                    store.dispatch({
+                    viewStore.dispatch({
                         type: 'SEARCH/SET_QUERY',
                         payload: {
                             query: '',

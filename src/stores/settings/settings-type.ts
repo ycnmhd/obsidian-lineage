@@ -10,9 +10,6 @@ export type CustomHotkeys = {
 };
 export type Settings = {
     documents: Record<string, true>;
-    ui: {
-        theme: 'dark' | 'light';
-    };
     hotkeys: {
         customHotkeys: CustomHotkeys;
     };

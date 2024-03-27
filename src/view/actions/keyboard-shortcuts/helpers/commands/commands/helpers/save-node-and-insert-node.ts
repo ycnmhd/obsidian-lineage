@@ -1,24 +1,23 @@
-import { Direction } from 'src/stores/view/view-store-actions';
+import { Direction } from 'src/stores/document/document-store-actions';
 import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/save-node-content';
-import Lineage from 'src/main';
-import { getActiveLineageView } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-active-lineage-view';
 
 import { isEditing } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
+import { LineageView } from 'src/view/view';
 
 export const saveNodeAndInsertNode = (
-    plugin: Lineage,
+    view: LineageView,
     direction: Direction,
     content = '',
 ) => {
-    const view = getActiveLineageView(plugin);
-    if (isEditing(view.store)) {
+    if (isEditing(view)) {
         saveNodeContent(view);
     }
-    view.store.dispatch({
+    view.documentStore.dispatch({
         type: 'DOCUMENT/INSERT_NODE',
         payload: {
             position: direction,
             content,
+            activeNodeId: view.viewStore.getValue().document.activeNode,
         },
     });
 };

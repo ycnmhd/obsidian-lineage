@@ -1,17 +1,19 @@
 <script lang="ts">
-	import { getStore } from '../../../../../../../context';
-	import { draggable } from 'src/view/actions/dnd/draggable';
+    import { getView } from '../../../../../../../context';
+    import { draggable } from 'src/view/actions/dnd/draggable';
 
-	export let nodeId: string;
-    const store = getStore();
+    export let nodeId: string;
+    const view = getView();
+    const documentStore = view.documentStore;
+    const viewStore = view.viewStore
 </script>
 
-<div class="draggable" use:draggable={{ id: nodeId, store }}>
+<div class="draggable" use:draggable={{ id: nodeId, documentStore, viewStore }}>
     <div class="drag-handle"></div>
     <div
         class="content"
         on:dblclick={() => {
-            store.dispatch({ type: 'DOCUMENT/ENABLE_EDIT_MODE' });
+            viewStore.dispatch({ type: 'DOCUMENT/ENABLE_EDIT_MODE',payload:{nodeId} });
         }}
     >
         <slot />

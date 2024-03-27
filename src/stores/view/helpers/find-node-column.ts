@@ -1,4 +1,4 @@
-import { Columns } from 'src/stores/view/view-state-type';
+import { Columns } from 'src/stores/document/document-state-type';
 
 export const findNodeColumn = (columns: Columns, nodeId: string) => {
     for (let i = 0; i < columns.length; i++) {
