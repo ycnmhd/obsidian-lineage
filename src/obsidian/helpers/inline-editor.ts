@@ -43,6 +43,9 @@ export class InlineEditor {
             },
         });
         const inlineView = this.leaf.view as InlineMarkdownView;
+        if (inlineView.getMode() === 'preview') {
+            await inlineView.setState({ mode: 'source' }, { history: false });
+        }
         inlineView.save = noop;
         inlineView.requestSave = noop;
         inlineView.__setViewData__ = inlineView.setViewData;
