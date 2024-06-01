@@ -27,6 +27,7 @@ import { updateSectionsDictionary } from 'src/stores/document/reducers/state/upd
 import { getIdOfSection } from 'src/stores/view/subscriptions/actions/get-id-of-section';
 import { extractNode } from 'src/stores/document/reducers/extract-node/extract-node';
 import { getSectionOfId } from 'src/stores/view/subscriptions/actions/get-section-of-id';
+import { splitNode } from 'src/stores/document/reducers/split-node/split-node';
 
 const updateDocumentState = (
     state: DocumentState,
@@ -52,6 +53,10 @@ const updateDocumentState = (
         affectedNodeContent = state.document.content[action.payload.nodeId];
         extractNode(state.document, action);
         newActiveNodeId = action.payload.nodeId;
+    } else if (action.type === 'DOCUMENT/SPLIT_NODE') {
+        affectedNodeId = action.payload.target;
+        affectedNodeContent = state.document.content[affectedNodeId];
+        newActiveNodeId = splitNode(state.document, action);
     } else if (action.type === 'DOCUMENT/DROP_NODE') {
         dropNode(state.document, action);
         newActiveNodeId = action.payload.droppedNodeId;

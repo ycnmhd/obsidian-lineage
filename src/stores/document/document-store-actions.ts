@@ -11,6 +11,7 @@ import { MergeNodeAction } from 'src/stores/document/reducers/merge-node/merge-n
 import { FormatHeadingsAction } from 'src/stores/document/reducers/content/format-content/format-headings';
 import { PasteNodeAction } from 'src/stores/document/reducers/clipboard/paste-node/paste-node';
 import { ExtractNodeAction } from 'src/stores/document/reducers/extract-node/extract-node';
+import { SplitNodeAction } from 'src/stores/document/reducers/split-node/split-node';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -42,7 +43,8 @@ export type DocumentAction =
     | MergeNodeAction
     | FormatHeadingsAction
     | DocumentClipboardActions
-    | ExtractNodeAction;
+    | ExtractNodeAction
+    | SplitNodeAction;
 
 export type HistoryAction = UndoRedoAction | SelectSnapshotAction;
 export type UndoableAction =
@@ -56,7 +58,8 @@ export type UndoableAction =
     | FormatHeadingsAction
     | PasteNodeAction
     | CutNodeAction
-    | ExtractNodeAction;
+    | ExtractNodeAction
+    | SplitNodeAction;
 
 export type CopyNodeAction = {
     type: 'DOCUMENT/COPY_NODE';

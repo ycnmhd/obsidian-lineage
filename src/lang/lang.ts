@@ -11,6 +11,9 @@ export const lang = {
     error_delete_last_node: 'Cannot delete the last card',
     error_generic:
         'Something went wrong\nFurther details may be available in the developer console',
+    cant_split_card_that_has_children: 'Cannot split a card that has children',
+    cant_split_card: 'Could not split this card',
+
     error_parent_not_found: (full: string) =>
         `Could not find the parent section of ${full}`,
 };

@@ -9,6 +9,7 @@ import {
     Heading1,
     Merge,
     Scissors,
+    Split,
 } from 'lucide-svelte';
 import { UndoableAction } from 'src/stores/document/document-store-actions';
 import { Snapshot } from 'src/stores/document/document-state-type';
@@ -63,5 +64,9 @@ export const actionInfo: Partial<
     'DOCUMENT/EXTRACT_BRANCH': (snapshot) => ({
         label: 'Extracted card ' + snapshot.context.affectedSection,
         icon: FileSymlink,
+    }),
+    'DOCUMENT/SPLIT_NODE': (snapshot) => ({
+        label: 'Split card ' + snapshot.context.affectedSection,
+        icon: Split,
     }),
 };

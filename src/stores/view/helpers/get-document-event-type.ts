@@ -11,6 +11,7 @@ const createAndDelete = new Set<ActionType>([
     'DOCUMENT/MERGE_NODE',
     'DOCUMENT/LOAD_FILE',
     'DOCUMENT/EXTRACT_BRANCH',
+    'DOCUMENT/SPLIT_NODE',
 ]);
 
 const dropAndMoveEvents = new Set<ActionType>([
