@@ -196,6 +196,7 @@
         </Button>
         <Button
             class="control-item"
+            disabled={$zoomLevel===1}
             label="Restore zoom level"
             on:click={restoreZoom}
             tooltipPosition="left"

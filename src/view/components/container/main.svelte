@@ -13,6 +13,7 @@
     import { scrollingModeStore } from 'src/stores/settings/derived/scrolling-store';
     import ScrollingAxis from 'src/view/components/container/scrolling-axis/scrolling-axis.svelte';
     import { keyboardShortcuts } from 'src/view/actions/keyboard-shortcuts/keyboard-shortcuts';
+    import { mouseWheelZoom } from 'src/view/actions/mouse-wheel-zoom';
 
     export let plugin: Lineage;
     export let view: LineageView;
@@ -22,7 +23,11 @@
     const scrollingMode = scrollingModeStore(view);
 </script>
 
-<div class={`lineage-main`} use:keyboardShortcuts={{ view }}>
+<div
+    class={`lineage-main`}
+    use:keyboardShortcuts={{ view }}
+    use:mouseWheelZoom={view}
+>
     <Container />
     <Toolbar />
     <Breadcrumbs />

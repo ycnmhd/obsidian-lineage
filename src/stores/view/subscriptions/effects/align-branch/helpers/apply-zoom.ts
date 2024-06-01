@@ -59,8 +59,8 @@ export const applyZoom = (
             columnsContainer.style.transform = 'none';
         } else {
             columnsContainer.style.transform = `scale(${viewState.ui.zoomLevel}) `;
-            if (adjustColumns) adjustColumnsHeight(viewState, columnsContainer);
             adjustSkewedCenter(viewState, container, columnsContainer);
         }
+        if (adjustColumns) adjustColumnsHeight(viewState, columnsContainer);
     });
 };
