@@ -3,6 +3,7 @@ export const lang = {
     open_in_lineage: 'Open in Lineage',
     toggle_lineage_view: 'Toggle view',
     export_document: 'Export document',
+    export_document_outline: 'Export document as an outline',
     create_new_file: 'Create new document',
     new_file: 'New lineage document',
     format_headings: 'Format headings',

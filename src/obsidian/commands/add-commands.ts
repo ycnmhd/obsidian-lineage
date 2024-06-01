@@ -5,7 +5,7 @@ import { slugify } from 'src/helpers/slugify';
 import { toggleFileViewType } from 'src/obsidian/events/workspace/helpers/toggle-file-view-type';
 import { LineageView } from 'src/view/view';
 import { createNewFile } from 'src/obsidian/commands/helpers/create-new-file';
-import { exportDocument } from 'src/obsidian/commands/helpers/export-document';
+import { exportDocument } from 'src/obsidian/commands/helpers/export-document/export-document';
 import { openFile } from 'src/obsidian/commands/helpers/open-file';
 import { extractBranch } from 'src/obsidian/commands/helpers/extract-branch/extract-branch';
 import { isActiveAndNotEditing } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
@@ -78,7 +78,20 @@ const createCommands = (plugin: Lineage) => {
             if (file) {
                 if (checking) return true;
                 else {
-                    exportDocument(plugin, file);
+                    exportDocument(plugin, file, 'markdown');
+                }
+            }
+        },
+    });
+    commands.push({
+        name: lang.export_document_outline,
+        icon: customIcons.cards.name,
+        checkCallback: (checking) => {
+            const file = getActiveFile();
+            if (file) {
+                if (checking) return true;
+                else {
+                    exportDocument(plugin, file, 'outline');
                 }
             }
         },
