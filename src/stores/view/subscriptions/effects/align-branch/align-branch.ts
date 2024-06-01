@@ -10,6 +10,8 @@ import { debounce } from 'obsidian';
 import { getNodeElement } from 'src/stores/view/subscriptions/effects/align-branch/helpers/get-node-element';
 import { Settings } from 'src/stores/settings/settings-type';
 import { alignInactiveColumn } from 'src/stores/view/subscriptions/effects/align-branch/align-inactive-column';
+import { applyZoom } from 'src/stores/view/subscriptions/effects/align-branch/helpers/apply-zoom';
+import { resetZoom } from 'src/stores/view/subscriptions/effects/align-branch/helpers/reset-zoom';
 
 export const alignBranch = (
     documentState: DocumentState,
@@ -19,6 +21,7 @@ export const alignBranch = (
     behavior?: ScrollBehavior,
     alignInactiveColumns = false,
 ) => {
+    if (viewState.ui.zoomLevel !== 1) behavior = 'instant';
     if (!container) return;
     const nodeId = viewState.document.activeNode;
     if (!nodeId) return;
@@ -26,6 +29,7 @@ export const alignBranch = (
         columns: new Set<string>(),
     };
 
+    resetZoom(container);
     alignParentsAndActiveNode(
         viewState,
         container,
@@ -75,5 +79,7 @@ export const alignBranch = (
             }
         }
     }
+
+    applyZoom(viewState, container);
 };
 export const alignBranchDebounced = debounce(alignBranch, 32);

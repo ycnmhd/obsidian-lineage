@@ -16,7 +16,7 @@ import { enableEditMode } from 'src/stores/view/subscriptions/actions/enable-edi
 import { removeObsoleteNavigationItems } from 'src/stores/view/subscriptions/actions/remove-obsolete-navigation-items';
 import { focusContainer } from 'src/stores/view/subscriptions/effects/focus-container';
 import { resetSearchFuse } from 'src/stores/view/subscriptions/actions/update-search-results/helpers/reset-search-fuse';
-import { applyZoom } from 'src/stores/view/subscriptions/effects/apply-zoom';
+import { applyZoom } from 'src/stores/view/subscriptions/effects/align-branch/helpers/apply-zoom';
 import { ViewStoreAction } from 'src/stores/view/view-store-actions';
 import { isEmptyDocument } from 'src/stores/view/subscriptions/helpers/is-empty-document';
 import { discardChanges } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/cancel-changes';
@@ -124,7 +124,7 @@ const viewEffectsAndActions = (
         }
 
         if (e.zoom) {
-            applyZoom(container, viewState);
+            applyZoom(viewState, container, true);
         }
         if (
             e.content ||
