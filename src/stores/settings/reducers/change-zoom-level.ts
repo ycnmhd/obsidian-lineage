@@ -1,4 +1,4 @@
-import { ViewState } from 'src/stores/view/view-state-type';
+import { Settings } from 'src/stores/settings/settings-type';
 
 const zoomStep = 0.1;
 export const maxZoomLevel = 2;
@@ -16,15 +16,15 @@ export type ChangeZoomLevelAction = {
 };
 
 export const changeZoomLevel = (
-    state: ViewState,
+    state: Settings,
     payload: ChangeZoomLevelAction['payload'],
 ) => {
     if ('value' in payload) {
-        state.ui.zoomLevel = payload.value;
+        state.view.zoomLevel = payload.value;
     } else {
-        state.ui.zoomLevel =
+        state.view.zoomLevel =
             payload.direction === 'in'
-                ? Math.min(state.ui.zoomLevel + zoomStep, maxZoomLevel)
-                : Math.max(state.ui.zoomLevel - zoomStep, minZoomLevel);
+                ? Math.min(state.view.zoomLevel + zoomStep, maxZoomLevel)
+                : Math.max(state.view.zoomLevel - zoomStep, minZoomLevel);
     }
 };

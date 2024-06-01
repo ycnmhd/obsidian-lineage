@@ -16,6 +16,7 @@ export const DEFAULT_SETTINGS = (): Settings => ({
             horizontalScrollingMode: 'keep-active-card-at-center',
         },
         limitPreviewHeight: true,
+        zoomLevel: 1,
     },
     backup: {},
 });

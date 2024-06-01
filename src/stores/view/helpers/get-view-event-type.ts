@@ -10,7 +10,6 @@ const searchEvents = new Set<ActionType>([
     'SEARCH/SET_QUERY',
     'SEARCH/SET_RESULTS',
 ]);
-const zoomEvents = new Set<ActionType>(['UI/CHANGE_ZOOM_LEVEL']);
 
 export const stateEvents = new Set<ActionType>([
     'DOCUMENT/SET_ACTIVE_NODE',
@@ -22,7 +21,6 @@ export type ViewEventType = {
     activeNodeHistory?: boolean;
     activeNode?: boolean;
     search?: boolean;
-    zoom?: boolean;
 };
 const cachedResults: { [key: string]: ViewEventType } = {};
 
@@ -36,7 +34,6 @@ export const getViewEventType = (type: ActionType): ViewEventType => {
     if (navigationEvents.has(type)) result = { activeNodeHistory: true };
     else if (stateEvents.has(type)) result = { activeNode: true };
     else if (searchEvents.has(type)) result = { search: true };
-    else if (zoomEvents.has(type)) result = { zoom: true };
     if (!result) result = {};
 
     cachedResults[type] = result;

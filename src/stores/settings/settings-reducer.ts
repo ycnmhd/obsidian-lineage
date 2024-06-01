@@ -1,4 +1,8 @@
 import { CustomHotkeys, ScrollingMode, Settings } from './settings-type';
+import {
+    changeZoomLevel,
+    ChangeZoomLevelAction,
+} from 'src/stores/settings/reducers/change-zoom-level';
 
 export type SettingsActions =
     | {
@@ -93,7 +97,8 @@ export type SettingsActions =
           payload: {
               documents: Record<string, true>;
           };
-      };
+      }
+    | ChangeZoomLevelAction;
 
 const updateState = (store: Settings, action: SettingsActions) => {
     if (action.type === 'SET_DOCUMENT_TYPE_TO_MARKDOWN') {
@@ -132,6 +137,8 @@ const updateState = (store: Settings, action: SettingsActions) => {
             delete store.backup[action.payload.path];
     } else if (action.type === 'UPDATE_DOCUMENTS_DICTIONARY') {
         store.documents = action.payload.documents;
+    } else if (action.type === 'UI/CHANGE_ZOOM_LEVEL') {
+        changeZoomLevel(store, action.payload);
     }
 };
 export const settingsReducer = (

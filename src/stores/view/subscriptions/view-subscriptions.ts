@@ -123,9 +123,6 @@ const viewEffectsAndActions = (
             view.saveDocument(maybeViewIsClosing, postInlineEditor);
         }
 
-        if (e.zoom) {
-            applyZoom(viewState, container, true);
-        }
         if (
             e.content ||
             structuralChange ||
@@ -144,13 +141,7 @@ const viewEffectsAndActions = (
         ) {
             focusContainer(view);
         }
-        if (
-            activeNodeChange ||
-            e.zoom ||
-            e.search ||
-            structuralChange ||
-            e.content
-        ) {
+        if (activeNodeChange || e.search || structuralChange || e.content) {
             const skipAligning =
                 action.type === 'DOCUMENT/SET_ACTIVE_NODE' &&
                 action.context?.modKey;
@@ -210,6 +201,12 @@ export const viewSubscriptions = (view: LineageView) => {
                 applyContainerBg(view, state.view.theme.containerBg);
                 applyActiveBranchBg(view, state.view.theme.activeBranchBg);
                 applyCardWidth(view, state.view.cardWidth);
+                applyZoom(
+                    view.viewStore.getValue(),
+                    view.container,
+                    state.view.zoomLevel,
+                    true,
+                );
             } else if (action) {
                 const type = action.type;
                 if (type === 'SET_FONT_SIZE') {
@@ -220,11 +217,22 @@ export const viewSubscriptions = (view: LineageView) => {
                     applyActiveBranchBg(view, state.view.theme.activeBranchBg);
                 } else if (type === 'SET_CARD_WIDTH') {
                     applyCardWidth(view, state.view.cardWidth);
-                } else if (
-                    view.isActive &&
-                    (type === 'SET_HORIZONTAL_SCROLLING_MODE' ||
-                        type === 'UPDATE_AXIS_OFFSET')
-                ) {
+                } else if (action.type === 'UI/CHANGE_ZOOM_LEVEL') {
+                    applyZoom(
+                        view.viewStore.getValue(),
+                        view.container,
+                        state.view.zoomLevel,
+                        true,
+                    );
+                }
+
+                const shouldAlign =
+                    type === 'SET_HORIZONTAL_SCROLLING_MODE' ||
+                    type === 'UPDATE_AXIS_OFFSET' ||
+                    type === 'UI/CHANGE_ZOOM_LEVEL' ||
+                    type === 'SET_CARD_WIDTH' ||
+                    type === 'SET_LIMIT_PREVIEW_HEIGHT';
+                if (view.isActive && shouldAlign) {
                     alignBranchDebounced(
                         view.documentStore.getValue(),
                         view.viewStore.getValue(),
@@ -232,13 +240,13 @@ export const viewSubscriptions = (view: LineageView) => {
                         state,
                         'instant',
                     );
-                    if (
-                        type === 'SET_HORIZONTAL_SCROLLING_MODE' &&
-                        state.view.scrolling.horizontalScrollingMode ===
-                            'fixed-position'
-                    ) {
-                        new Notice('Hold space to change card position');
-                    }
+                }
+                if (
+                    type === 'SET_HORIZONTAL_SCROLLING_MODE' &&
+                    state.view.scrolling.horizontalScrollingMode ===
+                        'fixed-position'
+                ) {
+                    new Notice('Hold space to change card position');
                 }
             }
         },

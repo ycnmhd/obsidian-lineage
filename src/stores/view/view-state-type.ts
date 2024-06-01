@@ -35,7 +35,6 @@ export type ViewState = {
             showHelpSidebar: boolean;
             showSettingsSidebar: boolean;
         };
-        zoomLevel: number;
     };
     document: DocumentViewState;
     navigationHistory: NavigationHistory;

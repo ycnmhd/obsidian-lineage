@@ -1,6 +1,6 @@
 <script>
     import { lang } from 'src/lang/lang';
-    import { maxZoomLevel, minZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
+    import { maxZoomLevel, minZoomLevel } from 'src/stores/settings/reducers/change-zoom-level';
     import {
         FileText,
         HistoryIcon,
@@ -60,20 +60,20 @@
         if (file) setFileViewType(plugin, file, view.leaf, 'markdown');
     };
     const zoomIn = () => {
-        viewStore.dispatch({
+        view.plugin.settings.dispatch({
             type: 'UI/CHANGE_ZOOM_LEVEL',
             payload: { direction: 'in' },
         });
     };
     const zoomOut = () => {
-        viewStore.dispatch({
+        view.plugin.settings.dispatch({
             type: 'UI/CHANGE_ZOOM_LEVEL',
             payload: { direction: 'out' },
         });
     };
 
     const restoreZoom = () => {
-        viewStore.dispatch({
+        view.plugin.settings.dispatch({
             type: 'UI/CHANGE_ZOOM_LEVEL',
             payload: { value: 1 },
         });
@@ -89,7 +89,7 @@
             const biggest = scrolls[scrolls.length - 1];
             // eslint-disable-next-line no-undef
             const scale = window.innerHeight / biggest;
-            viewStore.dispatch({
+            view.plugin.settings.dispatch({
                 type: 'UI/CHANGE_ZOOM_LEVEL',
                 payload: { value: scale },
             });

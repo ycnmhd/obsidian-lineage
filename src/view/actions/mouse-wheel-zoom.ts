@@ -6,7 +6,7 @@ export const mouseWheelZoom = (element: HTMLElement, view: LineageView) => {
         const modKey = isMacLike ? e.metaKey : e.ctrlKey;
         if (!modKey) return;
         const delta = e.deltaY;
-        view.viewStore.dispatch({
+        view.plugin.settings.dispatch({
             type: 'UI/CHANGE_ZOOM_LEVEL',
             payload: {
                 direction: delta < 0 ? 'in' : 'out',

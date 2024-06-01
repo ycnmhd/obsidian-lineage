@@ -15,7 +15,6 @@ export const defaultViewState = (): ViewState => ({
             showHelpSidebar: false,
             showSettingsSidebar: false,
         },
-        zoomLevel: 1,
     },
     document: {
         editing: {

@@ -3,7 +3,6 @@ import { ViewStoreAction } from 'src/stores/view/view-store-actions';
 import { setSearchQuery } from 'src/stores/view/reducers/search/set-search-query';
 import { setSearchResults } from 'src/stores/view/reducers/search/set-search-results';
 import { toggleSearchInput } from 'src/stores/view/reducers/search/toggle-search-input';
-import { changeZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
 import { enableEditMode } from 'src/stores/view/reducers/document/enable-edit-mode';
 import { disableEditMode } from 'src/stores/view/reducers/document/disable-edit-mode';
 import { onDragStart } from 'src/stores/view/reducers/document/on-drag-start';
@@ -57,8 +56,6 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
                 : state.ui.controls.showHelpSidebar,
             showSettingsSidebar: false,
         };
-    } else if (action.type === 'UI/CHANGE_ZOOM_LEVEL') {
-        changeZoomLevel(state, action.payload);
     } else if (action.type === 'DOCUMENT/ENABLE_EDIT_MODE') {
         enableEditMode(state.document, action);
     } else if (action.type === 'DOCUMENT/CONFIRM_DISABLE_EDIT') {

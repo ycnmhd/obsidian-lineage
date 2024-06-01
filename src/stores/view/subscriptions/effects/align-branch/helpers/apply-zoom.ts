@@ -20,14 +20,14 @@ const calculateOffset = (container: HTMLElement, activeNode: HTMLElement) => {
 };
 
 const adjustColumnsHeight = (
-    viewState: ViewState,
+    zoomLevel: number,
     columnsContainer: HTMLElement,
 ) => {
     const columns = Array.from(
         columnsContainer.querySelectorAll('.column'),
     ) as HTMLElement[];
     for (const column of columns) {
-        column.style.height = `${100 / viewState.ui.zoomLevel}vh`;
+        column.style.height = `${100 / zoomLevel}vh`;
     }
 };
 
@@ -35,32 +35,39 @@ const adjustSkewedCenter = (
     viewState: ViewState,
     container: HTMLElement,
     columnsContainer: HTMLElement,
+    zoomLevel: number,
 ) => {
     const activeNodeId = viewState.document.activeNode;
     const activeNode = getNodeElement(container, activeNodeId);
     invariant(activeNode);
     const offset = calculateOffset(container, activeNode);
 
-    const scaledOffsetLeft = offset.scrollLeft / viewState.ui.zoomLevel;
-    const scaledOffsetTop = (offset.scrollTop + 100) / viewState.ui.zoomLevel;
+    const scaledOffsetLeft = offset.scrollLeft / zoomLevel;
+    const scaledOffsetTop = (offset.scrollTop + 100) / zoomLevel;
 
-    columnsContainer.style.transform = `scale(${viewState.ui.zoomLevel}) translate(${scaledOffsetLeft}px,${scaledOffsetTop}px)`;
+    columnsContainer.style.transform = `scale(${zoomLevel}) translate(${scaledOffsetLeft}px,${scaledOffsetTop}px)`;
 };
 
 export const applyZoom = (
     viewState: ViewState,
     container: HTMLElement,
+    zoomLevel: number,
     adjustColumns = false,
 ) => {
     const columnsContainer = container.querySelector('.columns') as HTMLElement;
 
     requestAnimationFrame(() => {
-        if (viewState.ui.zoomLevel === 1) {
+        if (zoomLevel === 1) {
             columnsContainer.style.transform = 'none';
         } else {
-            columnsContainer.style.transform = `scale(${viewState.ui.zoomLevel}) `;
-            adjustSkewedCenter(viewState, container, columnsContainer);
+            columnsContainer.style.transform = `scale(${zoomLevel}) `;
+            adjustSkewedCenter(
+                viewState,
+                container,
+                columnsContainer,
+                zoomLevel,
+            );
         }
-        if (adjustColumns) adjustColumnsHeight(viewState, columnsContainer);
+        if (adjustColumns) adjustColumnsHeight(zoomLevel, columnsContainer);
     });
 };

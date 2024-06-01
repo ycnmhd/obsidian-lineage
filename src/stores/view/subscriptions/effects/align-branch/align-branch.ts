@@ -21,7 +21,7 @@ export const alignBranch = (
     behavior?: ScrollBehavior,
     alignInactiveColumns = false,
 ) => {
-    if (viewState.ui.zoomLevel !== 1) behavior = 'instant';
+    if (settings.view.zoomLevel !== 1) behavior = 'instant';
     if (!container) return;
     const nodeId = viewState.document.activeNode;
     if (!nodeId) return;
@@ -80,6 +80,6 @@ export const alignBranch = (
         }
     }
 
-    applyZoom(viewState, container);
+    applyZoom(viewState, container, settings.view.zoomLevel);
 };
 export const alignBranchDebounced = debounce(alignBranch, 32);
