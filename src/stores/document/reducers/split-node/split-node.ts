@@ -5,8 +5,9 @@ import { deleteNode } from 'src/stores/document/reducers/delete-node/delete-node
 import { findChildGroup } from 'src/stores/view/helpers/search/find-child-group';
 import { lang } from 'src/lang/lang';
 import { headingsToSections } from 'src/stores/document/reducers/split-node/helpers/headings-to-sections';
+import { outlineToSections } from 'src/lib/data-conversion/outline-to-json/outline-to-sections';
 
-export type SplitNodeMode = 'heading';
+export type SplitNodeMode = 'heading' | 'outline';
 export type SplitNodeAction = {
     type: 'DOCUMENT/SPLIT_NODE';
     payload: {
@@ -22,8 +23,12 @@ export const splitNode = (
     const targetNode = action.payload.target;
     const content = document.content[targetNode];
     if (!content?.content) throw new SilentError('empty node');
-    const sections = headingsToSections(content.content);
-    if (sections === content.content) throw new Error(lang.cant_split_card);
+    const sections =
+        action.payload.mode === 'heading'
+            ? headingsToSections(content.content)
+            : outlineToSections(content.content);
+    if (sections === content.content)
+        throw new Error(lang.cant_split_card_identical);
     const childGroup = findChildGroup(document.columns, targetNode);
     if (childGroup) throw new Error(lang.cant_split_card_that_has_children);
 

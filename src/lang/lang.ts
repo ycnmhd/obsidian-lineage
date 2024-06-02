@@ -13,7 +13,7 @@ export const lang = {
     error_generic:
         'Something went wrong\nFurther details may be available in the developer console',
     cant_split_card_that_has_children: 'Cannot split a card that has children',
-    cant_split_card: 'Could not split this card',
+    cant_split_card_identical: 'The result is the same as the input',
 
     error_parent_not_found: (full: string) =>
         `Could not find the parent section of ${full}`,

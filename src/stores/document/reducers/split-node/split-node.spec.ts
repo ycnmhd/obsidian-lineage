@@ -325,7 +325,9 @@ describe('split node', () => {
             payload: { target: 'nVPwysBOU', mode: 'heading' },
         } as const;
 
-        expect(() => splitNode(input, action)).toThrow(lang.cant_split_card);
+        expect(() => splitNode(input, action)).toThrow(
+            lang.cant_split_card_identical,
+        );
         expect(compareDocuments(input, inputClone)).toBe(true);
     });
 
