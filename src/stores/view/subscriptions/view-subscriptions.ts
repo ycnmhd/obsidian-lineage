@@ -152,6 +152,7 @@ const viewEffectsAndActions = (
                     container,
                     settings,
                     type === 'DOCUMENT/MOVE_NODE' ? 'instant' : undefined,
+                    type === 'DOCUMENT/SPLIT_NODE' ? true : undefined,
                 );
         }
     }
