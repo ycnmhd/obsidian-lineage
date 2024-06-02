@@ -1,5 +1,5 @@
 import { Content } from 'src/stores/document/document-state-type';
-import { SilentError } from 'src/stores/view/helpers/errors';
+import { SilentError } from 'src/lib/errors/errors';
 
 export type SetNodeContentAction = {
     type: 'DOCUMENT/SET_NODE_CONTENT';

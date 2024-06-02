@@ -4,9 +4,9 @@ import Component from './components/container/main.svelte';
 import Lineage from '../main';
 import { documentReducer } from 'src/stores/document/document-reducer';
 import { Unsubscriber } from 'svelte/store';
-import { columnsToJsonTree } from 'src/stores/view/helpers/json-to-md/columns-to-json/columns-to-json-tree';
-import { jsonToMarkdown } from 'src/stores/view/helpers/json-to-md/json-to-makdown/json-to-markdown';
-import { OnError, Store } from 'src/helpers/store/store';
+import { columnsToJson } from 'src/lib/data-conversion/columns-to-json';
+import { jsonToSections } from 'src/lib/data-conversion/json-to-sections';
+import { OnError, Store } from 'src/lib/store/store';
 import { defaultDocumentState } from 'src/stores/document/default-document-state';
 import { DocumentState } from 'src/stores/document/document-state-type';
 import { clone } from 'src/helpers/clone';
@@ -18,7 +18,7 @@ import { ViewStoreAction } from 'src/stores/view/view-store-actions';
 import { defaultViewState } from 'src/stores/view/default-view-state';
 import { viewReducer } from 'src/stores/view/view-reducer';
 import { viewSubscriptions } from 'src/stores/view/subscriptions/view-subscriptions';
-import { onPluginError } from 'src/helpers/store/on-plugin-error';
+import { onPluginError } from 'src/lib/store/on-plugin-error';
 import { InlineEditor } from 'src/obsidian/helpers/inline-editor';
 import { id } from 'src/helpers/id';
 import invariant from 'tiny-invariant';
@@ -160,11 +160,8 @@ export class LineageView extends TextFileView {
         const state = clone(this.documentStore.getValue());
         const data: string =
             state.file.frontmatter +
-            jsonToMarkdown(
-                columnsToJsonTree(
-                    state.document.columns,
-                    state.document.content,
-                ),
+            jsonToSections(
+                columnsToJson(state.document.columns, state.document.content),
             );
         if (data !== this.data || force) {
             this.data = data;
@@ -244,8 +241,8 @@ export class LineageView extends TextFileView {
         const { data, frontmatter } = extractFrontmatter(this.data);
 
         const state = this.documentStore.getValue();
-        const existingData = jsonToMarkdown(
-            columnsToJsonTree(state.document.columns, state.document.content),
+        const existingData = jsonToSections(
+            columnsToJson(state.document.columns, state.document.content),
         );
         if (!existingData || existingData !== data)
             this.documentStore.dispatch({

@@ -1,10 +1,10 @@
-import { getSortedChildGroups } from 'src/stores/document/reducers/move-node/helpers/move-child-groups/get-sorted-child-groups';
+import { getSortedChildGroups } from 'src/lib/tree-utils/get/get-sorted-child-groups';
 import {
     ClipboardBranch,
     Column,
     Content,
 } from 'src/stores/document/document-state-type';
-import { deleteNodeById } from 'src/stores/document/reducers/delete-node/helpers/delete-node-by-id';
+import { deleteNodeById } from 'src/lib/tree-utils/delete/delete-node-by-id';
 import { clone } from 'src/helpers/clone';
 
 export const getBranch = (

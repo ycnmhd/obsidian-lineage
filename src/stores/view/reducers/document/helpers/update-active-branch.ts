@@ -1,8 +1,8 @@
 import { Column, NodeId } from 'src/stores/document/document-state-type';
-import { traverseUp } from 'src/stores/view/helpers/search/traverse-up';
-import { traverseDown } from 'src/stores/view/helpers/search/traverse-down';
-import { findGroupByNodeId } from 'src/stores/view/helpers/search/find-group-by-node-id';
-import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
+import { traverseUp } from 'src/lib/tree-utils/get/traverse-up';
+import { traverseDown } from 'src/lib/tree-utils/get/traverse-down';
+import { findGroupByNodeId } from 'src/lib/tree-utils/find/find-group-by-node-id';
+import { findNodeColumn } from 'src/lib/tree-utils/find/find-node-column';
 import {
     ActiveNodesOfColumn,
     DocumentViewState,

@@ -1,6 +1,6 @@
 import { LineageDocument } from 'src/stores/document/document-state-type';
-import { jsonToMarkdown } from 'src/stores/view/helpers/json-to-md/json-to-makdown/json-to-markdown';
-import { columnsToJsonTree } from 'src/stores/view/helpers/json-to-md/columns-to-json/columns-to-json-tree';
+import { jsonToSections } from 'src/lib/data-conversion/json-to-sections';
+import { columnsToJson } from 'src/lib/data-conversion/columns-to-json';
 
 export const text = (document: LineageDocument) =>
-    jsonToMarkdown(columnsToJsonTree(document.columns, document.content));
+    jsonToSections(columnsToJson(document.columns, document.content));

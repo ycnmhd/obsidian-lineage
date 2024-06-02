@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { compareDocuments } from 'src/helpers/test-helpers/compare-documents';
-import { ginkgo_academic_paper } from 'src/stores/view/helpers/json-to-md/json-to-makdown/data/ginkgo_acedemic_paper';
+import { ginkgo_academic_paper } from 'src/lib/data-conversion/test-data/ginkgo_acedemic_paper';
 import { clone } from 'src/helpers/clone';
 import { LineageDocument } from 'src/stores/document/document-state-type';
 import invariant from 'tiny-invariant';

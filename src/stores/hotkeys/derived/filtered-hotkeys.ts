@@ -1,4 +1,4 @@
-import { derivedOnAction } from 'src/helpers/store/derived-on-action';
+import { derivedOnAction } from 'src/lib/store/derived-on-action';
 import { CommandHotkeys, hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
 import {
     GroupName,

@@ -1,7 +1,7 @@
 import { Direction } from 'src/stores/document/document-store-actions';
-import { changeNodePosition } from 'src/stores/document/reducers/move-node/helpers/change-node-position';
+import { changeNodePosition } from 'src/lib/tree-utils/move/change-node-position';
 import { LineageDocument } from 'src/stores/document/document-state-type';
-import { cleanAndSortColumns } from 'src/stores/document/reducers/move-node/helpers/clean-and-sort-columns';
+import { cleanAndSortColumns } from 'src/lib/tree-utils/sort/clean-and-sort-columns';
 import invariant from 'tiny-invariant';
 
 export type DropAction = {

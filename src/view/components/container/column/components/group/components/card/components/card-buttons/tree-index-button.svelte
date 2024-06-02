@@ -1,7 +1,7 @@
 <script lang="ts">
     import { getPlugin, getView } from '../../../../../../../context';
     import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
-    import { parseDelimiter } from 'src/stores/view/helpers/json-to-md/markdown-to-json/helpers/delimiter';
+    import { parseDelimiter } from 'src/lib/data-conversion/helpers/delimiter';
     import { get } from 'svelte/store';
     import { MarkdownView, TFile } from 'obsidian';
 

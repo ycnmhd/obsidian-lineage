@@ -8,7 +8,7 @@ import {
 } from 'src/stores/settings/settings-reducer';
 import { deepMerge } from 'src/helpers/deep-merge';
 import { DEFAULT_SETTINGS } from 'src/stores/settings/default-settings';
-import { Store } from 'src/helpers/store/store';
+import { Store } from 'src/lib/store/store';
 import { Settings } from 'src/stores/settings/settings-type';
 import { registerFileMenuEvent } from 'src/obsidian/events/workspace/register-file-menu-event';
 import { registerFileRenameEvent } from 'src/obsidian/events/vault/register-file-move-event';
@@ -23,7 +23,7 @@ import { documentsReducer } from 'src/stores/documents/documents-reducer';
 import { DefaultDocumentsState } from 'src/stores/documents/default-documents-state';
 import { StatusBar } from 'src/obsidian/status-bar/status-bar';
 import { documentsStoreSubscriptions } from 'src/stores/documents/subscriptions/documents-store-subscriptions';
-import { onPluginError } from 'src/helpers/store/on-plugin-error';
+import { onPluginError } from 'src/lib/store/on-plugin-error';
 import { registerActiveLeafChange } from 'src/obsidian/events/workspace/register-active-leaf-change';
 import { registerWorkspaceResize } from 'src/obsidian/events/workspace/register-workspace-resize';
 import { registerLayoutReady } from 'src/obsidian/events/workspace/register-layout-ready';

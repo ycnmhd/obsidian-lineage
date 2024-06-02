@@ -1,11 +1,11 @@
 import { LineageDocument } from 'src/stores/document/document-state-type';
 import { VerticalDirection } from 'src/stores/document/document-store-actions';
-import { findAdjacentSiblingNode } from 'src/stores/document/reducers/move-node/helpers/find-adjacent-sibling-node';
-import { deleteNodeById } from 'src/stores/document/reducers/delete-node/helpers/delete-node-by-id';
-import { cleanAndSortColumns } from 'src/stores/document/reducers/move-node/helpers/clean-and-sort-columns';
-import { moveOrphanGroupsToANewParent } from 'src/stores/document/reducers/move-node/helpers/move-child-groups/move-orphan-groups-to-a-new-parent';
+import { findAdjacentSiblingNode } from 'src/lib/tree-utils/find/find-adjacent-sibling-node';
+import { deleteNodeById } from 'src/lib/tree-utils/delete/delete-node-by-id';
+import { cleanAndSortColumns } from 'src/lib/tree-utils/sort/clean-and-sort-columns';
+import { moveOrphanGroupsToANewParent } from 'src/lib/tree-utils/move/move-orphan-groups-to-a-new-parent';
 import invariant from 'tiny-invariant';
-import { SilentError } from 'src/stores/view/helpers/errors';
+import { SilentError } from 'src/lib/errors/errors';
 
 export type MergeNodeAction = {
     type: 'DOCUMENT/MERGE_NODE';

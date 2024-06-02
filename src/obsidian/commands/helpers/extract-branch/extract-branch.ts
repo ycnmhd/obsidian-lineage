@@ -1,11 +1,11 @@
 import { LineageView } from 'src/view/view';
 import { getBranch } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-branch';
-import { branchToText } from 'src/obsidian/commands/helpers/extract-branch/helpers/branch-to-text';
+import { branchToSection } from 'src/lib/data-conversion/branch-to-section';
 import { createNewFile } from 'src/obsidian/commands/helpers/create-new-file';
 import invariant from 'tiny-invariant';
 import { openFile } from 'src/obsidian/commands/helpers/open-file';
 import { getFileNameOfExtractedBranch } from 'src/obsidian/commands/helpers/extract-branch/helpers/get-file-name-of-extracted-branch/get-file-name-of-extracted-branch';
-import { onPluginError } from 'src/helpers/store/on-plugin-error';
+import { onPluginError } from 'src/lib/store/on-plugin-error';
 
 export const extractBranch = async (view: LineageView) => {
     try {
@@ -20,7 +20,7 @@ export const extractBranch = async (view: LineageView) => {
             'copy',
         );
 
-        const text = branchToText(branch);
+        const text = branchToSection(branch);
         const newFile = await createNewFile(
             view.plugin,
             view.file.parent,

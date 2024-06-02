@@ -2,7 +2,7 @@ import {
     ClipboardBranch,
     LineageDocument,
 } from 'src/stores/document/document-state-type';
-import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
+import { findNodeColumn } from 'src/lib/tree-utils/find/find-node-column';
 import { id } from 'src/helpers/id';
 
 export const pastChildGroups = (

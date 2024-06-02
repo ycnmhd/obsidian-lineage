@@ -1,10 +1,17 @@
 const horizontalScrollStep = 25;
+const scrollDelay = 200;
 
 export const scrollOnDndX = (node: HTMLElement) => {
     let horizontalScrollTimeout: number;
     let horizontalScrollDirection = 0;
+    let lastScrollTime = 0;
+
     const scrollHorizontally = (dir: number) => {
-        node.scrollLeft += dir * horizontalScrollStep;
+        const now = Date.now();
+        if (now - lastScrollTime >= scrollDelay) {
+            node.scrollLeft += dir * horizontalScrollStep;
+            lastScrollTime = now;
+        }
         horizontalScrollTimeout = requestAnimationFrame(() =>
             scrollHorizontally(dir),
         );

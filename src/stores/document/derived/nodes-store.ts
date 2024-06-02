@@ -1,5 +1,5 @@
 import { LineageView } from 'src/view/view';
-import { derived } from 'src/helpers/store/derived';
+import { derived } from 'src/lib/store/derived';
 import { Column, NodeGroup } from 'src/stores/document/document-state-type';
 import { findColumn } from 'src/stores/document/derived/groups-store';
 

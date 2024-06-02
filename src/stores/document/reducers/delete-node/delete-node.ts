@@ -1,10 +1,10 @@
-import { cleanAndSortColumns } from 'src/stores/document/reducers/move-node/helpers/clean-and-sort-columns';
+import { cleanAndSortColumns } from 'src/lib/tree-utils/sort/clean-and-sort-columns';
 import { LineageDocument } from 'src/stores/document/document-state-type';
-import { deleteChildNodes } from 'src/stores/document/reducers/delete-node/helpers/delete-child-nodes';
-import { isLastRootNode } from 'src/stores/document/reducers/delete-node/helpers/is-last-root-node';
+import { deleteChildNodes } from 'src/lib/tree-utils/delete/delete-child-nodes';
+import { isLastRootNode } from 'src/lib/tree-utils/assert/is-last-root-node';
 import invariant from 'tiny-invariant';
-import { findNextActiveNode } from 'src/stores/view/reducers/document/helpers/find-next-node/find-next-active-node';
-import { deleteNodeById } from 'src/stores/document/reducers/delete-node/helpers/delete-node-by-id';
+import { findNextActiveNode } from 'src/lib/tree-utils/find/find-next-active-node';
+import { deleteNodeById } from 'src/lib/tree-utils/delete/delete-node-by-id';
 import { lang } from 'src/lang/lang';
 
 export type DeleteNodeAction = {

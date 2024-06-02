@@ -1,9 +1,9 @@
 import { AllDirections } from 'src/stores/document/document-store-actions';
-import { changeNodePosition } from 'src/stores/document/reducers/move-node/helpers/change-node-position';
-import { findAdjacentNode } from 'src/stores/document/reducers/move-node/helpers/find-adjacent-node';
-import { cleanAndSortColumns } from 'src/stores/document/reducers/move-node/helpers/clean-and-sort-columns';
+import { changeNodePosition } from 'src/lib/tree-utils/move/change-node-position';
+import { findAdjacentNode } from 'src/lib/tree-utils/find/find-adjacent-node';
+import { cleanAndSortColumns } from 'src/lib/tree-utils/sort/clean-and-sort-columns';
 import invariant from 'tiny-invariant';
-import { SilentError } from 'src/stores/view/helpers/errors';
+import { SilentError } from 'src/lib/errors/errors';
 import { LineageDocument } from 'src/stores/document/document-state-type';
 
 export type MoveNodeAction = {

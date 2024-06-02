@@ -9,7 +9,7 @@ import { exportDocument } from 'src/obsidian/commands/helpers/export-document/ex
 import { openFile } from 'src/obsidian/commands/helpers/open-file';
 import { extractBranch } from 'src/obsidian/commands/helpers/extract-branch/extract-branch';
 import { isActiveAndNotEditing } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
-import { onPluginError } from 'src/helpers/store/on-plugin-error';
+import { onPluginError } from 'src/lib/store/on-plugin-error';
 import { customIcons } from 'src/helpers/load-custom-icons';
 
 const createCommands = (plugin: Lineage) => {

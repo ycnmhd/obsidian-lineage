@@ -1,11 +1,11 @@
 import { LineageDocument } from 'src/stores/document/document-state-type';
-import { SilentError } from 'src/stores/view/helpers/errors';
+import { SilentError } from 'src/lib/errors/errors';
 import { pasteNode } from 'src/stores/document/reducers/clipboard/paste-node/paste-node';
 import { deleteNode } from 'src/stores/document/reducers/delete-node/delete-node';
-import { findChildGroup } from 'src/stores/view/helpers/search/find-child-group';
+import { findChildGroup } from 'src/lib/tree-utils/find/find-child-group';
 import { lang } from 'src/lang/lang';
-import { headingsToSections } from 'src/stores/document/reducers/split-node/helpers/headings-to-sections';
-import { outlineToSections } from 'src/lib/data-conversion/outline-to-json/outline-to-sections';
+import { headingsToSections } from 'src/lib/data-conversion/headings-to-sections';
+import { outlineToSections } from 'src/lib/data-conversion/outline-to-sections';
 
 export type SplitNodeMode = 'heading' | 'outline';
 export type SplitNodeAction = {

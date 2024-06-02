@@ -1,6 +1,6 @@
 import { Column } from 'src/stores/document/document-state-type';
 import { updateActiveNode } from 'src/stores/view/reducers/document/helpers/update-active-node';
-import { findNextActiveNode } from 'src/stores/view/reducers/document/helpers/find-next-node/find-next-active-node';
+import { findNextActiveNode } from 'src/lib/tree-utils/find/find-next-active-node';
 import { DocumentViewState, ViewState } from 'src/stores/view/view-state-type';
 
 export type JumpTarget =

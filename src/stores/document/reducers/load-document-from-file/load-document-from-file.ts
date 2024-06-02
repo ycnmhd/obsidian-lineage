@@ -1,8 +1,8 @@
-import { jsonTreeToColumns } from 'src/stores/view/helpers/json-to-md/json-to-columns/json-tree-to-columns';
-import { markdownToJson } from 'src/stores/view/helpers/json-to-md/markdown-to-json/markdown-to-json';
+import { jsonToColumns } from 'src/lib/data-conversion/json-to-columns';
+import { sectionsToJson } from 'src/lib/data-conversion/sections-to-json';
 import { DocumentState } from 'src/stores/document/document-state-type';
 import { SavedDocument } from 'src/stores/document/document-store-actions';
-import { createFirstNode } from 'src/stores/document/reducers/load-document-from-file/helpers/create-first-node';
+import { insertFirstNode } from 'src/lib/tree-utils/insert/insert-first-node';
 import invariant from 'tiny-invariant';
 
 export type LoadDocumentAction = {
@@ -16,13 +16,13 @@ export const loadDocumentFromFile = (
     state: DocumentState,
     action: LoadDocumentAction,
 ) => {
-    const tree = markdownToJson(action.payload.document.data);
-    const document = jsonTreeToColumns(tree);
+    const tree = sectionsToJson(action.payload.document.data);
+    const document = jsonToColumns(tree);
     state.document.columns = document.columns;
     state.document.content = document.content;
     const emptyTree = tree.length === 0;
     if (emptyTree) {
-        createFirstNode(state.document.columns, state.document.content);
+        insertFirstNode(state.document.columns, state.document.content);
     }
     if (action.type === 'DOCUMENT/LOAD_FILE')
         state.file.frontmatter = action.payload.document.frontmatter;

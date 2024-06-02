@@ -1,6 +1,6 @@
 import { UndoRedoAction } from 'src/stores/document/reducers/history/undo-action';
 import { SelectSnapshotAction } from 'src/stores/document/reducers/history/select-snapshot';
-import { NodePosition } from 'src/stores/view/helpers/search/find-node-position';
+import { NodePosition } from 'src/lib/tree-utils/find/find-node-position';
 import { LoadDocumentAction } from 'src/stores/document/reducers/load-document-from-file/load-document-from-file';
 import { CreateNodeAction } from 'src/stores/document/reducers/insert-node/insert-node';
 import { SetNodeContentAction } from 'src/stores/document/reducers/content/set-node-content';

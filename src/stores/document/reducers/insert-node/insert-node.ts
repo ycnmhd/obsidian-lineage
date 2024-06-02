@@ -1,7 +1,7 @@
-import { insertChild } from 'src/stores/document/reducers/insert-node/helpers/insert-child';
-import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
+import { insertChild } from 'src/lib/tree-utils/insert/insert-child';
+import { findNodeColumn } from 'src/lib/tree-utils/find/find-node-column';
 import { Direction } from 'src/stores/document/document-store-actions';
-import { findGroupByNodeId } from 'src/stores/view/helpers/search/find-group-by-node-id';
+import { findGroupByNodeId } from 'src/lib/tree-utils/find/find-group-by-node-id';
 import { LineageDocument } from 'src/stores/document/document-state-type';
 import invariant from 'tiny-invariant';
 import { id } from 'src/helpers/id';

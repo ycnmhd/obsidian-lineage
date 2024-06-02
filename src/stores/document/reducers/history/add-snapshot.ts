@@ -1,6 +1,6 @@
 import { updateNavigationState } from 'src/stores/document/reducers/history/helpers/update-navigation-state';
 
-import { NodePosition } from 'src/stores/view/helpers/search/find-node-position';
+import { NodePosition } from 'src/lib/tree-utils/find/find-node-position';
 import {
     DocumentHistory,
     LineageDocument,

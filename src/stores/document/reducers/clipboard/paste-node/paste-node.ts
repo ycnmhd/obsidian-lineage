@@ -1,7 +1,7 @@
 import { insertNode } from 'src/stores/document/reducers/insert-node/insert-node';
 import { LineageDocument } from 'src/stores/document/document-state-type';
 import { pastChildGroups } from 'src/stores/document/reducers/clipboard/paste-node/helpers/past-child-groups';
-import { cleanAndSortColumns } from 'src/stores/document/reducers/move-node/helpers/clean-and-sort-columns';
+import { cleanAndSortColumns } from 'src/lib/tree-utils/sort/clean-and-sort-columns';
 import { textToBranches } from 'src/stores/document/reducers/clipboard/paste-node/helpers/text-to-branches';
 import invariant from 'tiny-invariant';
 import { Direction } from 'src/stores/document/document-store-actions';

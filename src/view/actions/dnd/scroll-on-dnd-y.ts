@@ -1,15 +1,22 @@
+const verticalScrollStep = 10;
+const scrollDelay = 100;
+const T = 20;
+
 export const scrollOnDndY = (column: HTMLElement) => {
     let verticalScrollTimeout: number;
     let verticalScrollDirection = 0;
-    const verticalScrollStep = 10;
-    const T = 20;
+    let lastScrollTime = 0;
 
     const scrollVertically = (
         dir: number,
         bufferHeight: number,
         bufferBottom: number,
     ) => {
-        column.scrollTop += dir * verticalScrollStep;
+        const now = Date.now();
+        if (now - lastScrollTime >= scrollDelay) {
+            column.scrollTop += dir * verticalScrollStep;
+            lastScrollTime = now;
+        }
         if (stop(dir, bufferHeight, bufferBottom)) return;
 
         verticalScrollTimeout = requestAnimationFrame(() =>

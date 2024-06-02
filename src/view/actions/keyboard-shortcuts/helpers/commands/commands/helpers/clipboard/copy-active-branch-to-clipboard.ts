@@ -1,6 +1,6 @@
 import { LineageView } from 'src/view/view';
 import { getBranch } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-branch';
-import { branchToText } from 'src/obsidian/commands/helpers/extract-branch/helpers/branch-to-text';
+import { branchToSection } from 'src/lib/data-conversion/branch-to-section';
 
 export const copyActiveBranchToClipboard = async (view: LineageView) => {
     const viewState = view.viewStore.getValue();
@@ -12,6 +12,6 @@ export const copyActiveBranchToClipboard = async (view: LineageView) => {
         'copy',
     );
 
-    const text = branchToText(branch);
+    const text = branchToSection(branch);
     await navigator.clipboard.writeText(text);
 };

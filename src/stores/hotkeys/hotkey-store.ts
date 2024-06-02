@@ -1,4 +1,4 @@
-import { Store } from 'src/helpers/store/store';
+import { Store } from 'src/lib/store/store';
 import {
     CommandName,
     GroupName,
