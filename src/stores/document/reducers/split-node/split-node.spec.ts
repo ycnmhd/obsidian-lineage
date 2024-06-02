@@ -3,7 +3,6 @@ import { splitNode } from 'src/stores/document/reducers/split-node/split-node';
 import { compareDocuments } from 'src/helpers/test-helpers/compare-documents';
 import { clone } from 'src/helpers/clone';
 import { lang } from 'src/lang/lang';
-import invariant from 'tiny-invariant';
 
 describe('split node', () => {
     test('case: generic document', () => {
@@ -232,14 +231,10 @@ describe('split node', () => {
             type: 'DOCUMENT/SPLIT_NODE',
             payload: { target: 'nO5aXT_Tq', mode: 'heading' },
         } as const;
-        let error: Error | null = null;
-        try {
-            splitNode(input, action);
-        } catch (e) {
-            error = e;
-        }
-        invariant(error);
-        expect(error.message).toEqual(lang.cant_split_card_that_has_children);
+
+        expect(() => splitNode(input, action)).toThrow(
+            lang.cant_split_card_that_has_children,
+        );
         expect(compareDocuments(input, inputClone)).toBe(true);
     });
 
@@ -329,14 +324,8 @@ describe('split node', () => {
             type: 'DOCUMENT/SPLIT_NODE',
             payload: { target: 'nVPwysBOU', mode: 'heading' },
         } as const;
-        let error: Error | null = null;
-        try {
-            splitNode(input, action);
-        } catch (e) {
-            error = e;
-        }
-        invariant(error);
-        expect(error.message).toEqual(lang.cant_split_card);
+
+        expect(() => splitNode(input, action)).toThrow(lang.cant_split_card);
         expect(compareDocuments(input, inputClone)).toBe(true);
     });
 
@@ -359,14 +348,7 @@ describe('split node', () => {
             payload: { target: 'nVPwysBOU', mode: 'heading' },
         } as const;
 
-        let error: Error | null = null;
-        try {
-            splitNode(input, action);
-        } catch (e) {
-            error = e;
-        }
-        invariant(error);
-        expect(error.message).toEqual(lang.cant_split_card);
+        expect(() => splitNode(input, action)).toThrow('input has a section');
         expect(compareDocuments(input, inputClone)).toBe(true);
     });
 });

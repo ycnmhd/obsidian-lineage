@@ -8,7 +8,7 @@ const depthLevel = (number: string) => {
     } else return /\d+/.test(number) ? 1 : 0;
 };
 
-const trimCurrentNode = (node: TreeNode | undefined) => {
+export const trimCurrentNode = (node: TreeNode | undefined) => {
     if (node) {
         node.content = node.content.trim();
     }

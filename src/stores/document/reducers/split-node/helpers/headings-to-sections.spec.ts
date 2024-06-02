@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
-import { annotateNodeBasedOnHeadings } from 'src/stores/document/reducers/split-node/helpers/annotate-node-based-on-headings';
+import { headingsToSections } from 'src/stores/document/reducers/split-node/helpers/headings-to-sections';
 
-describe('annotateNodeBasedOnHeadings', () => {
+describe('headingsToSections', () => {
     test('should annotate headings based on level', () => {
         const input = `
 # 1
@@ -101,22 +101,27 @@ describe('annotateNodeBasedOnHeadings', () => {
 <!--section: 1-->
 # 1
 ...
+
 <!--section: 1.1-->
 ## 1.1
 ...
 ...
+
 <!--section: 1.1.1-->
 ### 1.1.1
 ...
+
 <!--section: 1.1.1.1-->
 #### 1.1.1.1
 ...
 ...
 ...
+
 <!--section: 1.1.1.1.1-->
 ##### 1.1.1.1.1
 ...
 ...
+
 <!--section: 1.2-->
 ## 1.2
 ...
@@ -125,102 +130,125 @@ describe('annotateNodeBasedOnHeadings', () => {
 ...
 ...
 ...
+
 <!--section: 1.2.1-->
 ### 1.2.1
 ...
 ...
+
 <!--section: 1.2.1.1-->
 #### 1.2.1.1
 ...
 ...
 ...
 ...
+
 <!--section: 1.2.2-->
 ### 1.2.2
 ...
 ...
+
 <!--section: 1.3-->
 ## 1.3
 ...
 ...
 ...
 ...
+
 <!--section: 2-->
 # 2
 ...
 ...
+
 <!--section: 2.1-->
 ## 2.1
+
 <!--section: 2.1.1-->
 ### 2.1.1
 ...
 ...
+
 <!--section: 2.1.1.1-->
 #### 2.1.1.1
 ...
 ...
+
 <!--section: 2.1.2-->
 ### 2.1.2
 ...
 ...
+
 <!--section: 2.2-->
 ## 2.2
 ...
 ...
+
 <!--section: 2.2.1-->
 ### 2.2.1
 ...
 ...
+
 <!--section: 2.2.1.1-->
 #### 2.2.1.1
 ...
 ...
+
 <!--section: 2.2.1.1.1-->
 ##### 2.2.1.1.1
 ...
 ...
+
 <!--section: 3-->
 # 3
 ...
 ...
+
 <!--section: 3.1-->
 ## 3.1
 ...
 ...
+
 <!--section: 3.1.1-->
 ### 3.1.1
 ...
 ...
+
 <!--section: 3.1.1.1-->
 #### 3.1.1.1
 ...
 ...
+
 <!--section: 3.1.2-->
 ### 3.1.2
 ...
 ...
+
 <!--section: 3.2-->
 ## 3.2
 ...
 ...
+
 <!--section: 3.2.1-->
 ### 3.2.1
 ...
 ...
+
 <!--section: 3.2.1.1-->
 #### 3.2.1.1
 ...
 ...
+
 <!--section: 3.2.2-->
 ### 3.2.2
 ...
 ...
+
 <!--section: 3.3-->
 ## 3.3
 ...
 ...
 `;
-        expect(annotateNodeBasedOnHeadings(input)).toEqual(output);
+        expect(headingsToSections(input)).toEqual(output);
     });
     test('should not discard text before the first heading', () => {
         const input = `
@@ -248,39 +276,46 @@ describe('annotateNodeBasedOnHeadings', () => {
 ...
 `;
 
-        const output = `<!--section: 1-->
-
+        const output = `
+<!--section: 1-->
 ...
 ...
 
 ...        
+
 <!--section: 2-->
 # 1
 ...
+
 <!--section: 2.1-->
 ## 1.1
 ...
 ...
+
 <!--section: 2.1.1-->
 ### 1.1.1
 ...
+
 <!--section: 2.1.1.1-->
 #### 1.1.1.1
 ...
 ...
 ...
+
 <!--section: 2.1.1.1.1-->
 ##### 1.1.1.1.1
 ...
 ...
+
 <!--section: 2.2-->
 ## 1.2
 ...
+
 <!--section: 3-->
 # 2
 ...
 `;
-        expect(annotateNodeBasedOnHeadings(input)).toEqual(output);
+        expect(headingsToSections(input)).toEqual(output);
     });
 
     test('should reject text that has a section annotation', () => {
@@ -292,7 +327,7 @@ describe('annotateNodeBasedOnHeadings', () => {
 ...
 <!--section: 1-->
 ### 1.1.1`;
-        expect(annotateNodeBasedOnHeadings(input)).toEqual(input);
+        expect(() => headingsToSections(input)).toThrow('input has a section');
     });
 
     test('...', () => {
@@ -490,11 +525,13 @@ describe('annotateNodeBasedOnHeadings', () => {
 ..
 ..`;
 
-        const output = `<!--section: 1-->
+        const output = `
+<!--section: 1-->
 # 1
 ..
 ..
 ..
+
 
 <!--section: 1.1-->
 ## 1.1
@@ -502,50 +539,60 @@ describe('annotateNodeBasedOnHeadings', () => {
 ..
 ..
 
+
 <!--section: 1.2-->
 ## 1.2
 ..
 ..
+
 
 <!--section: 1.2.1-->
 ### 1.2.1
 ..
 ..
 
+
 <!--section: 1.3-->
 ## 1.3
 ..
 ..
+
 
 <!--section: 1.3.1-->
 ### 1.3.1
 ..
 ..
 
+
 <!--section: 1.3.2-->
 ### 1.3.2
 ..
 ..
+
 
 <!--section: 1.3.2.1-->
 #### 1.3.2.1
 ..
 ..
 
+
 <!--section: 1.3.2.2-->
 #### 1.3.2.2
 ..
 ..
+
 
 <!--section: 1.3.2.2.1-->
 ##### 1.3.2.2.1
 ..
 ..
 
+
 <!--section: 1.3.2.2.2-->
 ##### 1.3.2.2.2
 ..
 ..
+
 
 <!--section: 2-->
 # 2
@@ -553,45 +600,54 @@ describe('annotateNodeBasedOnHeadings', () => {
 ..
 ..
 
+
 <!--section: 2.1-->
 ## 2.1
 ..
 ..
+
 
 <!--section: 2.2-->
 ## 2.2
 ..
 ..
 
+
 <!--section: 2.2.1-->
 ### 2.2.1
 ..
 ..
+
 
 <!--section: 2.2.2-->
 ### 2.2.2
 ..
 ..
 
+
 <!--section: 2.2.2.1-->
 #### 2.2.2.1
 ..
 ..
+
 
 <!--section: 2.2.2.2-->
 #### 2.2.2.2
 ..
 ..
 
+
 <!--section: 2.2.2.2.1-->
 ##### 2.2.2.2.1
 ..
 ..
 
+
 <!--section: 2.2.2.2.2-->
 ##### 2.2.2.2.2
 ..
 ..
+
 
 <!--section: 3-->
 # 3
@@ -599,45 +655,54 @@ describe('annotateNodeBasedOnHeadings', () => {
 ..
 ..
 
+
 <!--section: 3.1-->
 ## 3.1
 ..
 ..
+
 
 <!--section: 3.2-->
 ## 3.2
 ..
 ..
 
+
 <!--section: 3.2.1-->
 ### 3.2.1
 ..
 ..
+
 
 <!--section: 3.2.2-->
 ### 3.2.2
 ..
 ..
 
+
 <!--section: 3.2.2.1-->
 #### 3.2.2.1
 ..
 ..
+
 
 <!--section: 3.2.2.2-->
 #### 3.2.2.2
 ..
 ..
 
+
 <!--section: 3.2.2.2.1-->
 ##### 3.2.2.2.1
 ..
 ..
 
+
 <!--section: 3.2.2.2.2-->
 ##### 3.2.2.2.2
 ..
 ..
+
 
 <!--section: 4-->
 # 4
@@ -645,45 +710,54 @@ describe('annotateNodeBasedOnHeadings', () => {
 ..
 ..
 
+
 <!--section: 4.1-->
 ## 4.1
 ..
 ..
+
 
 <!--section: 4.2-->
 ## 4.2
 ..
 ..
 
+
 <!--section: 4.2.1-->
 ### 4.2.1
 ..
 ..
+
 
 <!--section: 4.2.2-->
 ### 4.2.2
 ..
 ..
 
+
 <!--section: 4.2.2.1-->
 #### 4.2.2.1
 ..
 ..
+
 
 <!--section: 4.2.2.2-->
 #### 4.2.2.2
 ..
 ..
 
+
 <!--section: 4.2.2.2.1-->
 ##### 4.2.2.2.1
 ..
 ..
 
+
 <!--section: 4.2.2.2.2-->
 ##### 4.2.2.2.2
 ..
 ..
+
 
 <!--section: 5-->
 # 5
@@ -691,45 +765,53 @@ describe('annotateNodeBasedOnHeadings', () => {
 ..
 ..
 
+
 <!--section: 5.1-->
 ## 5.1
 ..
 ..
+
 
 <!--section: 5.2-->
 ## 5.2
 ..
 ..
 
+
 <!--section: 5.2.1-->
 ### 5.2.1
 ..
 ..
+
 
 <!--section: 5.2.2-->
 ### 5.2.2
 ..
 ..
 
+
 <!--section: 5.2.2.1-->
 #### 5.2.2.1
 ..
 ..
+
 
 <!--section: 5.2.2.2-->
 #### 5.2.2.2
 ..
 ..
 
+
 <!--section: 5.2.2.2.1-->
 ##### 5.2.2.2.1
 ..
 ..
 
+
 <!--section: 5.2.2.2.2-->
 ##### 5.2.2.2.2
 ..
 ..`;
-        expect(annotateNodeBasedOnHeadings(input)).toEqual(output);
+        expect(headingsToSections(input)).toEqual(output);
     });
 });
