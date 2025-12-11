@@ -73,6 +73,9 @@ export class LineageView extends TextFileView {
     minimapDom: MinimapDomElements | null = null;
     private readonly onDestroyCallbacks: Set<Unsubscriber> = new Set();
     private activeFilePath: null | string;
+    // Track classes applied from frontmatter so we can remove them later
+    private currentAppliedCssClasses: string[] = [];
+
     constructor(
         leaf: WorkspaceLeaf,
         public plugin: Lineage,
@@ -125,6 +128,9 @@ export class LineageView extends TextFileView {
     }
 
     async onUnloadFile() {
+        // remove frontmatter classes for the current file, if any
+        this.removeAppliedFrontmatterCssClasses();
+
         if (this.component) {
             this.component.$destroy();
         }
@@ -225,6 +231,9 @@ export class LineageView extends TextFileView {
             },
         });
 
+        // Apply any frontmatter `cssclasses` to the view after component mount
+        this.applyFrontmatterCssClasses();
+
         invariant(this.container);
         this.onDestroyCallbacks.add(viewSubscriptions(this));
     };
@@ -311,5 +320,128 @@ export class LineageView extends TextFileView {
     getMinimapStore() {
         invariant(this.minimapStore);
         return this.minimapStore;
+    }
+
+    // --- Frontmatter cssclasses support ---
+    // Only read 'cssclasses' from frontmatter. Support YAML list or space-separated string.
+    private getFrontmatterCssClasses(): string[] {
+        if (!this.file) return [];
+        const cache = this.plugin.app.metadataCache.getFileCache(
+            this.file,
+        ) as unknown as {
+            frontmatter?: Record<string, unknown>;
+        };
+        const fm = cache?.frontmatter ?? {};
+        const raw = fm.cssclasses;
+        if (!raw) return [];
+        if (Array.isArray(raw)) {
+            return raw
+                .map(String)
+                .flatMap((s) => s.split(/\s+/))
+                .filter(Boolean);
+        }
+        if (typeof raw === 'string') {
+            return raw.split(/\s+/).filter(Boolean);
+        }
+        return String(raw).split(/\s+/).filter(Boolean);
+    }
+
+    // Apply cssclasses to both contentEl and the workspace leaf element (closest .workspace-leaf).
+    private applyFrontmatterCssClasses(): void {
+        const classes = this.getFrontmatterCssClasses();
+        // Debug helper - remove if too verbose
+        // eslint-disable-next-line no-console
+        console.log(
+            '[Lineage] applyFrontmatterCssClasses',
+            this.file?.path,
+            classes,
+        );
+
+        // Remove any previously applied classes first
+        this.removeAppliedFrontmatterCssClasses();
+
+        if (!classes.length) return;
+
+        // Apply to contentEl
+        const contentElWithClassMethods = this.contentEl as unknown as {
+            addClasses?: (classes: string[]) => void;
+        };
+        if (contentElWithClassMethods?.addClasses) {
+            try {
+                contentElWithClassMethods.addClasses(classes);
+            } catch {
+                classes.forEach((c) => this.contentEl.classList.add(c));
+            }
+        } else {
+            classes.forEach((c) => this.contentEl.classList.add(c));
+        }
+
+        // Apply to workspace leaf container element (robust lookup).
+        // Some Obsidian types may not expose `containerEl` on the leaf, so we
+        // find the DOM ancestor instead.
+        const leafContainer =
+            ((this.leaf as unknown as { containerEl?: HTMLElement })
+                ?.containerEl as HTMLElement | undefined) ??
+            (this.contentEl?.closest('.workspace-leaf') as HTMLElement | null);
+
+        if (leafContainer) {
+            const leafWithClassMethods = leafContainer as unknown as {
+                addClasses?: (classes: string[]) => void;
+            };
+            if (leafWithClassMethods.addClasses) {
+                try {
+                    leafWithClassMethods.addClasses(classes);
+                } catch {
+                    classes.forEach((c) => leafContainer.classList.add(c));
+                }
+            } else {
+                classes.forEach((c) => leafContainer.classList.add(c));
+            }
+        }
+
+        this.currentAppliedCssClasses = classes;
+    }
+
+    // Remove classes from both contentEl and the workspace leaf element.
+    private removeAppliedFrontmatterCssClasses(): void {
+        if (!this.currentAppliedCssClasses.length) return;
+        const classes = this.currentAppliedCssClasses;
+
+        // contentEl
+        const contentElWithRemove = this.contentEl as unknown as {
+            removeClasses?: (classes: string[]) => void;
+        };
+        if (contentElWithRemove?.removeClasses) {
+            try {
+                contentElWithRemove.removeClasses(classes);
+            } catch {
+                classes.forEach((c) => this.contentEl.classList.remove(c));
+            }
+        } else {
+            classes.forEach((c) => this.contentEl.classList.remove(c));
+        }
+
+        // workspace leaf container
+        const leafContainer =
+            ((this.leaf as unknown as { containerEl?: HTMLElement })
+                ?.containerEl as HTMLElement | undefined) ??
+            (this.contentEl?.closest('.workspace-leaf') as HTMLElement | null);
+
+        if (leafContainer) {
+            const leafWithRemove = leafContainer as unknown as {
+                removeClasses?: (classes: string[]) => void;
+            };
+            if (leafWithRemove.removeClasses) {
+                try {
+                    leafWithRemove.removeClasses(classes);
+                } catch {
+                    classes.forEach((c) => leafContainer.classList.remove(c));
+                }
+            } else {
+                classes.forEach((c) => leafContainer.classList.remove(c));
+            }
+        }
+
+        this.currentAppliedCssClasses = [];
     }
 }
