@@ -52,8 +52,8 @@ export const markdownPreviewAction = (element: HTMLElement, nodeId: string) => {
 
         try {
             // Remove previously applied tag classes to avoid leakage
-            const prev = Array.from(element.classList).filter((c) =>
-                c.startsWith('has-tag-'),
+            const prev = Array.from(element.classList).filter(
+                (c) => c === 'has-tag' || c.startsWith('has-tag-'),
             );
             for (const c of prev) element.classList.remove(c);
 
@@ -62,6 +62,9 @@ export const markdownPreviewAction = (element: HTMLElement, nodeId: string) => {
             for (const t of tags) {
                 element.classList.add(`has-tag-${t}`);
             }
+
+            // If there are any tags, also add a generic marker class
+            if (tags.length > 0) element.classList.add('has-tag');
         } catch (e) {
             // swallow any DOM errors to avoid breaking rendering
             // eslint-disable-next-line no-console
