@@ -78,7 +78,12 @@ export const onDocumentStateUpdate = (
         view.rulesProcessor.onDocumentUpdate(action);
     }
 
-    if (!container || !view.isViewOfFile) return;
+    // Save gate. Originally this also required `view.isViewOfFile` (i.e. the
+    // view whose id matches the document-store owner registered on
+    // `active-leaf-change`). Views opened in detached/embedded leaves - e.g. a
+    // dashboard popover - are never the active leaf, so that check silently
+    // dropped their edits. Only the container guard is needed to persist.
+    if (!container) return;
 
     if (e.content || structuralChange) {
         view.saveDocument();
