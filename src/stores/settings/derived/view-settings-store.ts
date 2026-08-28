@@ -6,7 +6,7 @@ export const ViewSettingsStore = (view: LineageView) =>
     derived(view.plugin.settings, (state) => state.view);
 
 export const ShowLeftSidebarStore = (view: LineageView) =>
-    derived(view.plugin.settings, (state) => state.view.showLeftSidebar);
+    derived(view.viewStore, (state) => state.ui.controls.showLeftSidebar);
 
 export const LeftSidebarWidthStore = (view: LineageView) =>
     derived(view.plugin.settings, (state) => state.view.leftSidebarWidth);
@@ -19,6 +19,9 @@ export const ApplyGapBetweenCardsStore = (view: LineageView) =>
 
 export const OutlineModeStore = (view: LineageView) =>
     derived(view.plugin.settings, (state) => state.view.outlineMode);
+
+export const MindmapModeStore = (view: LineageView) =>
+    derived(view.plugin.settings, (state) => state.view.mindmapMode);
 
 export const MaintainEditMode = (view: LineageView) =>
     derived(view.plugin.settings, (state) => state.view.maintainEditMode);

@@ -64,7 +64,6 @@ export const onPluginSettingsUpdate = (
     }
 
     const shouldAlign =
-        type === 'view/left-sidebar/toggle' ||
         type === 'view/left-sidebar/set-width' ||
         type === 'settings/view/set-zoom-level' ||
         type === 'settings/view/layout/set-card-width' ||

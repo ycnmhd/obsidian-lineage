@@ -43,6 +43,12 @@ export class VerticalToolbarActions {
         });
     };
 
+    toggleMindmapMode = () => {
+        this.view.plugin.settings.dispatch({
+            type: 'settings/view/modes/toggle-mindmap-mode',
+        });
+    };
+
     zoomIn = () => {
         this.view.plugin.settings.dispatch({
             type: 'settings/view/set-zoom-level',

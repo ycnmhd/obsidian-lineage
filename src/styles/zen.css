@@ -1,0 +1,69 @@
+/* Zen mode — hide all Obsidian UI chrome so only the Lineage cards remain.
+   The `lineage-zen-mode` class is toggled on <body> while an active Lineage
+   view is in zen mode. All selectors target Obsidian's built-in workspace
+   chrome, NOT Lineage's own components (which are hidden in main.svelte). */
+body.lineage-zen-mode {
+    /* Hide the current view's header bar (file name, breadcrumbs, etc.). */
+    & .view-header {
+        display: none;
+    }
+
+    /* Force zero padding ONLY on Lineage views' content while in zen mode so the
+       card board fills the area — even for freshly opened documents that don't
+       yet carry the minimap class. Scoped with :has() so Markdown/other views
+       keep their normal padding. */
+    & .view-content:has(.lineage-view) {
+        padding: 0 !important;
+    }
+
+    /* Floating, responsive tab bar. The tab header is taken out of flow and
+       floats as an overlay at the top, hidden by default. The plugin adds the
+       `lineage-zen-tabs-visible` class while the cursor is near the top of the
+       window, sliding the bar in; removing it slides the bar back out. Note:
+       `.workspace-tabs` (the container that also holds the tab CONTENT) must
+       stay in normal flow — never fix/shrink it, or the card board collapses. */
+    & .workspace-tab-header-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1001;
+        background: var(--background-secondary);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        transform: translateY(-100%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    &.lineage-zen-tabs-visible .workspace-tab-header-container {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Hide the far-left icon ribbon (also when collapsed). */
+    & .workspace-ribbon.mod-left,
+    & .workspace-ribbon.side-dock-ribbon.mod-left.is-collapsed {
+        display: none;
+    }
+
+    /* Hide the window titlebar buttons (minimize / maximize / close). */
+    & .titlebar-button.mod-minimize,
+    & .titlebar-button.mod-maximize,
+    & .titlebar-button.mod-close {
+        display: none;
+    }
+
+    /* Remove the left (file explorer / bookmarks) and right (outline etc.)
+       sidebars so the card board gets the full width. */
+    & .workspace-split.mod-left-split,
+    & .workspace-split.mod-right-split {
+        display: none;
+    }
+
+    /* Remove the status bar at the very bottom. */
+    & .status-bar {
+        display: none;
+    }
+}

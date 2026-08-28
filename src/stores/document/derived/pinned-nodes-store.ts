@@ -6,3 +6,13 @@ export const PinnedNodesStore = (view: LineageView) => {
         return state.pinnedNodes.Ids;
     });
 };
+
+export const PinnedNodesFullStore = (view: LineageView) => {
+    return derived(view.documentStore, (state) => {
+        return {
+            Ids: state.pinnedNodes.Ids,
+            nodeToCategory: state.pinnedNodes.nodeToCategory,
+            fileCategories: state.pinnedNodes.fileCategories,
+        };
+    });
+};

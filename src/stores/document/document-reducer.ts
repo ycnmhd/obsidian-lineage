@@ -31,6 +31,10 @@ import { pinNode } from 'src/stores/document/reducers/pinned-nodes/pin-node';
 import { unpinNode } from 'src/stores/document/reducers/pinned-nodes/unpin-node';
 import { removeStalePinnedNodes } from 'src/stores/document/reducers/pinned-nodes/remove-stale-pinned-nodes';
 import { loadPinnedNodes } from 'src/stores/document/reducers/pinned-nodes/load-pinned-nodes';
+import { setCategory } from 'src/stores/document/reducers/pinned-nodes/set-category';
+import { removeCategory } from 'src/stores/document/reducers/pinned-nodes/remove-category';
+import { addCategory } from 'src/stores/document/reducers/pinned-nodes/add-category';
+import { deleteCategory } from 'src/stores/document/reducers/pinned-nodes/delete-category';
 import { refreshGroupParentIds } from 'src/stores/document/reducers/meta/refresh-group-parent-ids';
 import { loadDocumentFromJSON } from 'src/stores/document/reducers/load-document-from-file/load-document-from-json';
 import { NO_UPDATE } from 'src/lib/store/store';
@@ -141,14 +145,30 @@ const updateDocumentState = (
         unpinNode(state.pinnedNodes, action.payload.id);
         return;
     } else if (action.type === 'document/pinned-nodes/remove-stale-nodes') {
-        removeStalePinnedNodes(state.pinnedNodes, state.sections);
+        removeStalePinnedNodes(
+            state.pinnedNodes,
+            state.sections,
+            action.payload?.oldSections,
+        );
         return;
     } else if (action.type === 'document/pinned-nodes/load-from-settings') {
         loadPinnedNodes(
             state.pinnedNodes,
             state.sections,
-            action.payload.sections,
+            action.payload,
         );
+        return;
+    } else if (action.type === 'document/pinned-nodes/set-category') {
+        setCategory(state.pinnedNodes, action.payload.id, action.payload.category);
+        return;
+    } else if (action.type === 'document/pinned-nodes/remove-category') {
+        removeCategory(state.pinnedNodes, action.payload.id);
+        return;
+    } else if (action.type === 'document/pinned-nodes/add-category') {
+        addCategory(state.pinnedNodes, action.payload.name);
+        return;
+    } else if (action.type === 'document/pinned-nodes/delete-category') {
+        deleteCategory(state.pinnedNodes, action.payload.name);
         return;
     } else if (action.type === 'document/meta/refresh-group-parent-ids') {
         refreshGroupParentIds(state.document.columns, state.meta);

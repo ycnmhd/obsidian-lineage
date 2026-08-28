@@ -28,3 +28,6 @@ references/*
 /blob-report/
 /playwright/.cache/
 .env
+
+# Markdown files
+*.md

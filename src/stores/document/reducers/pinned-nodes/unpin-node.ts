@@ -9,4 +9,6 @@ export type UnpinNodeAction = {
 
 export const unpinNode = (pinnedNodes: PinnedNodesState, id: string) => {
     pinnedNodes.Ids = pinnedNodes.Ids.filter((_id) => _id !== id);
+    // Clean up category mapping when unpinning
+    delete pinnedNodes.nodeToCategory[id];
 };

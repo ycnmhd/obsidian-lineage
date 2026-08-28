@@ -85,7 +85,7 @@
     class={'lng-prev markdown-preview-view markdown-preview-section markdown-rendered'}
     on:click={handleClick}
     on:dblclick={handleDoubleClick}
-    use:markdownPreviewAction={nodeId}
+    use:markdownPreviewAction={{ nodeId }}
 ></div>
 
 <style>

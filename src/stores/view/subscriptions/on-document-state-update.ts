@@ -43,9 +43,41 @@ export const onDocumentStateUpdate = (
         viewStore.dispatch({
             type: 'view/outline/refresh-collapsed-nodes',
         });
+        // Pass old sections when file is reloaded so pinned nodes can be remapped
+        // by section number (node IDs are random and change on each reload)
+        const oldSections =
+            type === 'document/file/load-from-disk'
+                ? action.payload.oldSections
+                : undefined;
+        const hadPinnedNodes =
+            documentStore.getValue().pinnedNodes.Ids.length > 0;
         documentStore.dispatch({
             type: 'document/pinned-nodes/remove-stale-nodes',
+            payload: oldSections ? { oldSections } : undefined,
         });
+        // If remapping lost all pinned nodes (e.g., section structure changed),
+        // reload from settings which stores section-based references
+        if (
+            hadPinnedNodes &&
+            documentStore.getValue().pinnedNodes.Ids.length === 0
+        ) {
+            const persistedDocument =
+                view.plugin.settings.getValue().documents[view.file!.path];
+            if (persistedDocument?.pinnedSections) {
+                documentStore.dispatch({
+                    type: 'document/pinned-nodes/load-from-settings',
+                    payload: {
+                        sections: persistedDocument.pinnedSections.sections,
+                        fileCategories:
+                            persistedDocument.pinnedSections.fileCategories ||
+                            [],
+                        nodeToCategory:
+                            persistedDocument.pinnedSections.nodeToCategory ||
+                            {},
+                    },
+                });
+            }
+        }
         documentStore.dispatch({
             type: 'document/meta/refresh-group-parent-ids',
         });
@@ -109,16 +141,20 @@ export const onDocumentStateUpdate = (
     }
 
     const pinnedNodesUpdate =
-        type === 'document/pinned-nodes/remove-stale-nodes' ||
         type === 'document/pinned-nodes/pin' ||
-        type === 'document/pinned-nodes/unpin';
+        type === 'document/pinned-nodes/unpin' ||
+        type === 'document/pinned-nodes/set-category' ||
+        type === 'document/pinned-nodes/remove-category' ||
+        type === 'document/pinned-nodes/add-category' ||
+        type === 'document/pinned-nodes/delete-category';
 
     if (pinnedNodesUpdate) {
         persistPinnedNodes(view);
     }
     if (
         pinnedNodesUpdate ||
-        type === 'document/pinned-nodes/load-from-settings'
+        type === 'document/pinned-nodes/load-from-settings' ||
+        type === 'document/pinned-nodes/remove-stale-nodes'
     ) {
         if (type === 'document/pinned-nodes/pin') {
             setActivePinnedNode(view, action.payload.id);

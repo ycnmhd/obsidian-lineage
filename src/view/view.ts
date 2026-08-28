@@ -43,7 +43,6 @@ import {
 import { MinimapStoreAction } from 'src/stores/minimap/minimap-store-actions';
 import { StyleRulesProcessor } from 'src/stores/view/subscriptions/effects/style-rules/style-rules-processor';
 import { AlignBranch } from 'src/stores/view/subscriptions/effects/align-branch/align-branch';
-import { lang } from 'src/lang/lang';
 import { DebouncedMinimapEffects } from 'src/stores/minimap/subscriptions/effects/debounced-minimap-effects';
 import { updateFrontmatter } from 'src/stores/view/subscriptions/actions/document/update-frontmatter';
 import { loadFullDocument } from 'src/stores/view/subscriptions/actions/document/load-full-document';
@@ -194,7 +193,7 @@ export class LineageView extends TextFileView {
             stringifyDocument(state.document, getPersistedDocumentFormat(this));
         if (data !== this.data) {
             if (data.trim().length === 0) {
-                throw new Error(lang.error_save_empty_data);
+                return; // Silently skip save when document is empty (e.g., during initialization)
             }
             this.data = data;
             this.requestSave();
@@ -248,6 +247,13 @@ export class LineageView extends TextFileView {
             this.plugin.store.getValue().documents[
                 this.file.path
             ].documentStore;
+        // Claim ownership of the document so this view saves content changes
+        // (e.g. when the store was created as a background store by the
+        // global categories view).
+        this.plugin.store.dispatch({
+            type: 'plugin/documents/refresh-active-view-of-document',
+            payload: { views: [[this.id, this.file.path]] },
+        });
     };
 
     private loadDocumentToStore = (event?: 'view-mount') => {
@@ -270,7 +276,16 @@ export class LineageView extends TextFileView {
             ? documentState.sections.id_section[activeNode]
             : null;
         if (emptyStore || (bodyHasChanged && !isEditing)) {
-            loadFullDocument(this, body, frontmatter, format, activeSection);
+            // Capture old sections before loading to remap pinned nodes
+            const oldSections = documentState.sections;
+            loadFullDocument(
+                this,
+                body,
+                frontmatter,
+                format,
+                activeSection,
+                oldSections,
+            );
             if (this.isActive && event !== 'view-mount') {
                 new Notice('Document updated externally');
             }

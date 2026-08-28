@@ -6,7 +6,8 @@ export type PluginStoreActions =
     | AddDocument
     | ActiveLineageViewChange
     | RefreshDocuments
-    | WorkspaceEvents;
+    | WorkspaceEvents
+    | ToggleZenMode;
 
 export type AddDocument = {
     type: 'plugin/documents/register-new-document-store';
@@ -50,6 +51,10 @@ export type ActiveLineageViewChange = {
         path: string;
         viewId: string;
     };
+};
+
+export type ToggleZenMode = {
+    type: 'plugin/zen/toggle';
 };
 
 export type ActiveLeafChange = {

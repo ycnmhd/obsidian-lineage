@@ -90,6 +90,26 @@ const cursor: CustomIcon = {
   <path d="M 12.00361,6.8555957 V 16.855596" />`,
     mode: 'stroke',
 };
+
+const mindmap: CustomIcon = {
+    name: 'mindmap',
+    svg: `<circle cx="12" cy="12" r="3" />
+  <circle cx="4" cy="6" r="2" />
+  <circle cx="20" cy="6" r="2" />
+  <circle cx="4" cy="18" r="2" />
+  <circle cx="20" cy="18" r="2" />
+  <line x1="9.5" y1="10.5" x2="5.5" y2="7.5" />
+  <line x1="14.5" y1="10.5" x2="18.5" y2="7.5" />
+  <line x1="9.5" y1="13.5" x2="5.5" y2="16.5" />
+  <line x1="14.5" y1="13.5" x2="18.5" y2="16.5" />`,
+    mode: 'stroke',
+};
+const folderTree: CustomIcon = {
+    name: 'lineage-folder-tree',
+    svg: `<path d="M20 10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2.5a1 1 0 0 1-.8-.4l-.9-1.2A1 1 0 0 0 15 3h-2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M20 21a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-2.9a1 1 0 0 1-.88-.55l-.42-.85a1 1 0 0 0-.92-.6H13a1 1 0 0 0-1 1V20a1 1 0 0 0 1 1Z"/><path d="M2 5a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M2 13a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M2 21a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>`,
+    mode: 'stroke',
+};
+
 export const customIcons = {
     cards,
     split,
@@ -99,6 +119,8 @@ export const customIcons = {
     outline,
     cursor,
     cursorOff,
+    mindmap,
+    folderTree,
 };
 
 export const loadCustomIcons = () => {

@@ -7,4 +7,7 @@ export type PluginState = {
             viewId: string;
         };
     };
+    // Global zen mode: hides all UI chrome (in every Lineage view and
+    // Obsidian's native workspace chrome) until toggled off again.
+    zenMode: boolean;
 };

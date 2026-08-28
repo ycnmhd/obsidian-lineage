@@ -13,7 +13,11 @@ import { cutNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/co
 import { pasteNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/paste-node';
 import { extractBranch } from 'src/obsidian/commands/helpers/extract-branch/extract-branch';
 import { exportSelection } from 'src/view/actions/context-menu/card-context-menu/helpers/export-selection';
-import { togglePinNode } from 'src/view/actions/context-menu/card-context-menu/create-sidebar-context-menu-items';
+import { revealInLeftSidebar } from 'src/view/actions/context-menu/card-context-menu/helpers/reveal-in-left-sidebar';
+import {
+    createCategorySubmenu,
+    togglePinNode,
+} from 'src/view/actions/context-menu/card-context-menu/create-sidebar-context-menu-items';
 
 type Props = {
     activeNode: string;
@@ -113,6 +117,20 @@ export const createSingleNodeContextMenuItems = (
             action: () => pasteNode(view),
         },
         { type: 'separator' },
+        ...(isPinned
+            ? [
+                  {
+                      title: lang.cm_category,
+                      icon: 'tag',
+                      submenu: createCategorySubmenu(view, activeNode),
+                  },
+                  {
+                      title: lang.cm_reveal_in_left_sidebar,
+                      icon: 'pin',
+                      action: () => revealInLeftSidebar(view, activeNode),
+                  },
+              ]
+            : []),
         {
             title: isPinned
                 ? lang.cm_unpin_from_left_sidebar

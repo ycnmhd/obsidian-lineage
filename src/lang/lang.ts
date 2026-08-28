@@ -250,6 +250,10 @@ export const lang = {
     settings_layout_indentation_width: 'Card indentation',
     controls_single_column: 'Outline mode',
     hk_toggle_outline_mode: `Toggle outline mode`,
+
+    // mindmap
+    controls_mindmap_mode: 'Mindmap mode',
+    hk_toggle_mindmap_mode: `Toggle mindmap mode`,
     card_btn_collapse_node: 'Collapse',
     card_btn_expand_node: 'Expand',
     hk_outline_toggle_collapse: 'Collapse/expand section',
@@ -271,6 +275,7 @@ export const lang = {
     controls_toggle_minimap: 'Document minimap',
     cmd_toggle_minimap: 'Toggle document minimap',
     cmd_toggle_left_sidebar: 'Toggle left sidebar',
+    cmd_toggle_zen_mode: 'Toggle zen mode',
 
     // recent sections
     sidebar_tab_recent_nodes: 'Recently selected sections',
@@ -279,9 +284,76 @@ export const lang = {
     // pin sections
     cm_unpin_from_left_sidebar: 'Unpin from left sidebar',
     cm_pin_in_left_sidebar: 'Pin in left sidebar',
+    cm_reveal_in_left_sidebar: 'Reveal in left sidebar',
+    cm_reveal_in_main_view: 'Reveal in main view',
     cmd_toggle_pin_in_left_sidebar: `Toggle 'pin section in left sidebar'`,
     sidebar_tab_pinned_nodes: 'Pinned sections',
     sidebar_no_pinned_nodes: 'No pinned sections',
+
+    // similar cards
+    sidebar_tab_similar_cards: 'Similar cards',
+    sidebar_no_similar_cards:
+        'No similar cards found.\nRun "Find: Similar chunks from selection" to populate.',
+    similar_cards_query: 'Search query:',
+    similar_cards_score: 'Similarity:',
+    similar_cards_score_label: (pct: number) => `${pct}% similar`,
+
+    // categories
+    sidebar_filter_all: 'All',
+    sidebar_filter_uncategorized: 'Uncategorized',
+    cm_category: 'Category',
+    cm_create_category: 'Create new category...',
+    cm_remove_category: 'Remove category',
+    cm_delete_category: 'Delete category',
+    modal_new_category_placeholder: 'Enter category name...',
+    modal_button_cancel: 'Cancel',
+    modal_button_create: 'Create',
+
+    // global categories
+    cm_global_categories: 'Global categories',
+    cm_open_global_categories: 'Open global categories…',
+    cm_new_folder: 'New folder',
+    cm_new_category: 'New category',
+    cm_rename: 'Rename',
+    cm_delete: 'Delete',
+    cm_move: 'Move',
+    cm_remove_from_category: 'Remove from category',
+    cm_open_in_lineage: 'Open in Lineage',
+    cmd_open_global_categories: 'Open global categories',
+    cmd_add_card_to_global_category: 'Add current card to global category',
+    add_to_global_category_title: 'Add to global category',
+    add_to_global_category_select_directory: 'Select a directory',
+    add_to_global_category_select_category: 'Select a category',
+    add_to_global_category_create_directory: 'New directory…',
+    add_to_global_category_create_category: 'New category…',
+    add_to_global_category_not_in_any:
+        'This card is not in any global category',
+    add_to_global_category_in_categories: 'Already in global category:',
+    add_to_global_category_reveal: 'Reveal in global view',
+    global_categories_view_title: 'Global categories',
+    global_categories_empty_tree:
+        'No folders or categories yet. Right-click to create one.',
+    global_categories_empty_cards:
+        'No cards in this selection yet. Pin a card in the sidebar and add it to a global category.',
+    global_categories_select_node:
+        'Select a folder or category to see its cards.',
+    global_categories_open_in_file: 'Open "{filename}" in the Lineage view',
+    global_categories_move_up: 'Move card up',
+    global_categories_move_down: 'Move card down',
+    global_categories_toggle_label: 'Global categories',
+    global_categories_toggle_title: 'Show global categories in the sidebar',
+    global_categories_all_directories: 'All directories',
+    global_categories_all_categories: 'All categories',
+    global_categories_select_directory: 'Select directory…',
+    global_categories_select_category: 'Select category…',
+    global_categories_search_directory: 'Search directories…',
+    global_categories_search_category: 'Search categories…',
+    global_categories_no_matches: 'No matches',
+    global_categories_manage_tree: 'Manage tree',
+    global_categories_search_cards: 'Search cards…',
+    global_categories_search_no_results: 'No cards match your search.',
+    modal_new_folder_placeholder: 'Enter folder name...',
+    modal_rename_placeholder: 'Enter new name...',
 
     // rules
     modals_rules_add_rule: 'New rule',

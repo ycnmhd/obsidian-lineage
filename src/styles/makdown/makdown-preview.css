@@ -41,4 +41,20 @@
         margin-block-start: 0;
         margin-block-end: 0;
     }
+    & mark.search-highlight {
+        background-color: var(--search-highlight, #ffc85766);
+        color: inherit;
+        border-radius: 2px;
+        padding: 0 2px;
+        margin: 0 -2px;
+    }
+
+    & span.sidenote-highlight {
+        background-color: var(--sidenote-highlight, #ffc80033);
+        color: inherit;
+        border-radius: 2px;
+        padding: 0 2px;
+        margin: 0 -2px;
+        cursor: pointer;
+    }
 }

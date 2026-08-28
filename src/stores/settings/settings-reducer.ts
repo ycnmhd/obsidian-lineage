@@ -7,6 +7,16 @@ import { setHotkeyAsBlank } from 'src/stores/settings/reducers/set-hotkey-as-bla
 import { PersistedViewHotkey } from 'src/view/actions/keyboard-shortcuts/helpers/commands/default-view-hotkeys';
 import { persistCollapsedSections } from 'src/stores/settings/reducers/persist-collapsed-sections';
 import { SettingsActions } from 'src/stores/settings/settings-store-actions';
+import {
+    addGlobalCard,
+    createGlobalNode,
+    deleteGlobalNode,
+    moveGlobalCard,
+    moveGlobalNode,
+    removeGlobalCard,
+    renameGlobalNode,
+    setGlobalCategoriesEnabled,
+} from 'src/stores/settings/reducers/global-categories/global-categories-reducer';
 
 const updateState = (store: Settings, action: SettingsActions) => {
     if (action.type === 'settings/documents/delete-document-preferences') {
@@ -21,6 +31,9 @@ const updateState = (store: Settings, action: SettingsActions) => {
                 pinnedSections: {
                     sections: [],
                     activeSection: null,
+                    fileCategories: [],
+                    nodeToCategory: {},
+                    activeCategory: 'all',
                 },
                 outline: {
                     collapsedSections: [],
@@ -75,24 +88,31 @@ const updateState = (store: Settings, action: SettingsActions) => {
         store.general.defaultDocumentFormat = action.payload.format;
     } else if (action.type === 'settings/view/toggle-minimap') {
         store.view.showMinimap = !store.view.showMinimap;
-    } else if (action.type === 'view/left-sidebar/toggle') {
-        store.view.showLeftSidebar = !store.view.showLeftSidebar;
     } else if (action.type === 'settings/pinned-nodes/persist') {
         const document = store.documents[action.payload.filePath];
         if (!document.pinnedSections) {
             document.pinnedSections = {
                 sections: [],
                 activeSection: null,
+                fileCategories: [],
+                nodeToCategory: {},
+                activeCategory: 'all',
             };
         }
         document.pinnedSections.sections = action.payload.sections;
         document.pinnedSections.activeSection = action.payload.section;
+        document.pinnedSections.fileCategories = action.payload.fileCategories;
+        document.pinnedSections.nodeToCategory = action.payload.nodeToCategory;
+        document.pinnedSections.activeCategory = action.payload.activeCategory;
     } else if (action.type === 'settings/pinned-nodes/persist-active-node') {
         const document = store.documents[action.payload.filePath];
         if (!document.pinnedSections) {
             document.pinnedSections = {
                 sections: [],
                 activeSection: null,
+                fileCategories: [],
+                nodeToCategory: {},
+                activeCategory: 'all',
             };
         }
         document.pinnedSections.activeSection = action.payload.section;
@@ -124,6 +144,15 @@ const updateState = (store: Settings, action: SettingsActions) => {
     } else if (action.type === 'settings/view/modes/toggle-outline-mode') {
         store.view.outlineMode = !store.view.outlineMode;
         if (store.view.outlineMode) {
+            store.view.scrolling.centerActiveNodeH = false;
+            store.view.scrolling = {
+                ...store.view.scrolling,
+            };
+        }
+    } else if (action.type === 'settings/view/modes/toggle-mindmap-mode') {
+        store.view.mindmapMode = !store.view.mindmapMode;
+        if (store.view.mindmapMode) {
+            store.view.outlineMode = false;
             store.view.scrolling.centerActiveNodeH = false;
             store.view.scrolling = {
                 ...store.view.scrolling,
@@ -218,6 +247,55 @@ const updateState = (store: Settings, action: SettingsActions) => {
         store.styleRules.settings.activeTab = action.payload.tab;
     } else if (action.type === 'settings/general/set-link-pane-type') {
         store.general.linkPaneType = action.payload.position;
+    } else if (action.type === 'settings/categories/global/create-folder') {
+        createGlobalNode(
+            store.categories,
+            action.payload.parentId,
+            action.payload.name,
+            'folder',
+        );
+    } else if (action.type === 'settings/categories/global/create-category') {
+        createGlobalNode(
+            store.categories,
+            action.payload.parentId,
+            action.payload.name,
+            'category',
+        );
+    } else if (action.type === 'settings/categories/global/rename') {
+        renameGlobalNode(store.categories, action.payload.id, action.payload.name);
+    } else if (action.type === 'settings/categories/global/delete') {
+        deleteGlobalNode(store.categories, action.payload.id);
+    } else if (action.type === 'settings/categories/global/move') {
+        moveGlobalNode(
+            store.categories,
+            action.payload.id,
+            action.payload.newParentId,
+            action.payload.index,
+        );
+    } else if (action.type === 'settings/categories/global/add-card') {
+        addGlobalCard(
+            store.categories,
+            action.payload.categoryId,
+            action.payload.filePath,
+            action.payload.section,
+        );
+    } else if (action.type === 'settings/categories/global/remove-card') {
+        removeGlobalCard(
+            store.categories,
+            action.payload.categoryId,
+            action.payload.filePath,
+            action.payload.section,
+        );
+    } else if (action.type === 'settings/categories/global/move-card') {
+        moveGlobalCard(
+            store.categories,
+            action.payload.categoryId,
+            action.payload.filePath,
+            action.payload.section,
+            action.payload.toIndex,
+        );
+    } else if (action.type === 'settings/categories/global/set-enabled') {
+        setGlobalCategoriesEnabled(store.categories, action.payload.enabled);
     } else if (action.type.startsWith('settings/style-rules')) {
         updateStyleRules(store, action);
     }

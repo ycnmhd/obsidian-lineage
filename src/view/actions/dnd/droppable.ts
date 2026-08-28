@@ -22,7 +22,8 @@ export const dropClasses = {
 };
 const classesList = Object.values(dropClasses);
 
-export const droppable = (node: HTMLElement) => {
+export const droppable = (node: HTMLElement, enabled = true) => {
+    if (!enabled) return;
     const view = getView();
     const viewStore = view.viewStore;
     const documentStore = view.documentStore;

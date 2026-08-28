@@ -16,6 +16,7 @@ export const handleBlockLink = (
             handleLocalBlockLink(view, id);
         } else {
             handleGlobalBlockLink(view, link, modKey);
+            return; // async operation, don't return early
         }
     }
 };

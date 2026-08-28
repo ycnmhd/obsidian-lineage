@@ -37,6 +37,8 @@ const updateState = (state: PluginState, action: PluginStoreActions) => {
                 state.documents[filePath].viewId = viewId;
             }
         }
+    } else if (action.type === 'plugin/zen/toggle') {
+        state.zenMode = !state.zenMode;
     }
 };
 

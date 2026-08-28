@@ -8,6 +8,7 @@
     import { onDestroy } from 'svelte';
     import PinnedCards from 'src/view/components/container/left-sidebar/components/pinned-cards/pinned-cards-sidebar.svelte';
     import RecentCards from 'src/view/components/container/left-sidebar/components/recent-cards/recent-cards.svelte';
+    import SimilarCards from 'src/view/components/container/left-sidebar/components/similar-cards/similar-cards.svelte';
     import { limitPreviewHeightStore } from 'src/stores/settings/derived/limit-preview-height-store';
 
     const MIN_WIDTH = 250;
@@ -84,6 +85,8 @@
         <PinnedCards />
     {:else if $activeTab === 'recent-cards'}
         <RecentCards />
+    {:else if $activeTab === 'similar-cards'}
+        <SimilarCards />
     {/if}
 
 </div>

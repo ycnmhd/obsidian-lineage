@@ -1,4 +1,8 @@
 import { DefaultViewCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/default-view-hotkeys';
+import {
+    shouldNavigateInSidebar,
+    navigatePinnedCards,
+} from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/sidebar-navigation';
 
 export const selectionCommands = () => {
     const commands: DefaultViewCommand[] = [];
@@ -24,6 +28,11 @@ export const selectionCommands = () => {
             name: 'extend_select_up',
             callback: (view, event) => {
                 event.preventDefault();
+                // In sidebar, just navigate (no multi-select)
+                if (shouldNavigateInSidebar(view)) {
+                    navigatePinnedCards(view, 'up');
+                    return;
+                }
                 view.viewStore.dispatch({
                     type: 'view/set-active-node/keyboard',
                     payload: {
@@ -49,6 +58,11 @@ export const selectionCommands = () => {
             name: 'extend_select_down',
             callback: (view, event) => {
                 event.preventDefault();
+                // In sidebar, just navigate (no multi-select)
+                if (shouldNavigateInSidebar(view)) {
+                    navigatePinnedCards(view, 'down');
+                    return;
+                }
                 view.viewStore.dispatch({
                     type: 'view/set-active-node/keyboard',
                     payload: {

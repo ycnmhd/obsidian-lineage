@@ -16,6 +16,10 @@ import { PinNodeAction } from 'src/stores/document/reducers/pinned-nodes/pin-nod
 import { UnpinNodeAction } from 'src/stores/document/reducers/pinned-nodes/unpin-node';
 import { RemoveStalePinnedNodesAction } from 'src/stores/document/reducers/pinned-nodes/remove-stale-pinned-nodes';
 import { LoadPinnedNodesAction } from 'src/stores/document/reducers/pinned-nodes/load-pinned-nodes';
+import { SetCategoryAction } from 'src/stores/document/reducers/pinned-nodes/set-category';
+import { RemoveCategoryAction } from 'src/stores/document/reducers/pinned-nodes/remove-category';
+import { AddCategoryAction } from 'src/stores/document/reducers/pinned-nodes/add-category';
+import { DeleteCategoryAction } from 'src/stores/document/reducers/pinned-nodes/delete-category';
 import { RefreshGroupParentIdsAction } from 'src/stores/document/reducers/meta/refresh-group-parent-ids';
 import { SortChildNodesAction } from 'src/stores/document/reducers/sort/sort-direct-child-nodes';
 
@@ -93,6 +97,10 @@ export type PinnedNodesActions =
     | PinNodeAction
     | UnpinNodeAction
     | RemoveStalePinnedNodesAction
-    | LoadPinnedNodesAction;
+    | LoadPinnedNodesAction
+    | SetCategoryAction
+    | RemoveCategoryAction
+    | AddCategoryAction
+    | DeleteCategoryAction;
 
 export type MetaActions = RefreshGroupParentIdsAction;

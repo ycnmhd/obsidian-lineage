@@ -30,9 +30,16 @@ export type DocumentViewState = {
 };
 export type PinnedNodes = {
     activeNode: string;
+    activeCategory: string; // "all" | "uncategorized" | category name
 };
 export type RecentNodes = {
     activeNode: string;
+};
+export type SimilarCardsState = {
+    nodeIds: string[];
+    scores: Map<string, number>;
+    query: string;
+    loading: boolean;
 };
 export type ViewState = {
     search: {
@@ -49,12 +56,14 @@ export type ViewState = {
             showHelpSidebar: boolean;
             showSettingsSidebar: boolean;
             showStyleRulesModal: boolean;
+            showLeftSidebar: boolean;
         };
     };
     document: DocumentViewState;
     navigationHistory: NavigationHistory;
     pinnedNodes: PinnedNodes;
     recentNodes: RecentNodes;
+    similarCards: SimilarCardsState;
     styleRules: {
         nodeStyles: Map<string, NodeStyle>;
         allMatches: Map<string, string[]>;

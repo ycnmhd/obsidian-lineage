@@ -85,6 +85,12 @@ export const VerticalToolbarButtonsList = (view: LineageView) => {
                         id: 'outline-mode',
                     },
                     {
+                        label: lang.controls_mindmap_mode,
+                        onClick: h.toggleMindmapMode,
+                        icon: customIcons.mindmap,
+                        id: 'mindmap-mode',
+                    },
+                    {
                         label: lang.controls_gap_between_cards,
                         onClick: h.toggleGap,
                         icon: customIcons.gap,

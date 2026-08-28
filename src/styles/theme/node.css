@@ -52,6 +52,11 @@
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
     }
 }
+/* same hover shadow for cards in the global categories view */
+.theme-dark .global-categories-view .lineage-card:hover,
+.theme-light .global-categories-view .lineage-card:hover {
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+}
 
 /* borders */
 

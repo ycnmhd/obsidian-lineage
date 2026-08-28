@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Clock, Pin } from 'lucide-svelte';
+    import { Clock, Pin, Search } from 'lucide-svelte';
     import ClickableIcon from './components/clickable-icon.svelte';
     import { LeftSidebarActiveTabStore } from '../../../../../../stores/settings/derived/view-settings-store';
     import { LeftSidebarTab } from '../../../../../../stores/settings/settings-type';
@@ -32,6 +32,13 @@
             onClick={() => setActiveTab("recent-cards")}
         >
             <Clock class="svg-icon" />
+        </ClickableIcon>
+        <ClickableIcon
+            isActive={$activeTab==="similar-cards"}
+            label={lang.sidebar_tab_similar_cards}
+            onClick={() => setActiveTab("similar-cards")}
+        >
+            <Search class="svg-icon" />
         </ClickableIcon>
     </div>
 </div>

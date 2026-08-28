@@ -18,6 +18,7 @@ export type ToolbarButton =
     | 'center-active-node-h'
     | 'center-active-node-v'
     | 'outline-mode'
+    | 'mindmap-mode'
     | 'space-between-cards'
     | 'snapshots-list'
     | 'undo'
@@ -76,6 +77,11 @@ export const verticalToolbarButtons: VerticalToolbarGroup[] = [
                 id: 'outline-mode',
                 label: lang.controls_single_column,
                 icon: customIcons.outline,
+            },
+            {
+                id: 'mindmap-mode',
+                label: lang.controls_mindmap_mode,
+                icon: customIcons.mindmap,
             },
             {
                 id: 'space-between-cards',

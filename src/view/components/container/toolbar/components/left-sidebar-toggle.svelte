@@ -10,7 +10,7 @@
 
     const show = ShowLeftSidebarStore(view);
     const toggleLeftSidebar = () => {
-        view.plugin.settings.dispatch({ type: 'view/left-sidebar/toggle' });
+        view.viewStore.dispatch({ type: 'view/left-sidebar/toggle' });
     };
 </script>
 

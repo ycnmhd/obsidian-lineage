@@ -25,6 +25,8 @@ export const defaultDocumentState = (): DocumentState => ({
     },
     pinnedNodes: {
         Ids: [],
+        nodeToCategory: {},
+        fileCategories: [],
     },
     meta: {
         groupParentIds: new Set(),

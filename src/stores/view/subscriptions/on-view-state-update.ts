@@ -52,6 +52,7 @@ export const onViewStateUpdate = (
         e.search ||
         e.mainEditor ||
         action.type === 'view/update-active-branch?source=document' ||
+        action.type === 'view/left-sidebar/toggle' ||
         (activeNodeChange && activeNodeHasChanged)
     ) {
         view.alignBranch.align(action);

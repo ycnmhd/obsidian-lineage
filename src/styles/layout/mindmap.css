@@ -1,0 +1,92 @@
+.mindmap-container {
+    --node-gap: 0px;
+
+    & .group {
+        background-color: transparent;
+        margin-bottom: 0;
+    }
+
+    & .group-has-active-child {
+        margin-bottom: 0;
+    }
+
+    & .active-parent-bridge-right {
+        display: none;
+    }
+
+    & .active-parent-bridge-left {
+        display: none;
+    }
+
+    & .active-node-bridge {
+        display: none;
+    }
+
+    & .active-node {
+        outline: 6px solid var(--background-active-parent) !important;
+    }
+
+    & .lineage-card {
+        position: relative;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    & .lineage-card:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Connection line styles */
+    .mindmap-connections {
+        .mindmap-connection {
+            stroke: var(--background-modifier-border);
+            stroke-width: 2px;
+            fill: none;
+            transition: stroke 0.2s ease, stroke-opacity 0.2s ease;
+        }
+
+        .mindmap-connection-active {
+            stroke: var(--background-active-node);
+            stroke-width: 3px;
+            filter: drop-shadow(0 0 3px var(--background-active-node));
+        }
+    }
+
+    /* Card wrapper transitions */
+    .mindmap-card-wrapper {
+        transition: transform 0.3s ease;
+    }
+
+    .mindmap-card-wrapper:hover {
+        z-index: 100 !important;
+    }
+}
+
+/* Active branch highlighting in mindmap */
+.mindmap-container {
+    & .group-has-active-node {
+        & .inactive-node {
+            background-color: var(--background-active-parent);
+            opacity: 0.8;
+        }
+        & .inactive-node:hover {
+            background-color: var(--background-active-parent);
+            opacity: 0.8;
+        }
+    }
+}
+
+/* Zoom adjustments for mindmap */
+.mindmap-container.zoom-enabled {
+    * {
+        transition: none !important;
+    }
+}
+
+.mindmap-container.zoom-enabled {
+    .lineage-floating-button {
+        opacity: 0.5 !important;
+    }
+    .lineage-card:not(:hover) .lineage-floating-button:not(.collapse-button) {
+        visibility: hidden;
+    }
+}

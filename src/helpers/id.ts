@@ -11,6 +11,7 @@ export const id = {
     view: () => 'v' + nanoid(id_size),
     canvas: () => 'canvas-' + nanoid(id_size),
     styleRule: () => 'sr' + nanoid(id_size),
+    globalCategory: () => 'gc' + nanoid(id_size),
 };
 
 export const isId = {

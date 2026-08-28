@@ -15,6 +15,7 @@ export const defaultViewState = (): ViewState => ({
             showHelpSidebar: false,
             showSettingsSidebar: false,
             showStyleRulesModal: false,
+            showLeftSidebar: false,
         },
     },
     document: {
@@ -52,9 +53,16 @@ export const defaultViewState = (): ViewState => ({
     },
     pinnedNodes: {
         activeNode: '',
+        activeCategory: 'all',
     },
     recentNodes: {
         activeNode: '',
+    },
+    similarCards: {
+        nodeIds: [],
+        scores: new Map(),
+        query: '',
+        loading: false,
     },
     styleRules: {
         nodeStyles: new Map(),

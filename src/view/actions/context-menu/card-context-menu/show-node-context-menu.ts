@@ -19,7 +19,10 @@ const getContextMenuContext = (
         !isInSidebar && viewState.document.selectedNodes.size > 1;
     const documentStore = view.documentStore;
     const documentState = documentStore.getValue();
-    const activeNode = viewState.document.activeNode;
+    // Use the appropriate active node based on context
+    const activeNode = isInSidebar
+        ? viewState.pinnedNodes.activeNode
+        : viewState.document.activeNode;
     const isPinned =
         (isInSidebar && !isInRecentCardsList) ||
         documentState.pinnedNodes.Ids.includes(activeNode);

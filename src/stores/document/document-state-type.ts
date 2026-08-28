@@ -92,4 +92,6 @@ export type History<T, U = undefined> = {
 
 export type PinnedNodesState = {
     Ids: string[];
+    nodeToCategory: Record<string, string>; // nodeId → category name
+    fileCategories: string[];              // file-specific category names
 };

@@ -116,9 +116,6 @@ export type SettingsActions =
     | {
           type: 'settings/view/toggle-minimap';
       }
-    | {
-          type: 'view/left-sidebar/toggle';
-      }
     | { type: 'view/left-sidebar/set-width'; payload: { width: number } }
     | {
           type: 'view/left-sidebar/set-active-tab';
@@ -130,6 +127,9 @@ export type SettingsActions =
               filePath: string;
               sections: string[];
               section: string;
+              fileCategories: string[];
+              nodeToCategory: Record<string, string>;
+              activeCategory: string;
           };
       }
     | {
@@ -141,6 +141,7 @@ export type SettingsActions =
       }
     | { type: 'view/modes/gap-between-cards/toggle' }
     | { type: 'settings/view/modes/toggle-outline-mode' }
+    | { type: 'settings/view/modes/toggle-mindmap-mode' }
     | {
           type: 'settings/style-rules/set-active-tab';
           payload: { tab: RulesTab };
@@ -183,6 +184,72 @@ export type SettingsActions =
           type: 'settings/general/set-link-pane-type';
           payload: {
               position: LinkPaneType;
+          };
+      }
+    | {
+          type: 'settings/categories/global/create-folder';
+          payload: {
+              parentId: string | null;
+              name: string;
+          };
+      }
+    | {
+          type: 'settings/categories/global/create-category';
+          payload: {
+              parentId: string | null;
+              name: string;
+          };
+      }
+    | {
+          type: 'settings/categories/global/rename';
+          payload: {
+              id: string;
+              name: string;
+          };
+      }
+    | {
+          type: 'settings/categories/global/delete';
+          payload: {
+              id: string;
+          };
+      }
+    | {
+          type: 'settings/categories/global/move';
+          payload: {
+              id: string;
+              newParentId: string | null;
+              index?: number;
+          };
+      }
+    | {
+          type: 'settings/categories/global/add-card';
+          payload: {
+              categoryId: string;
+              filePath: string;
+              section: string;
+          };
+      }
+    | {
+          type: 'settings/categories/global/remove-card';
+          payload: {
+              categoryId: string;
+              filePath: string;
+              section: string;
+          };
+      }
+    | {
+          type: 'settings/categories/global/move-card';
+          payload: {
+              categoryId: string;
+              filePath: string;
+              section: string;
+              toIndex: number;
+          };
+      }
+    | {
+          type: 'settings/categories/global/set-enabled';
+          payload: {
+              enabled: boolean;
           };
       };
 export type PersistCollapsedSectionsAction = {

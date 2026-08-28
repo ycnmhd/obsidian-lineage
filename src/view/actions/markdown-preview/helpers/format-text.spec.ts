@@ -5,14 +5,23 @@ import { generateLoremIpsumWithMarkdown } from 'src/helpers/test-helpers/generat
 describe('format-text', () => {
     test('case 1: empty line', () => {
         const input = ['text', '', 'text'].join('\n');
-        const output = ['text', '&nbsp;', 'text'].join('\n');
+        const output = ['text', '', 'text'].join('\n');
+
+        const actual = formatText(input);
+        expect(actual).toEqual(output);
+    });
+    test('paragraphs with empty lines should preserve paragraph breaks', () => {
+        // Reproduces the bug where truly empty lines were replaced with &nbsp;
+        // preventing Obsidian's markdown renderer from creating paragraph breaks
+        const input = ['Das ist ein Test', '', 'Das ist ein Test'].join('\n');
+        const output = ['Das ist ein Test', '', 'Das ist ein Test'].join('\n');
 
         const actual = formatText(input);
         expect(actual).toEqual(output);
     });
     test('case 2: has task', () => {
         const input = ['- text', '', 'text', ''].join('\n');
-        const output = ['- text', '', 'text', '&nbsp;'].join('\n');
+        const output = ['- text', '', 'text', ''].join('\n');
 
         const actual = formatText(input);
         expect(actual).toEqual(output);
@@ -27,7 +36,7 @@ describe('format-text', () => {
             '> text',
             '',
             'text',
-            '&nbsp;',
+            '',
         ].join('\n');
 
         const actual = formatText(input);
@@ -50,7 +59,7 @@ describe('format-text', () => {
             '> text',
             '',
             'text',
-            '&nbsp;',
+            '',
             'text <sup class="cm-blockid" data-block-id="^bloc1">^bloc1</sup>',
         ].join('\n');
 
@@ -75,7 +84,7 @@ describe('format-text', () => {
             '<span class="cm-comment">%\u200B% start %',
             'end %\u200B%</span>',
             '% text %',
-            '&nbsp;',
+            '',
         ].join('\n');
 
         const actual = formatText(input);
@@ -97,7 +106,7 @@ describe('format-text', () => {
             '> text',
             '<span class="cm-comment">&lt;!-- start\nend --&gt;</span>',
             '% text %',
-            '&nbsp;',
+            '',
         ].join('\n');
 
         const actual = formatText(input);
@@ -131,14 +140,14 @@ describe('format-text', () => {
         ].join('\n');
         const output = [
             'text',
-            '&nbsp;',
-            '&nbsp;',
+            '',
+            '',
             '```',
             '',
             'text',
             '',
             '```',
-            '&nbsp;',
+            '',
             'text',
         ].join('\n');
         const actual = formatText(input);

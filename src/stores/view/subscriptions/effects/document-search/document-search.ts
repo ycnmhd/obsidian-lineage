@@ -29,6 +29,7 @@ export class DocumentSearch {
             shouldSort: true,
             isCaseSensitive: false,
             ignoreLocation: true,
+            includeMatches: true,
         });
     };
 

@@ -29,7 +29,8 @@ export type ViewStoreAction =
     | ViewHotkeysAction
     | OutlineAction
     | SelectionActions
-    | PersistedStateActions;
+    | PersistedStateActions
+    | SimilarCardsActions;
 
 export type SearchAction =
     | SetSearchQueryAction
@@ -42,6 +43,7 @@ export type ViewUIAction =
     | ToggleHelpSidebarAction
     | ToggleHistorySidebarAction
     | ToggleSettingsSidebarAction
+    | ToggleLeftSidebarAction
     | { type: 'view/close-modals'; payload?: { closeAllModals: boolean } }
     | { type: 'view/style-rules/toggle-modal' };
 
@@ -94,6 +96,9 @@ type ToggleHelpSidebarAction = {
 type ToggleSettingsSidebarAction = {
     type: 'view/settings/toggle-modal';
 };
+type ToggleLeftSidebarAction = {
+    type: 'view/left-sidebar/toggle';
+};
 type SetActiveNodeAction = {
     type: `view/set-active-node/${'mouse' | 'mouse-silent' | 'search' | 'document'}`;
     payload: {
@@ -113,7 +118,12 @@ export type SidebarActions =
     | EnableEditInSidebar
     | DisableEditInSidebar;
 
-export type PinnedNodesActions = SetActivePinnedNodeAction;
+export type PinnedNodesActions =
+    | SetActivePinnedNodeAction
+    | {
+          type: 'view/pinned-nodes/set-active-category';
+          payload: { category: string };
+      };
 export type RecentNodesActions = SetActiveRecentNodeAction;
 
 export type EnableEditInSidebar = {
@@ -189,3 +199,20 @@ export type PersistedStateActions = {
         collapsedIds: string[];
     };
 };
+
+export type SimilarCardsActions =
+    | {
+          type: 'view/similar-cards/set-results';
+          payload: {
+              nodeIds: string[];
+              scores: Map<string, number>;
+              query: string;
+          };
+      }
+    | {
+          type: 'view/similar-cards/set-loading';
+          payload: { loading: boolean };
+      }
+    | {
+          type: 'view/similar-cards/clear';
+      };

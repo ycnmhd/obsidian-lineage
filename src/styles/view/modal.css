@@ -30,3 +30,21 @@
 .lineage-modal--full-height{
     bottom: var(--size-4-2);
 }
+
+/* New Category Modal */
+.lineage-new-category-modal .modal {
+    max-width: 400px;
+}
+
+.new-category-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-4-2);
+    padding: var(--size-4-1);
+}
+
+.new-category-modal-input {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+}

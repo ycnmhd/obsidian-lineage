@@ -3,6 +3,10 @@ import { AllDirections } from 'src/stores/document/document-store-actions';
 import { JumpTarget } from 'src/stores/view/reducers/document/jump-to-node';
 import { DefaultViewCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/default-view-hotkeys';
 import { enableEditModeInMainSplit } from 'src/view/components/container/column/components/group/components/card/components/content/store-actions/enable-edit-mode-in-main-split';
+import {
+    shouldNavigateInSidebar,
+    navigatePinnedCards,
+} from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/sidebar-navigation';
 
 const outlineModeSelector = (view: LineageView) =>
     view.plugin.settings.getValue().view.outlineMode;
@@ -24,7 +28,19 @@ const maybeEnableEditMode = (view: LineageView) => {
     }
 };
 
-const spatialNavigation = (view: LineageView, direction: AllDirections) => {
+const spatialNavigation = (
+    view: LineageView,
+    direction: AllDirections,
+) => {
+    // If navigating up/down in sidebar pinned cards, use sidebar navigation
+    if (
+        (direction === 'up' || direction === 'down') &&
+        shouldNavigateInSidebar(view)
+    ) {
+        navigatePinnedCards(view, direction);
+        return;
+    }
+
     maybeEnableEditMode(view);
     view.viewStore.dispatch({
         type: 'view/set-active-node/keyboard',
@@ -41,6 +57,12 @@ const sequentialNavigation = (
     view: LineageView,
     direction: 'forward' | 'back',
 ) => {
+    // If navigating in sidebar pinned cards, use sidebar navigation
+    if (shouldNavigateInSidebar(view)) {
+        navigatePinnedCards(view, direction === 'forward' ? 'down' : 'up');
+        return;
+    }
+
     maybeEnableEditMode(view);
     view.viewStore.dispatch({
         type: 'view/set-active-node/sequential/select-next',

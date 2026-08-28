@@ -3,6 +3,7 @@ import { htmlCommentToJson } from 'src/lib/data-conversion/x-to-json/html-commen
 import {
     DocumentState,
     LineageDocument,
+    Sections,
 } from 'src/stores/document/document-state-type';
 import { SavedDocument } from 'src/stores/document/document-store-actions';
 import { insertFirstNode } from 'src/lib/tree-utils/insert/insert-first-node';
@@ -18,6 +19,7 @@ export type LoadDocumentAction = {
         format: LineageDocumentFormat;
         activeSection: string | null;
         __test_document__?: LineageDocument;
+        oldSections?: Sections;
     };
 };
 

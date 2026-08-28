@@ -10,6 +10,11 @@ export const DEFAULT_SETTINGS = (): Settings => ({
     hotkeys: {
         customHotkeys: {},
     },
+    categories: {
+        tree: [],
+        globalCards: {},
+        globalCategoriesEnabled: true,
+    },
     view: {
         fontSize: 16,
         h1FontSize_em: DEFAULT_H1_FONT_SIZE_EM,
@@ -25,11 +30,11 @@ export const DEFAULT_SETTINGS = (): Settings => ({
         limitPreviewHeight: true,
         zoomLevel: 1,
         showMinimap: false,
-        showLeftSidebar: false,
         leftSidebarWidth: 500,
         leftSidebarActiveTab: 'pinned-cards',
         applyGapBetweenCards: false,
         outlineMode: false,
+        mindmapMode: false,
         nodeIndentationWidth: DEFAULT_INDENTATION_WIDTH,
         maintainEditMode: false,
         alwaysShowCardButtons: false,

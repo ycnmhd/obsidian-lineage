@@ -33,6 +33,7 @@
     export let collapsed: boolean;
     export let hidden: boolean;
     export let alwaysShowCardButtons: boolean;
+    export let enableDroppable = true;
     const activeStatusClasses = {
         [ActiveStatus.node]: 'active-node',
         [ActiveStatus.child]: 'active-child',
@@ -71,7 +72,7 @@
                       : undefined,
     )}
     id={node}
-    use:droppable
+    use:droppable={enableDroppable}
 >
     {#if style}
         <CardStyle {style} />
